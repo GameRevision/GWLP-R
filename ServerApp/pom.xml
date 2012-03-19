@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.gamerevision.gwlpr</groupId>
+    <artifactId>gwlpr</artifactId>
+    <version>0.1.0_RC1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>${project.artifactId}</name>
+    
+    
+    <description>GWLP:R is the most complete GW server sandbox</description>
+    <url>http://github.com/GameRevision/GWLP-R</url>
+    <inceptionYear>2010</inceptionYear>
+    <organization>
+        <name>Game Revision</name>
+        <url>http://www.gamerevision.com</url>
+    </organization>
+    
+    
+    <modules>
+        <module>gw-framework</module>
+        <module>login-shard</module>
+        <module>map-shard</module>
+        <module>file-shard</module>
+    </modules>
+
+
+    <properties>
+        <java.source>1.7</java.source>
+        <java.target>1.7</java.target>
+        <java.debug>true</java.debug>
+        <java.optimize>true</java.optimize>
+        <java.verbose>true</java.verbose>
+    </properties>
+    
+    
+    <dependencies>
+        <!-- JUnit for testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>${java.source}</source>
+                    <target>${java.target}</target>
+                    <debug>${java.debug}</debug>
+                    <optimize>${java.optimize}</optimize>
+                    <verbose>${java.verbose}</verbose>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project> 
