@@ -11,3 +11,5 @@
 #dirs
 */.settings/*
 */target/*
+
+/Thumbs.db
