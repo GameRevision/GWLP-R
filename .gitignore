@@ -1,0 +1,13 @@
+#files
+*~
+*.class
+*.DS_Store
+*.lock
+*.out
+*.swp
+.directory
+.project
+
+#dirs
+*/.settings/*
+*/target/*
