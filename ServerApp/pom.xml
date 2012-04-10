@@ -19,6 +19,7 @@
     
     
     <modules>
+        <module>gw-protocol</module>
         <module>gw-framework</module>
         <module>login-shard</module>
         <module>map-shard</module>
