@@ -4,7 +4,7 @@
     Languages:     Java, Lua(?), C/C++, AutoIt
     People:        _rusty, ACB, miracle44
 
-** Current work **
+**Current work**
 
 This description is yet to come.
 
