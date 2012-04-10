@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.0">
+
+
+<!--RootNode: Packets-->
+    <xsd:element name="Packets">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="Direction" type="CommunicationDirection" minOccurs="0" maxOccurs="unbounded" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+        
+        
+<!--Type defs-->
+    <!--CommunicationDirection-->
+    <xsd:complexType name="CommunicationDirection">
+        <xsd:sequence>
+            <xsd:element name="Packet" type="PacketType" minOccurs="1" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required" /><!--Ex: "GameServer to Client"-->
+        <xsd:attribute name="abbr" type="xsd:string" use="required" /><!--Ex: "GStoC"-->
+    </xsd:complexType>
+
+
+    <!--PacketType-->
+    <xsd:complexType name="PacketType">
+        <xsd:sequence>
+            <xsd:element name="Info" type="PacketInfo" minOccurs="1" maxOccurs="1" default="Unkown"/>
+            <xsd:element name="Description"     type="xsd:string"       minOccurs="1" maxOccurs="1" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    
+    <!--PacketInfo-->
+    <xsd:complexType name="PacketInfo">
+        <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string" minOccurs="1" maxOccurs="1" />
+            <xsd:element name="Header" type="xsd:string" minOccurs="1" maxOccurs="1" />
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required" /><!--Ex: "DoWhatEver"-->
+        <xsd:attribute name="header" type="xsd:integer" use="required" /><!--Ex: "123"-->
+    </xsd:complexType>
+
+</xsd:schema>

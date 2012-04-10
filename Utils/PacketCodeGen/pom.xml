@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.packetcodegen</groupId>
+    <artifactId>packetcodegen</artifactId>
+    <version>0.1.0_RC1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>${project.artifactId}</name>
+    
+    
+    <description>This program is used to generate ShardletActions and code to parse GW packets</description>
+    <url>http://github.com/GameRevision/GWLP-R</url>
+    <inceptionYear>2012</inceptionYear>
+    <organization>
+        <name>Game Revision</name>
+        <url>http://www.gamerevision.com</url>
+    </organization>
+
+
+    <properties>
+        <java.source>1.7</java.source>
+        <java.target>1.7</java.target>
+        <java.debug>true</java.debug>
+        <java.optimize>true</java.optimize>
+        <java.verbose>true</java.verbose>
+    </properties>
+    
+    
+    <dependencies>
+        <!-- JUnit for testing -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>${java.source}</source>
+                    <target>${java.target}</target>
+                    <debug>${java.debug}</debug>
+                    <optimize>${java.optimize}</optimize>
+                    <verbose>${java.verbose}</verbose>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <executions>
+                    
+                    <execution>
+                        <id>gw-packets</id>
+                        
+                        <phase>generate-sources</phase>
+                        
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        
+                        <configuration>
+                            <forceRegenerate>true</forceRegenerate>
+                            <generateDirectory>src/main/java</generateDirectory>
+                            <generatePackage>com.packetcodegen.jaxb</generatePackage>
+                            <episode>false</episode>
+                        </configuration>
+                        
+                    </execution>
+                    
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project> 
