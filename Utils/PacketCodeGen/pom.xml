@@ -28,6 +28,14 @@
     
     
     <dependencies>
+        <!-- Shardlet API -->
+        <dependency>
+            <groupId>com.realityshard</groupId>
+            <artifactId>shardlet</artifactId>
+            <version>0.1.0_RC1-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        
         <!-- JUnit for testing -->
         <dependency>
             <groupId>junit</groupId>
