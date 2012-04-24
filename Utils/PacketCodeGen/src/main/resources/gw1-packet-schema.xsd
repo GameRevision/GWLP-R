@@ -61,7 +61,7 @@
         <xsd:attribute name="static" type="xsd:boolean" use="optional"/>
         <xsd:attribute name="occurs" type="xsd:unsignedInt" use="optional"/>
     </xsd:complexType>
-    
+
 
     <!--PacketSimpleTypes-->
     <xsd:simpleType name="PacketSimpleTypes">
