@@ -1,5 +1,4 @@
-
-![GWLPR Logo](http://imageshack.us/photo/my-images/851/logo4jb.png)
+![GWLPR Logo](http://img851.imageshack.us/img851/7279/logo4jb.png)
 
 ## Overview
     Project:       GWLP:R
