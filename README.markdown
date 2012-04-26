@@ -1,8 +1,11 @@
+
+![GWLPR Logo](http://imageshack.us/photo/my-images/851/logo4jb.png)
+
 ## Overview
     Project:       GWLP:R
     Info:          It's a game-app for Reality:Shard that emulates a GW (1) server.
     Languages:     Java, Lua(?), C/C++, AutoIt
-    People:        _rusty, ACB, miracle44
+    People:        _rusty, ACB, miracle444
 
 **Current work**
 
