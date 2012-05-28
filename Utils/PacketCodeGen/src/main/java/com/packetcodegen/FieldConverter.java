@@ -80,8 +80,73 @@ public final class FieldConverter
      */
     public String getArrayType() 
     {
-        final String type = getType();
-        return type.substring(0, 1).toUpperCase() + type.substring(1, type.length());
+        if (field.getType() == null)
+        {
+            return "";
+        }
+        
+        if (field.getType().equals(PacketSimpleTypes.AGENTID))
+        {
+            return "Integer";
+        }
+        else if (field.getType().equals(PacketSimpleTypes.ASCII))
+        {
+            return "Byte";
+        }
+        else if (field.getType().equals(PacketSimpleTypes.FLOAT))
+        {
+            return "Float";
+        }
+        else if (field.getType().equals(PacketSimpleTypes.INT_16))
+        {
+            return "Short";
+        }
+        else if (field.getType().equals(PacketSimpleTypes.INT_32))
+        {
+            return "Integer";
+        }
+        else if (field.getType().equals(PacketSimpleTypes.INT_64))
+        {
+            return "Long";
+        }
+        else if (field.getType().equals(PacketSimpleTypes.INT_8))
+        {
+            return "Byte";
+        }
+        else if (field.getType().equals(PacketSimpleTypes.PACKED))
+        {
+            // TODO: implement it
+            // i didnt know what to do with this type ~miracle444
+        }
+        else if (field.getType().equals(PacketSimpleTypes.UTF_16))
+        {
+            return "Short";
+        }
+        else if (field.getType().equals(PacketSimpleTypes.UUID_16))
+        {
+            // TODO: implement it
+            // i didnt know what to do with this type ~miracle444
+        }
+        else if (field.getType().equals(PacketSimpleTypes.UUID_28))
+        {
+            // TODO: implement it
+            // i didnt know what to do with this type ~miracle444
+        }
+        else if (field.getType().equals(PacketSimpleTypes.VEC_2))
+        {
+            return "List<Float>";
+        }
+        else if (field.getType().equals(PacketSimpleTypes.VEC_3))
+        {
+            return "List<Float>";
+        }
+        else if (field.getType().equals(PacketSimpleTypes.VEC_4))
+        {
+            return "List<Float>";
+        }
+
+        // dummy value because not all types are implemented
+        return getType();
     }
 
 
@@ -147,15 +212,15 @@ public final class FieldConverter
         }
         else if (type.equals(PacketSimpleTypes.VEC_2))
         {
-            return "Vector";
+            return "List<Float>";
         }
         else if (type.equals(PacketSimpleTypes.VEC_3))
         {
-            return "Vector";
+            return "List<Float>";
         }
         else if (type.equals(PacketSimpleTypes.VEC_4))
         {
-            return "Vector";
+            return "List<Float>";
         }
 
         // dummy value because not all types are implemented

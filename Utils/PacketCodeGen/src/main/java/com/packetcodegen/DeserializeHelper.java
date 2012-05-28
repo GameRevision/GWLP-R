@@ -88,7 +88,7 @@ public final class DeserializeHelper
             }
             else
             {
-                addCode(field.getAttributeName() + " = new Vector();");
+                addCode(field.getAttributeName() + " = new ArrayList<>();");
                 
                 for (int i = 0; i < field.getVectorSize(); i++)
                 {
@@ -119,7 +119,7 @@ public final class DeserializeHelper
     private void addDynamicArrayDeserializeMethod(FieldConverter field) 
     {
         addCode(field.getPrefixType() + " prefix_" + field.getAttributeName() + " = buffer.get" + field.getPrefixBufferMethod() + "();");
-        addCode(field.getAttributeName() + " = new List<" + field.getArrayType() + ">();");
+        addCode(field.getAttributeName() + " = new ArrayList<>();");
         addCode("");
         addCode("for (int i = 0; i < prefix_" + field.getAttributeName() + "; i++)");
         addCode("{");
@@ -132,7 +132,7 @@ public final class DeserializeHelper
             }
             else
             {
-                addCode("Vector newEntry = new Vector();");
+                addCode("List<Float> newEntry = new ArrayList<>();");
                 
                 for (int i = 0; i < field.getVectorSize(); i++)
                 {
@@ -152,7 +152,7 @@ public final class DeserializeHelper
             addCode(this.indent + this.indent + "return false;");
             addCode(this.indent + "}");
             addCode("");
-            addCode(this.indent + field.getAttributeName() + ".add(newEntry));");
+            addCode(this.indent + field.getAttributeName() + ".add(newEntry);");
         }
         
         addCode("}");
@@ -167,7 +167,7 @@ public final class DeserializeHelper
      */
     private void addStaticArrayDeserializeMethod(FieldConverter field)
     {
-        addCode(field.getAttributeName() + " = new List<" + field.getArrayType() + ">();");
+        addCode(field.getAttributeName() + " = new ArrayList<>();");
         addCode("");
         addCode("for (int i = 0; i < " + field.getOccurs() + "; i++)");
         addCode("{");
@@ -180,7 +180,7 @@ public final class DeserializeHelper
             }
             else
             {
-                addCode("Vector newEntry = new Vector();");
+                addCode("List<Float> newEntry = new ArrayList<>();");
                 
                 for (int i = 0; i < field.getVectorSize(); i++)
                 {
@@ -200,7 +200,7 @@ public final class DeserializeHelper
             addCode(this.indent + this.indent + "return false;");
             addCode(this.indent + "}");
             addCode("");
-            addCode(this.indent + field.getAttributeName() + ".add(newEntry));");
+            addCode(this.indent + field.getAttributeName() + ".add(newEntry);");
         }
         
         addCode("}");
@@ -220,6 +220,7 @@ public final class DeserializeHelper
             if (!this.nested)
             {
                 return
+                        this.offset + this.indent + "@Override\n" +
                         this.offset + this.indent + "public boolean deserialize()\n" +
                         this.offset + this.indent + "{\n" +
                         this.offset + this.indent + this.indent + "return true;\n" +
@@ -239,6 +240,7 @@ public final class DeserializeHelper
             if (!this.nested)
             {
                 return
+                        this.offset + this.indent + "@Override\n" +
                         this.offset + this.indent + "public boolean deserialize()\n" +
                         this.offset + this.indent + "{\n" +
                         this.offset + this.indent + this.indent + "ByteBuffer buffer = getBuffer();\n" +

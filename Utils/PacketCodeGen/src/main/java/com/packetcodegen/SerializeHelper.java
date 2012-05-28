@@ -193,6 +193,7 @@ public final class SerializeHelper
         if (!this.nested)
         {
             return
+                    this.offset + indent + "@Override\n" +
                     this.offset + indent + "public boolean serialize()\n" +
                     this.offset + indent + "{\n" +
                     this.offset + indent + indent + "int size = getSize();\n\n" +

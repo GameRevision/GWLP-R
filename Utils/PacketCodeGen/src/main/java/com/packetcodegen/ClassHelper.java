@@ -18,7 +18,6 @@ public final class ClassHelper
     
     private PacketConverter packet;             // the packet this class is describing
     private final String indent;                // the number of spaces of an indentation
-    private final String eventCode;             // the event code for this action
     private final String eventTriggerCode;      // the event trigger code for this action
     private String nestedTypesCode;             // all nested structs concatenated
     private HeaderHelper header;                // manages header data
@@ -45,32 +44,12 @@ public final class ClassHelper
         this.nestedTypesCode = "";
         
         
-        // the event code for this action
-        this.eventCode =
-                this.indent + "public final class Event implements Event\n" +
-                this.indent + "{\n" +
-                               "\n" +
-                this.indent + this.indent + "private " + packet.getActionName() + " action;\n" +
-                                              "\n" +
-                                              "\n" +
-                this.indent + this.indent + "public Event(" + packet.getActionName() + " action)\n" +
-                this.indent + this.indent + "{\n" +
-                this.indent + this.indent + this.indent + "this.action = action;\n" +
-                this.indent + this.indent + "}\n" +
-                                              "\n" +
-                                              "\n" +
-                this.indent + this.indent + "public " + packet.getActionName() + " getAction()\n" + 
-                this.indent + this.indent + "{\n" +
-                this.indent + this.indent + this.indent + "return action;\n" +
-                this.indent + this.indent + "}\n" +
-                this.indent + "}\n";
-                
-        
         // the event trigger code for this action
         eventTriggerCode =
+                this.indent + "@Override\n" +
                 this.indent + "public void triggerEvent(EventAggregator aggregator)\n" +
                 this.indent + "{\n" +
-                this.indent + this.indent + "aggregator.triggerEvent(new "+packet.getActionName()+".Event(this));\n" +
+                this.indent + this.indent + "aggregator.triggerEvent(this);\n" +
                 this.indent + "}\n";
         
         
@@ -109,11 +88,8 @@ public final class ClassHelper
     public String toString()
     {               
         return header.toString() +
-               (packet.getFromClient() ? eventCode + "\n\n" : "") +
                (!nestedTypesCode.isEmpty() ? nestedTypesCode + "\n\n" : "") +
-               declarations.toString() +
-               "\n" +
-               "\n" +
+               (!declarations.toString().isEmpty() ? declarations.toString() + "\n\n" : "") +
                properties.toString() +
                "\n" +
                "\n" +
@@ -165,5 +141,18 @@ public final class ClassHelper
         
         // concat existing nested struct code with this new one
         this.nestedTypesCode += nested.toString();
+    }
+    
+    
+    /**
+     * Getter.
+     * 
+     * @return  the header->action mapping for this action.
+     */
+    public String getMapping()
+    {
+        return
+                "case " + packet.getHeader() + ":\n" +
+                this.indent + "return new " + packet.getActionName() + "();\n";
     }
 }

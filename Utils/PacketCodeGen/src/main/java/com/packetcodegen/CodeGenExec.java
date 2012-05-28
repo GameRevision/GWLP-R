@@ -73,6 +73,9 @@ public final class CodeGenExec
     
     private static void DoStuff(File schema, File packXML) throws Exception
     {
+        // this constant describes what indention spacing is used in the codegenerator
+        final String indention = "    ";
+                    
         try 
         {
             // parse templates file
@@ -89,16 +92,22 @@ public final class CodeGenExec
                 
                 // create a converter for direction properties to get application specific properties
                 DirectionConverter directionConverter = new DirectionConverter(direction);
-
+                
+                // writer to output the header->action mapping
+                FileWriter mappingWriter = new FileWriter("output" + File.separator +
+                                                directionConverter.getServerName() + "-" + 
+                                                directionConverter.getDirectionString() + "-" +
+                                                "mapping.txt");            
+                    
                 // for each packet in this direction
                 for (PacketType packet : packets)
                 {
                     // create a converter to get application specific properties of this packet
                     PacketConverter packetConverter = new PacketConverter(packet, directionConverter);
                     
-                    
                     // create the output file object
                     File actionFile = new File("output" + File.separator + 
+                                               "actions" + File.separator + 
                                                directionConverter.getServerName() + File.separator +
                                                directionConverter.getDirectionString() + File.separator +
                                                packetConverter.getActionName() + ".java");
@@ -107,14 +116,13 @@ public final class CodeGenExec
                     actionFile.getParentFile().mkdirs();
                     
                     // instantiate a writer to output the generated code to the actionFile
-                    FileWriter writer = new FileWriter(actionFile);
-                    
-                    
-                    // this constant describes what indention spacing is used in the codegenerator
-                    final String indention = "    ";
+                    FileWriter actionWriter = new FileWriter(actionFile);
                     
                     // create the helper object that generates the action's code
                     ClassHelper classHelper = new ClassHelper(indention, packetConverter);
+                    
+                    // add mapping to output file
+                    mappingWriter.append(classHelper.getMapping());
                     
                     // get all fields in this packet
                     List<PacketFieldType> fields = packet.getField();
@@ -137,11 +145,14 @@ public final class CodeGenExec
                     }
                     
                     // output the generated code
-                    writer.write(classHelper.toString());
+                    actionWriter.write(classHelper.toString());
                     
                     // close the writer object
-                    writer.close();
+                    actionWriter.close();
                 }
+                
+                // close the writer object
+                mappingWriter.close();
             }
         } 
         catch (JAXBException | SAXException ex) 

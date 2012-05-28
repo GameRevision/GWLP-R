@@ -18,9 +18,9 @@ public final class HeaderHelper
     private final String firstPart;     // contains the first part of the header code
     private final String secondPart;    // contains the second part of the header code
     private String imports;             // contains the imports code
-    private boolean hasListImport;      // indicates whether it already has teh list import
-    private boolean hasVectorImport;    // indicates whether it already has teh vector import
-    
+    private boolean hasListImport;      // indicates whether it already has the list import
+    private boolean hasBufferImports;   // indicates whether it already has the buffer imports
+    private PacketConverter packet;     // the packet this header corresponds to
     
     /**
      * Constructor.
@@ -30,6 +30,8 @@ public final class HeaderHelper
      */
     public HeaderHelper(PacketConverter packet)
     {
+        this.packet = packet;
+        
         this.firstPart =
                 "/**\n" +
                 " * For copyright information see the LICENSE document.\n" +
@@ -43,11 +45,11 @@ public final class HeaderHelper
                 "\n";
         
         this.imports =
-                "import com.realityshard.shardlet.GenericAction;\n" +
-                (packet.getFromClient() ? "import java.nio.BufferUnderflowException;\n" :
-                                          "import java.nio.BufferOverflowException;\n") +
-                "import java.nio.ByteBuffer;\n" +
-                (packet.getFromClient() ? "" :"import java.nio.ByteOrder;\n");
+                (packet.getFromClient() ? "import com.realityshard.shardlet.EventAggregator;\n" : "") +
+                (packet.getFromClient() ? "import com.realityshard.shardlet.GenericEventAction;" : "import com.realityshard.shardlet.GenericAction;") + "\n" +
+                (packet.getFromClient() ? "" : "import java.nio.BufferOverflowException;\n") +
+                (packet.getFromClient() ? "" : "import java.nio.ByteBuffer;\n") +
+                (packet.getFromClient() ? "" : "import java.nio.ByteOrder;\n");
         
         this.secondPart =                
                 "\n" +
@@ -60,7 +62,8 @@ public final class HeaderHelper
                 " *\n" +
                 " * @author " + packet.getAuthor() + "\n" +
                 " */\n" +
-                "public final class " + packet.getActionName() + " extends GenericAction\n" +
+                "public final class " + packet.getActionName() + " extends " +
+                    (packet.getFromClient() ? "GenericEventAction" : "GenericAction") + "\n" +
                 "{\n" +
                 "\n";
     }
@@ -91,24 +94,25 @@ public final class HeaderHelper
      */
     public void addField(final FieldConverter field)
     {
-        if (field.isArray())
+        if (field.isArray() || field.isVector())
         {
             addListImport();
         }
-        
-        if (field.isVector())
-        {
-            addVectorImport();
-        }
+
         
         if (field.isNested())
         {
             // to simplify the packetcodegen
-            // we just add both imports if there is any nested struct
+            // we just add imports if there is any nested struct
             // involved so we dont have to check through all fields of
             // all nested fields.
             addListImport();
-            addVectorImport();
+        }
+        
+        
+        if (packet.getFromClient())
+        {
+                addBufferImports();
         }
     }
     
@@ -122,20 +126,30 @@ public final class HeaderHelper
         if (!hasListImport)
         {
             hasListImport = true;
+
+            
+            if (packet.getFromClient())
+            {
+                this.imports += "import java.util.ArrayList;\n";
+            }
+            
             this.imports += "import java.util.List;\n";
         }
     }
     
+    
     /**
      * Helper function.
-     * adds the vector import and makes sure its only added once.
+     * adds the buffer imports and makes sure they are only added once.
      */
-    private void addVectorImport()
+    private void addBufferImports()
     {
-        if (!hasVectorImport)
+        if (!hasBufferImports)
         {
-            hasVectorImport = true;
-            this.imports += "import java.util.Vector;\n";
+            hasBufferImports = true;
+            this.imports += 
+                (packet.getFromClient() ? "import java.nio.BufferUnderflowException;\n" : "") +
+                "import java.nio.ByteBuffer;\n";
         }
     }
     
