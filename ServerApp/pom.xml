@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gamerevision.gwlpr</groupId>
     <artifactId>gwlpr</artifactId>
-    <version>0.1.0_RC1-SNAPSHOT</version>
+    <version>0.1.0_RC1</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     
@@ -19,8 +19,9 @@
     
     
     <modules>
-        <module>gw-protocol</module>
-        <module>gw-framework</module>
+        <module>actions</module>
+        <module>protocol</module>
+        <module>framework</module>
         <module>login-shard</module>
         <module>map-shard</module>
         <module>file-shard</module>

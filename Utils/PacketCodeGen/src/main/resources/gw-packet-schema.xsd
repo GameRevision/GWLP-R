@@ -57,6 +57,8 @@
             <xsd:element name="Field" type="PacketFieldType" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
         <xsd:attribute name="type" type="PacketSimpleTypes" use="required" />
+        <!--The following attribute is used to identify the type of a length prefix of an array-->
+        <!--Note that this prefix is not regarded as an extra field-->
         <xsd:attribute name="prefixType" type="PacketSimpleTypes"/><!--Mandatory when the length is variable!-->
         <xsd:attribute name="static" type="xsd:boolean" use="optional"/>
         <xsd:attribute name="occurs" type="xsd:unsignedInt" use="optional"/>
