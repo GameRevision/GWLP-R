@@ -22,9 +22,9 @@
         <module>actions</module>
         <module>protocol</module>
         <module>framework</module>
-        <module>login-shard</module>
-        <module>map-shard</module>
-        <module>file-shard</module>
+        <module>loginshard</module>
+        <module>mapshard</module>
+        <module>fileshard</module>
     </modules>
 
 
