@@ -56,7 +56,7 @@ public final class DeclarationsHelper
         }
         else
         {
-            addCode("private List<" + field.getArrayType() + "> " + field.getAttributeName() + ";");
+            addCode("private " + field.getType() + "[] " + field.getAttributeName() + ";");
         }
     }
     

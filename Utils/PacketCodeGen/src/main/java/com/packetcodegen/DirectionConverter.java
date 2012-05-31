@@ -86,7 +86,7 @@ public final class DirectionConverter
      */
     public String getPackageName()
     {
-        final String packageBase = "com.gamerevision.gwlpr.gwprotocol.actions.";
+        final String packageBase = "com.gamerevision.gwlpr.actions.";
         
         return packageBase+getServerName()+"."+getDirectionString();
     }

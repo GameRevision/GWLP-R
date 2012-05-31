@@ -12,21 +12,14 @@ import com.realityshard.shardlet.GenericAction;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.List;
 
 /**
- * This is an automatically generated ShardletAction.
- * It resembles the packet template that has been 
- * parsed from our packet templates xml.
- *
- * Auto generated 
- *
- * @author GWLPR Template Updater
+ * This is an unencrypted answer to the ClientSeed packet.
  */
 public final class P5633_ServerSeedAction extends GenericAction
 {
 
-    private List<Byte> serverSeed;
+    private byte[] serverSeed;
 
 
     public short getHeader()
@@ -35,7 +28,7 @@ public final class P5633_ServerSeedAction extends GenericAction
     }
 
 
-    public void setServerSeed(List<Byte> newValue)
+    public void setServerSeed(byte[] newValue)
     {
         serverSeed = newValue;
     }
@@ -50,7 +43,7 @@ public final class P5633_ServerSeedAction extends GenericAction
             return 0;
         }
         
-        if (serverSeed.size() != 20)
+        if (serverSeed.length != 20)
         {
             return 0;
         }
@@ -79,7 +72,7 @@ public final class P5633_ServerSeedAction extends GenericAction
 
             for (int i = 0; i < 20; i++)
             {
-                buffer.put(serverSeed.get(i));
+                buffer.put(serverSeed[i]);
             }
         }
         catch (BufferOverflowException e)

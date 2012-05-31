@@ -18,7 +18,6 @@ public final class HeaderHelper
     private final String firstPart;     // contains the first part of the header code
     private final String secondPart;    // contains the second part of the header code
     private String imports;             // contains the imports code
-    private boolean hasListImport;      // indicates whether it already has the list import
     private boolean hasBufferImports;   // indicates whether it already has the buffer imports
     private PacketConverter packet;     // the packet this header corresponds to
     
@@ -94,46 +93,9 @@ public final class HeaderHelper
      */
     public void addField(final FieldConverter field)
     {
-        if (field.isArray() || field.isVector())
-        {
-            addListImport();
-        }
-
-        
-        if (field.isNested())
-        {
-            // to simplify the packetcodegen
-            // we just add imports if there is any nested struct
-            // involved so we dont have to check through all fields of
-            // all nested fields.
-            addListImport();
-        }
-        
-        
         if (packet.getFromClient())
         {
                 addBufferImports();
-        }
-    }
-    
-    
-    /**
-     * Helper function.
-     * adds the list import and makes sure its only added once.
-     */
-    private void addListImport()
-    {
-        if (!hasListImport)
-        {
-            hasListImport = true;
-
-            
-            if (packet.getFromClient())
-            {
-                this.imports += "import java.util.ArrayList;\n";
-            }
-            
-            this.imports += "import java.util.List;\n";
         }
     }
     

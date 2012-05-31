@@ -88,11 +88,11 @@ public final class DeserializeHelper
             }
             else
             {
-                addCode(field.getAttributeName() + " = new ArrayList<>();");
+                addCode(field.getAttributeName() + " = new float[" + field.getVectorSize() + "];");
                 
                 for (int i = 0; i < field.getVectorSize(); i++)
                 {
-                    addCode(field.getAttributeName() + ".add(buffer.getFloat());");
+                    addCode(field.getAttributeName() + "[" + i + "] = buffer.getFloat();");
                 }
             }
         }
@@ -119,7 +119,7 @@ public final class DeserializeHelper
     private void addDynamicArrayDeserializeMethod(FieldConverter field) 
     {
         addCode(field.getPrefixType() + " prefix_" + field.getAttributeName() + " = buffer.get" + field.getPrefixBufferMethod() + "();");
-        addCode(field.getAttributeName() + " = new ArrayList<>();");
+        addCode(field.getAttributeName() + " = new " + field.getType() + "[prefix_" + field.getAttributeName() + "];");
         addCode("");
         addCode("for (int i = 0; i < prefix_" + field.getAttributeName() + "; i++)");
         addCode("{");
@@ -128,18 +128,18 @@ public final class DeserializeHelper
         {
             if (!field.isVector())
             {
-                addCode(this.indent + field.getAttributeName() + ".add(buffer.get" + field.getBufferMethod() + "());");
+                addCode(this.indent + field.getAttributeName() + "[i] = buffer.get" + field.getBufferMethod() + "();");
             }
             else
             {
-                addCode("List<Float> newEntry = new ArrayList<>();");
+                addCode("float[] newEntry = float[" + field.getVectorSize() + "];");
                 
                 for (int i = 0; i < field.getVectorSize(); i++)
                 {
-                    addCode("newEntry.add(buffer.getFloat());");
+                    addCode("newEntry[" + i + "] = buffer.getFloat();");
                 }
                 
-                addCode(field.getAttributeName() + ".add(newEntry);");
+                addCode(field.getAttributeName() + "[i] = newEntry;");
             }
         }
         else
@@ -152,7 +152,7 @@ public final class DeserializeHelper
             addCode(this.indent + this.indent + "return false;");
             addCode(this.indent + "}");
             addCode("");
-            addCode(this.indent + field.getAttributeName() + ".add(newEntry);");
+            addCode(this.indent + field.getAttributeName() + "[i] = newEntry;");
         }
         
         addCode("}");
@@ -167,7 +167,7 @@ public final class DeserializeHelper
      */
     private void addStaticArrayDeserializeMethod(FieldConverter field)
     {
-        addCode(field.getAttributeName() + " = new ArrayList<>();");
+        addCode(field.getAttributeName() + " = new " + field.getType() + "[" + field.getOccurs() + "];");
         addCode("");
         addCode("for (int i = 0; i < " + field.getOccurs() + "; i++)");
         addCode("{");
@@ -176,18 +176,18 @@ public final class DeserializeHelper
         {
             if (!field.isVector())
             {
-                addCode(this.indent + field.getAttributeName() + ".add(buffer.get" + field.getBufferMethod() + "());");
+                addCode(this.indent + field.getAttributeName() + "[i] = buffer.get" + field.getBufferMethod() + "();");
             }
             else
             {
-                addCode("List<Float> newEntry = new ArrayList<>();");
+                addCode("float[] newEntry = float[" + field.getVectorSize() + "];");
                 
                 for (int i = 0; i < field.getVectorSize(); i++)
                 {
-                    addCode("newEntry.add(buffer.getFloat());");
+                    addCode("newEntry[" + i + "] = buffer.getFloat();");
                 }
                 
-                addCode(field.getAttributeName() + ".add(newEntry);");
+                addCode(field.getAttributeName() + "[i] = newEntry;");
             }
         }
         else
@@ -200,7 +200,7 @@ public final class DeserializeHelper
             addCode(this.indent + this.indent + "return false;");
             addCode(this.indent + "}");
             addCode("");
-            addCode(this.indent + field.getAttributeName() + ".add(newEntry);");
+            addCode(this.indent + field.getAttributeName() + "[i] = newEntry;");
         }
         
         addCode("}");

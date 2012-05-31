@@ -90,7 +90,7 @@ public final class SerializeHelper
             {                
                 for (int i = 0; i < field.getVectorSize(); i++)
                 {
-                    addCode("buffer.putFloat(" + field.getAttributeName() + ".get(" + i + "));");
+                    addCode("buffer.putFloat(" + field.getAttributeName() + "[" + i + "]);");
                 }
             }
         }
@@ -111,9 +111,17 @@ public final class SerializeHelper
      */
     private void addDynamicArraySerializeMethod(FieldConverter field) 
     {      
-        addCode(field.getPrefixType() + " prefix_" + field.getAttributeName() + " = " + 
+        addCode(field.getPrefixType() + " prefix_" + field.getAttributeName() + ";");
+        addCode("if (" + field.getAttributeName() + " == null)");
+        addCode("{");
+        addCode(indent + "prefix_" + field.getAttributeName() + " = 0;");
+        addCode("}");
+        addCode("else");
+        addCode("{");
+        addCode(indent + "prefix_" + field.getAttributeName() + " = " + 
                             (field.getPrefixType().equals("int") ? "" : "(" + field.getPrefixType() + ") ") + 
-                            field.getAttributeName() + ".size();");
+                            field.getAttributeName() + ".length;");
+        addCode("}");
         addCode("buffer.put" + field.getPrefixBufferMethod() + "(prefix_" + field.getAttributeName() + ");");
         addCode("");
         addCode("for (int i = 0; i < prefix_" + field.getAttributeName() + "; i++)");
@@ -123,19 +131,19 @@ public final class SerializeHelper
         {
             if (!field.isVector())
             {
-                addCode(indent + "buffer.put" + field.getBufferMethod() + "(" + field.getAttributeName() + ".get(i));");          
+                addCode(indent + "buffer.put" + field.getBufferMethod() + "(" + field.getAttributeName() + "[i]);");          
             }
             else
             {                
                 for (int i = 0; i < field.getVectorSize(); i++)
                 {
-                    addCode(indent + "buffer.putFloat(" + field.getAttributeName() + ".get(i).get(" + i + "));");
+                    addCode(indent + "buffer.putFloat(" + field.getAttributeName() + "[i][" + i + "]);");
                 }
             }
         }
         else
         {
-            addCode(indent + "if (!" + field.getAttributeName() + ".get(i).serialize(buffer))");
+            addCode(indent + "if (!" + field.getAttributeName() + "[i].serialize(buffer))");
             addCode(indent + "{");
             addCode(indent + indent + "return false;");
             addCode(indent + "}");
@@ -160,19 +168,19 @@ public final class SerializeHelper
         {
             if (!field.isVector())
             {
-                addCode(indent + "buffer.put" + field.getBufferMethod() + "(" + field.getAttributeName() + ".get(i));");          
+                addCode(indent + "buffer.put" + field.getBufferMethod() + "(" + field.getAttributeName() + "[i]);");          
             }
             else
             {                
                 for (int i = 0; i < field.getVectorSize(); i++)
                 {
-                    addCode(indent + "buffer.putFloat(" + field.getAttributeName() + ".get(i).get(" + i + "));");
+                    addCode(indent + "buffer.putFloat(" + field.getAttributeName() + "[i][" + i + "]);");
                 }
             }
         }
         else
         {
-            addCode(indent + "if (!" + field.getAttributeName() + ".(i).serialize(buffer))");
+            addCode(indent + "if (!" + field.getAttributeName() + "[i].serialize(buffer))");
             addCode(indent + "{");
             addCode(indent + indent + "return false;");
             addCode(indent + "}");

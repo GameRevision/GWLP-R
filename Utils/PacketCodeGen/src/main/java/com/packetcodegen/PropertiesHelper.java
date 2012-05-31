@@ -128,14 +128,14 @@ public final class PropertiesHelper
     {
         if (packet.getFromClient())
         {
-            addCode("public List<" + field.getArrayType() + "> get" + field.getName() + "()");
+            addCode("public " + field.getType() + "[] get" + field.getName() + "()");
             addCode("{");
             addCode(this.indent + "return " + field.getAttributeName() + ";");
             addCode("}");
         }
         else
         {
-            addCode("public void set" + field.getName() + "(List<" + field.getArrayType() + "> newValue)");
+            addCode("public void set" + field.getName() + "(" + field.getType() + "[] newValue)");
             addCode("{");
             addCode(this.indent + field.getAttributeName() + " = newValue;");
             addCode("}");

@@ -12,17 +12,15 @@ import com.realityshard.shardlet.EventAggregator;
 import com.realityshard.shardlet.GenericEventAction;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This is an unencrypted packet.
- * Its the first packet to be sent by the client.
+ * Its the second packet to be sent by the client.
  */
 public final class P16896_ClientSeedAction extends GenericEventAction
 {
 
-    private List<Byte> clientSeed;
+    private byte[] clientSeed;
 
     
     public short getHeader()
@@ -31,7 +29,7 @@ public final class P16896_ClientSeedAction extends GenericEventAction
     }
 
 
-    public List<Byte> getClientSeed()
+    public byte[] getClientSeed()
     {
         return clientSeed;
     }
@@ -45,11 +43,11 @@ public final class P16896_ClientSeedAction extends GenericEventAction
 
         try
         {
-            clientSeed = new ArrayList<>();
+            clientSeed = new byte[64];
             
             for (int i = 0; i < 64; i++)
             {
-                clientSeed.add(buffer.get());
+                clientSeed[i] = buffer.get();
             }
         }
         catch (BufferUnderflowException e)

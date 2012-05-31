@@ -67,7 +67,7 @@ public class Handshake extends GenericShardlet
         
         ArrayList<Byte> seed = // enter seed
         
-        serverSeed.setServerSeed(seed);
+        serverSeed.setServerSeed();
         
         sendAction(serverSeed);
     }

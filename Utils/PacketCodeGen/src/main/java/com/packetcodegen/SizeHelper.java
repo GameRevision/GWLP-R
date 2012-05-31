@@ -87,7 +87,12 @@ public final class SizeHelper
             if (field.isVector())
             {
                 // do some extra check on the format
-                addCode("if (" + field.getAttributeName() + ".size() != " + field.getVectorSize() + ")");
+                addCode("if (" + field.getAttributeName() + " == null)");
+                addCode("{");
+                addCode(this.indent + "return 0;");
+                addCode("}");
+                addCode("");
+                addCode("if (" + field.getAttributeName() + ".length != " + field.getVectorSize() + ")");
                 addCode("{");
                 addCode(this.indent + "return 0;");
                 addCode("}");
@@ -110,42 +115,41 @@ public final class SizeHelper
     {
         size += field.getPrefixSize();
 
-        addCode("if (" + field.getAttributeName() + " == null)");
+        addCode("if (" + field.getAttributeName() + " != null)");
         addCode("{");
-        addCode(indent + "return 0;");
-        addCode("}");
-        addCode("");
                         
         if (!field.isNested())
         {
             if (field.isVector())
             {
                 // check format
-                addCode("for (Vector entry : " + field.getAttributeName() + ")");
-                addCode("{");
-                addCode(indent + "if (entry.size() != " + field.getVectorSize() + ")");
+                addCode(indent + "for (float[] entry : " + field.getAttributeName() + ")");
                 addCode(indent + "{");
-                addCode(indent + indent + "return 0;");
+                addCode(indent + indent + "if (entry.length != " + field.getVectorSize() + ")");
+                addCode(indent + indent + "{");
+                addCode(indent + indent + indent + "return 0;");
+                addCode(indent + indent + "}");
                 addCode(indent + "}");
-                addCode("}");
             }
             
-            addCode("size += " + field.getSize() + " * " + field.getAttributeName() + ".size();");
+            addCode(indent + "size += " + field.getSize() + " * " + field.getAttributeName() + ".length;");
         }
         else
         {
-            addCode("for (" + field.getType() + " entry : " + field.getAttributeName() + ")");
-            addCode("{");
-            addCode(indent + "int nextSize = entry.getSize();");
-            addCode("");
-            addCode(indent + "if (nextSize == 0)");
+            addCode(indent + "for (" + field.getType() + " entry : " + field.getAttributeName() + ")");
             addCode(indent + "{");
-            addCode(indent + indent + "return 0;");
-            addCode(indent + "}");
+            addCode(indent + indent + "int nextSize = entry.getSize();");
             addCode("");
-            addCode(indent + "size += entry.getSize();");
-            addCode("}");
+            addCode(indent + indent + "if (nextSize == 0)");
+            addCode(indent + indent + "{");
+            addCode(indent + indent + indent + "return 0;");
+            addCode(indent + indent + "}");
+            addCode("");
+            addCode(indent + indent + "size += entry.getSize();");
+            addCode(indent + "}");
         }
+        
+        addCode("}");
     }
 
     
@@ -166,7 +170,7 @@ public final class SizeHelper
             addCode(indent + "return 0;");
             addCode("}");
             addCode("");
-            addCode("if (" + field.getAttributeName() + ".size() != " + field.getOccurs() + ")");
+            addCode("if (" + field.getAttributeName() + ".length != " + field.getOccurs() + ")");
             addCode("{");
             addCode(indent + "return 0;");
             addCode("}");
@@ -174,9 +178,9 @@ public final class SizeHelper
             if (field.isVector())
             {
                 // check format
-                addCode("for (Vector entry : " + field.getAttributeName() + ")");
+                addCode("for (float[] entry : " + field.getAttributeName() + ")");
                 addCode("{");
-                addCode(indent + "if (entry.size() != " + field.getVectorSize() + ")");
+                addCode(indent + "if (entry.length != " + field.getVectorSize() + ")");
                 addCode(indent + "{");
                 addCode(indent + indent + "return 0;");
                 addCode(indent + "}");
@@ -190,7 +194,7 @@ public final class SizeHelper
             addCode(indent + "return 0;");
             addCode("}");
             addCode("");
-            addCode("if (" + field.getAttributeName() + ".size() != " + field.getOccurs() + ")");
+            addCode("if (" + field.getAttributeName() + ".length != " + field.getOccurs() + ")");
             addCode("{");
             addCode(indent + "return 0;");
             addCode("}");
