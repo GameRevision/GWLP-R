@@ -26,10 +26,10 @@
     <!--PacketType-->
     <xsd:complexType name="PacketType">
         <xsd:sequence>
-            <xsd:element name="Info" type="MetaInfo" minOccurs="0" maxOccurs="1" />
-            <xsd:element name="Field" type="PacketFieldType" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="Info"    type="MetaInfo"         minOccurs="0" maxOccurs="1" />
+            <xsd:element name="Field"   type="PacketFieldType"  minOccurs="0" maxOccurs="unbounded" />
         </xsd:sequence>
-        <xsd:attribute name="header" type="xsd:integer" use="required" /><!--Ex: "123"-->
+        <xsd:attribute name="header"    type="xsd:integer"      use="required" /><!--Ex: "123"-->
     </xsd:complexType>
     
     
@@ -38,10 +38,12 @@
     <xsd:complexType name="MetaInfo">
         <xsd:sequence>
             <!--Used whenever a packet or type has a special name or description-->
-            <xsd:element name="Name" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="Name"        type="xsd:string" minOccurs="0" maxOccurs="1" />
             <xsd:element name="Description" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <!--Can be used to provide a default value-->
+            <xsd:element name="DefaultVal"  type="xsd:string" minOccurs="0" maxOccurs="1" />
             <!--Can be used to sign packets (optional ofc)-->
-            <xsd:element name="Author" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="Author"      type="xsd:string" minOccurs="0" maxOccurs="1" />
         </xsd:sequence>
     </xsd:complexType>
       
@@ -50,40 +52,40 @@
     <xsd:complexType name="PacketFieldType">
         <xsd:sequence>
             <!--optional-->
-            <xsd:element name="Info" type="MetaInfo" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="Info"    type="MetaInfo"         minOccurs="0" maxOccurs="1" />
             <!--attribute "type" should be "nested" when we've got one or more of fields within this field-->
             <!--(in that case, the type of this field is a struct and it is directly defined within the template)-->
             <!--note that (by this definition) it is allowed to have nested structs in a nested struct-->
-            <xsd:element name="Field" type="PacketFieldType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="Field"   type="PacketFieldType"  minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
-        <xsd:attribute name="type" type="PacketSimpleTypes" use="required" />
+        <xsd:attribute name="type"          type="PacketSimpleTypes"    use="required" />
         <!--The following attribute is used to identify the type of a length prefix of an array-->
         <!--Note that this prefix is not regarded as an extra field-->
-        <xsd:attribute name="prefixType" type="PacketSimpleTypes"/><!--Mandatory when the length is variable!-->
-        <xsd:attribute name="static" type="xsd:boolean" use="optional"/>
-        <xsd:attribute name="occurs" type="xsd:unsignedInt" use="optional"/>
+        <xsd:attribute name="prefixType"    type="PacketSimpleTypes"/><!--Mandatory when the length is variable!-->
+        <xsd:attribute name="static"        type="xsd:boolean"          use="optional"/>
+        <xsd:attribute name="occurs"        type="xsd:unsignedInt"      use="optional"/>
     </xsd:complexType>
 
 
     <!--PacketSimpleTypes-->
     <xsd:simpleType name="PacketSimpleTypes">
         <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="int8" /><!--8 Bit-->
-            <xsd:enumeration value="int16" /><!--16 Bit-->
-            <xsd:enumeration value="int32" /><!--32 Bit-->
-            <xsd:enumeration value="int64" /><!--64 Bit-->
-            <xsd:enumeration value="packed" /><!--variable length (packed) number-->
-            <xsd:enumeration value="float" /><!--32 Bit-->
-            <xsd:enumeration value="vec2" /><!--64 Bit-->
-            <xsd:enumeration value="vec3" /><!--96 Bit-->
-            <xsd:enumeration value="vec4" /><!--128 Bit-->
-            <xsd:enumeration value="uuid16" /><!--16 Byte-->
-            <xsd:enumeration value="uuid28" /><!--28 Byte-->
-            <xsd:enumeration value="agentid" /><!--32 Bit-->
-            <xsd:enumeration value="ascii" /><!--8 Bit-->
-            <xsd:enumeration value="utf16" /><!--16 Bit-->
+            <xsd:enumeration value="int8" />    <!--8 Bit-->
+            <xsd:enumeration value="int16" />   <!--16 Bit-->
+            <xsd:enumeration value="int32" />   <!--32 Bit-->
+            <xsd:enumeration value="int64" />   <!--64 Bit-->
+            <xsd:enumeration value="packed" />  <!--variable length (packed) number-->
+            <xsd:enumeration value="float" />   <!--32 Bit-->
+            <xsd:enumeration value="vec2" />    <!--64 Bit-->
+            <xsd:enumeration value="vec3" />    <!--96 Bit-->
+            <xsd:enumeration value="vec4" />    <!--128 Bit-->
+            <xsd:enumeration value="uuid16" />  <!--16 Byte-->
+            <xsd:enumeration value="uuid28" />  <!--28 Byte-->
+            <xsd:enumeration value="agentid" /> <!--32 Bit-->
+            <xsd:enumeration value="ascii" />   <!--8 Bit-->
+            <xsd:enumeration value="utf16" />   <!--16 Bit-->
             
-            <xsd:enumeration value="nested" /><!--we expect a nested type here-->
+            <xsd:enumeration value="nested" />  <!--we expect a nested type here-->
         </xsd:restriction>
     </xsd:simpleType>
 
