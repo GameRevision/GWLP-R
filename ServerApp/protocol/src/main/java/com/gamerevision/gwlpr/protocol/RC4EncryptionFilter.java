@@ -7,6 +7,7 @@ package com.gamerevision.gwlpr.protocol;
 import com.realityshard.shardlet.ConfigProtocolFilter;
 import com.realityshard.shardlet.ProtocolFilter;
 import com.realityshard.shardlet.ShardletAction;
+import com.realityshard.shardlet.ShardletEventAction;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -47,7 +48,7 @@ public class RC4EncryptionFilter implements ProtocolFilter
      * @throws      IOException             If we couldn't decrypt the buffer
      */
     @Override
-    public List<ShardletAction> doInFilter(ShardletAction action) 
+    public List<ShardletEventAction> doInFilter(ShardletEventAction action) 
             throws IOException 
     {
         // TODO: Implement me!

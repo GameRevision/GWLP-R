@@ -22,7 +22,8 @@ public class SerialisationFilter implements ProtocolFilter
 {
     
     private Map<Session, Deserializer> deserializers;
-
+    private boolean loginServer;
+    
     /**
      * Init this filter.
      * 
@@ -33,6 +34,10 @@ public class SerialisationFilter implements ProtocolFilter
     @Override
     public void init(ConfigProtocolFilter filterConfig) throws Exception 
     {
+        final String serverType = filterConfig.getInitParameter("ServerType");
+        
+        this.loginServer = serverType.equals("LoginServer");
+
         this.deserializers = new HashMap<>();
     }
 
@@ -55,7 +60,9 @@ public class SerialisationFilter implements ProtocolFilter
             // the filter didnt know the deserializer for this session yet
             
             // create a deserializer for this session
-            deserializer = new Deserializer(action.getSession());
+            deserializer = this.loginServer ?
+                                new LoginServerDeserializer(action.getSession()) :
+                                new GameServerDeserializer(action.getSession());
             
             // add the newly created deserializer to the dictionary
             this.deserializers.put(action.getSession(), deserializer);
