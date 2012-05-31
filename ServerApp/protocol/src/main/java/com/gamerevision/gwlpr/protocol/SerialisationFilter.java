@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * Part of the GW1 protocol chain.
  * De/Serializes the network stream of GW

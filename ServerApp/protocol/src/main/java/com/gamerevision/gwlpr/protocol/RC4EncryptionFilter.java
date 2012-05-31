@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-
 /**
  * Part of the GW1 protocol chain.
  * Encrypts/Decrypts the network stream of GW
