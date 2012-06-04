@@ -22,7 +22,7 @@ import java.nio.ByteOrder;
  *
  * @author GWLPR Template Updater
  */
-public final class P003_UnknownAction extends GenericAction
+public final class P020_FriendListEndAction extends GenericAction
 {
 
     private int unknown1;
@@ -31,7 +31,7 @@ public final class P003_UnknownAction extends GenericAction
 
     public short getHeader()
     {
-        return 3;
+        return 20;
     }
 
 

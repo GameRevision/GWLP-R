@@ -22,16 +22,16 @@ import java.nio.ByteOrder;
  *
  * @author GWLPR Template Updater
  */
-public final class P020_UnknownAction extends GenericAction
+public final class P022_AccountGuiSettingsAction extends GenericAction
 {
 
     private int unknown1;
-    private int unknown2;
+    private byte[] unknown2;
 
 
     public short getHeader()
     {
-        return 20;
+        return 22;
     }
 
 
@@ -41,7 +41,7 @@ public final class P020_UnknownAction extends GenericAction
     }
 
 
-    public void setUnknown2(int newValue)
+    public void setUnknown2(byte[] newValue)
     {
         unknown2 = newValue;
     }
@@ -49,7 +49,14 @@ public final class P020_UnknownAction extends GenericAction
 
     private int getSize()
     {
-        return 10;
+        int size = 8;
+
+        if (unknown2 != null)
+        {
+            size += 1 * unknown2.length;
+        }
+
+        return size;
     }
 
 
@@ -70,7 +77,21 @@ public final class P020_UnknownAction extends GenericAction
             buffer.putShort(getHeader());
 
             buffer.putInt(unknown1);
-            buffer.putInt(unknown2);
+            short prefix_unknown2;
+            if (unknown2 == null)
+            {
+                prefix_unknown2 = 0;
+            }
+            else
+            {
+                prefix_unknown2 = (short) unknown2.length;
+            }
+            buffer.putShort(prefix_unknown2);
+            
+            for (int i = 0; i < prefix_unknown2; i++)
+            {
+                buffer.put(unknown2[i]);
+            }
         }
         catch (BufferOverflowException e)
         {

@@ -22,18 +22,16 @@ import java.nio.ByteOrder;
  *
  * @author GWLPR Template Updater
  */
-public final class P001_UnknownAction extends GenericAction
+public final class P003_StreamTerminatorAction extends GenericAction
 {
 
     private int unknown1;
     private int unknown2;
-    private int unknown3;
-    private int unknown4;
 
 
     public short getHeader()
     {
-        return 1;
+        return 3;
     }
 
 
@@ -49,21 +47,9 @@ public final class P001_UnknownAction extends GenericAction
     }
 
 
-    public void setUnknown3(int newValue)
-    {
-        unknown3 = newValue;
-    }
-
-
-    public void setUnknown4(int newValue)
-    {
-        unknown4 = newValue;
-    }
-
-
     private int getSize()
     {
-        return 18;
+        return 10;
     }
 
 
@@ -85,8 +71,6 @@ public final class P001_UnknownAction extends GenericAction
 
             buffer.putInt(unknown1);
             buffer.putInt(unknown2);
-            buffer.putInt(unknown3);
-            buffer.putInt(unknown4);
         }
         catch (BufferOverflowException e)
         {

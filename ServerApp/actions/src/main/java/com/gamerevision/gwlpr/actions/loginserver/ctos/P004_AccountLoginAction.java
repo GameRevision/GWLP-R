@@ -22,7 +22,7 @@ import java.nio.ByteBuffer;
  *
  * @author GWLPR Template Updater
  */
-public final class P004_UnknownAction extends GenericEventAction
+public final class P004_AccountLoginAction extends GenericEventAction
 {
 
     private int unknown1;

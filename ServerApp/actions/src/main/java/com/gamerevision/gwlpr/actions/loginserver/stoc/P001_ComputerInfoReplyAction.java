@@ -22,16 +22,18 @@ import java.nio.ByteOrder;
  *
  * @author GWLPR Template Updater
  */
-public final class P022_UnknownAction extends GenericAction
+public final class P001_ComputerInfoReplyAction extends GenericAction
 {
 
     private int unknown1;
-    private byte[] unknown2;
+    private int unknown2;
+    private int unknown3;
+    private int unknown4;
 
 
     public short getHeader()
     {
-        return 22;
+        return 1;
     }
 
 
@@ -41,22 +43,27 @@ public final class P022_UnknownAction extends GenericAction
     }
 
 
-    public void setUnknown2(byte[] newValue)
+    public void setUnknown2(int newValue)
     {
         unknown2 = newValue;
     }
 
 
+    public void setUnknown3(int newValue)
+    {
+        unknown3 = newValue;
+    }
+
+
+    public void setUnknown4(int newValue)
+    {
+        unknown4 = newValue;
+    }
+
+
     private int getSize()
     {
-        int size = 8;
-
-        if (unknown2 != null)
-        {
-            size += 1 * unknown2.length;
-        }
-
-        return size;
+        return 18;
     }
 
 
@@ -77,21 +84,9 @@ public final class P022_UnknownAction extends GenericAction
             buffer.putShort(getHeader());
 
             buffer.putInt(unknown1);
-            short prefix_unknown2;
-            if (unknown2 == null)
-            {
-                prefix_unknown2 = 0;
-            }
-            else
-            {
-                prefix_unknown2 = (short) unknown2.length;
-            }
-            buffer.putShort(prefix_unknown2);
-            
-            for (int i = 0; i < prefix_unknown2; i++)
-            {
-                buffer.put(unknown2[i]);
-            }
+            buffer.putInt(unknown2);
+            buffer.putInt(unknown3);
+            buffer.putInt(unknown4);
         }
         catch (BufferOverflowException e)
         {

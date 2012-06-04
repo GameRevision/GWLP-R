@@ -48,13 +48,13 @@ public class LoginServerDeserializer extends Deserializer
             case 0:
                 return new P000_UnknownAction();
             case 1:
-                return new P001_UnknownAction();
+                return new P001_ComputerUserAction();
             case 2:
                 return new P002_UnknownAction();
             case 3:
                 return new P003_UnknownAction();
             case 4:
-                return new P004_UnknownAction();
+                return new P004_AccountLoginAction();
             case 5:
                 return new P005_UnknownAction();
             case 6:
