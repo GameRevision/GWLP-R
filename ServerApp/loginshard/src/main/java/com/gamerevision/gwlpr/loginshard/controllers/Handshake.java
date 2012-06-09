@@ -6,11 +6,10 @@ package com.gamerevision.gwlpr.loginshard.controllers;
 
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P1024_ClientVersionAction;
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P16896_ClientSeedAction;
-import com.gamerevision.gwlpr.actions.loginserver.stoc.P5633_ServerSeedAction;
+import com.gamerevision.gwlpr.loginshard.views.ServerSeedView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.GenericShardlet;
-import com.realityshard.shardlet.ShardletAction;
-import com.realityshard.shardlet.ShardletActionVerifier;
+import com.realityshard.shardlet.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,19 +30,6 @@ public class Handshake extends GenericShardlet
     protected void init() 
     {
         LOGGER.debug("handshake shardlet initialized!");
-        
-        // fake always accept verifier
-        ShardletActionVerifier verf = new ShardletActionVerifier() {
-
-            @Override
-            public boolean check(ShardletAction action) 
-            {
-                action.getSession().setAttribute("SyncCount", (int) 0);
-                return true;
-            }
-        };
-        
-        getShardletContext().addClientVerifier(verf, true);
     }
     
     
@@ -58,13 +44,10 @@ public class Handshake extends GenericShardlet
     public void clientSeedHandler(P16896_ClientSeedAction action)
     {
         LOGGER.debug("got the client seed packet");
-        LOGGER.debug("sending server seed");
-
-        P5633_ServerSeedAction serverSeed = new P5633_ServerSeedAction();
-        serverSeed.init(action.getSession());
-
-        serverSeed.setServerSeed(new byte[20]);
+        Session session = action.getSession();
         
-        sendAction(serverSeed);
+        
+        LOGGER.debug("sending server seed");
+        sendAction(ServerSeedView.create(session));
     }
 }
