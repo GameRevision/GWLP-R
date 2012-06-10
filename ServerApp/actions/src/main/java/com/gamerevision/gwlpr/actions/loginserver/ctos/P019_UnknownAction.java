@@ -26,7 +26,7 @@ public final class P019_UnknownAction extends GenericEventAction
 {
 
     private int unknown1;
-
+    private int unknown2;
 
     public short getHeader()
     {
@@ -40,6 +40,12 @@ public final class P019_UnknownAction extends GenericEventAction
     }
 
 
+    public int getUnknown2()
+    {
+        return unknown2;
+    }
+    
+
     @Override
     public boolean deserialize()
     {
@@ -49,6 +55,7 @@ public final class P019_UnknownAction extends GenericEventAction
         try
         {
             unknown1 = buffer.getInt();
+            unknown2 = buffer.getInt();
         }
         catch (BufferUnderflowException e)
         {

@@ -152,7 +152,7 @@ public class LoginServerDeserializer extends Deserializer
             case 52:
                 return new P052_UnknownAction();
             case 53:
-                return new P053_UnknownAction();
+                return new P053_RequestResponseAction();
             case 54:
                 return new P054_UnknownAction();
             case 55:
