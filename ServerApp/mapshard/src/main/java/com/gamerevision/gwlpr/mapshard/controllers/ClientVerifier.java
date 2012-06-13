@@ -11,8 +11,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * This shardlet handles the handshake process for GW clients.
- * It establishes an encrypted session.
+ * This shardlet handles client verifier requests.
  * 
  * @author _rusty
  */
@@ -35,12 +34,16 @@ public class ClientVerifier extends GenericShardlet
         LOGGER.debug("got the add client verifier event");
         final Session session = action.getSession();
         
-        
         LOGGER.debug("adding a client verifier");
         ShardletActionVerifier verf = new ShardletActionVerifier() {
             @Override
             public boolean check(ShardletAction action) 
             {
+                if (!action.getSession().getProtocol().equals("GameServer"))
+                {
+                    return false;
+                }
+                                
                 if (action.getSession().getId() == session.getId())
                 {
                     return true;
@@ -52,6 +55,4 @@ public class ClientVerifier extends GenericShardlet
         
         getShardletContext().addClientVerifier(verf, false);
     }
-            
-         
 }

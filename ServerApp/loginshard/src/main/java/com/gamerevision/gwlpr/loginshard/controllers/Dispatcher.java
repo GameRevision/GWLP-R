@@ -5,24 +5,18 @@
 package com.gamerevision.gwlpr.loginshard.controllers;
 
 import com.gamerevision.gwlpr.actions.isc.ISC_AddClientVerifierAction;
-import com.gamerevision.gwlpr.actions.loginserver.ctos.P004_AccountLoginAction;
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P041_CharacterPlayInfoAction;
-import com.gamerevision.gwlpr.loginshard.views.AccountGuiSettingsView;
-import com.gamerevision.gwlpr.loginshard.views.AccountPermissionsView;
-import com.gamerevision.gwlpr.loginshard.views.FriendListEndView;
-import com.gamerevision.gwlpr.loginshard.views.StreamTerminatorView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.GenericShardlet;
 import com.realityshard.shardlet.RemoteShardletContext;
 import com.realityshard.shardlet.Session;
 import java.util.HashMap;
-import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 /**
- * This shardlet handles the login process.
+ * This shardlet manages the dispatchment of clients to mapshards.
  * 
  * @author miracle444
  */

@@ -31,7 +31,7 @@ public class LoginServerDeserializer extends Deserializer
     public LoginServerDeserializer(Session session)
     {
         super(session);
-    }    
+    }
     
     
     /**
