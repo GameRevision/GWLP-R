@@ -28,14 +28,18 @@ public class SessionInitializer extends GenericShardlet
     {
         LOGGER.debug("session initializer shardlet initialized!");
         
-        // fake always accept verifier
         ShardletActionVerifier verf = new ShardletActionVerifier() {
 
             @Override
             public boolean check(ShardletAction action) 
             {
-                if (action.getSession().getProtocol().equals("LoginServer"))
+                if (!action.getSession().getProtocol().equals("LoginServer"))
+                {
+                    return false;
+                }
+                
                 action.getSession().setAttribute("SyncCount", (int) 0);
+                
                 return true;
             }
         };

@@ -17,8 +17,8 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * This shardlet handles the handshake process for GW clients.
- * It establishes an encrypted session.
+ * A generic handler should handle all actions that have to be handled but
+ * we don't really process the data.
  * 
  * @author _rusty
  */
