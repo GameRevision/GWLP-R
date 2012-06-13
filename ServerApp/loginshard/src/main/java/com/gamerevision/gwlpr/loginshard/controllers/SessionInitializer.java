@@ -34,6 +34,7 @@ public class SessionInitializer extends GenericShardlet
             @Override
             public boolean check(ShardletAction action) 
             {
+                if (action.getSession().getProtocol().equals("LoginServer"))
                 action.getSession().setAttribute("SyncCount", (int) 0);
                 return true;
             }

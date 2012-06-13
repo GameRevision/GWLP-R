@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<GameApp>
+    
+    <AppInfo>
+        <DisplayName>MapShard</DisplayName>
+        <Description>The game server implementation of GWLP-R.</Description>
+    
+        <HeartBeat>50</HeartBeat>
+    </AppInfo>
+	
+	<Shardlet name="MapShard-GenericHandler" class="com.gamerevision.gwlpr.mapshard.controllers.GenericHandler"/>
+	<Shardlet name="MapShard-ClientVerifier" class="com.gamerevision.gwlpr.mapshard.controllers.ClientVerifier"/>
+</GameApp>

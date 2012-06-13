@@ -128,7 +128,7 @@ public class LoginServerDeserializer extends Deserializer
             case 40:
                 return new P040_UnknownAction();
             case 41:
-                return new P041_UnknownAction();
+                return new P041_CharacterPlayInfoAction();
             case 42:
                 return new P042_UnknownAction();
             case 43:

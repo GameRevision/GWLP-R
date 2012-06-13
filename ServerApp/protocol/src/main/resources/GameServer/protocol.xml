@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Protocol name="GWGameServerProtocol" port="9112">
+    
+    <ProtocolFilter name="SerialisationFilter" class="com.gamerevision.gwlpr.protocol.SerialisationFilter" in="true" out="true">
+        <InitParam name="ServerType" value="GameServer" />
+    </ProtocolFilter>
+</Protocol>
