@@ -4,6 +4,8 @@
 
 package com.gamerevision.gwlpr.protocol;
 
+import com.gamerevision.gwlpr.protocol.loginserver.LoginServerDeserializer;
+import com.gamerevision.gwlpr.protocol.gameserver.GameServerDeserializer;
 import com.realityshard.shardlet.*;
 import java.util.HashMap;
 import java.util.List;
