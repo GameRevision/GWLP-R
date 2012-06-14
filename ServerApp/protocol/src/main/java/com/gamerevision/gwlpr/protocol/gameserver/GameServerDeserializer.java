@@ -223,7 +223,7 @@ public class GameServerDeserializer extends Deserializer
             case 87:
                 return new P087_UnknownAction();
             case 88:
-                return new P088_UnknownAction();
+                return new P088_CharacterCreateUpdateProfessionAndCampaignAction();
             case 89:
                 return new P089_UnknownAction();
             case 90:
@@ -307,7 +307,7 @@ public class GameServerDeserializer extends Deserializer
             case 129:
                 return new P129_UnknownAction();
             case 130:
-                return new P130_UnknownAction();
+                return new P130_CreateNewCharacterAction();
             case 131:
                 return new P131_UnknownAction();
             case 132:
@@ -432,6 +432,10 @@ public class GameServerDeserializer extends Deserializer
                 return new P191_UnknownAction();
             case 192:
                 return new P192_UnknownAction();
+            case 1280:
+                return new P1280_VerifyClientAction();
+            case 16896:
+                return new P16896_ClientSeedAction();
             default:
                 LOGGER.warn("Could not deserialize unknown header: " + header);
                 return null;

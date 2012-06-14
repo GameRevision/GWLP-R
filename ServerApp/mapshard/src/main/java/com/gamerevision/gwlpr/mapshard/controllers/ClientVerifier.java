@@ -4,8 +4,14 @@
 
 package com.gamerevision.gwlpr.mapshard.controllers;
 
-import com.gamerevision.gwlpr.actions.isc.ISC_AddClientVerifierAction;
-import com.realityshard.shardlet.*;
+import com.gamerevision.gwlpr.actions.gameserver.ctos.P1280_VerifyClientAction;
+import com.gamerevision.gwlpr.actions.intershardcom.ISC_AcceptClientReplyAction;
+import com.gamerevision.gwlpr.actions.intershardcom.ISC_AcceptClientRequestAction;
+import com.gamerevision.gwlpr.mapshard.views.LoginShardView;
+import com.realityshard.shardlet.EventHandler;
+import com.realityshard.shardlet.GenericShardlet;
+import com.realityshard.shardlet.ShardletAction;
+import com.realityshard.shardlet.ShardletActionVerifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,22 +35,30 @@ public class ClientVerifier extends GenericShardlet
     
     
     @EventHandler
-    public void addClientVerifierHandler(ISC_AddClientVerifierAction action)
+    public void acceptSessionRequestActionHandler(ISC_AcceptClientRequestAction action)
     {
-        LOGGER.debug("got the add client verifier event");
-        final Session session = action.getSession();
+        LOGGER.debug("got the accept client request action");
+        final int key1 = action.getKey1();
+        final int key2 = action.getKey2();
         
         LOGGER.debug("adding a client verifier");
         ShardletActionVerifier verf = new ShardletActionVerifier() {
             @Override
             public boolean check(ShardletAction action) 
             {
-                if (!action.getSession().getProtocol().equals("GameServer"))
+                if (!action.getSession().getProtocol().equals("GWGameServerProtocol"))
                 {
                     return false;
                 }
-                                
-                if (action.getSession().getId() == session.getId())
+                
+                if (!(action instanceof P1280_VerifyClientAction))
+                {
+                    return false;
+                }
+                
+                P1280_VerifyClientAction thisAction = (P1280_VerifyClientAction)action;
+
+                if (thisAction.getKey1() == key1 && thisAction.getKey2() == key2)
                 {
                     return true;
                 }
@@ -54,5 +68,8 @@ public class ClientVerifier extends GenericShardlet
         };
         
         getShardletContext().addClientVerifier(verf, false);
+        
+        LOGGER.debug("informing the LoginShard");
+        LoginShardView.sendAction(new ISC_AcceptClientReplyAction(action.getSession(), true));
     }
 }

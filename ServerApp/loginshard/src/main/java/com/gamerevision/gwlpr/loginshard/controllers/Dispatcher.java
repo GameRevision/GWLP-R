@@ -4,12 +4,14 @@
 
 package com.gamerevision.gwlpr.loginshard.controllers;
 
-import com.gamerevision.gwlpr.actions.isc.ISC_AddClientVerifierAction;
+import com.gamerevision.gwlpr.actions.intershardcom.ISC_AcceptClientReplyAction;
+import com.gamerevision.gwlpr.actions.intershardcom.ISC_AcceptClientRequestAction;
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P041_CharacterPlayInfoAction;
+import com.gamerevision.gwlpr.loginshard.views.ReferToGameServerView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.GenericShardlet;
-import com.realityshard.shardlet.RemoteShardletContext;
 import com.realityshard.shardlet.Session;
+import com.realityshard.shardlet.ShardletContext;
 import java.util.HashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,12 +47,34 @@ public class Dispatcher extends GenericShardlet
         try
         {
             LOGGER.debug("trying to create a map shard");
-            RemoteShardletContext mapShard = getShardletContext().tryCreateGameApp("MapShard", new HashMap<String, String>());
-            mapShard.sendRemoteEventAction(new ISC_AddClientVerifierAction(session));
+            ShardletContext mapShard = getShardletContext().tryCreateGameApp("MapShard", new HashMap<String, String>());
+            
+            // TODO: check for null value of mapShard (meaning there was no MapShard generated).
+            
+            mapShard.sendRemoteEventAction(new ISC_AcceptClientRequestAction(session, 1, 2));
         }
         catch (Exception ex)
         {
             LOGGER.error(ex.toString());
+        }
+    }
+    
+    
+    @EventHandler
+    public void acceptSessionReplyActionHandler(ISC_AcceptClientReplyAction action)
+    {
+        LOGGER.debug("got the accept session reply action");
+        Session session = action.getSession();
+        
+        if (action.getAccepted())
+        {
+            LOGGER.debug("the MapShard accepted the session");
+            sendAction(ReferToGameServerView.create(session));
+        }
+        else
+        {
+            LOGGER.debug("the MapShard did not accept the session");
+            // TODO: Implement what has to be done if it did not accept the session.
         }
     }
 }

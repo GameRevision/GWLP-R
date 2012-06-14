@@ -33,7 +33,7 @@ public class SessionInitializer extends GenericShardlet
             @Override
             public boolean check(ShardletAction action) 
             {
-                if (!action.getSession().getProtocol().equals("LoginServer"))
+                if (!action.getSession().getProtocol().equals("GWLoginServerProtocol"))
                 {
                     return false;
                 }

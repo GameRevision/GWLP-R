@@ -10,6 +10,8 @@ package com.gamerevision.gwlpr.actions.gameserver.ctos;
 
 import com.realityshard.shardlet.EventAggregator;
 import com.realityshard.shardlet.GenericEventAction;
+import java.nio.BufferUnderflowException;
+import java.nio.ByteBuffer;
 
 /**
  * This is an automatically generated ShardletAction.
@@ -20,18 +22,48 @@ import com.realityshard.shardlet.GenericEventAction;
  *
  * @author GWLPR Template Updater
  */
-public final class P130_UnknownAction extends GenericEventAction
+public final class P088_CharacterCreateUpdateProfessionAndCampaignAction extends GenericEventAction
 {
+
+    private byte unknown1;
+    private byte unknown2;
+
 
     public short getHeader()
     {
-        return 130;
+        return 88;
+    }
+
+
+    public byte getUnknown1()
+    {
+        return unknown1;
+    }
+
+
+    public byte getUnknown2()
+    {
+        return unknown2;
     }
 
 
     @Override
     public boolean deserialize()
     {
+        ByteBuffer buffer = getBuffer();
+        int bufferPosition = buffer.position();
+
+        try
+        {
+            unknown1 = buffer.get();
+            unknown2 = buffer.get();
+        }
+        catch (BufferUnderflowException e)
+        {
+            buffer.position(bufferPosition);
+            return false;
+        }
+
         return true;
     }
 

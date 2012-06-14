@@ -22,7 +22,7 @@ import java.nio.ByteOrder;
  *
  * @author GWLPR Template Updater
  */
-public final class P370_UnknownAction extends GenericAction
+public final class P370_InstanceLoadHeadAction extends GenericAction
 {
 
     private byte unknown1;

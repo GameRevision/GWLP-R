@@ -22,18 +22,41 @@ import java.nio.ByteOrder;
  *
  * @author GWLPR Template Updater
  */
-public final class P379_UnknownAction extends GenericAction
+public final class P044_UpdateAttributePointsAction extends GenericAction
 {
+
+    private int unknown1;
+    private byte unknown2;
+    private byte unknown3;
+
 
     public short getHeader()
     {
-        return 379;
+        return 44;
+    }
+
+
+    public void setUnknown1(int newValue)
+    {
+        unknown1 = newValue;
+    }
+
+
+    public void setUnknown2(byte newValue)
+    {
+        unknown2 = newValue;
+    }
+
+
+    public void setUnknown3(byte newValue)
+    {
+        unknown3 = newValue;
     }
 
 
     private int getSize()
     {
-        return 2;
+        return 8;
     }
 
 
@@ -53,6 +76,9 @@ public final class P379_UnknownAction extends GenericAction
         {
             buffer.putShort(getHeader());
 
+            buffer.putInt(unknown1);
+            buffer.put(unknown2);
+            buffer.put(unknown3);
         }
         catch (BufferOverflowException e)
         {

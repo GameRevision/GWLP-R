@@ -22,12 +22,12 @@ import java.nio.ByteOrder;
  *
  * @author GWLPR Template Updater
  */
-public final class P380_UnknownAction extends GenericAction
+public final class P379_StartCharacterCreationAction extends GenericAction
 {
 
     public short getHeader()
     {
-        return 380;
+        return 379;
     }
 
 

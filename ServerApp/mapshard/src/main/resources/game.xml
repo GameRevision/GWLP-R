@@ -10,4 +10,7 @@
 	
 	<Shardlet name="MapShard-GenericHandler" class="com.gamerevision.gwlpr.mapshard.controllers.GenericHandler"/>
 	<Shardlet name="MapShard-ClientVerifier" class="com.gamerevision.gwlpr.mapshard.controllers.ClientVerifier"/>
+	<Shardlet name="MapShard-Handshake" class="com.gamerevision.gwlpr.mapshard.controllers.Handshake"/>
+	<Shardlet name="MapShard-ShardInitializer" class="com.gamerevision.gwlpr.mapshard.controllers.ShardInitializer"/>
+	<Shardlet name="MapShard-CharacterCreation" class="com.gamerevision.gwlpr.mapshard.controllers.CharacterCreation"/>
 </GameApp>
