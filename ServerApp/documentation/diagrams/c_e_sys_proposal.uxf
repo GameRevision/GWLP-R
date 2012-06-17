@@ -4,35 +4,26 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>1050</x>
-      <y>680</y>
-      <w>160</w>
-      <h>40</h>
+      <x>730</x>
+      <y>510</y>
+      <w>400</w>
+      <h>130</h>
     </coordinates>
     <panel_attributes>ComponentManager
 --
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>1270</x>
-      <y>770</y>
-      <w>240</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>Position
+- Map&lt;Class&lt;Attribute&gt;, Map&lt;Entity, Attribute&gt; &gt;
+- Map&lt;Class&lt;Behaviour&gt;, Map&lt;Entity, Behaviour&gt; &gt;
 --
-+ set/getAbsolutePos() 
-+ getRelativePos(otherObj)</panel_attributes>
++ registerAttributes(Entity, List&lt;Attribute&gt;)
++ registerBehaviours(Entity, List&lt;Behaviour&gt;)
++ removeEntity(entity)</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>790</x>
-      <y>300</y>
+      <x>590</x>
+      <y>130</y>
       <w>220</w>
       <h>80</h>
     </coordinates>
@@ -45,8 +36,8 @@ ConcreteEntity1
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>1020</x>
-      <y>300</y>
+      <x>820</x>
+      <y>130</y>
       <w>220</w>
       <h>80</h>
     </coordinates>
@@ -59,8 +50,8 @@ ConcreteEntity2
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>1250</x>
-      <y>300</y>
+      <x>1050</x>
+      <y>130</y>
       <w>220</w>
       <h>80</h>
     </coordinates>
@@ -72,38 +63,10 @@ ConcreteEntity2
     <additional_attributes/>
   </element>
   <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>1010</x>
-      <y>770</y>
-      <w>240</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>CollisionBox
---
-+ set/getCollisionBox()
-+ isCollidingWith(otherObj)</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <type>com.umlet.element.Class</type>
-    <coordinates>
-      <x>750</x>
-      <y>770</y>
-      <w>240</w>
-      <h>60</h>
-    </coordinates>
-    <panel_attributes>VitalStats
---
-+ in/decreaseHealth(diff)
-+ add/remCondition(cond)</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>870</x>
-      <y>350</y>
+      <x>670</x>
+      <y>180</y>
       <w>280</w>
       <h>150</h>
     </coordinates>
@@ -113,8 +76,8 @@ ConcreteEntity2
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>1100</x>
-      <y>350</y>
+      <x>900</x>
+      <y>180</y>
       <w>280</w>
       <h>150</h>
     </coordinates>
@@ -124,12 +87,14 @@ ConcreteEntity2
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>450</x>
-      <y>480</y>
+      <x>250</x>
+      <y>310</y>
       <w>260</w>
-      <h>350</h>
+      <h>610</h>
     </coordinates>
-    <panel_attributes>ComponentEntitySystemFacade
+    <panel_attributes>EntitySystemFacade
+--
+- EventAggregator aggr
 --
 + init(...)
 +shutdown(...)
@@ -140,8 +105,8 @@ ConcreteEntity2
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>1020</x>
-      <y>190</y>
+      <x>820</x>
+      <y>20</y>
       <w>220</w>
       <h>60</h>
     </coordinates>
@@ -154,8 +119,8 @@ Entity
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>870</x>
-      <y>250</y>
+      <x>670</x>
+      <y>80</y>
       <w>280</w>
       <h>70</h>
     </coordinates>
@@ -165,8 +130,8 @@ Entity
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>1100</x>
-      <y>220</y>
+      <x>900</x>
+      <y>50</y>
       <w>50</w>
       <h>100</h>
     </coordinates>
@@ -176,8 +141,8 @@ Entity
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>1100</x>
-      <y>250</y>
+      <x>900</x>
+      <y>80</y>
       <w>280</w>
       <h>70</h>
     </coordinates>
@@ -187,8 +152,8 @@ Entity
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>1050</x>
-      <y>590</y>
+      <x>850</x>
+      <y>420</y>
       <w>160</w>
       <h>40</h>
     </coordinates>
@@ -200,8 +165,8 @@ Entity
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>1100</x>
-      <y>350</y>
+      <x>900</x>
+      <y>180</y>
       <w>50</w>
       <h>150</h>
     </coordinates>
@@ -211,41 +176,8 @@ Entity
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>1100</x>
-      <y>690</y>
-      <w>50</w>
-      <h>100</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>30;30;30;80</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>840</x>
-      <y>720</y>
-      <w>310</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes>30;50;290;30</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>1100</x>
-      <y>720</y>
-      <w>310</w>
-      <h>70</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes>30;30;290;50</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>680</x>
-      <y>550</y>
+      <x>480</x>
+      <y>380</y>
       <w>390</w>
       <h>70</h>
     </coordinates>
@@ -257,8 +189,8 @@ creates &gt;</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>1020</x>
-      <y>480</y>
+      <x>820</x>
+      <y>310</y>
       <w>220</w>
       <h>60</h>
     </coordinates>
@@ -271,8 +203,8 @@ GenericEntity
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>1100</x>
-      <y>510</y>
+      <x>900</x>
+      <y>340</y>
       <w>50</w>
       <h>100</h>
     </coordinates>
@@ -282,34 +214,22 @@ GenericEntity
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>680</x>
-      <y>640</y>
-      <w>390</w>
+      <x>480</x>
+      <y>470</y>
+      <w>270</w>
       <h>70</h>
     </coordinates>
     <panel_attributes>lt=-
 
-uses &gt;</panel_attributes>
-    <additional_attributes>30;50;370;50</additional_attributes>
-  </element>
-  <element>
-    <type>com.umlet.element.Relation</type>
-    <coordinates>
-      <x>1060</x>
-      <y>600</y>
-      <w>136</w>
-      <h>100</h>
-    </coordinates>
-    <panel_attributes>lt=-
-accesses &gt;</panel_attributes>
-    <additional_attributes>70;80;70;30</additional_attributes>
+instructs &gt;</panel_attributes>
+    <additional_attributes>30;50;250;50</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>290</x>
-      <y>170</y>
-      <w>1240</w>
+      <x>90</x>
+      <y>0</y>
+      <w>1200</w>
       <h>270</h>
     </coordinates>
     <panel_attributes>bg=yellow
@@ -317,12 +237,217 @@ API</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>850</x>
+      <y>690</y>
+      <w>160</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>
+MoveableBehaviour
+--
+- PositionAttribute
+- Velocity
+--
+...</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>860</x>
+      <y>820</y>
+      <w>140</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+Behaviour
+--
++ init(attributes)
++ update()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1020</x>
+      <y>690</y>
+      <w>160</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>
+CollideableBehaviour
+--
+- PositionAttribute
+- CollisionBox
+--
+...</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>690</x>
+      <y>820</y>
+      <w>140</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+Attribute
+--
++ init(entity)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>680</x>
+      <y>690</y>
+      <w>160</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>
+PositionAttribute
+--
+- value 
+--
++ set/getValue()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>900</x>
+      <y>740</y>
+      <w>50</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>30;80;30;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>900</x>
+      <y>740</y>
+      <w>220</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>30;50;200;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>730</x>
+      <y>740</y>
+      <w>50</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>30;80;30;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>900</x>
+      <y>610</y>
+      <w>50</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;30;60</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>730</x>
+      <y>640</y>
+      <w>220</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=-</panel_attributes>
+    <additional_attributes>200;30;30;50</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>900</x>
+      <y>640</y>
+      <w>50</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=-</panel_attributes>
+    <additional_attributes>30;30;30;50</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>900</x>
+      <y>640</y>
+      <w>220</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=-</panel_attributes>
+    <additional_attributes>30;30;200;50</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>590</x>
+      <y>1080</y>
+      <w>500</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>EventAggregator
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>680</x>
+      <y>880</y>
+      <w>156</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1= n
+m2= 1
+ 
+ 
+trigger /
+handle Events</panel_attributes>
+    <additional_attributes>80;30;80;200</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>850</x>
+      <y>880</y>
+      <w>156</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1= n
+m2= 1
+ 
+ 
+trigger /
+handle Events</panel_attributes>
+    <additional_attributes>80;30;80;200</additional_attributes>
+  </element>
+  <element>
     <type>com.umlet.element.custom.Systemborder</type>
     <coordinates>
-      <x>290</x>
-      <y>460</y>
-      <w>1240</w>
-      <h>390</h>
+      <x>90</x>
+      <y>290</y>
+      <w>1200</w>
+      <h>670</h>
     </coordinates>
     <panel_attributes>bg=orange
 Implementation</panel_attributes>
