@@ -17,5 +17,15 @@
 
     <description>The framework for GW / MMO specific content</description>
     
-
+    
+    <dependencies>
+        
+        <!--Shardlet API-->
+        <dependency>
+            <groupId>com.realityshard</groupId>
+            <artifactId>shardlet</artifactId>
+            <version>0.1.0_RC2</version>
+        </dependency>
+    </dependencies>
+    
 </project> 
