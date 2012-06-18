@@ -21,6 +21,17 @@ public interface EntityEventAggregator extends EventAggregator
 {
     
     /**
+     * Add an entity-dependent listener to the listener collection.
+     * Note that by using the usual entity independent addListener method,
+     * you will always recieve events, even if they dont concern your entity/component.
+     * 
+     * @param       entity                  The concrete entity that you want to recieve events for.
+     * @param       listener                The listener object (may contain several event-handlers, as usual!)
+     */
+    public void addListener(Entity entity, Object listener);
+    
+    
+    /**
      * Trigger an event, the EventAggregator will try to distribute it to all 
      * registered listeners
      * 
