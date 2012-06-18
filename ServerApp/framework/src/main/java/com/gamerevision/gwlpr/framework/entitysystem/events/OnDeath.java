@@ -16,7 +16,7 @@ import com.realityshard.shardlet.Event;
  * 
  * @author _rusty
  */
-public final class OnDie implements Event
+public final class OnDeath implements Event
 {
 
 }

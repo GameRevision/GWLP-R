@@ -7,7 +7,7 @@ package com.gamerevision.gwlpr.framework.entitysystem.components.attributes;
 import com.gamerevision.gwlpr.framework.entitysystem.AttributeComponent;
 import com.gamerevision.gwlpr.framework.entitysystem.Entity;
 import com.gamerevision.gwlpr.framework.entitysystem.EntityEventAggregator;
-import com.gamerevision.gwlpr.framework.entitysystem.events.OnDie;
+import com.gamerevision.gwlpr.framework.entitysystem.events.OnDeath;
 import com.realityshard.shardlet.EventHandler;
 
 
@@ -67,7 +67,7 @@ public final class HealthAttribute implements AttributeComponent
      * @param die 
      */
     @EventHandler
-    public void handleDieEvent(OnDie die)
+    public void handleDieEvent(OnDeath die)
     {
         current = 0;
     }
@@ -97,7 +97,7 @@ public final class HealthAttribute implements AttributeComponent
             this.current = 0;
             // as the entity reached 0 health points,
             // we may want to let other know that it died :D
-            aggregator.triggerEntityEvent(entity, new OnDie());
+            aggregator.triggerEntityEvent(entity, new OnDeath());
             return;
         }
         // and doesnt exceed the maximum
