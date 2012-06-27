@@ -13,6 +13,6 @@ package com.gamerevision.gwlpr.framework.entitysystem;
  * 
  * @author _rusty
  */
-public interface AttributeComponent 
+public interface AttributeComponent
 {
 }

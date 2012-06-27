@@ -23,4 +23,12 @@ public interface Entity
      * @return      The unique ID of this entity. 
      */
     public UUID getUuid();
+    
+    
+    /**
+     * Getter.
+     * 
+     * @return      The name of the entity-type (e.g. "Player" or "Mob" or "Signpost" etc.)
+     */
+    public String getName();
 }

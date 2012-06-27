@@ -21,12 +21,26 @@ public class PlayerBuilder implements EntityBuilder
     
     private static final String name = "Player";
     
+    private ComponentManager compman;
+    private EntityEventAggregator aggregator;
+    
+    
+    /**
+     * Init this builder
+     */
+    @Override
+    public void init(ComponentManager manager, EntityEventAggregator aggregator)
+    {
+        this.compman = manager;
+        this.aggregator = aggregator;
+    }
+    
     
     /**
      * Creates a new player Entity.
      */
     @Override
-    public Entity create(UUID uuid, ComponentManager manager, EntityEventAggregator aggregator) 
+    public Entity create(UUID uuid) 
     {
         // initialize attribute components one by one and
         // add them to the aggregator
@@ -43,6 +57,22 @@ public class PlayerBuilder implements EntityBuilder
         
         // return the entity object
         return null;
+    }
+    
+    
+    /**
+     * Delete the player
+     */
+    @Override
+    public void delete(Entity entity)
+    {
+        // let's check if this is really a player...
+        if (!entity.getName().equals(name)) { return; }
+        
+        // simply remove the entities components from the
+        // Component Manager and Entity Event Aggregator
+        
+        // TODO implement me :D
     }
 
     

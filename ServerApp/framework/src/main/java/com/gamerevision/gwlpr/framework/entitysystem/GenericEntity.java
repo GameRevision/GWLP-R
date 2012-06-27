@@ -16,16 +16,20 @@ public class GenericEntity implements Entity
 {
     
     private final UUID uuid;
+    private final String name;
     
     
     /**
      * Constructor.
      * 
      * @param       uuid                    The unique ID of this entity.
+     * @param       name                    The name of the entity-type 
+     *                                      (e.g. "Player" or "Mob" or "Signpost" etc.)
      */
-    public GenericEntity(UUID uuid)
+    public GenericEntity(UUID uuid, String name)
     {
         this.uuid = uuid;
+        this.name = name;
     }
 
     
@@ -34,7 +38,24 @@ public class GenericEntity implements Entity
      * 
      * @return      The Entity-ID of this Entity.
      */
-    public UUID getUuid() {
+    @Override
+    public UUID getUuid() 
+    {
         return uuid;
     }
+
+    
+    /**
+     * Getter.
+     * 
+     * @return      The name of the entity-type (e.g. "Player" or "Mob" or "Signpost" etc.)
+     */
+    @Override
+    public String getName() 
+    {
+        return name;
+    }
+    
+    
+    
 }

@@ -11,7 +11,7 @@ package com.gamerevision.gwlpr.framework.entitysystem;
  * 
  * @author _rusty
  */
-public interface BehaviourComponent 
+public interface BehaviourComponent
 {
 
     /**
