@@ -36,24 +36,25 @@ public class ConcurrentEntityEventAggregator implements EntityEventAggregator
      * Used for keeping the listener-object/listener-method
      * stuff within a pair. (Needed for invokation of the method lateron)
      */
-    private static final class ObjectEntityMethodAssociation
+    private static final class EventHandlerReference
     {
         private Object object;
         private Entity entity;
-        private Method method;
+        private Method handler;
         
         
         /**
          * Constructor.
          * 
          * @param       object
-         * @param       method 
+         * @param       entity
+         * @param       handler 
          */
-        public ObjectEntityMethodAssociation(Object object, Entity entity, Method method)
+        public EventHandlerReference(Object object, Entity entity, Method handler)
         {
             this.object = object;
             this.entity = entity;
-            this.method = method;
+            this.handler = handler;
         }
 
         
@@ -84,9 +85,9 @@ public class ConcurrentEntityEventAggregator implements EntityEventAggregator
          * 
          * @return      The method declared within the class of the object
          */
-        public Method getMethod() 
+        public Method getHandler() 
         {
-            return method;
+            return handler;
         }     
     }
     
@@ -97,19 +98,19 @@ public class ConcurrentEntityEventAggregator implements EntityEventAggregator
     private static final class Invokable implements Runnable
     {
         
-        private final ObjectEntityMethodAssociation invokableAssociation;
+        private final EventHandlerReference invokableHandler;
         private final Event parameter;
         
         
         /**
          * Constructor.
          * 
-         * @param       invokablePair
+         * @param       invokableHandler
          * @param       parameter 
          */
-        public Invokable(ObjectEntityMethodAssociation invokablePair, Event parameter)
+        public Invokable(EventHandlerReference invokableHandler, Event parameter)
         {
-            this.invokableAssociation = invokablePair;
+            this.invokableHandler = invokableHandler;
             this.parameter = parameter;
             
         }
@@ -123,8 +124,8 @@ public class ConcurrentEntityEventAggregator implements EntityEventAggregator
         {
             try 
             {
-                invokableAssociation.getMethod()
-                        .invoke(invokableAssociation.getObject(), parameter);
+                invokableHandler.getHandler()
+                        .invoke(invokableHandler.getObject(), parameter);
             } 
             catch (    IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) 
             {
@@ -135,7 +136,7 @@ public class ConcurrentEntityEventAggregator implements EntityEventAggregator
     
     
     private static final Logger LOGGER = LoggerFactory.getLogger(ConcurrentEntityEventAggregator.class);
-    private final Map<Class<? extends Event>, List<ObjectEntityMethodAssociation>> eventMapping;
+    private final Map<Class<? extends Event>, List<EventHandlerReference>> eventMapping;
     private final Executor executor;
     
     
@@ -205,12 +206,12 @@ public class ConcurrentEntityEventAggregator implements EntityEventAggregator
         for (Map.Entry<Class<? extends Event>, Method> entry : listenerMethods.entrySet()) 
         {
             Class<? extends Event> clazz = entry.getKey();
-            ObjectEntityMethodAssociation pair = new ObjectEntityMethodAssociation(listener, entity, entry.getValue());
+            EventHandlerReference handler = new EventHandlerReference(listener, entity, entry.getValue());
         
             // we want to add the listener methods to a list of methods that have the same
             // signature, and thus listen for the same event
             // so try to get the list
-            List<ObjectEntityMethodAssociation> list = eventMapping.get(clazz);
+            List<EventHandlerReference> list = eventMapping.get(clazz);
 
             if (list == null)
             {
@@ -220,7 +221,7 @@ public class ConcurrentEntityEventAggregator implements EntityEventAggregator
             }
 
             // finally add the listener
-            list.add(pair);
+            list.add(handler);
         }
     }
     
@@ -239,26 +240,26 @@ public class ConcurrentEntityEventAggregator implements EntityEventAggregator
         // look up an event. the values of our hashmap consist of lists of the associations
         // that we want to remove, so me must iterate those lists and find the values, then we must remove them from the lists
         
-        List<ObjectEntityMethodAssociation> found = new ArrayList<>();
+        List<EventHandlerReference> found = new ArrayList<>();
         
         // iterate trough the dictionary values, getting a list of associations
-        for (List<ObjectEntityMethodAssociation> list: eventMapping.values())
+        for (List<EventHandlerReference> list: eventMapping.values())
         {
             // now iterate through the associations, and search for the 'entity'
-            for (ObjectEntityMethodAssociation assoc: list)
+            for (EventHandlerReference handler: list)
             {
-                if (assoc.getEntity().compareTo(entity) == 0)
+                if (handler.getEntity().compareTo(entity) == 0)
                 {
                     // we've found one of the associations that we want to remove.
                     // temporarily save it...
-                    found.add(assoc);
+                    found.add(handler);
                 }
             }
             
              // remove all those associations that we found
-            for (ObjectEntityMethodAssociation assoc: found)
+            for (EventHandlerReference handler: found)
             {
-                list.remove(assoc);
+                list.remove(handler);
             }
             
             // clear up the list that we are using to temporarily save associations
@@ -278,17 +279,17 @@ public class ConcurrentEntityEventAggregator implements EntityEventAggregator
     public void triggerEvent(Event event)
     {
         // get the listeners of the event
-        List<ObjectEntityMethodAssociation> listeners = eventMapping.get(event.getClass());
+        List<EventHandlerReference> listeners = eventMapping.get(event.getClass());
         
         // failcheck
         if (listeners == null) return;
         
-        for (ObjectEntityMethodAssociation assoc: listeners)
+        for (EventHandlerReference handler: listeners)
         {
             // for each listener in the listener collection,
             // try to invoke the handler with
             // the object that holds it and the event
-            executor.execute(new Invokable(assoc, event));
+            executor.execute(new Invokable(handler, event));
         }
     }
     
@@ -304,23 +305,23 @@ public class ConcurrentEntityEventAggregator implements EntityEventAggregator
     public void triggerEntityEvent(Entity entity, Event event) 
     {
         // get the listeners of the event
-        List<ObjectEntityMethodAssociation> associations = eventMapping.get(event.getClass());
+        List<EventHandlerReference> handlers = eventMapping.get(event.getClass());
         
         // failcheck
-        if (associations == null) return;
+        if (handlers == null) { return; }
         
         // get the ones that we actually want to invoke
-        for (ObjectEntityMethodAssociation assoc : associations) 
+        for (EventHandlerReference handler : handlers) 
         {
             // we want to invoke methods that:
             //  a) are associated to the 'entity' or
             //  b) have no associated entity (null reference)
-            if (assoc.getEntity().equals(entity) || assoc.getEntity() == null)
+            if (handler.getEntity().equals(entity) || handler.getEntity() == null)
             {
                 // for each listener in the listener collection,
                 // try to invoke the handler with
                 // the object that holds it and the event
-                executor.execute(new Invokable(assoc, event));
+                executor.execute(new Invokable(handler, event));
             }
         }
     }
