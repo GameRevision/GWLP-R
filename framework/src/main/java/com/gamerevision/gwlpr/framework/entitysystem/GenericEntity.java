@@ -57,5 +57,15 @@ public class GenericEntity implements Entity
     }
     
     
-    
+    /**
+     * Check if this is the same entity (if it has the same UUID)
+     * 
+     * @param       entity                  Another entity instance
+     * @return      True if this entities UUID equals the other entities UUID.
+     */
+    @Override
+    public int compareTo(Entity entity)
+    {
+        return this.uuid.compareTo(entity.getUuid());
+    }
 }

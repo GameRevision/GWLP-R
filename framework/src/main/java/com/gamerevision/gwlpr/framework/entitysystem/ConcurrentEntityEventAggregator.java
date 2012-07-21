@@ -8,6 +8,7 @@ import com.realityshard.shardlet.Event;
 import com.realityshard.shardlet.EventHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,9 @@ import org.slf4j.LoggerFactory;
  * Decorates the ConcurrentEventAggregator to implement the functionality
  * of the EntityEventAggregator.
  * 
- * TODO: Implement me!
+ * Actually, this is a simple code copy/paste, as i couldnt find a way to meaningful
+ * extend the functionality of the original ConcurrentEventAggregator without
+ * changing its source.
  * 
  * @author _rusty
  */
@@ -193,7 +196,7 @@ public class ConcurrentEntityEventAggregator implements EntityEventAggregator
                 }
                 else
                 {
-                    LOGGER.warn("Listener has a method that is annotated as EventListener but doesnt follow the signature.", listener);
+                    LOGGER.warn("Listener has a method that is annotated as EventHandler but doesnt follow the signature.", listener);
                 }
             }
         }
@@ -223,6 +226,49 @@ public class ConcurrentEntityEventAggregator implements EntityEventAggregator
     
     
     /**
+     * Remove all event handlers of a single entity from this aggregator.
+     * Note that handlers that are not entity-specific can not be removed.
+     * 
+     * @param       entity                  All handlers from this entity will be removed from the
+     *                                      event-aggregator. (No matter which object holds them)
+     */
+    @Override
+    public void removeListener(Entity entity) 
+    {
+        // its kinda tricky to remove stuff from our mapping, because we cant simply
+        // look up an event. the values of our hashmap consist of lists of the associations
+        // that we want to remove, so me must iterate those lists and find the values, then we must remove them from the lists
+        
+        List<ObjectEntityMethodAssociation> found = new ArrayList<>();
+        
+        // iterate trough the dictionary values, getting a list of associations
+        for (List<ObjectEntityMethodAssociation> list: eventMapping.values())
+        {
+            // now iterate through the associations, and search for the 'entity'
+            for (ObjectEntityMethodAssociation assoc: list)
+            {
+                if (assoc.getEntity().compareTo(entity) == 0)
+                {
+                    // we've found one of the associations that we want to remove.
+                    // temporarily save it...
+                    found.add(assoc);
+                }
+            }
+            
+             // remove all those associations that we found
+            for (ObjectEntityMethodAssociation assoc: found)
+            {
+                list.remove(assoc);
+            }
+            
+            // clear up the list that we are using to temporarily save associations
+            // because we'll simply re-use it for the next hashmap value
+            found.clear();
+        }
+    }
+    
+    
+    /**
      * Trigger an event, the aggregator will try to distribute 
      * it to the appropriate listeners
      * 
@@ -237,12 +283,12 @@ public class ConcurrentEntityEventAggregator implements EntityEventAggregator
         // failcheck
         if (listeners == null) return;
         
-        for (ObjectEntityMethodAssociation pair: listeners)
+        for (ObjectEntityMethodAssociation assoc: listeners)
         {
             // for each listener in the listener collection,
             // try to invoke the handler with
             // the object that holds it and the event
-            executor.execute(new Invokable(pair, event));
+            executor.execute(new Invokable(assoc, event));
         }
     }
     

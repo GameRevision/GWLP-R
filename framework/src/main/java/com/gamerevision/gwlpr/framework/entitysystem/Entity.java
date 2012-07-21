@@ -14,7 +14,7 @@ import java.util.UUID;
  * 
  * @author _rusty
  */
-public interface Entity 
+public interface Entity extends Comparable<Entity>
 {
     
     /**
