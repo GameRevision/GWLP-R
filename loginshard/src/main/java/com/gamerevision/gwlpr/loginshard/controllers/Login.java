@@ -15,6 +15,7 @@ import com.gamerevision.gwlpr.loginshard.views.StreamTerminatorView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.GenericShardlet;
 import com.realityshard.shardlet.Session;
+import java.nio.charset.Charset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,14 +42,19 @@ public class Login extends GenericShardlet
     @EventHandler
     public void accountLoginHandler(P004_AccountLoginAction action)
     {
+        
+        String eMail = new String(action.getEmail());
+        String password = new String(action.getPassword(), Charset.forName("UTF-16LE"));
+        String characterName = new String(action.getCharacterName());
+        
         LOGGER.debug("got the account login packet");
         Session session = action.getSession();
      
         session.setAttribute("SyncCount", action.getLoginCount());
   
-        CheckLoginInfo checkInfo = new CheckLoginInfo(connectionProvider, action);
+        CheckLoginInfo checkInfo = new CheckLoginInfo(connectionProvider, eMail);
         
-        if (checkInfo.isValid())
+        if (checkInfo.isValid(password))
         {
             LOGGER.debug("successfully logged in");
         

@@ -51,6 +51,8 @@ public class Account
     
     public static Account getByEMail(DatabaseConnectionProvider connectionProvider, String eMail)
     {
+        Account result = null;
+        
         try
         {
             Connection connection = connectionProvider.getConnection();
@@ -58,7 +60,7 @@ public class Account
             ResultSet resultSet = stmt.executeQuery("SELECT * FROM accounts WHERE EMail='"+eMail+"';");
             if (resultSet.next())
             {
-                return new Account(resultSet);
+                result = new Account(resultSet);
             }
             resultSet.close();
             stmt.close();
@@ -69,6 +71,6 @@ public class Account
             LOGGER.error("sql error in getByEMail");
         }
         
-        return null;
+        return result;
     }
 }

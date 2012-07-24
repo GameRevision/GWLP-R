@@ -23,20 +23,14 @@ public class CheckLoginInfo
     private static Logger LOGGER = LoggerFactory.getLogger(CheckLoginInfo.class);
     
     private Account account;
-    private String eMail;
-    private String password;
-    private String characterName;
     private int errorCode = 0;
     
     
     /*
      * Constructor.
      */
-    public CheckLoginInfo(DatabaseConnectionProvider connectionProvider, P004_AccountLoginAction action)
+    public CheckLoginInfo(DatabaseConnectionProvider connectionProvider, String eMail)
     {
-        this.eMail = new String(action.getEmail());
-        this.password = new String(action.getPassword(), Charset.forName("UTF-16LE"));
-        this.characterName = new String(action.getCharacterName());
         this.account = Account.getByEMail(connectionProvider, eMail);
     }
     
@@ -46,7 +40,7 @@ public class CheckLoginInfo
      * 
      * TODO: Extend it (better validation, banned, ...)
      */
-    public boolean isValid()
+    public boolean isValid(String password)
     {
         if (account == null)
         {
