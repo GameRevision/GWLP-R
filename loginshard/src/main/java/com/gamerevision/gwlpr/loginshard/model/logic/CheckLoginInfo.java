@@ -8,6 +8,8 @@ import com.gamerevision.gwlpr.actions.loginserver.ctos.P004_AccountLoginAction;
 import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.loginshard.model.database.Account;
 import java.nio.charset.Charset;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -17,6 +19,8 @@ import java.nio.charset.Charset;
  */
 public class CheckLoginInfo
 {
+    
+    private static Logger LOGGER = LoggerFactory.getLogger(CheckLoginInfo.class);
     
     private Account account;
     private String eMail;

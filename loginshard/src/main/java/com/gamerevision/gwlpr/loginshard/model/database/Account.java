@@ -26,6 +26,7 @@ public class Account
     
     private String password;
     
+    
     /*
      * Returns all login information (null if none exist).
      */

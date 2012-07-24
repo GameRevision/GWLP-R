@@ -25,9 +25,8 @@ public final class P004_AccountLoginAction extends GenericEventAction
 {
 
     private int loginCount;
-    private short data1;
+    private int data1;
     private byte[] password;
-    private short data3;
     private char[] email;
     private char[] data2;
     private char[] characterName;
@@ -45,7 +44,7 @@ public final class P004_AccountLoginAction extends GenericEventAction
     }
 
 
-    public short getData1()
+    public int getData1()
     {
         return data1;
     }
@@ -56,12 +55,6 @@ public final class P004_AccountLoginAction extends GenericEventAction
         return password;
     }
     
-    
-    public short getData3()
-    {
-        return data3;
-    }
-
 
     public char[] getEmail()
     {
@@ -90,15 +83,13 @@ public final class P004_AccountLoginAction extends GenericEventAction
         try
         {
             loginCount = buffer.getInt();
-            data1 = buffer.getShort();
+            data1 = buffer.getInt();
             password = new byte[20];
             
             for (int i = 0; i < 20; i++)
             {
                 password[i] = buffer.get();
             }
-            
-            data3 = buffer.getShort();
             
             short prefix_email = buffer.getShort();
             email = new char[prefix_email];
