@@ -54,13 +54,13 @@ public class GenericHandler extends GenericShardlet
         Session session = action.getSession();
         
         
-        session.setAttribute("SyncCount", action.getUnknown1());
+        session.setAttribute("SyncCount", action.getLoginCount());
         
         
         LOGGER.debug("sending send response");
         sendAction(SendResponseView.create(session));
         
         LOGGER.debug("sending stream terminator");
-        sendAction(StreamTerminatorView.create(session));
+        sendAction(StreamTerminatorView.create(session, 0));
     }
 }

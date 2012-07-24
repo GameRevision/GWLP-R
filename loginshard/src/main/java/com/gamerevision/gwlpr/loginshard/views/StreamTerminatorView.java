@@ -16,12 +16,12 @@ import com.realityshard.shardlet.Session;
 public class StreamTerminatorView
 {
 
-    public static P003_StreamTerminatorAction create(Session session)
+    public static P003_StreamTerminatorAction create(Session session, int errorCode)
     {
         P003_StreamTerminatorAction streamTerminator = new P003_StreamTerminatorAction();
         streamTerminator.init(session);
-        streamTerminator.setUnknown1((int) session.getAttribute("SyncCount"));
-        streamTerminator.setUnknown2(0);
+        streamTerminator.setLoginCount((int) session.getAttribute("SyncCount"));
+        streamTerminator.setErrorCode(errorCode);
         return streamTerminator;
     }
 }

@@ -20,9 +20,9 @@ public class UpdateGenericValueIntView
     {
         P147_UpdateGenericValueIntAction updateGenericValueInt = new P147_UpdateGenericValueIntAction();
         updateGenericValueInt.init(session);
-        updateGenericValueInt.setUnknown1(64);
-        updateGenericValueInt.setUnknown2(50);
-        updateGenericValueInt.setUnknown3(0);
+        updateGenericValueInt.setValueID(64);
+        updateGenericValueInt.setAgentID(50);
+        updateGenericValueInt.setValue(0);
         return updateGenericValueInt;
     }
 }

@@ -7,7 +7,7 @@ package com.gamerevision.gwlpr.mapshard.controllers;
 import com.gamerevision.gwlpr.actions.gameserver.ctos.P16896_ClientSeedAction;
 import com.gamerevision.gwlpr.mapshard.views.InstanceLoadHeadView;
 import com.gamerevision.gwlpr.mapshard.views.ServerSeedView;
-import com.gamerevision.gwlpr.mapshard.views.StartCharacterCreationView;
+import com.gamerevision.gwlpr.mapshard.views.CharacterCreateHeadView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.GenericShardlet;
 import com.realityshard.shardlet.Session;
@@ -50,6 +50,6 @@ public class Handshake extends GenericShardlet
         
         
         LOGGER.debug("sending start character creation");
-        sendAction(StartCharacterCreationView.create(session));
+        sendAction(CharacterCreateHeadView.create(session));
     }
 }

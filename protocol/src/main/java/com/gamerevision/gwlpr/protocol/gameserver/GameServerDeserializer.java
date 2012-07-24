@@ -151,7 +151,7 @@ public class GameServerDeserializer extends Deserializer
             case 51:
                 return new P051_UnknownAction();
             case 52:
-                return new P052_UnknownAction();
+                return new P052_PressDialogButtonAction();
             case 53:
                 return new P053_UnknownAction();
             case 54:
@@ -163,7 +163,7 @@ public class GameServerDeserializer extends Deserializer
             case 57:
                 return new P057_UnknownAction();
             case 58:
-                return new P058_UnknownAction();
+                return new P058_ChangeSecondProfessionAction();
             case 59:
                 return new P059_UnknownAction();
             case 60:
@@ -215,11 +215,11 @@ public class GameServerDeserializer extends Deserializer
             case 83:
                 return new P083_UnknownAction();
             case 84:
-                return new P084_UnknownAction();
+                return new P084_ReplaceSkillAction();
             case 85:
                 return new P085_UnknownAction();
             case 86:
-                return new P086_UnknownAction();
+                return new P086_SwapSkillsOnBarAction();
             case 87:
                 return new P087_UnknownAction();
             case 88:

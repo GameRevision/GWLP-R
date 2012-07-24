@@ -4,10 +4,12 @@
 
 package com.gamerevision.gwlpr.mapshard.controllers;
 
+import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
+import com.gamerevision.gwlpr.mapshard.events.DatabaseConnectionProviderEvent;
 import com.gamerevision.gwlpr.mapshard.views.LoginShardView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.GenericShardlet;
-import com.realityshard.shardlet.intershardcom.ParentContextEventAction;
+import com.realityshard.shardlet.events.GameAppCreatedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,22 +26,28 @@ public class ShardInitializer extends GenericShardlet
     
     
     @Override
-    protected void init() 
+    protected void init()
     {
         LOGGER.debug("shard initializer shardlet initialized!");
     }
     
     
     /**
-     * This handler is invoked by the api when the context is created
-     * to be able to send actions to the parent context.
+     * This handler is invoked by the api when the gameapp is created.
      * 
-     * @param   action  the action carrying the context information.
+     * @param   event  the event carrying the context information.
      */
     @EventHandler
-    public void parentContextEventActionHandler(ParentContextEventAction action)
+    public void gameAppCreatedEventHandler(GameAppCreatedEvent event)
     {
-        LOGGER.debug("setting the parent context");
-        LoginShardView.SetLoginShardContext(action.getParent());
+        LoginShardView.SetLoginShardContext(event.getParent());
+        
+        DatabaseConnectionProvider connectionProvider = new DatabaseConnectionProvider(this.getInitParameter("dbip"),
+                                                                            this.getInitParameter("dbport"),
+                                                                            this.getInitParameter("dbdatabase"),
+                                                                            this.getInitParameter("dbusername"),
+                                                                            this.getInitParameter("dbpassword"));
+                
+        publishEvent(new DatabaseConnectionProviderEvent(connectionProvider));
     }
 }

@@ -20,10 +20,10 @@ public class InstanceLoadHeadView
     {
         P370_InstanceLoadHeadAction instanceLoadHead = new P370_InstanceLoadHeadAction();
         instanceLoadHead.init(session);
-        instanceLoadHead.setUnknown1((byte) 0x3F);
-        instanceLoadHead.setUnknown2((byte) 0x3F);
-        instanceLoadHead.setUnknown3((byte) 0);
-        instanceLoadHead.setUnknown4((byte) 0);
+        instanceLoadHead.setData1((byte) 0x3F);
+        instanceLoadHead.setData2((byte) 0x3F);
+        instanceLoadHead.setData3((byte) 0);
+        instanceLoadHead.setData4((byte) 0);
         return instanceLoadHead;
     }
 }

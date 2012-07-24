@@ -20,13 +20,13 @@ public class ReferToGameServerView
     {
         P009_ReferToGameServerAction referToGameServer = new P009_ReferToGameServerAction();
         referToGameServer.init(session);
-        referToGameServer.setUnknown1((int) session.getAttribute("SyncCount"));
-        referToGameServer.setUnknown2(1);
-        referToGameServer.setUnknown3(0);
-        referToGameServer.setUnknown4(new byte[] {0x02, 0x00, 0x23, -0x68, 0x7F, 0x00, 0x00, 0x01,
+        referToGameServer.setLoginCount((int) session.getAttribute("SyncCount"));
+        referToGameServer.setSecurityKey1(1);
+        referToGameServer.setGameMapID(0);
+        referToGameServer.setServerConnectionInfo(new byte[] {0x02, 0x00, 0x23, -0x68, 0x7F, 0x00, 0x00, 0x01,
                                                   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                                                   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00});
-        referToGameServer.setUnknown5(2);
+        referToGameServer.setSecurityKey2(2);
         return referToGameServer;
     }
 }

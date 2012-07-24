@@ -20,8 +20,8 @@ public class SendResponseView
     {
         P038_SendResponseAction sendResponse = new P038_SendResponseAction();
         sendResponse.init(session);
-        sendResponse.setUnknown1((int) session.getAttribute("SyncCount"));
-        sendResponse.setUnknown2(0);
+        sendResponse.setLoginCount((int) session.getAttribute("SyncCount"));
+        sendResponse.setData1(0);
         return sendResponse;
     }
 }

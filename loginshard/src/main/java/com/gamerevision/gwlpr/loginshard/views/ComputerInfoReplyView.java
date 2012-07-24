@@ -20,10 +20,10 @@ public class ComputerInfoReplyView
     {
         P001_ComputerInfoReplyAction computerInfoReply = new P001_ComputerInfoReplyAction();
         computerInfoReply.init(session);
-        computerInfoReply.setUnknown1(1905605949);
-        computerInfoReply.setUnknown2((int) session.getAttribute("SyncCount"));
-        computerInfoReply.setUnknown3(0);
-        computerInfoReply.setUnknown4(1);
+        computerInfoReply.setData1(1905605949);
+        computerInfoReply.setLoginCount((int) session.getAttribute("SyncCount"));
+        computerInfoReply.setData2(0);
+        computerInfoReply.setData3(1);
         return computerInfoReply;
     }
 }

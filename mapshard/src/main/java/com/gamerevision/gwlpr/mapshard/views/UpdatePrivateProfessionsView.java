@@ -4,7 +4,7 @@
 
 package com.gamerevision.gwlpr.mapshard.views;
 
-import com.gamerevision.gwlpr.actions.gameserver.stoc.P171_UpdatePrivateProfessionsAction;
+import com.gamerevision.gwlpr.actions.gameserver.stoc.P171_UpdatePrivProfessionsAction;
 import com.realityshard.shardlet.Session;
 
 
@@ -16,14 +16,14 @@ import com.realityshard.shardlet.Session;
 public class UpdatePrivateProfessionsView
 {
 
-    public static P171_UpdatePrivateProfessionsAction create(Session session)
+    public static P171_UpdatePrivProfessionsAction create(Session session)
     {
-        P171_UpdatePrivateProfessionsAction updatePrivateProfessions = new P171_UpdatePrivateProfessionsAction();
+        P171_UpdatePrivProfessionsAction updatePrivateProfessions = new P171_UpdatePrivProfessionsAction();
         updatePrivateProfessions.init(session);
-        updatePrivateProfessions.setUnknown1(50);
-        updatePrivateProfessions.setUnknown2((byte) 1);
-        updatePrivateProfessions.setUnknown3((byte) 0);
-        updatePrivateProfessions.setUnknown4((byte) 0);
+        updatePrivateProfessions.setAgentID(50);
+        updatePrivateProfessions.setPrimaryProf((byte) 1);
+        updatePrivateProfessions.setSecondaryProf((byte) 0);
+        updatePrivateProfessions.setisPvP((byte) 0);
         return updatePrivateProfessions;
     }
 }

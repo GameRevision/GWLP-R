@@ -8,9 +8,15 @@
         <HeartBeat>50</HeartBeat>
     </AppInfo>
 	
+	<Shardlet name="MapShard-ShardInitializer" class="com.gamerevision.gwlpr.mapshard.controllers.ShardInitializer">
+		<InitParam name="dbip" value="localhost" />
+		<InitParam name="dbport" value="3306" />
+		<InitParam name="dbdatabase" value="gwlp-r" />
+		<InitParam name="dbusername" value="root" />
+		<InitParam name="dbpassword" value="" />
+	</Shardlet>
 	<Shardlet name="MapShard-GenericHandler" class="com.gamerevision.gwlpr.mapshard.controllers.GenericHandler"/>
 	<Shardlet name="MapShard-ClientVerifier" class="com.gamerevision.gwlpr.mapshard.controllers.ClientVerifier"/>
 	<Shardlet name="MapShard-Handshake" class="com.gamerevision.gwlpr.mapshard.controllers.Handshake"/>
-	<Shardlet name="MapShard-ShardInitializer" class="com.gamerevision.gwlpr.mapshard.controllers.ShardInitializer"/>
 	<Shardlet name="MapShard-CharacterCreation" class="com.gamerevision.gwlpr.mapshard.controllers.CharacterCreation"/>
 </GameApp>

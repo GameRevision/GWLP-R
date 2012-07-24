@@ -42,7 +42,7 @@ public class Dispatcher extends GenericShardlet
         Session session = action.getSession();
         
         
-        session.setAttribute("SyncCount", action.getUnknown1());
+        session.setAttribute("SyncCount", action.getLoginCount());
         
         try
         {

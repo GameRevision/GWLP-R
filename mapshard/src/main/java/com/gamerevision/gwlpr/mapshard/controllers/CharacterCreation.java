@@ -6,8 +6,8 @@ package com.gamerevision.gwlpr.mapshard.controllers;
 
 import com.gamerevision.gwlpr.actions.gameserver.ctos.P088_CharacterCreateUpdateProfessionAndCampaignAction;
 import com.gamerevision.gwlpr.actions.gameserver.ctos.P130_CreateNewCharacterAction;
-import com.gamerevision.gwlpr.mapshard.views.CreateCharacterAckView;
-import com.gamerevision.gwlpr.mapshard.views.UpdateAttributePointsView;
+import com.gamerevision.gwlpr.mapshard.views.CharacterCreateAcknowledgeView;
+import com.gamerevision.gwlpr.mapshard.views.UpdateAttribPtsView;
 import com.gamerevision.gwlpr.mapshard.views.UpdateGenericValueIntView;
 import com.gamerevision.gwlpr.mapshard.views.UpdatePrivateProfessionsView;
 import com.realityshard.shardlet.EventHandler;
@@ -43,7 +43,7 @@ public class CharacterCreation extends GenericShardlet
         
         
         LOGGER.debug("sending update attribute points");
-        sendAction(UpdateAttributePointsView.create(session));
+        sendAction(UpdateAttribPtsView.create(session));
         
         
         LOGGER.debug("sending update generic value integer");
@@ -51,7 +51,7 @@ public class CharacterCreation extends GenericShardlet
         
         
         LOGGER.debug("sending create character acknowledgement");
-        sendAction(CreateCharacterAckView.create(session));
+        sendAction(CharacterCreateAcknowledgeView.create(session));
     }
     
     
