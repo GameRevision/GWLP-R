@@ -5,6 +5,7 @@
 package com.gamerevision.gwlpr.framework.entitysystem;
 
 import com.gamerevision.gwlpr.framework.entitysystem.builders.PlayerBuilder;
+import com.realityshard.shardlet.Event;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -125,6 +126,20 @@ public class EntitySystemFacade
         {
             aggregator.addListener(entity, listener);
         }
+    }
+    
+    
+    /**
+     * Trigger an event within the Entity-System.
+     * 
+     * This is the only interface to the entities of the system!
+     * 
+     * @param       entity                  The entity that this event concerns (or null if it concerns all entities)
+     * @param       event                   The event that you want to trigger within the E/S
+     */
+    public void triggerEntityEvent(Entity entity, Event event)
+    {
+        aggregator.triggerEntityEvent(entity, event);
     }
     
     
