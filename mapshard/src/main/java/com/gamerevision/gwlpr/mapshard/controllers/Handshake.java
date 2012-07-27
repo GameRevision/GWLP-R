@@ -23,7 +23,6 @@ import org.slf4j.LoggerFactory;
  */
 public class Handshake extends GenericShardlet
 {
-    
     private static Logger LOGGER = LoggerFactory.getLogger(Handshake.class);
     
     

@@ -16,8 +16,9 @@
 		<InitParam name="dbusername" value="root" />
 		<InitParam name="dbpassword" value="" />
 	</Shardlet>
-    <Shardlet name="LoginShard-Handshake" class="com.gamerevision.gwlpr.loginshard.controllers.Handshake"/>
+    <Shardlet name="LoginShard-HandshakeController" class="com.gamerevision.gwlpr.loginshard.controllers.HandshakeController"/>
 	<Shardlet name="LoginShard-GenericHandler" class="com.gamerevision.gwlpr.loginshard.controllers.GenericHandler"/>
 	<Shardlet name="LoginShard-Login" class="com.gamerevision.gwlpr.loginshard.controllers.Login"/>
 	<Shardlet name="LoginShard-Dispatcher" class="com.gamerevision.gwlpr.loginshard.controllers.Dispatcher"/>
+	<Shardlet name="LoginShard-InstanceLoad" class="com.gamerevision.gwlpr.loginshard.controllers.InstanceLoad"/>
 </GameApp>
