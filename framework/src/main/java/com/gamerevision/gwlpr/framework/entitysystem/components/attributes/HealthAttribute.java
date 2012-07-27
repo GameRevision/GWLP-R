@@ -20,12 +20,7 @@ import com.realityshard.shardlet.EventHandler;
  */
 public final class HealthAttribute implements AttributeComponent
 {
-    
-    /**
-     * The name of this attribute, as used in the mappings
-     */
-    public final static String name = "health";
-    
+     
     private int max;
     private int current;
     private Entity entity;

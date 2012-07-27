@@ -4,15 +4,23 @@
 
 package com.gamerevision.gwlpr.framework.entitysystem.builders;
 
+import com.gamerevision.gwlpr.framework.entitysystem.AttributeComponent;
 import com.gamerevision.gwlpr.framework.entitysystem.ComponentManager;
 import com.gamerevision.gwlpr.framework.entitysystem.Entity;
 import com.gamerevision.gwlpr.framework.entitysystem.EntityBuilder;
 import com.gamerevision.gwlpr.framework.entitysystem.EntityEventAggregator;
+import com.gamerevision.gwlpr.framework.entitysystem.GenericEntity;
+import com.gamerevision.gwlpr.framework.entitysystem.components.attributes.HealthAttribute;
+import com.gamerevision.gwlpr.framework.entitysystem.components.behaviours.TakeDamageBehaviour;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 
 /**
  * This Builder is used to create a new player Entity.
+ * 
+ * TODO: This is a reference implementation! It is neither complete nor flawless!
  * 
  * @author _rusty
  */
@@ -26,7 +34,7 @@ public class PlayerBuilder implements EntityBuilder
     
     
     /**
-     * Init this builder
+     * Initialize this builder
      */
     @Override
     public void init(ComponentManager manager, EntityEventAggregator aggregator)
@@ -42,18 +50,31 @@ public class PlayerBuilder implements EntityBuilder
     @Override
     public Entity create(UUID uuid) 
     {
-        // initialize attribute components one by one and
-        // add them to the aggregator
+        // create the GenericEntity using the UUID
+        Entity entity = new GenericEntity(uuid, name);
         
-        // compile a map of attribute-component name -> attribute component object
+        // initialize attribute components one by one and
+        // add them to the component manager and aggregator
+        HealthAttribute health = new HealthAttribute(100); // TODO: Replace static max health
+        // ... and create all the other components
+        
+        compman.registerAttribute(entity, health);
+        aggregator.addListener(entity, health);
+        // ... and register all the other components
+        
+        // compile a map of attribute-component class -> attribute component object
+        Map<Class<? extends AttributeComponent>, AttributeComponent> attributes = new HashMap<>();
+        attributes.put(health.getClass(), health);
+        // ... and add all the other components
         
         // initialize the behaviours using the attributename/attribute-object map
-        // add them to the aggregator
+        // add them to the component manager and aggregator
+        TakeDamageBehaviour takeDamage = new TakeDamageBehaviour(entity, attributes, aggregator);
+        // ... and create all the other components
         
-        // create the GenericEntity using the UUID
-        
-        // compile a list of attribute objects and behaviour objects
-        // add them to the ComponentManager using the entity object we just created
+        compman.registerBehaviour(entity, takeDamage);
+        aggregator.addListener(entity, takeDamage);
+        // ... and register all the other components
         
         // return the entity object
         return null;
@@ -72,7 +93,8 @@ public class PlayerBuilder implements EntityBuilder
         // simply remove the entities components from the
         // Component Manager and Entity Event Aggregator
         
-        // TODO implement me :D
+        compman.unregisterComponents(entity);
+        aggregator.removeListener(entity);
     }
 
     

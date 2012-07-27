@@ -10,7 +10,6 @@ import com.gamerevision.gwlpr.framework.entitysystem.Entity;
 import com.gamerevision.gwlpr.framework.entitysystem.EntityEventAggregator;
 import com.gamerevision.gwlpr.framework.entitysystem.components.attributes.HealthAttribute;
 import com.gamerevision.gwlpr.framework.entitysystem.events.OnDamage;
-import com.realityshard.shardlet.EventAggregator;
 import com.realityshard.shardlet.EventHandler;
 import java.util.Map;
 
@@ -40,12 +39,12 @@ public class TakeDamageBehaviour implements BehaviourComponent
      * @param       aggregator              The event aggregator where we will post
      *                                      events to
      */
-    public TakeDamageBehaviour(Entity entity, Map<String, AttributeComponent> attributes, EntityEventAggregator aggregator) 
+    public TakeDamageBehaviour(Entity entity, Map<Class<? extends AttributeComponent>, AttributeComponent> attributes, EntityEventAggregator aggregator) 
     {
         this.entity = entity;
         this.aggregator = aggregator;
         
-        this.health = (HealthAttribute) attributes.get(HealthAttribute.name);
+        this.health = (HealthAttribute) attributes.get(HealthAttribute.class);
     }
 
     
