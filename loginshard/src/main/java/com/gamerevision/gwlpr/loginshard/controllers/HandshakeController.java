@@ -6,7 +6,9 @@ package com.gamerevision.gwlpr.loginshard.controllers;
 
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P1024_ClientVersionAction;
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P16896_ClientSeedAction;
+import com.gamerevision.gwlpr.loginshard.model.logic.EncryptionDataHolder;
 import com.gamerevision.gwlpr.loginshard.model.logic.HandshakeModel;
+import com.gamerevision.gwlpr.loginshard.views.HandshakeView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.GenericShardlet;
 import com.realityshard.shardlet.Session;
@@ -24,12 +26,12 @@ public class HandshakeController extends GenericShardlet
 {
     
     private static Logger LOGGER = LoggerFactory.getLogger(HandshakeController.class);
-    private HandshakeModel handshakeModel;
+    private HandshakeView handshakeView;
     
     @Override
     protected void init() 
     {
-        handshakeModel = new HandshakeModel(this.getShardletContext());
+        this.handshakeView = new HandshakeView(getShardletContext());
         
         LOGGER.debug("handshake shardlet initialized!");
     }
@@ -38,26 +40,30 @@ public class HandshakeController extends GenericShardlet
     @EventHandler
     public void clientVersionHandler(P1024_ClientVersionAction action)
     {
-        int clientVersion = action.getUnknown2();
-        
         LOGGER.debug("got the client version packet");
         
-        Session session = action.getSession();
+        int clientVersion = action.getUnknown2();
         
-        handshakeModel.setClientVersion(session, clientVersion);
-        
+        // lets's ask the model to check the version for us
+        if (!HandshakeModel.verifyClientVersion(clientVersion))
+        {
+            // create the sever seed out of the EncryptionData
+            handshakeView.wrongClientVersion(action.getSession());
+        }        
     }
     
     
     @EventHandler
     public void clientSeedHandler(P16896_ClientSeedAction action)
-    {
-        byte[] clientSeed = action.getClientSeed();
-        
+    {        
         LOGGER.debug("got the client seed packet");
         
-        Session session = action.getSession();
+        byte[] clientSeed = action.getClientSeed();
         
-        handshakeModel.setClientSeed(session, clientSeed);
+        // get the encryption data needed by the protocol filter
+        EncryptionDataHolder data = HandshakeModel.getEncrpytionData(clientSeed);
+        
+        // create the server seed packet out of that and send it (indirectly)
+        handshakeView.sendServerSeed(action.getSession(), data);
     }
 }

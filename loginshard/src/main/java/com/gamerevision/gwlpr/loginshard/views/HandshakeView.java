@@ -7,7 +7,7 @@ package com.gamerevision.gwlpr.loginshard.views;
 import com.gamerevision.gwlpr.actions.loginserver.stoc.P5633_ServerSeedAction;
 import com.gamerevision.gwlpr.loginshard.events.GotClientSeedEvent;
 import com.gamerevision.gwlpr.loginshard.events.WrongClientVersionEvent;
-import com.realityshard.shardlet.EventHandler;
+import com.gamerevision.gwlpr.loginshard.model.logic.EncryptionDataHolder;
 import com.realityshard.shardlet.Session;
 import com.realityshard.shardlet.ShardletContext;
 import org.slf4j.Logger;
@@ -16,36 +16,35 @@ import org.slf4j.LoggerFactory;
 
 public class HandshakeView
 {
-    
-    
     private static Logger LOGGER = LoggerFactory.getLogger(HandshakeView.class);
-
-    private Session session;
-    private ShardletContext shardletContext;
+    private final ShardletContext shardletContext;
 
     
-    public HandshakeView(ShardletContext shardletContext, Session session)
+    public HandshakeView(ShardletContext shardletContext)
     {
-        this.session = session;
         this.shardletContext = shardletContext;
-        shardletContext.getAggregator().addListener(this);
     }
 
     
-    @EventHandler
-    public void wrongClientVersionEventHandler(WrongClientVersionEvent event)
+    public void wrongClientVersion(Session session)
     {
         // TODO: Implement me!
+        // create some new action here, using the given session
+        // then do context.sendAction(whatever)
     }
     
     
-    @EventHandler
-    public void gotClientSeedEventHandler(GotClientSeedEvent event)
+    public void sendServerSeed(Session session, EncryptionDataHolder data)
     {
         LOGGER.debug("bla");
-        P5633_ServerSeedAction serverSeed = new P5633_ServerSeedAction();
-        serverSeed.init(session);
-        serverSeed.setServerSeed(new byte[20]);
-        shardletContext.sendAction(serverSeed);
+        
+        // do smthin with the data to create the server seed byte array
+        byte[] serverSeed = new byte[0]; // TODO: replace me!
+        
+        P5633_ServerSeedAction seedAction = new P5633_ServerSeedAction();
+        seedAction.init(session);
+        seedAction.setServerSeed(serverSeed);
+        
+        shardletContext.sendAction(seedAction);
     }
 }
