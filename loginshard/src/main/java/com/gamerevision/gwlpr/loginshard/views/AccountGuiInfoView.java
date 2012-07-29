@@ -5,6 +5,7 @@
 package com.gamerevision.gwlpr.loginshard.views;
 
 import com.gamerevision.gwlpr.actions.loginserver.stoc.P022_AccountGuiInfoAction;
+import com.gamerevision.gwlpr.loginshard.SessionAttachment;
 import com.realityshard.shardlet.Session;
 
 
@@ -20,7 +21,7 @@ public class AccountGuiInfoView
     {
         P022_AccountGuiInfoAction accountGuiSettings = new P022_AccountGuiInfoAction();
         accountGuiSettings.init(session);
-        accountGuiSettings.setLoginCount((int) session.getAttribute("SyncCount"));
+        accountGuiSettings.setLoginCount(((SessionAttachment) session.getAttachment()).getLoginCount());
         return accountGuiSettings;
     }
 }

@@ -5,6 +5,7 @@
 package com.gamerevision.gwlpr.loginshard.views;
 
 import com.gamerevision.gwlpr.actions.loginserver.stoc.P001_ComputerInfoReplyAction;
+import com.gamerevision.gwlpr.loginshard.SessionAttachment;
 import com.realityshard.shardlet.Session;
 
 
@@ -21,7 +22,7 @@ public class ComputerInfoReplyView
         P001_ComputerInfoReplyAction computerInfoReply = new P001_ComputerInfoReplyAction();
         computerInfoReply.init(session);
         computerInfoReply.setData1(1905605949);
-        computerInfoReply.setLoginCount((int) session.getAttribute("SyncCount"));
+        computerInfoReply.setLoginCount(((SessionAttachment) session.getAttachment()).getLoginCount());
         computerInfoReply.setData2(0);
         computerInfoReply.setData3(1);
         return computerInfoReply;

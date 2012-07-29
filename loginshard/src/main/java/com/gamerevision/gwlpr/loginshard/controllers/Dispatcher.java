@@ -7,12 +7,14 @@ package com.gamerevision.gwlpr.loginshard.controllers;
 import com.gamerevision.gwlpr.actions.intershardcom.ISC_AcceptClientReplyAction;
 import com.gamerevision.gwlpr.actions.intershardcom.ISC_AcceptClientRequestAction;
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P041_CharacterPlayInfoAction;
+import com.gamerevision.gwlpr.loginshard.SessionAttachment;
 import com.gamerevision.gwlpr.loginshard.views.ReferToGameServerView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.GenericShardlet;
 import com.realityshard.shardlet.Session;
 import com.realityshard.shardlet.ShardletContext;
 import java.util.HashMap;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,12 +44,17 @@ public class Dispatcher extends GenericShardlet
         Session session = action.getSession();
         
         
-        session.setAttribute("SyncCount", action.getLoginCount());
+        ((SessionAttachment) session.getAttachment()).setLoginCount(action.getLoginCount());
+        
+        
+        int mapId = action.getGameMapId();
+        HashMap<String,String> params = new HashMap<>();
+        params.put("MapId", String.valueOf(mapId));
         
         try
         {
             LOGGER.debug("trying to create a map shard");
-            ShardletContext mapShard = getShardletContext().tryCreateGameApp("MapShard", new HashMap<String, String>());
+            ShardletContext mapShard = getShardletContext().tryCreateGameApp("MapShard", params);
             
             // TODO: check for null value of mapShard (meaning there was no MapShard generated).
             

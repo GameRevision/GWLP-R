@@ -6,6 +6,7 @@ package com.gamerevision.gwlpr.loginshard.controllers;
 
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P004_AccountLoginAction;
 import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
+import com.gamerevision.gwlpr.loginshard.SessionAttachment;
 import com.gamerevision.gwlpr.loginshard.events.DatabaseConnectionProviderEvent;
 import com.gamerevision.gwlpr.loginshard.model.logic.CheckLoginInfo;
 import com.gamerevision.gwlpr.loginshard.views.AccountGuiInfoView;
@@ -50,7 +51,7 @@ public class Login extends GenericShardlet
         LOGGER.debug("got the account login packet");
         Session session = action.getSession();
      
-        session.setAttribute("SyncCount", action.getLoginCount());
+        ((SessionAttachment) session.getAttachment()).setLoginCount(action.getLoginCount());
   
         CheckLoginInfo checkInfo = new CheckLoginInfo(connectionProvider, eMail);
         

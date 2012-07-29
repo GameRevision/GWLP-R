@@ -5,6 +5,7 @@
 package com.gamerevision.gwlpr.loginshard.views;
 
 import com.gamerevision.gwlpr.actions.loginserver.stoc.P003_StreamTerminatorAction;
+import com.gamerevision.gwlpr.loginshard.SessionAttachment;
 import com.realityshard.shardlet.Session;
 
 
@@ -20,7 +21,7 @@ public class StreamTerminatorView
     {
         P003_StreamTerminatorAction streamTerminator = new P003_StreamTerminatorAction();
         streamTerminator.init(session);
-        streamTerminator.setLoginCount((int) session.getAttribute("SyncCount"));
+        streamTerminator.setLoginCount(((SessionAttachment) session.getAttachment()).getLoginCount());
         streamTerminator.setErrorCode(errorCode);
         return streamTerminator;
     }

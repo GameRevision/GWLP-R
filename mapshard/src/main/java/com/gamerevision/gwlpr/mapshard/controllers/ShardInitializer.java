@@ -29,6 +29,8 @@ public class ShardInitializer extends GenericShardlet
     protected void init()
     {
         LOGGER.debug("shard initializer shardlet initialized!");
+
+        LOGGER.debug("mapid = " + this.getShardletContext().getInitParameter("MapId"));
     }
     
     
@@ -40,7 +42,6 @@ public class ShardInitializer extends GenericShardlet
     @EventHandler
     public void gameAppCreatedEventHandler(GameAppCreatedEvent event)
     {
-        
         LoginShardView.SetLoginShardContext(event.getParent());
         
         DatabaseConnectionProvider connectionProvider = new DatabaseConnectionProvider(this.getInitParameter("dbip"),

@@ -5,6 +5,7 @@
 package com.gamerevision.gwlpr.loginshard.views;
 
 import com.gamerevision.gwlpr.actions.loginserver.stoc.P038_SendResponseAction;
+import com.gamerevision.gwlpr.loginshard.SessionAttachment;
 import com.realityshard.shardlet.Session;
 
 
@@ -20,7 +21,7 @@ public class SendResponseView
     {
         P038_SendResponseAction sendResponse = new P038_SendResponseAction();
         sendResponse.init(session);
-        sendResponse.setLoginCount((int) session.getAttribute("SyncCount"));
+        sendResponse.setLoginCount(((SessionAttachment) session.getAttachment()).getLoginCount());
         sendResponse.setData1(0);
         return sendResponse;
     }

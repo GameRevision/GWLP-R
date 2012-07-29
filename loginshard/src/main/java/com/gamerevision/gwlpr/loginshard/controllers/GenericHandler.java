@@ -6,6 +6,7 @@ package com.gamerevision.gwlpr.loginshard.controllers;
 
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P001_ComputerUserAction;
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P053_RequestResponseAction;
+import com.gamerevision.gwlpr.loginshard.SessionAttachment;
 import com.gamerevision.gwlpr.loginshard.views.ComputerInfoReplyView;
 import com.gamerevision.gwlpr.loginshard.views.SendResponseView;
 import com.gamerevision.gwlpr.loginshard.views.StreamTerminatorView;
@@ -54,7 +55,7 @@ public class GenericHandler extends GenericShardlet
         Session session = action.getSession();
         
         
-        session.setAttribute("SyncCount", action.getLoginCount());
+        ((SessionAttachment) session.getAttachment()).setLoginCount(action.getLoginCount());
         
         
         LOGGER.debug("sending send response");

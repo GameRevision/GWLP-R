@@ -5,6 +5,7 @@
 package com.gamerevision.gwlpr.loginshard.controllers;
 
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P010_UnknownAction;
+import com.gamerevision.gwlpr.loginshard.SessionAttachment;
 import com.gamerevision.gwlpr.loginshard.views.AccountPermissionsView;
 import com.gamerevision.gwlpr.loginshard.views.FriendsListEndView;
 import com.gamerevision.gwlpr.loginshard.views.StreamTerminatorView;
@@ -39,7 +40,7 @@ public class InstanceLoad extends GenericShardlet
         LOGGER.debug("got the character play info packet");
         Session session = action.getSession();
         
-        session.setAttribute("SyncCount", action.getUnknown1());
+        ((SessionAttachment) session.getAttachment()).setLoginCount(action.getUnknown1());
         
        
         sendAction(FriendsListEndView.create(session));

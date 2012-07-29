@@ -5,6 +5,7 @@
 package com.gamerevision.gwlpr.loginshard.views;
 
 import com.gamerevision.gwlpr.actions.loginserver.stoc.P017_AccountPermissionsAction;
+import com.gamerevision.gwlpr.loginshard.SessionAttachment;
 import com.realityshard.shardlet.Session;
 
 
@@ -20,7 +21,7 @@ public class AccountPermissionsView
     {
         P017_AccountPermissionsAction accountPermissions = new P017_AccountPermissionsAction();
         accountPermissions.init(session);
-        accountPermissions.setLoginCount((int) session.getAttribute("SyncCount"));
+        accountPermissions.setLoginCount(((SessionAttachment) session.getAttachment()).getLoginCount());
         accountPermissions.setTerritory(2);
         accountPermissions.setTerritoryChanges(4);
         accountPermissions.setData1(new byte[] { 0x3F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 });

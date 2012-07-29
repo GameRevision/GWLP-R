@@ -5,6 +5,7 @@
 package com.gamerevision.gwlpr.loginshard.controllers;
 
 import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
+import com.gamerevision.gwlpr.loginshard.SessionAttachment;
 import com.gamerevision.gwlpr.loginshard.events.DatabaseConnectionProviderEvent;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.GenericShardlet;
@@ -41,8 +42,8 @@ public class ShardInitializer extends GenericShardlet
                     return false;
                 }
                 
-                action.getSession().setAttribute("SyncCount", (int) 0);
-                
+                action.getSession().setAttachment(new SessionAttachment());
+
                 return true;
             }
         };
