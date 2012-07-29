@@ -5,8 +5,6 @@
 package com.gamerevision.gwlpr.loginshard.views;
 
 import com.gamerevision.gwlpr.actions.loginserver.stoc.P5633_ServerSeedAction;
-import com.gamerevision.gwlpr.loginshard.events.GotClientSeedEvent;
-import com.gamerevision.gwlpr.loginshard.events.WrongClientVersionEvent;
 import com.gamerevision.gwlpr.loginshard.model.logic.EncryptionDataHolder;
 import com.realityshard.shardlet.Session;
 import com.realityshard.shardlet.ShardletContext;
@@ -36,10 +34,8 @@ public class HandshakeView
     
     public void sendServerSeed(Session session, EncryptionDataHolder data)
     {
-        LOGGER.debug("bla");
-        
         // do smthin with the data to create the server seed byte array
-        byte[] serverSeed = new byte[0]; // TODO: replace me!
+        byte[] serverSeed = new byte[20]; // TODO: replace me!
         
         P5633_ServerSeedAction seedAction = new P5633_ServerSeedAction();
         seedAction.init(session);
