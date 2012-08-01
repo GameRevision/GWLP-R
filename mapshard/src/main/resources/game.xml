@@ -19,4 +19,5 @@
 	<Shardlet name="MapShard-ClientVerifier" class="com.gamerevision.gwlpr.mapshard.controllers.ClientVerifier"/>
 	<Shardlet name="MapShard-Handshake" class="com.gamerevision.gwlpr.mapshard.controllers.Handshake"/>
 	<Shardlet name="MapShard-CharacterCreation" class="com.gamerevision.gwlpr.mapshard.controllers.CharacterCreation"/>
+	<Shardlet name="MapShard-InstanceLoad" class="com.gamerevision.gwlpr.mapshard.controllers.InstanceLoad"/>
 </GameApp>

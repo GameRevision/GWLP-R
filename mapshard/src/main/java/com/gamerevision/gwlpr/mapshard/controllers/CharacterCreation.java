@@ -9,7 +9,10 @@ import com.gamerevision.gwlpr.actions.gameserver.ctos.P130_CreateNewCharacterAct
 import com.gamerevision.gwlpr.actions.gameserver.ctos.P132_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.P141_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.P378_UnknownAction;
-import com.gamerevision.gwlpr.actions.gameserver.stoc.P381_UnknownAction;
+import com.gamerevision.gwlpr.framework.database.DBCharacter;
+import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
+import com.gamerevision.gwlpr.mapshard.SessionAttachment;
+import com.gamerevision.gwlpr.mapshard.events.DatabaseConnectionProviderEvent;
 import com.gamerevision.gwlpr.mapshard.views.CharacterCreateAcknowledgeView;
 import com.gamerevision.gwlpr.mapshard.views.UpdateAttribPtsView;
 import com.gamerevision.gwlpr.mapshard.views.UpdateGenericValueIntView;
@@ -32,6 +35,7 @@ public class CharacterCreation extends GenericShardlet
 {
     
     private static Logger LOGGER = LoggerFactory.getLogger(CharacterCreation.class);
+    private DatabaseConnectionProvider connectionProvider;
     
     
     @Override
@@ -53,7 +57,7 @@ public class CharacterCreation extends GenericShardlet
         
         
         LOGGER.debug("sending update generic value integer");
-        sendAction(UpdateGenericValueIntView.create(session));
+        sendAction(UpdateGenericValueIntView.create(session, 64, 0));
         
         
         LOGGER.debug("sending create character acknowledgement");
@@ -78,23 +82,28 @@ public class CharacterCreation extends GenericShardlet
     {
         LOGGER.debug("got the validate created character packet");
         Session session = action.getSession();
+        SessionAttachment attachment = (SessionAttachment) session.getAttachment();
         
         P141_UnknownAction dAction = new P141_UnknownAction();
         dAction.init(session);
-        dAction.setUnknown1((short) 514);
+        dAction.setUnknown1((short) 248);
         sendAction(dAction);
         
         /*P381_UnknownAction mAction = new P381_UnknownAction();
         mAction.init(session);
         mAction.setUnknown1(29);
         sendAction(mAction);*/
+        
+        String characterName = new String(action.getUnknown1());
+        byte[] appearance = action.getUnknown2();
+        DBCharacter.createNewCharacter(connectionProvider, attachment.getAccountId(), characterName, appearance);
 
         
         P378_UnknownAction sAction = new P378_UnknownAction();
         sAction.init(session);
         sAction.setUnknown1(new byte[16]);
         sAction.setUnknown2(action.getUnknown1());
-        sAction.setUnknown3((short) 514);
+        sAction.setUnknown3((short) 81);
         
         ByteBuffer buffer = ByteBuffer.allocate(100).order(ByteOrder.LITTLE_ENDIAN);
         buffer.putShort((short) 6);
@@ -109,5 +118,12 @@ public class CharacterCreation extends GenericShardlet
         sAction.setUnknown4(a);
 
         sendAction(sAction);
+    }
+    
+    
+    @EventHandler
+    public void databaseConnectionProviderHandler(DatabaseConnectionProviderEvent event)
+    {
+        this.connectionProvider = event.getConnectionProvider();
     }
 }

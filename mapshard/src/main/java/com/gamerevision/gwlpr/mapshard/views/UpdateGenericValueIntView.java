@@ -16,13 +16,13 @@ import com.realityshard.shardlet.Session;
 public class UpdateGenericValueIntView
 {
 
-    public static P147_UpdateGenericValueIntAction create(Session session)
+    public static P147_UpdateGenericValueIntAction create(Session session, int valueId, int value)
     {
         P147_UpdateGenericValueIntAction updateGenericValueInt = new P147_UpdateGenericValueIntAction();
         updateGenericValueInt.init(session);
-        updateGenericValueInt.setValueID(64);
+        updateGenericValueInt.setValueID(valueId);
         updateGenericValueInt.setAgentID(50);
-        updateGenericValueInt.setValue(0);
+        updateGenericValueInt.setValue(value);
         return updateGenericValueInt;
     }
 }

@@ -8,13 +8,12 @@ import com.gamerevision.gwlpr.actions.intershardcom.ISC_AcceptClientReplyAction;
 import com.gamerevision.gwlpr.actions.intershardcom.ISC_AcceptClientRequestAction;
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P041_CharacterPlayInfoAction;
 import com.gamerevision.gwlpr.loginshard.SessionAttachment;
-import com.gamerevision.gwlpr.loginshard.views.ReferToGameServerView;
+import com.gamerevision.gwlpr.loginshard.views.DispatcherView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.GenericShardlet;
 import com.realityshard.shardlet.Session;
 import com.realityshard.shardlet.ShardletContext;
 import java.util.HashMap;
-import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,11 +27,14 @@ public class Dispatcher extends GenericShardlet
 {
     
     private static Logger LOGGER = LoggerFactory.getLogger(Dispatcher.class);
+    private DispatcherView dispatcherView;
     
     
     @Override
     protected void init() 
     {
+        this.dispatcherView = new DispatcherView(getShardletContext());
+        
         LOGGER.debug("dispatcher shardlet initialized!");
     }
     
@@ -41,15 +43,19 @@ public class Dispatcher extends GenericShardlet
     public void characterPlayInfoHandler(P041_CharacterPlayInfoAction action)
     {
         LOGGER.debug("got the character play info packet");
+        
         Session session = action.getSession();
-        
-        
-        ((SessionAttachment) session.getAttachment()).setLoginCount(action.getLoginCount());
+        SessionAttachment attachment = (SessionAttachment) session.getAttachment();
+        attachment.setLoginCount(action.getLoginCount());
         
         
         int mapId = action.getGameMapId();
+        mapId = (mapId == 0) ? mapId : 248;
         HashMap<String,String> params = new HashMap<>();
         params.put("MapId", String.valueOf(mapId));
+        
+        int accountId = attachment.getAccountId();
+        String characterName = attachment.getCharacterName();
         
         try
         {
@@ -58,7 +64,7 @@ public class Dispatcher extends GenericShardlet
             
             // TODO: check for null value of mapShard (meaning there was no MapShard generated).
             
-            mapShard.sendRemoteEventAction(new ISC_AcceptClientRequestAction(session, 1, 2));
+            mapShard.sendRemoteEventAction(new ISC_AcceptClientRequestAction(session, 1, 2, accountId, characterName));
         }
         catch (Exception ex)
         {
@@ -76,7 +82,8 @@ public class Dispatcher extends GenericShardlet
         if (action.getAccepted())
         {
             LOGGER.debug("the MapShard accepted the session");
-            sendAction(ReferToGameServerView.create(session));
+            
+            dispatcherView.referToGameServer(session, 1, 2, action.getMapId());
         }
         else
         {

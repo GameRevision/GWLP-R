@@ -26,7 +26,7 @@ public final class P150_UpdateGenericValueFloatAction extends GenericAction
 
     private int valueID;
     private int agentID;
-    private int value;
+    private float value;
 
 
     public short getHeader()
@@ -47,7 +47,7 @@ public final class P150_UpdateGenericValueFloatAction extends GenericAction
     }
 
 
-    public void setValue(int newValue)
+    public void setValue(float newValue)
     {
         value = newValue;
     }
@@ -77,7 +77,7 @@ public final class P150_UpdateGenericValueFloatAction extends GenericAction
 
             buffer.putInt(valueID);
             buffer.putInt(agentID);
-            buffer.putInt(value);
+            buffer.putFloat(value);
         }
         catch (BufferOverflowException e)
         {

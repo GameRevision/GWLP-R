@@ -18,6 +18,8 @@ public final class ISC_AcceptClientRequestAction extends GenericEventAction
 
     private int key1;
     private int key2;
+    private int accountId;
+    private String characterName;
     
     
     /**
@@ -25,11 +27,13 @@ public final class ISC_AcceptClientRequestAction extends GenericEventAction
      * 
      * @param   session     the session to be accepted by the MapShard.
      */
-    public ISC_AcceptClientRequestAction(Session session, int key1, int key2)
+    public ISC_AcceptClientRequestAction(Session session, int key1, int key2, int accountId, String characterName)
     {
         init(session);
         this.key1 = key1;
         this.key2 = key2;
+        this.accountId = accountId;
+        this.characterName = characterName;
     }
 
         
@@ -44,6 +48,18 @@ public final class ISC_AcceptClientRequestAction extends GenericEventAction
         return key2;
     }
     
+    
+    public int getAccountId() 
+    {
+        return accountId;
+    }
+    
+    
+    public String getCharacterName()
+    {
+        return characterName;
+    }
+        
     
     @Override
     public void triggerEvent(EventAggregator aggregator)

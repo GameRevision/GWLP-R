@@ -11,7 +11,6 @@ import com.gamerevision.gwlpr.loginshard.model.logic.HandshakeModel;
 import com.gamerevision.gwlpr.loginshard.views.HandshakeView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.GenericShardlet;
-import com.realityshard.shardlet.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,10 +21,10 @@ import org.slf4j.LoggerFactory;
  * 
  * @author _rusty
  */
-public class HandshakeController extends GenericShardlet
+public class Handshake extends GenericShardlet
 {
     
-    private static Logger LOGGER = LoggerFactory.getLogger(HandshakeController.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(Handshake.class);
     private HandshakeView handshakeView;
     
     @Override

@@ -7,9 +7,7 @@ package com.gamerevision.gwlpr.loginshard.controllers;
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P001_ComputerUserAction;
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P053_RequestResponseAction;
 import com.gamerevision.gwlpr.loginshard.SessionAttachment;
-import com.gamerevision.gwlpr.loginshard.views.ComputerInfoReplyView;
-import com.gamerevision.gwlpr.loginshard.views.SendResponseView;
-import com.gamerevision.gwlpr.loginshard.views.StreamTerminatorView;
+import com.gamerevision.gwlpr.loginshard.views.GenericHandlerView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.GenericShardlet;
 import com.realityshard.shardlet.Session;
@@ -27,11 +25,14 @@ public class GenericHandler extends GenericShardlet
 {
     
     private static Logger LOGGER = LoggerFactory.getLogger(GenericHandler.class);
+    private GenericHandlerView genericHandlerView;
     
     
     @Override
     protected void init() 
     {
+        this.genericHandlerView = new GenericHandlerView(getShardletContext());
+        
         LOGGER.debug("generic handler shardlet initialized!");
     }
     
@@ -41,10 +42,8 @@ public class GenericHandler extends GenericShardlet
     {
         LOGGER.debug("got the computer user packet");
         Session session = action.getSession();
-        
-        
-        LOGGER.debug("sending computer info reply");
-        sendAction(ComputerInfoReplyView.create(session));
+
+        genericHandlerView.computerInfoReply(session);
     }
     
     
@@ -53,15 +52,9 @@ public class GenericHandler extends GenericShardlet
     {
         LOGGER.debug("got the request response packet");
         Session session = action.getSession();
+        SessionAttachment attachment = (SessionAttachment) session.getAttachment();
+        attachment.setLoginCount(action.getLoginCount());
         
-        
-        ((SessionAttachment) session.getAttachment()).setLoginCount(action.getLoginCount());
-        
-        
-        LOGGER.debug("sending send response");
-        sendAction(SendResponseView.create(session));
-        
-        LOGGER.debug("sending stream terminator");
-        sendAction(StreamTerminatorView.create(session, 0));
+        genericHandlerView.sendResponse(session, 0);
     }
 }

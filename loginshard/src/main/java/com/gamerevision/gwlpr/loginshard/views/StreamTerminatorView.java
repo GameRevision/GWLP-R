@@ -21,7 +21,7 @@ public class StreamTerminatorView
     {
         P003_StreamTerminatorAction streamTerminator = new P003_StreamTerminatorAction();
         streamTerminator.init(session);
-        streamTerminator.setLoginCount(((SessionAttachment) session.getAttachment()).getLoginCount());
+        streamTerminator.setLoginCount(SessionAttachment.getLoginCount(session));
         streamTerminator.setErrorCode(errorCode);
         return streamTerminator;
     }

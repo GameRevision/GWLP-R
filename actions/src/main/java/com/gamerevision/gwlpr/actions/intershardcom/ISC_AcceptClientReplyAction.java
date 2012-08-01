@@ -17,6 +17,7 @@ public final class ISC_AcceptClientReplyAction extends GenericEventAction
 {
 
     private boolean accepted;   // whether the MapShard accepted the session or not
+    private int mapId; // the map id of this MapShard
     
     
     /**
@@ -25,10 +26,11 @@ public final class ISC_AcceptClientReplyAction extends GenericEventAction
      * @param   session     the session we are talking about.
      * @param   accepted    whether it was accepted by the MapShard or not.
      */
-    public ISC_AcceptClientReplyAction(Session session, boolean accepted)
+    public ISC_AcceptClientReplyAction(Session session, boolean accepted, int mapId)
     {
         init(session);
         this.accepted = accepted;
+        this.mapId = mapId;
     }
 
     
@@ -40,6 +42,17 @@ public final class ISC_AcceptClientReplyAction extends GenericEventAction
     public boolean getAccepted()
     {
         return this.accepted;
+    }
+    
+    
+    /**
+     * Getter.
+     * 
+     * @return  he map id of this MapShard.
+     */
+    public int getMapId()
+    {
+        return this.mapId;
     }
     
     

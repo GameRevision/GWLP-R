@@ -4,6 +4,7 @@
 
 package com.gamerevision.gwlpr.loginshard;
 
+import com.realityshard.shardlet.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,5 +86,11 @@ public class SessionAttachment
     public String getCharacterName()
     {
         return characterName;
+    }
+    
+    
+    public static int getLoginCount(Session session)
+    {
+        return ((SessionAttachment) session.getAttachment()).getLoginCount();
     }
 }

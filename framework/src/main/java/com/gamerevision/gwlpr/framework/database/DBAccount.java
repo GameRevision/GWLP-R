@@ -2,9 +2,8 @@
  * For copyright information see the LICENSE document.
  */
 
-package com.gamerevision.gwlpr.loginshard.model.database;
+package com.gamerevision.gwlpr.framework.database;
 
-import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,21 +18,23 @@ import org.slf4j.LoggerFactory;
  * 
  * @author miracle444
  */
-public class Account
+public class DBAccount
 {
     
-    private static Logger LOGGER = LoggerFactory.getLogger(Account.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(DBAccount.class);
     
+    private int id;
     private String password;
     
     
     /*
      * Returns all login information (null if none exist).
      */
-    public Account(ResultSet resultSet)
+    public DBAccount(ResultSet resultSet)
     {
         try
         {
+            this.id = resultSet.getInt("ID");
             this.password = resultSet.getString("Password");
         }
         catch (SQLException ex)
@@ -43,15 +44,21 @@ public class Account
     }
     
     
+    public int getId()
+    {
+        return id;
+    }
+    
+    
     public String getPassword()
     {
         return password;
     }
     
     
-    public static Account getByEMail(DatabaseConnectionProvider connectionProvider, String eMail)
+    public static DBAccount getByEMail(DatabaseConnectionProvider connectionProvider, String eMail)
     {
-        Account result = null;
+        DBAccount result = null;
         
         try
         {
@@ -60,7 +67,7 @@ public class Account
             ResultSet resultSet = stmt.executeQuery("SELECT * FROM accounts WHERE EMail='"+eMail+"';");
             if (resultSet.next())
             {
-                result = new Account(resultSet);
+                result = new DBAccount(resultSet);
             }
             resultSet.close();
             stmt.close();
