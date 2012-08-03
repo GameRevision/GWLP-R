@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  * A generic handler should handle all actions that have to be handled but
  * we don't really process the data.
  * 
- * @author _rusty
+ * @author miracle444
  */
 public class GenericHandler extends GenericShardlet
 {
@@ -28,29 +28,42 @@ public class GenericHandler extends GenericShardlet
     private GenericHandlerView genericHandlerView;
     
     
+    /**
+     * Initialize this shardlet
+     */
     @Override
     protected void init() 
     {
         this.genericHandlerView = new GenericHandlerView(getShardletContext());
         
-        LOGGER.debug("generic handler shardlet initialized!");
+        LOGGER.debug("Generic handler shardlet initialized!");
     }
     
     
+    /**
+     * Event handler.
+     * 
+     * @param action 
+     */
     @EventHandler
     public void computerUserHandler(P001_ComputerUserAction action)
     {
-        LOGGER.debug("got the computer user packet");
+        LOGGER.debug("Got the computer user packet");
         Session session = action.getSession();
 
         genericHandlerView.computerInfoReply(session);
     }
     
     
+    /**
+     * Event handler.
+     * 
+     * @param action 
+     */
     @EventHandler
     public void requestResponseHandler(P053_RequestResponseAction action)
     {
-        LOGGER.debug("got the request response packet");
+        LOGGER.debug("Got the request response packet");
         Session session = action.getSession();
         SessionAttachment attachment = (SessionAttachment) session.getAttachment();
         attachment.setLoginCount(action.getLoginCount());

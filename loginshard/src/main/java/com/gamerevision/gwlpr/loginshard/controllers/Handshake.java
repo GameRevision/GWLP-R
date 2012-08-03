@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  * This shardlet handles the handshake process for GW clients.
  * It establishes an encrypted session.
  * 
- * @author _rusty
+ * @author miracle444
  */
 public class Handshake extends GenericShardlet
 {
@@ -27,19 +27,28 @@ public class Handshake extends GenericShardlet
     private static Logger LOGGER = LoggerFactory.getLogger(Handshake.class);
     private HandshakeView handshakeView;
     
+    
+    /**
+     * Initialize this shardlet
+     */
     @Override
     protected void init() 
     {
         this.handshakeView = new HandshakeView(getShardletContext());
         
-        LOGGER.debug("handshake shardlet initialized!");
+        LOGGER.debug("Handshake shardlet initialized!");
     }
     
     
+    /**
+     * Event handler.
+     * 
+     * @param action 
+     */
     @EventHandler
     public void clientVersionHandler(P1024_ClientVersionAction action)
     {
-        LOGGER.debug("got the client version packet");
+        LOGGER.debug("Got the client version packet");
         
         int clientVersion = action.getUnknown2();
         
@@ -52,10 +61,15 @@ public class Handshake extends GenericShardlet
     }
     
     
+    /**
+     * Event handler.
+     * 
+     * @param action 
+     */
     @EventHandler
     public void clientSeedHandler(P16896_ClientSeedAction action)
     {        
-        LOGGER.debug("got the client seed packet");
+        LOGGER.debug("Got the client seed packet");
         
         byte[] clientSeed = action.getClientSeed();
         

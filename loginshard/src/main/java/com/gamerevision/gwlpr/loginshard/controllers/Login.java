@@ -36,17 +36,25 @@ public class Login extends GenericShardlet
     private LoginView loginView;
     
     
+    /**
+     * Initialize this shardlet
+     */
     @Override
     protected void init() 
     {
-        LOGGER.debug("login shardlet initialized!");
+        LOGGER.debug("Login shardlet initialized!");
     }
     
     
+    /**
+     * Event handler
+     * 
+     * @param action 
+     */
     @EventHandler
     public void accountLoginHandler(P004_AccountLoginAction action)
     {
-        
+        // extract the data from the action
         String eMail = new String(action.getEmail());
         String password = new String(action.getPassword(), Charset.forName("UTF-16LE"));
         String characterName = new String(action.getCharacterName());

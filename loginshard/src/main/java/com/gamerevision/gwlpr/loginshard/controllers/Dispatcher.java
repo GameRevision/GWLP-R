@@ -30,19 +30,28 @@ public class Dispatcher extends GenericShardlet
     private DispatcherView dispatcherView;
     
     
+    /**
+     * Initialize this shardlet
+     */
     @Override
     protected void init() 
     {
         this.dispatcherView = new DispatcherView(getShardletContext());
         
-        LOGGER.debug("dispatcher shardlet initialized!");
+        LOGGER.debug("Dispatcher shardlet initialized!");
     }
     
     
+    /**
+     * Event handler.
+     * This handler will manage play info packets.
+     * 
+     * @param action 
+     */
     @EventHandler
     public void characterPlayInfoHandler(P041_CharacterPlayInfoAction action)
     {
-        LOGGER.debug("got the character play info packet");
+        LOGGER.debug("Got the character play info packet");
         
         Session session = action.getSession();
         SessionAttachment attachment = (SessionAttachment) session.getAttachment();
@@ -59,7 +68,7 @@ public class Dispatcher extends GenericShardlet
         
         try
         {
-            LOGGER.debug("trying to create a map shard");
+            LOGGER.debug("Trying to create a map shard");
             ShardletContext mapShard = getShardletContext().tryCreateGameApp("MapShard", params);
             
             // TODO: check for null value of mapShard (meaning there was no MapShard generated).
@@ -73,21 +82,27 @@ public class Dispatcher extends GenericShardlet
     }
     
     
+    /**
+     * Event handler.
+     * This handler will manage session reply messages, used for inter-shard-communication
+     * 
+     * @param action 
+     */
     @EventHandler
-    public void acceptSessionReplyActionHandler(ISC_AcceptClientReplyAction action)
+    public void acceptClientReplyHandler(ISC_AcceptClientReplyAction action)
     {
-        LOGGER.debug("got the accept session reply action");
+        LOGGER.debug("Got the accept session reply action");
         Session session = action.getSession();
         
         if (action.getAccepted())
         {
-            LOGGER.debug("the MapShard accepted the session");
+            LOGGER.debug("The MapShard accepted the session");
             
             dispatcherView.referToGameServer(session, 1, 2, action.getMapId());
         }
         else
         {
-            LOGGER.debug("the MapShard did not accept the session");
+            LOGGER.debug("The MapShard did not accept the session");
             // TODO: Implement what has to be done if it did not accept the session.
         }
     }

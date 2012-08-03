@@ -17,7 +17,7 @@ public final class ISC_AcceptClientReplyAction extends GenericEventAction
 {
 
     private boolean accepted;   // whether the MapShard accepted the session or not
-    private int mapId; // the map id of this MapShard
+    private int mapId;          // the map id of this MapShard
     
     
     /**
@@ -56,6 +56,12 @@ public final class ISC_AcceptClientReplyAction extends GenericEventAction
     }
     
     
+    /**
+     * This method is used by the context of a game app, when this action is 
+     * transmitted to another game app.
+     * The purpose is to let the action trigger the event by itself instead of
+     * having to know the exact type.
+     */
     @Override
     public void triggerEvent(EventAggregator aggregator)
     {
