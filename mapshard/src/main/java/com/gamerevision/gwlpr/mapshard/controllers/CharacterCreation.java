@@ -122,7 +122,7 @@ public class CharacterCreation extends GenericShardlet
     
     
     @EventHandler
-    public void databaseConnectionProviderHandler(MapShardStartupEvent event)
+    public void mapShardStartupEventHandler(MapShardStartupEvent event)
     {
         this.connectionProvider = event.getConnectionProvider();
     }

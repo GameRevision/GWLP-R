@@ -4,7 +4,10 @@
 
 package com.gamerevision.gwlpr.loginshard.views;
 
-import com.gamerevision.gwlpr.actions.loginserver.stoc.*;
+import com.gamerevision.gwlpr.actions.loginserver.stoc.P007_UnknownAction;
+import com.gamerevision.gwlpr.actions.loginserver.stoc.P017_AccountPermissionsAction;
+import com.gamerevision.gwlpr.actions.loginserver.stoc.P020_FriendsListEndAction;
+import com.gamerevision.gwlpr.actions.loginserver.stoc.P022_AccountGuiInfoAction;
 import com.gamerevision.gwlpr.framework.database.DBCharacter;
 import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.loginshard.SessionAttachment;
@@ -12,7 +15,6 @@ import com.realityshard.shardlet.Session;
 import com.realityshard.shardlet.ShardletContext;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

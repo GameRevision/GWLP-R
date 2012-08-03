@@ -85,7 +85,7 @@ public class InstanceLoad extends GenericShardlet
     {
         LOGGER.debug("got the instance load request spawn point packet");
         Session session = action.getSession();
-      
+        
         
         P391_InstanceLoadSpawnPointAction instanceLoadSpawnPoint = new P391_InstanceLoadSpawnPointAction();
         instanceLoadSpawnPoint.init(session);

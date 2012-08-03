@@ -4,12 +4,7 @@
 
 package com.gamerevision.gwlpr.framework.entitysystem.builders;
 
-import com.gamerevision.gwlpr.framework.entitysystem.AttributeComponent;
-import com.gamerevision.gwlpr.framework.entitysystem.ComponentManager;
-import com.gamerevision.gwlpr.framework.entitysystem.Entity;
-import com.gamerevision.gwlpr.framework.entitysystem.EntityBuilder;
-import com.gamerevision.gwlpr.framework.entitysystem.EntityEventAggregator;
-import com.gamerevision.gwlpr.framework.entitysystem.GenericEntity;
+import com.gamerevision.gwlpr.framework.entitysystem.*;
 import com.gamerevision.gwlpr.framework.entitysystem.components.attributes.HealthAttribute;
 import com.gamerevision.gwlpr.framework.entitysystem.components.behaviours.TakeDamageBehaviour;
 import java.util.HashMap;
