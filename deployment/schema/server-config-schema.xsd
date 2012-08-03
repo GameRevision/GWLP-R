@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.0">
+    
+    
+<!--RootNode: ServerConfig-->
+    <xsd:element name="ServerConfig">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="ServerName"      type="xsd:string"       minOccurs="1" maxOccurs="1" />
+                <xsd:element name="Description"     type="xsd:string"       minOccurs="1" maxOccurs="1" />
+                <xsd:element name="Version"         type="xsd:string"       minOccurs="1" maxOccurs="1" />
+                <xsd:element name="SessionTimeOut"  type="xsd:unsignedInt"  minOccurs="0" maxOccurs="1" default="60000" />
+                <xsd:element name="OpenPorts"       type="Ports"            minOccurs="1" maxOccurs="1" />
+                <xsd:element name="ClusterInfo"     type="ClusterInfo"      minOccurs="1" maxOccurs="1" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    
+    
+<!--Type defs-->
+    <!--ClusterInfo-->
+    <xsd:complexType name="ClusterInfo">
+        <xsd:sequence>
+            <xsd:element name="ClusterServer" type="ClusterServer" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    
+    <!--ClusterServer-->
+    <xsd:complexType name="ClusterServer">
+        <xsd:sequence>
+            <xsd:element name="IP"      type="xsd:string"   minOccurs="1" maxOccurs="1" />
+            <xsd:element name="Ports"   type="Ports"        minOccurs="1" maxOccurs="1" />
+        </xsd:sequence>
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <xsd:attribute name="type" type="xsd:string" use="required" />
+    </xsd:complexType>
+    
+    
+    <!--Ports-->
+    <xsd:complexType name="Ports">
+        <xsd:sequence>
+            <xsd:element name="Port"        type="Port"         minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="PortRange"   type="PortRange"    minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <!--cluster communication port number-->
+        <xsd:attribute name="cluster"       type="xsd:unsignedInt" default="6211" />
+        <!--shardlet rmi/rpc port number-->
+        <xsd:attribute name="rmi"           type="xsd:unsignedInt" default="6212" />
+        <!--maintenance port number, currently unused-->
+        <xsd:attribute name="maintenance"   type="xsd:unsignedInt" default="6213" />
+    </xsd:complexType>
+    
+    
+    <!--Port-->
+    <xsd:complexType name="Port">
+        <xsd:attribute name="name"      type="xsd:string"       use="required" />
+        <xsd:attribute name="number"    type="xsd:unsignedInt"  use="required" />
+    </xsd:complexType>
+    
+    
+    <!--PortRange-->
+    <xsd:complexType name="PortRange">
+        <xsd:attribute name="name"          type="xsd:string"       use="required" />
+        <xsd:attribute name="lowerBound"    type="xsd:unsignedInt"  use="required" />
+        <xsd:attribute name="upperBound"    type="xsd:unsignedInt"  use="required" />
+    </xsd:complexType>
+    
+</xsd:schema>

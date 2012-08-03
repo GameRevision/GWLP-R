@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jxb="http://java.sun.com/xml/ns/jaxb" jxb:version="2.0">
+
+
+<!--RootNode: Protocol-->
+    <xsd:element name="Protocol">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="ProtocolFilter" type="ProtocolFilterConfig" minOccurs="1" maxOccurs="unbounded" />
+            </xsd:sequence>
+            <xsd:attribute name="name" type="xsd:string"        use="required" />
+            <xsd:attribute name="port" type="xsd:unsignedInt"   use="required" />
+        </xsd:complexType>
+    </xsd:element>
+    
+
+<!--Type defs-->
+    <!--ProtocolFilterConfig-->
+    <xsd:complexType name="ProtocolFilterConfig">
+        <xsd:sequence>
+            <xsd:element name="InitParam" type="InitParam" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attribute name="name"  type="xsd:string"   use="required" />
+        <xsd:attribute name="class" type="xsd:string"   use="required" />
+        <xsd:attribute name="in"    type="xsd:boolean"  default="false" />
+        <xsd:attribute name="out"   type="xsd:boolean"  default="false" />
+    </xsd:complexType>
+
+    <!--InitParam-->
+    <xsd:complexType name="InitParam">
+        <xsd:attribute name="name"  type="xsd:string" use="required" />
+        <xsd:attribute name="value" type="xsd:string" use="required" />
+    </xsd:complexType>
+
+</xsd:schema>
