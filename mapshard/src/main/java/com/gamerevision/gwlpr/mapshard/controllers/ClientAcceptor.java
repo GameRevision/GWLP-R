@@ -18,9 +18,9 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * This shardlet handles client verifier requests.
+ * TODO: Describe me!
  * 
- * @author _rusty
+ * @author miracle444
  */
 public class ClientAcceptor extends GenericShardlet
 {

@@ -6,8 +6,8 @@ package com.gamerevision.gwlpr.loginshard.controllers;
 
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P1024_ClientVersionAction;
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P16896_ClientSeedAction;
-import com.gamerevision.gwlpr.loginshard.model.logic.EncryptionDataHolder;
-import com.gamerevision.gwlpr.loginshard.model.logic.HandshakeModel;
+import com.gamerevision.gwlpr.loginshard.models.EncryptionDataHolder;
+import com.gamerevision.gwlpr.loginshard.models.HandshakeModel;
 import com.gamerevision.gwlpr.loginshard.views.HandshakeView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.GenericShardlet;

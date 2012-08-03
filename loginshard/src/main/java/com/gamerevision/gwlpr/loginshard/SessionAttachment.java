@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * This class describes the attachement of a session inside the login shard.
+ * This class describes the attachment of a session inside the login shard.
  * 
  * @author miracle444
  */
@@ -89,6 +89,12 @@ public class SessionAttachment
     }
     
     
+    /**
+     * Static getter.
+     * 
+     * @param session
+     * @return 
+     */
     public static int getLoginCount(Session session)
     {
         return ((SessionAttachment) session.getAttachment()).getLoginCount();

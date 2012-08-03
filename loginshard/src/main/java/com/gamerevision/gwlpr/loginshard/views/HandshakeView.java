@@ -5,7 +5,7 @@
 package com.gamerevision.gwlpr.loginshard.views;
 
 import com.gamerevision.gwlpr.actions.loginserver.stoc.P5633_ServerSeedAction;
-import com.gamerevision.gwlpr.loginshard.model.logic.EncryptionDataHolder;
+import com.gamerevision.gwlpr.loginshard.models.EncryptionDataHolder;
 import com.realityshard.shardlet.Session;
 import com.realityshard.shardlet.ShardletContext;
 import org.slf4j.Logger;

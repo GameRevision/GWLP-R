@@ -12,19 +12,32 @@ import com.realityshard.shardlet.Event;
  * This event is used to supply interested shardlets with the connection
  * provider object.
  * 
- * @author miracle444
+ * @author miracle444, _rusty
  */
-public class DatabaseConnectionProviderEvent implements Event
+public class LoginShardStartupEvent implements Event
 {
-    
     
     private DatabaseConnectionProvider connectionProvider;
     
-    public DatabaseConnectionProviderEvent(DatabaseConnectionProvider connectionProvider)
+    
+    /**
+     * Constructor.
+     * 
+     * @param       connectionProvider      The data-base connection provider used
+     *                                      by the classes that are reading/writing from the db.
+     * 
+     */
+    public LoginShardStartupEvent(DatabaseConnectionProvider connectionProvider)
     {
         this.connectionProvider = connectionProvider;
     }
     
+    
+    /**
+     * Getter.
+     * 
+     * @return      The database connection provider object that this game app uses
+     */
     public DatabaseConnectionProvider getConnectionProvider()
     {
         return this.connectionProvider;

@@ -6,7 +6,7 @@ package com.gamerevision.gwlpr.loginshard.controllers;
 
 import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.loginshard.SessionAttachment;
-import com.gamerevision.gwlpr.loginshard.events.DatabaseConnectionProviderEvent;
+import com.gamerevision.gwlpr.loginshard.events.LoginShardStartupEvent;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.GenericShardlet;
 import com.realityshard.shardlet.ShardletAction;
@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 /**
  * This shardlet is used to initialize the MapShard.
  * 
- * @author miracle444
+ * @author miracle444, _rusty
  */
 public class ShardInitializer extends GenericShardlet
 {
@@ -27,11 +27,16 @@ public class ShardInitializer extends GenericShardlet
     private static Logger LOGGER = LoggerFactory.getLogger(ShardInitializer.class);
     
     
+    /**
+     * Initializes this shardlet
+     */
     @Override
     protected void init()
     {
-        LOGGER.debug("shard initializer shardlet initialized!");
+        LOGGER.debug("Shard initializer shardlet initialized!");
         
+        // we simply register a persistant client verifier here, because the login server
+        // will accept any client that actually uses its protocol
         ShardletActionVerifier verf = new ShardletActionVerifier() {
 
             @Override
@@ -48,6 +53,8 @@ public class ShardInitializer extends GenericShardlet
             }
         };
         
+        // after creation we will have to add it to the context, so the context
+        // can decide if it should accept or refuse clients.
         getShardletContext().addClientVerifier(verf, true);
     }
     
@@ -60,12 +67,19 @@ public class ShardInitializer extends GenericShardlet
     @EventHandler
     public void gameAppCreatedEventHandler(GameAppCreatedEvent event)
     {
-        DatabaseConnectionProvider connectionProvider = new DatabaseConnectionProvider(this.getInitParameter("dbip"),
-                                                                            this.getInitParameter("dbport"),
-                                                                            this.getInitParameter("dbdatabase"),
-                                                                            this.getInitParameter("dbusername"),
-                                                                            this.getInitParameter("dbpassword"));
-                
-        publishEvent(new DatabaseConnectionProviderEvent(connectionProvider));
+        // lets assemble the global startup message
+        
+        // create the database stuff
+        DatabaseConnectionProvider connectionProvider = new DatabaseConnectionProvider(
+                this.getInitParameter("dbip"),
+                this.getInitParameter("dbport"),
+                this.getInitParameter("dbdatabase"),
+                this.getInitParameter("dbusername"),
+                this.getInitParameter("dbpassword"));
+        
+        LoginShardStartupEvent ev = new LoginShardStartupEvent(connectionProvider);
+        
+        // finally distribute the message!
+        publishEvent(ev);
     }
 }

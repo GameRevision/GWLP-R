@@ -10,8 +10,8 @@ import com.gamerevision.gwlpr.framework.database.DBAccount;
 import com.gamerevision.gwlpr.framework.database.DBCharacter;
 import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.loginshard.SessionAttachment;
-import com.gamerevision.gwlpr.loginshard.events.DatabaseConnectionProviderEvent;
-import com.gamerevision.gwlpr.loginshard.model.logic.CheckLoginInfo;
+import com.gamerevision.gwlpr.loginshard.events.LoginShardStartupEvent;
+import com.gamerevision.gwlpr.loginshard.models.CheckLoginInfo;
 import com.gamerevision.gwlpr.loginshard.views.LoginView;
 import com.gamerevision.gwlpr.loginshard.views.StreamTerminatorView;
 import com.realityshard.shardlet.EventHandler;
@@ -98,7 +98,7 @@ public class Login extends GenericShardlet
     
     
     @EventHandler
-    public void databaseConnectionProviderHandler(DatabaseConnectionProviderEvent event)
+    public void databaseConnectionProviderHandler(LoginShardStartupEvent event)
     {
         this.connectionProvider = event.getConnectionProvider();
         this.loginView = new LoginView(getShardletContext(), connectionProvider);

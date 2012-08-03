@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * This class describes the attachement of a session inside the map shard.
+ * This class describes the attachment of a session inside the map shard.
  * 
  * @author miracle444
  */
@@ -21,6 +21,12 @@ public class SessionAttachment
     private String characterName;
 
     
+    /**
+     * Constructor
+     * 
+     * @param accountId
+     * @param characterName 
+     */
     public SessionAttachment(int accountId, String characterName) 
     {
         this.accountId = accountId;

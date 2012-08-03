@@ -2,7 +2,7 @@
  * For copyright information see the LICENSE document.
  */
 
-package com.gamerevision.gwlpr.loginshard.model.logic;
+package com.gamerevision.gwlpr.loginshard.models;
 
 import com.gamerevision.gwlpr.framework.database.DBAccount;
 import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;

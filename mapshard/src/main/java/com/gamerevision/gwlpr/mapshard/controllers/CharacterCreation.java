@@ -12,7 +12,7 @@ import com.gamerevision.gwlpr.actions.gameserver.stoc.P378_UnknownAction;
 import com.gamerevision.gwlpr.framework.database.DBCharacter;
 import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.mapshard.SessionAttachment;
-import com.gamerevision.gwlpr.mapshard.events.DatabaseConnectionProviderEvent;
+import com.gamerevision.gwlpr.mapshard.events.MapShardStartupEvent;
 import com.gamerevision.gwlpr.mapshard.views.CharacterCreateAcknowledgeView;
 import com.gamerevision.gwlpr.mapshard.views.UpdateAttribPtsView;
 import com.gamerevision.gwlpr.mapshard.views.UpdateGenericValueIntView;
@@ -122,7 +122,7 @@ public class CharacterCreation extends GenericShardlet
     
     
     @EventHandler
-    public void databaseConnectionProviderHandler(DatabaseConnectionProviderEvent event)
+    public void databaseConnectionProviderHandler(MapShardStartupEvent event)
     {
         this.connectionProvider = event.getConnectionProvider();
     }
