@@ -15,7 +15,7 @@ import com.gamerevision.gwlpr.mapshard.SessionAttachment;
 import com.gamerevision.gwlpr.mapshard.events.MapShardStartupEvent;
 import com.gamerevision.gwlpr.mapshard.views.CharacterCreateAcknowledgeView;
 import com.gamerevision.gwlpr.mapshard.views.UpdateAttribPtsView;
-import com.gamerevision.gwlpr.mapshard.views.UpdateGenericValueIntView;
+import com.gamerevision.gwlpr.mapshard.views.UpdateGenericValue;
 import com.gamerevision.gwlpr.mapshard.views.UpdatePrivateProfessionsView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.GenericShardlet;
@@ -57,7 +57,8 @@ public class CharacterCreation extends GenericShardlet
         
         
         LOGGER.debug("sending update generic value integer");
-        sendAction(UpdateGenericValueIntView.create(session, 64, 0));
+        // TODO: Fix agentID!
+        sendAction(UpdateGenericValue.create(session, 50, UpdateGenericValue.Type.Unknown14, 0));
         
         
         LOGGER.debug("sending create character acknowledgement");

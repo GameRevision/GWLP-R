@@ -10,8 +10,7 @@ import com.gamerevision.gwlpr.actions.gameserver.ctos.P138_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.*;
 import com.gamerevision.gwlpr.mapshard.SessionAttachment;
 import com.gamerevision.gwlpr.mapshard.views.UpdateAttribPtsView;
-import com.gamerevision.gwlpr.mapshard.views.UpdateGenericValueFloatView;
-import com.gamerevision.gwlpr.mapshard.views.UpdateGenericValueIntView;
+import com.gamerevision.gwlpr.mapshard.views.UpdateGenericValue;
 import com.gamerevision.gwlpr.mapshard.views.UpdatePrivateProfessionsView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.GenericShardlet;
@@ -133,18 +132,19 @@ public class InstanceLoad extends GenericShardlet
         sendAction(updateSkillbar);
         
         
-        LOGGER.debug("sending update generic value integer energy");
-        sendAction(UpdateGenericValueIntView.create(session, 41, 20));
-        LOGGER.debug("sending update generic value integer health");
-        sendAction(UpdateGenericValueIntView.create(session, 42, 20));
+        // TODO: Fix agentIDs!
+        LOGGER.debug("Sending the generic value for energy");
+        sendAction(UpdateGenericValue.create(session, 50, UpdateGenericValue.Type.Energy, 20));
+        LOGGER.debug("Sending the  generic value for health");
+        sendAction(UpdateGenericValue.create(session, 50, UpdateGenericValue.Type.Health, 20));
         
-        LOGGER.debug("sending update generic value float energy reg");
-        sendAction(UpdateGenericValueFloatView.create(session, 43, 0.033F));
-        LOGGER.debug("sending update generic value float health reg");
-        sendAction(UpdateGenericValueFloatView.create(session, 44, 0));
+        LOGGER.debug("Sending the generic value for energy regeneration");
+        sendAction(UpdateGenericValue.create(session, 50, UpdateGenericValue.Type.EnergyRegen, 0.033F));
+        LOGGER.debug("Sending the generic value for health regeneration");
+        sendAction(UpdateGenericValue.create(session, 50, UpdateGenericValue.Type.HealthRegen, 0));
         
-        LOGGER.debug("sending update generic value integer public level");
-        sendAction(UpdateGenericValueIntView.create(session, 36, 1));
+        LOGGER.debug("Sending the generic value for public level");
+        sendAction(UpdateGenericValue.create(session, 50, UpdateGenericValue.Type.PublicLevel, 1));
         
         P127_UnknownAction zoneDataPrepMapData = new P127_UnknownAction();
         zoneDataPrepMapData.init(session);
