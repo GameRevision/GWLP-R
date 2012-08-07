@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<diagram program="umlet" version="11.4">
+<diagram program="umlet" version="11.5">
   <zoom_level>8</zoom_level>
   <element>
     <type>com.umlet.element.Class</type>
@@ -176,8 +176,8 @@
       <h>312</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(1,1)
+m1=1
+m2=1
 belongs to</panel_attributes>
     <additional_attributes>32;296;72;24</additional_attributes>
   </element>
@@ -190,8 +190,8 @@ belongs to</panel_attributes>
       <h>128</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(0,n)
-m2=(1,1)
+m1=n
+m2=m
 has access to</panel_attributes>
     <additional_attributes>112;24;24;112</additional_attributes>
   </element>
@@ -204,8 +204,8 @@ has access to</panel_attributes>
       <h>96</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(0,n)
-m2=(1,1)
+m1=n
+m2=1
 contains</panel_attributes>
     <additional_attributes>736;80;24;24</additional_attributes>
   </element>
@@ -229,8 +229,8 @@ contains</panel_attributes>
       <h>64</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,n)
-m2=(1,1)
+m1=n
+m2=1
 has</panel_attributes>
     <additional_attributes>24;48;224;24</additional_attributes>
   </element>
@@ -261,8 +261,8 @@ has</panel_attributes>
     <coordinates>
       <x>168</x>
       <y>504</y>
-      <w>48</w>
-      <h>104</h>
+      <w>56</w>
+      <h>112</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
     <additional_attributes>40;24;24;96</additional_attributes>
@@ -272,8 +272,8 @@ has</panel_attributes>
     <coordinates>
       <x>80</x>
       <y>416</y>
-      <w>112</w>
-      <h>96</h>
+      <w>120</w>
+      <h>104</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
     <additional_attributes>104;88;24;24</additional_attributes>
@@ -338,8 +338,8 @@ has</panel_attributes>
     <coordinates>
       <x>40</x>
       <y>480</y>
-      <w>128</w>
-      <h>40</h>
+      <w>136</w>
+      <h>48</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
     <additional_attributes>120;32;24;24</additional_attributes>
@@ -441,8 +441,8 @@ has</panel_attributes>
       <h>224</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(1,1)
+m1=1
+m2=n
 is a</panel_attributes>
     <additional_attributes>264;24;208;128;24;208</additional_attributes>
   </element>
@@ -455,10 +455,10 @@ is a</panel_attributes>
       <h>72</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,n)
-m2=(1,1)
+m1=n
+m2=m
 can access</panel_attributes>
-    <additional_attributes>240;24;168;56;24;56</additional_attributes>
+    <additional_attributes>240;24;192;56;24;56</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
@@ -491,8 +491,8 @@ can access</panel_attributes>
       <h>472</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(1,1)
+m1=1
+m2=1
 primary profession</panel_attributes>
     <additional_attributes>256;24;152;136;80;232;24;456</additional_attributes>
   </element>
@@ -505,8 +505,8 @@ primary profession</panel_attributes>
       <h>472</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(0,1)
+m1=1
+m2=1
 secondary profession</panel_attributes>
     <additional_attributes>256;24;24;456</additional_attributes>
   </element>
@@ -530,16 +530,16 @@ secondary profession</panel_attributes>
       <h>472</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,n)
-m2=(1,1)
+m1=n
+m2=m
 can access</panel_attributes>
     <additional_attributes>24;456;168;224;256;24</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.UseCase</type>
     <coordinates>
-      <x>1112</x>
-      <y>584</y>
+      <x>952</x>
+      <y>456</y>
       <w>64</w>
       <h>32</h>
     </coordinates>
@@ -549,19 +549,19 @@ can access</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>1144</x>
-      <y>536</y>
-      <w>104</w>
-      <h>72</h>
+      <x>984</x>
+      <y>440</y>
+      <w>264</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
-    <additional_attributes>24;56;88;24</additional_attributes>
+    <additional_attributes>24;24;248;104</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.UseCase</type>
     <coordinates>
-      <x>1048</x>
-      <y>424</y>
+      <x>1056</x>
+      <y>432</y>
       <w>64</w>
       <h>32</h>
     </coordinates>
@@ -571,13 +571,13 @@ can access</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>1080</x>
+      <x>1088</x>
       <y>432</y>
-      <w>168</w>
+      <w>160</w>
       <h>120</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
-    <additional_attributes>152;104;24;24</additional_attributes>
+    <additional_attributes>144;104;24;24</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
@@ -665,8 +665,8 @@ can access</panel_attributes>
       <h>56</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(1,n)
+m1=1
+m2=n
 has a</panel_attributes>
     <additional_attributes>24;40;400;40</additional_attributes>
   </element>
@@ -756,8 +756,8 @@ has a</panel_attributes>
       <h>88</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(1,1)
+m1=1
+m2=1
 last outpost</panel_attributes>
     <additional_attributes>216;40;96;40;24;72</additional_attributes>
   </element>
@@ -825,8 +825,8 @@ last outpost</panel_attributes>
       <h>144</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(0,1)
+m1=1
+m2=1
 wears</panel_attributes>
     <additional_attributes>144;24;24;128</additional_attributes>
   </element>
@@ -839,8 +839,8 @@ wears</panel_attributes>
       <h>96</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(0,1)
+m1=1
+m2=1
 consists of</panel_attributes>
     <additional_attributes>24;24;256;80</additional_attributes>
   </element>
@@ -853,8 +853,8 @@ consists of</panel_attributes>
       <h>464</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(0,1)
+m1=1
+m2=1
 leadhand</panel_attributes>
     <additional_attributes>208;24;168;328;24;448</additional_attributes>
   </element>
@@ -863,12 +863,12 @@ leadhand</panel_attributes>
     <coordinates>
       <x>1760</x>
       <y>680</y>
-      <w>248</w>
+      <w>242</w>
       <h>472</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(0,1)
+m1=1
+m2=1
 offhand</panel_attributes>
     <additional_attributes>224;24;208;328;24;456</additional_attributes>
   </element>
@@ -881,8 +881,8 @@ offhand</panel_attributes>
       <h>272</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(1,1)
+m1=1
+m2=1
 has an</panel_attributes>
     <additional_attributes>328;256;24;24</additional_attributes>
   </element>
@@ -895,8 +895,8 @@ has an</panel_attributes>
       <h>184</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(1,1)
+m1=1
+m2=1
 active</panel_attributes>
     <additional_attributes>64;24;24;168</additional_attributes>
   </element>
@@ -909,8 +909,8 @@ active</panel_attributes>
       <h>120</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(4,4)
-m2=(1,1)
+m1=4
+m2=1
 has</panel_attributes>
     <additional_attributes>328;104;24;24</additional_attributes>
   </element>
@@ -934,8 +934,8 @@ has</panel_attributes>
       <h>736</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(1,1)
+m1=1
+m2=1
 has</panel_attributes>
     <additional_attributes>480;720;208;472;24;24</additional_attributes>
   </element>
@@ -981,8 +981,8 @@ has</panel_attributes>
       <h>144</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,n)
-m2=(1,1)
+m1=n
+m2=1
 has</panel_attributes>
     <additional_attributes>24;128;48;24</additional_attributes>
   </element>
@@ -995,8 +995,8 @@ has</panel_attributes>
       <h>176</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(1,1)
+m1=1
+m2=1
 consists of</panel_attributes>
     <additional_attributes>120;160;24;24</additional_attributes>
   </element>
@@ -1042,24 +1042,24 @@ consists of</panel_attributes>
       <h>144</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(0,1)
-m2=(1,1)
+m1=1
+m2=1
 has</panel_attributes>
     <additional_attributes>112;128;24;24</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>984</x>
+      <x>992</x>
       <y>1328</y>
-      <w>106</w>
+      <w>98</w>
       <h>176</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(1,1)
+m1=1
+m2=1
 consists of</panel_attributes>
-    <additional_attributes>56;160;64;24</additional_attributes>
+    <additional_attributes>48;160;56;24</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.UseCase</type>
@@ -1092,8 +1092,8 @@ consists of</panel_attributes>
       <h>384</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(0,n)
-m2=(1,1)
+m1=n
+m2=1
 contains</panel_attributes>
     <additional_attributes>664;24;336;304;24;368</additional_attributes>
   </element>
@@ -1161,16 +1161,16 @@ contains</panel_attributes>
       <h>280</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,n)
-m2=(1,1)
+m1=n
+m2=1
 attributes</panel_attributes>
     <additional_attributes>24;24;280;264</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.UseCase</type>
     <coordinates>
-      <x>672</x>
-      <y>792</y>
+      <x>680</x>
+      <y>528</y>
       <w>64</w>
       <h>32</h>
     </coordinates>
@@ -1180,13 +1180,13 @@ attributes</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>672</x>
-      <y>728</y>
-      <w>56</w>
-      <h>80</h>
+      <x>712</x>
+      <y>528</y>
+      <w>112</w>
+      <h>64</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
-    <additional_attributes>24;64;40;24</additional_attributes>
+    <additional_attributes>24;24;96;48</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.UseCase</type>
@@ -1219,8 +1219,8 @@ attributes</panel_attributes>
       <h>152</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(1,1)
+m1=1
+m2=1
 has a</panel_attributes>
     <additional_attributes>80;136;24;24</additional_attributes>
   </element>
@@ -1339,8 +1339,8 @@ has a</panel_attributes>
     <coordinates>
       <x>80</x>
       <y>504</y>
-      <w>96</w>
-      <h>96</h>
+      <w>104</w>
+      <h>104</h>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
     <additional_attributes>88;24;24;88</additional_attributes>
@@ -1354,8 +1354,8 @@ has a</panel_attributes>
       <h>352</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(0,1)
+m1=1
+m2=1
 head</panel_attributes>
     <additional_attributes>128;24;40;168;232;336</additional_attributes>
   </element>
@@ -1368,8 +1368,8 @@ head</panel_attributes>
       <h>352</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(0,1)
+m1=1
+m2=1
 chest</panel_attributes>
     <additional_attributes>88;24;40;168;200;336</additional_attributes>
   </element>
@@ -1382,8 +1382,8 @@ chest</panel_attributes>
       <h>352</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(0,1)
+m1=1
+m2=1
 hands</panel_attributes>
     <additional_attributes>24;24;136;336</additional_attributes>
   </element>
@@ -1396,8 +1396,8 @@ hands</panel_attributes>
       <h>352</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(0,1)
+m1=1
+m2=1
 legs</panel_attributes>
     <additional_attributes>24;24;104;144;128;336</additional_attributes>
   </element>
@@ -1406,12 +1406,12 @@ legs</panel_attributes>
     <coordinates>
       <x>1624</x>
       <y>784</y>
-      <w>204</w>
+      <w>202</w>
       <h>360</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(0,1)
+m1=1
+m2=1
 feet</panel_attributes>
     <additional_attributes>24;24;176;144;136;344</additional_attributes>
   </element>
@@ -1525,8 +1525,8 @@ body</panel_attributes>
       <h>56</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,n)
-m2=(1,1)
+m1=n
+m2=1
 belongs to</panel_attributes>
     <additional_attributes>152;40;24;40</additional_attributes>
   </element>
@@ -1538,7 +1538,7 @@ belongs to</panel_attributes>
       <w>64</w>
       <h>32</h>
     </coordinates>
-    <panel_attributes>unlocked</panel_attributes>
+    <panel_attributes>name</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -1572,8 +1572,8 @@ belongs to</panel_attributes>
       <h>88</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(1,1)
+m1=1
+m2=1
 has a</panel_attributes>
     <additional_attributes>24;72;296;24</additional_attributes>
   </element>
@@ -1582,12 +1582,12 @@ has a</panel_attributes>
     <coordinates>
       <x>872</x>
       <y>592</y>
-      <w>92</w>
+      <w>88</w>
       <h>160</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(0,8)
-m2=(1,1)
+m1=8
+m2=n
 contains</panel_attributes>
     <additional_attributes>48;144;48;24</additional_attributes>
   </element>
@@ -1765,8 +1765,8 @@ contains</panel_attributes>
       <h>64</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(1,1)
+m1=1
+m2=n
 consists of</panel_attributes>
     <additional_attributes>24;48;400;24</additional_attributes>
   </element>
@@ -1823,8 +1823,8 @@ consists of</panel_attributes>
       <h>192</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(0,1)
-m2=(1,1)
+m1=1
+m2=1
 worn by</panel_attributes>
     <additional_attributes>24;24;232;176</additional_attributes>
   </element>
@@ -1925,8 +1925,8 @@ worn by</panel_attributes>
       <h>608</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(0,1)
-m2=(1,1)
+m1=1
+m2=n
 customized for</panel_attributes>
     <additional_attributes>24;24;80;296;448;592</additional_attributes>
   </element>
@@ -1950,8 +1950,8 @@ customized for</panel_attributes>
       <h>72</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(0,n)
-m2=(1,1)
+m1=n
+m2=1
 contains</panel_attributes>
     <additional_attributes>288;24;24;56</additional_attributes>
   </element>
@@ -2173,8 +2173,8 @@ contains</panel_attributes>
       <h>272</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(0,n)
+m1=1
+m2=n
 has</panel_attributes>
     <additional_attributes>24;24;288;256</additional_attributes>
   </element>
@@ -2183,12 +2183,12 @@ has</panel_attributes>
     <coordinates>
       <x>2112</x>
       <y>304</y>
-      <w>190</w>
+      <w>184</w>
       <h>264</h>
     </coordinates>
     <panel_attributes>lt=-
-m1=(1,1)
-m2=(1,1)
+m1=1
+m2=n
 spawns at</panel_attributes>
     <additional_attributes>152;24;144;160;24;248</additional_attributes>
   </element>
@@ -2235,5 +2235,33 @@ spawns at</panel_attributes>
     </coordinates>
     <panel_attributes>lt=-</panel_attributes>
     <additional_attributes>56;64;24;24</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>920</x>
+      <y>528</y>
+      <w>328</w>
+      <h>224</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=n
+m2=m
+unlocked</panel_attributes>
+    <additional_attributes>24;208;312;24</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>704</x>
+      <y>520</y>
+      <w>544</w>
+      <h>224</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=n
+m2=m
+skilled</panel_attributes>
+    <additional_attributes>24;208;104;56;528;24</additional_attributes>
   </element>
 </diagram>
