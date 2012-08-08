@@ -5,7 +5,7 @@
 package com.gamerevision.gwlpr.mapshard.events;
 
 import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
-import com.gamerevision.gwlpr.framework.entitysystem.EntitySystemFacade;
+import com.realityshard.entitysystem.EntitySystemFacade;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
 import com.realityshard.shardlet.Event;
 
