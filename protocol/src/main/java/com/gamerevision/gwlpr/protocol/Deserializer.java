@@ -5,7 +5,7 @@
 package com.gamerevision.gwlpr.protocol;
 
 import com.realityshard.shardlet.Session;
-import com.realityshard.shardlet.ShardletEventAction;
+import com.realityshard.shardlet.TriggerableAction;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,10 +42,10 @@ public abstract class Deserializer
      * @param   action  the action containing the buffer to be deserialized
      * @return  a list of successfully deserialized ShardletEventActions
      */
-    public List<ShardletEventAction> deserialize(ShardletEventAction action)
+    public List<TriggerableAction> deserialize(TriggerableAction action)
     {
         // the result array containing all successfully deserialized actions
-        List<ShardletEventAction> result = new ArrayList<>();
+        List<TriggerableAction> result = new ArrayList<>();
         
         // get the buffer to deserialize from
         ByteBuffer buffer = action.getBuffer();
@@ -73,7 +73,7 @@ public abstract class Deserializer
             short header = buffer.getShort();
             
             // get the next action from the buffer with this specific header
-            ShardletEventAction nextAction = getNextAction(header, buffer);
+            TriggerableAction nextAction = getNextAction(header, buffer);
             
             // check if deserialization failed
             if (nextAction == null)
@@ -114,9 +114,9 @@ public abstract class Deserializer
      * @return              null if not successful.
      *                      the deserialized next action if successful.
      */
-    private ShardletEventAction getNextAction(short header, ByteBuffer buffer)
+    private TriggerableAction getNextAction(short header, ByteBuffer buffer)
     {
-        ShardletEventAction nextAction = createAction(header);
+        TriggerableAction nextAction = createAction(header);
 
         if (nextAction == null)
         {
@@ -151,5 +151,5 @@ public abstract class Deserializer
      * @param   header      the header to retrieve an action type from
      * @return              a new instance of an action type corresponding to the header
      */
-    protected abstract ShardletEventAction createAction(short header);
+    protected abstract TriggerableAction createAction(short header);
 }

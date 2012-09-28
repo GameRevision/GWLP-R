@@ -5,7 +5,7 @@
 package com.gamerevision.gwlpr.actions.gameserver.ctos;
 
 import com.realityshard.shardlet.EventAggregator;
-import com.realityshard.shardlet.GenericEventAction;
+import com.realityshard.shardlet.utils.GenericTriggerableAction;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 
@@ -15,7 +15,7 @@ import java.nio.ByteBuffer;
  * 
  * @author miracle444
  */
-public final class P1280_VerifyClientAction extends GenericEventAction
+public final class P1280_VerifyClientAction extends GenericTriggerableAction
 {
 
     private short unknown1;

@@ -13,8 +13,8 @@ import com.gamerevision.gwlpr.mapshard.views.UpdateAttribPtsView;
 import com.gamerevision.gwlpr.mapshard.views.UpdateGenericValue;
 import com.gamerevision.gwlpr.mapshard.views.UpdatePrivateProfessionsView;
 import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.GenericShardlet;
 import com.realityshard.shardlet.Session;
+import com.realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -7,16 +7,16 @@ package com.gamerevision.gwlpr.mapshard.controllers;
 import com.gamerevision.gwlpr.actions.gameserver.ctos.P1280_VerifyClientAction;
 import com.gamerevision.gwlpr.actions.intershardcom.ISC_AcceptClientReplyAction;
 import com.gamerevision.gwlpr.actions.intershardcom.ISC_AcceptClientRequestAction;
-import com.realityshard.entitysystem.Entity;
-import com.realityshard.entitysystem.EntitySystemFacade;
 import com.gamerevision.gwlpr.mapshard.SessionAttachment;
 import com.gamerevision.gwlpr.mapshard.events.MapShardStartupEvent;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
 import com.gamerevision.gwlpr.mapshard.views.LoginShardView;
+import com.realityshard.entitysystem.Entity;
+import com.realityshard.entitysystem.EntitySystemFacade;
+import com.realityshard.shardlet.Action;
+import com.realityshard.shardlet.ClientVerifier;
 import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.GenericShardlet;
-import com.realityshard.shardlet.ShardletAction;
-import com.realityshard.shardlet.ShardletActionVerifier;
+import com.realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,9 +57,9 @@ public class ClientAcceptor extends GenericShardlet
         
         LOGGER.debug("adding a client verifier");
         
-        ShardletActionVerifier verf = new ShardletActionVerifier() {
+        ClientVerifier verf = new ClientVerifier() {
             @Override
-            public boolean check(ShardletAction action) 
+            public boolean check(Action action) 
             {
                 // ensure the protocol used matches
                 if (!action.getSession().getProtocol().equals("GWGameServerProtocol"))
@@ -80,10 +80,10 @@ public class ClientAcceptor extends GenericShardlet
                 if (thisAction.getKey1() == key1 && thisAction.getKey2() == key2)
                 {
                     // create a new player entity
-                    Entity player = entitySystem.createEntity("Player");
+                    //Entity player = entitySystem.("Player");
                     
                     // and add it to the entity table
-                    clientEntityTable.addClient(action.getSession(), player);
+                    //clientEntityTable.addClient(action.getSession(), player);
                     
                     // generate this new client's session's attachment
                     action.getSession().setAttachment(new SessionAttachment(accountId, characterName));

@@ -5,13 +5,13 @@
 package com.gamerevision.gwlpr.mapshard.controllers;
 
 import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
-import com.realityshard.entitysystem.EntitySystemFacade;
 import com.gamerevision.gwlpr.mapshard.events.MapShardStartupEvent;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
 import com.gamerevision.gwlpr.mapshard.views.LoginShardView;
+import com.realityshard.entitysystem.EntitySystemFacade;
 import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.GenericShardlet;
 import com.realityshard.shardlet.events.GameAppCreatedEvent;
+import com.realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +66,7 @@ public class ShardInitializer extends GenericShardlet
                 this.getInitParameter("dbpassword"));
         
         // create the entity system
-        EntitySystemFacade entitySystem = new EntitySystemFacade(getShardletContext().getExecutor());
+        EntitySystemFacade entitySystem = new EntitySystemFacade();
         
         // create the client lookup table
         ClientLookupTable lookupTable = new ClientLookupTable();

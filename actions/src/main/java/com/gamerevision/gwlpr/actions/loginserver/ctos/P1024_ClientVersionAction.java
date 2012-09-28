@@ -9,7 +9,7 @@
 package com.gamerevision.gwlpr.actions.loginserver.ctos;
 
 import com.realityshard.shardlet.EventAggregator;
-import com.realityshard.shardlet.GenericEventAction;
+import com.realityshard.shardlet.utils.GenericTriggerableAction;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 
@@ -17,7 +17,7 @@ import java.nio.ByteBuffer;
  * This is an unencrypted packet.
  * Its the first packet to be sent by the client.
  */
-public final class P1024_ClientVersionAction extends GenericEventAction
+public final class P1024_ClientVersionAction extends GenericTriggerableAction
 {
 
     private short unknown1;

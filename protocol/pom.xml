@@ -22,7 +22,7 @@
         <dependency>
             <groupId>com.realityshard</groupId>
             <artifactId>shardlet</artifactId>
-            <version>0.1.0_RC2</version>
+            <version>0.1.1</version>
             <type>jar</type>
         </dependency>
         
@@ -30,7 +30,7 @@
         <dependency>
             <groupId>com.gamerevision.gwlpr</groupId>
             <artifactId>actions</artifactId>
-            <version>0.1.0_RC1</version>
+            <version>${project.version}</version>
             <type>jar</type>
         </dependency>
     </dependencies>

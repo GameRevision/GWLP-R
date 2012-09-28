@@ -4,8 +4,8 @@
 
 package com.gamerevision.gwlpr.protocol;
 
-import com.gamerevision.gwlpr.protocol.loginserver.LoginServerDeserializer;
 import com.gamerevision.gwlpr.protocol.gameserver.GameServerDeserializer;
+import com.gamerevision.gwlpr.protocol.loginserver.LoginServerDeserializer;
 import com.realityshard.shardlet.*;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +50,7 @@ public class SerialisationFilter implements ProtocolFilter
      * @return      The list of deseriailized actions 
      */
     @Override
-    public List<ShardletEventAction> doInFilter(ShardletEventAction action)
+    public List<TriggerableAction> doInFilter(TriggerableAction action)
     {
         // try to get the deserializer for this session
         Deserializer deserializer = deserializers.get(action.getSession());
@@ -81,7 +81,7 @@ public class SerialisationFilter implements ProtocolFilter
      * @return      The serialized action
      */
     @Override
-    public ShardletAction doOutFilter(ShardletAction action) 
+    public Action doOutFilter(Action action) 
     {
         // TODO: check success and handle failure
         // serialize it

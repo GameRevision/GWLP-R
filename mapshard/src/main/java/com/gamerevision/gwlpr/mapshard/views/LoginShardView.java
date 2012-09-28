@@ -5,7 +5,7 @@
 package com.gamerevision.gwlpr.mapshard.views;
 
 import com.realityshard.shardlet.ShardletContext;
-import com.realityshard.shardlet.ShardletEventAction;
+import com.realityshard.shardlet.utils.GenericTriggerableAction;
 
 
 /**
@@ -30,7 +30,7 @@ public class LoginShardView
      * @param   action  the action to be sent to the loginShardContext
      * @return  true on success else false.
      */
-    public static boolean sendAction(ShardletEventAction action)
+    public static boolean sendAction(GenericTriggerableAction action)
     {
         // check if the LoginShardContext was set
         if (loginShardContext == null)

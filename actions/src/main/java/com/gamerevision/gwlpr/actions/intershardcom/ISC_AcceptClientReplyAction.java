@@ -5,7 +5,7 @@
 package com.gamerevision.gwlpr.actions.intershardcom;
 
 import com.realityshard.shardlet.EventAggregator;
-import com.realityshard.shardlet.GenericEventAction;
+import com.realityshard.shardlet.utils.GenericTriggerableAction;
 import com.realityshard.shardlet.Session;
 
 /**
@@ -13,7 +13,7 @@ import com.realityshard.shardlet.Session;
  *
  * @author miracle444
  */
-public final class ISC_AcceptClientReplyAction extends GenericEventAction
+public final class ISC_AcceptClientReplyAction extends GenericTriggerableAction
 {
 
     private boolean accepted;   // whether the MapShard accepted the session or not

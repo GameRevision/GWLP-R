@@ -7,7 +7,7 @@ package com.gamerevision.gwlpr.protocol.gameserver;
 import com.gamerevision.gwlpr.actions.gameserver.ctos.*;
 import com.gamerevision.gwlpr.protocol.Deserializer;
 import com.realityshard.shardlet.Session;
-import com.realityshard.shardlet.ShardletEventAction;
+import com.realityshard.shardlet.TriggerableAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +42,7 @@ public class GameServerDeserializer extends Deserializer
      * @return              a new instance of an action type corresponding to the header
      */
     @Override
-    protected ShardletEventAction createAction(short header)
+    protected TriggerableAction createAction(short header)
     {
         switch (header)
         {

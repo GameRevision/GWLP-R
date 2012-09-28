@@ -8,7 +8,7 @@
 
 package com.gamerevision.gwlpr.actions.loginserver.stoc;
 
-import com.realityshard.shardlet.GenericAction;
+import com.realityshard.shardlet.utils.GenericAction;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

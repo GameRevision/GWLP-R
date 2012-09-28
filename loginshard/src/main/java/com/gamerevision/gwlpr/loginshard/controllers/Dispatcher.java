@@ -10,9 +10,9 @@ import com.gamerevision.gwlpr.actions.loginserver.ctos.P041_CharacterPlayInfoAct
 import com.gamerevision.gwlpr.loginshard.SessionAttachment;
 import com.gamerevision.gwlpr.loginshard.views.DispatcherView;
 import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.GenericShardlet;
 import com.realityshard.shardlet.Session;
 import com.realityshard.shardlet.ShardletContext;
+import com.realityshard.shardlet.utils.GenericShardlet;
 import java.util.HashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

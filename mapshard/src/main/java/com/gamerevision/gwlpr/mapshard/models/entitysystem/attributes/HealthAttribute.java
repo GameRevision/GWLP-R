@@ -6,8 +6,10 @@ package com.gamerevision.gwlpr.mapshard.models.entitysystem.attributes;
 
 import com.realityshard.entitysystem.AttributeComponent;
 import com.realityshard.entitysystem.Entity;
-import com.realityshard.entitysystem.EntityEventAggregator;
+//import com.realityshard.entitysystem.EntityEventAggregator;
 import com.gamerevision.gwlpr.mapshard.models.entitysystem.events.OnDeath;
+import com.realityshard.entitysystem.ComponentManager;
+import com.realityshard.shardlet.EventAggregator;
 import com.realityshard.shardlet.EventHandler;
 
 
@@ -18,14 +20,22 @@ import com.realityshard.shardlet.EventHandler;
  * 
  * @author _rusty
  */
+
+// TODO: i had to comment out most parts to make it runnable again ~miracle444
+
 public final class HealthAttribute implements AttributeComponent
 {
      
     private int max;
     private int current;
     private Entity entity;
-    private EntityEventAggregator aggregator;
+    //private EntityEventAggregator aggregator;
     
+    
+    @Override
+    public void init(ComponentManager compman, EventAggregator aggregator) {
+        
+    }
     
     /**
      * Constructor.
@@ -45,11 +55,11 @@ public final class HealthAttribute implements AttributeComponent
      * @param       entity                  The enetity that this attribute concerns
      * @param       aggregator              The aggregator where we can trigger and handle events           
      */
-    public HealthAttribute(Entity entity, EntityEventAggregator aggregator) 
-    {
-        this.entity = entity;
-        this.aggregator = aggregator;
-    }
+    //public HealthAttribute(Entity entity, EntityEventAggregator aggregator) 
+    //{
+    //  this.entity = entity;
+    //  this.aggregator = aggregator;
+    //}
     
     
     /**
@@ -92,7 +102,7 @@ public final class HealthAttribute implements AttributeComponent
             this.current = 0;
             // as the entity reached 0 health points,
             // we may want to let other know that it died :D
-            aggregator.triggerEntityEvent(entity, new OnDeath());
+            //aggregator.triggerEntityEvent(entity, new OnDeath());
             return;
         }
         // and doesnt exceed the maximum

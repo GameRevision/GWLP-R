@@ -10,7 +10,7 @@ import com.gamerevision.gwlpr.loginshard.models.EncryptionDataHolder;
 import com.gamerevision.gwlpr.loginshard.models.HandshakeModel;
 import com.gamerevision.gwlpr.loginshard.views.HandshakeView;
 import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.GenericShardlet;
+import com.realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

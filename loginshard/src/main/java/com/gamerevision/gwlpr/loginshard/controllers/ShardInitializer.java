@@ -7,11 +7,11 @@ package com.gamerevision.gwlpr.loginshard.controllers;
 import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.loginshard.SessionAttachment;
 import com.gamerevision.gwlpr.loginshard.events.LoginShardStartupEvent;
+import com.realityshard.shardlet.Action;
+import com.realityshard.shardlet.ClientVerifier;
 import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.GenericShardlet;
-import com.realityshard.shardlet.ShardletAction;
-import com.realityshard.shardlet.ShardletActionVerifier;
 import com.realityshard.shardlet.events.GameAppCreatedEvent;
+import com.realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,10 +37,10 @@ public class ShardInitializer extends GenericShardlet
         
         // we simply register a persistant client verifier here, because the login server
         // will accept any client that actually uses its protocol
-        ShardletActionVerifier verf = new ShardletActionVerifier() {
+        ClientVerifier verf = new ClientVerifier() {
 
             @Override
-            public boolean check(ShardletAction action) 
+            public boolean check(Action action) 
             {
                 if (!action.getSession().getProtocol().equals("GWLoginServerProtocol"))
                 {

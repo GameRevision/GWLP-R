@@ -7,12 +7,16 @@ package com.gamerevision.gwlpr.mapshard.models.entitysystem.behaviours;
 import com.realityshard.entitysystem.AttributeComponent;
 import com.realityshard.entitysystem.BehaviourComponent;
 import com.realityshard.entitysystem.Entity;
-import com.realityshard.entitysystem.EntityEventAggregator;
+//import com.realityshard.entitysystem.EntityEventAggregator;
 import com.gamerevision.gwlpr.mapshard.models.entitysystem.attributes.HealthAttribute;
 import com.gamerevision.gwlpr.mapshard.models.entitysystem.events.OnDamage;
+import com.realityshard.entitysystem.*;
+import com.realityshard.shardlet.EventAggregator;
 import com.realityshard.shardlet.EventHandler;
 import java.util.Map;
 
+
+// TODO: i had to comment out most parts to make it runnable again ~miracle444
 
 /**
  * This class implements the behaviour of taking damage.
@@ -26,10 +30,14 @@ import java.util.Map;
 public class TakeDamageBehaviour implements BehaviourComponent
 {
     
-    private final Entity entity;
-    private final EntityEventAggregator aggregator;
-    private final HealthAttribute health;
+    //private final Entity entity;
+    //private final EntityEventAggregator aggregator;
+    //private final HealthAttribute health;
 
+    @Override
+    public void init(ComponentManager compman, EventAggregator aggregator) {
+        
+    }
     
     /**
      * Constructor.
@@ -39,13 +47,13 @@ public class TakeDamageBehaviour implements BehaviourComponent
      * @param       aggregator              The event aggregator where we will post
      *                                      events to
      */
-    public TakeDamageBehaviour(Entity entity, Map<Class<? extends AttributeComponent>, AttributeComponent> attributes, EntityEventAggregator aggregator) 
-    {
-        this.entity = entity;
-        this.aggregator = aggregator;
-        
-        this.health = (HealthAttribute) attributes.get(HealthAttribute.class);
-    }
+    //public TakeDamageBehaviour(Entity entity, Map<Class<? extends AttributeComponent>, AttributeComponent> attributes, EntityEventAggregator aggregator) 
+    //{
+    //    this.entity = entity;
+    //    //this.aggregator = aggregator;
+    //    
+    //    this.health = (HealthAttribute) attributes.get(HealthAttribute.class);
+    //}
 
     
     /**
@@ -75,7 +83,7 @@ public class TakeDamageBehaviour implements BehaviourComponent
         // but we must trust the aggregator to distribute only those events that concern
         // this object
         
-        int current = health.getValue();
-        health.setValue(current - damage.getAmount());
+        //int current = health.getValue();
+        //health.setValue(current - damage.getAmount());
     }
 }

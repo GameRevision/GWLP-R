@@ -5,15 +5,15 @@
 package com.gamerevision.gwlpr.actions.intershardcom;
 
 import com.realityshard.shardlet.EventAggregator;
-import com.realityshard.shardlet.GenericEventAction;
 import com.realityshard.shardlet.Session;
+import com.realityshard.shardlet.utils.GenericTriggerableAction;
 
 /**
  * Request from the LoginShard to a MapShard to accept a session.
  *
  * @author miracle444
  */
-public final class ISC_AcceptClientRequestAction extends GenericEventAction
+public final class ISC_AcceptClientRequestAction extends GenericTriggerableAction
 {
 
     private int key1;

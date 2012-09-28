@@ -12,8 +12,8 @@ import com.gamerevision.gwlpr.mapshard.views.CharacterCreateHeadView;
 import com.gamerevision.gwlpr.mapshard.views.InstanceLoadHeadView;
 import com.gamerevision.gwlpr.mapshard.views.ServerSeedView;
 import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.GenericShardlet;
 import com.realityshard.shardlet.Session;
+import com.realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

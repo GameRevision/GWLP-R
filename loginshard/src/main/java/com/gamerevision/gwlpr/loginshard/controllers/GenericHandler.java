@@ -9,8 +9,8 @@ import com.gamerevision.gwlpr.actions.loginserver.ctos.P053_RequestResponseActio
 import com.gamerevision.gwlpr.loginshard.SessionAttachment;
 import com.gamerevision.gwlpr.loginshard.views.GenericHandlerView;
 import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.GenericShardlet;
 import com.realityshard.shardlet.Session;
+import com.realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
