@@ -11,7 +11,6 @@ import com.gamerevision.gwlpr.mapshard.SessionAttachment;
 import com.gamerevision.gwlpr.mapshard.events.MapShardStartupEvent;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
 import com.gamerevision.gwlpr.mapshard.views.LoginShardView;
-import com.realityshard.entitysystem.Entity;
 import com.realityshard.entitysystem.EntitySystemFacade;
 import com.realityshard.shardlet.Action;
 import com.realityshard.shardlet.ClientVerifier;

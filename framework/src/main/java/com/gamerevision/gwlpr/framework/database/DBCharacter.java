@@ -22,9 +22,15 @@ public class DBCharacter
 {
     
     private static Logger LOGGER = LoggerFactory.getLogger(DBCharacter.class);
-    
     private String name;
-    private byte[] appearance;
+    private byte skin;
+    private byte sex;
+    private byte height;
+    private byte haircolor;
+    private byte face;
+    private byte primaryProfession;
+    private byte hairstyle;
+    private byte campaign;
     
     
     private DBCharacter(ResultSet resultSet)
@@ -32,7 +38,14 @@ public class DBCharacter
         try
         {
             this.name = resultSet.getString("Name");
-            this.appearance = resultSet.getBytes("Appearance");
+            this.skin = resultSet.getByte("Skin");
+            this.sex = resultSet.getByte("Sex");
+            this.height = resultSet.getByte("Height");
+            this.haircolor = resultSet.getByte("Haircolor");
+            this.face = resultSet.getByte("Face");
+            this.primaryProfession = resultSet.getByte("PrimaryProfession");
+            this.hairstyle = resultSet.getByte("Hairstyle");
+            this.campaign = resultSet.getByte("Campaign");
         }
         catch (SQLException ex)
         {
@@ -47,21 +60,71 @@ public class DBCharacter
     }
     
     
-    public byte[] getAppearance()
+    public byte getSkin()
     {
-        return appearance;
+        return skin;
+    }
+    
+    public byte getSex()
+    {
+        return sex;
+    }
+        
+        
+    public byte getHeight()
+    {
+        return height;
+    }
+        
+        
+    public byte getHaircolor()
+    {
+        return haircolor;
+    }
+        
+        
+    public byte getFace()
+    {
+        return face;
+    }
+        
+        
+    public byte getPrimaryProfession()
+    {
+        return primaryProfession;
+    }
+        
+        
+    public byte getHairstyle()
+    {
+        return hairstyle;
+    }
+        
+        
+    public byte getCampaign()
+    {
+        return campaign;
     }
     
     
-    public static boolean createNewCharacter(DatabaseConnectionProvider connectionProvider, int accountId, String name, byte[] appearance)
+    public static boolean createNewCharacter(DatabaseConnectionProvider connectionProvider, int accountId, 
+            String characterName, byte sex, byte height, byte skin, byte haircolor, byte face, 
+            byte primaryProfession, byte hairstyle, byte campaign)
     {
         try
         {
             Connection connection = connectionProvider.getConnection();
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO characters ( AccountID, Name, Appearance )  VALUES (?,?,?)");
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO characters (AccountID,Name,Sex,Height,Skin,Haircolor,Face,PrimaryProfession,Hairstyle,Campaign) VALUES (?,?,?,?,?,?,?,?,?,?)");
             ps.setInt(1, accountId);
-            ps.setString(2, name);
-            ps.setBytes(3, appearance);
+            ps.setString(2, characterName);
+            ps.setByte(3, sex);
+            ps.setByte(4, height);
+            ps.setByte(5, skin);
+            ps.setByte(6, haircolor);
+            ps.setByte(7, face);
+            ps.setByte(8, primaryProfession);
+            ps.setByte(9, hairstyle);
+            ps.setByte(10, campaign);
             int rows = ps.executeUpdate();
             ps.close();
             connection.close();
@@ -70,7 +133,7 @@ public class DBCharacter
         } 
         catch (SQLException ex) 
         {
-            LOGGER.error("sql error in getByEMail");
+            LOGGER.error("sql error in create new character");
         }
         
         return false;

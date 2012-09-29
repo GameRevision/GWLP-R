@@ -66,14 +66,14 @@ public class ShardInitializer extends GenericShardlet
                 this.getInitParameter("dbpassword"));
         
         // create the entity system
-        EntitySystemFacade entitySystem = new EntitySystemFacade();
+        //EntitySystemFacade entitySystem = new EntitySystemFacade();
         
         // create the client lookup table
         ClientLookupTable lookupTable = new ClientLookupTable();
         
         MapShardStartupEvent ev = new MapShardStartupEvent(
                 connectionProvider,
-                entitySystem,
+                null,
                 lookupTable);
         
         // finally distribute the message!

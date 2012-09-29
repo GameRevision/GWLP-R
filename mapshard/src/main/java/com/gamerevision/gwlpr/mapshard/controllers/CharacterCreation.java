@@ -90,14 +90,29 @@ public class CharacterCreation extends GenericShardlet
         dAction.setUnknown1((short) 248);
         sendAction(dAction);
         
+        String characterName = new String(action.getUnknown1());
+        
+        // if name is in use ....
         /*P381_UnknownAction mAction = new P381_UnknownAction();
         mAction.init(session);
         mAction.setUnknown1(29);
         sendAction(mAction);*/
         
-        String characterName = new String(action.getUnknown1());
+        // if name is not in use ....
+        
+        // get character properties
         byte[] appearance = action.getUnknown2();
-        DBCharacter.createNewCharacter(connectionProvider, attachment.getAccountId(), characterName, appearance);
+        byte sex = (byte) (appearance[0] & 1);
+        byte height = (byte) ((appearance[0] >> 1) & 0xF);
+        byte skin = (byte) (((appearance[0] >> 5) | (appearance[1] << 3)) & 0x1F);
+        byte haircolor = (byte) ((appearance[1] >> 2) & 0x1F);
+        byte face = (byte) (((appearance[1] >> 7) | (appearance[2] << 1)) & 0x1F);
+        byte primary = (byte) ((appearance[2] >> 4) & 0xF);
+        byte hairstyle = (byte) (appearance[3] & 0x1F);
+        byte campaign = (byte) ((appearance[3] >> 6) & 3);
+        
+        DBCharacter.createNewCharacter(connectionProvider, attachment.getAccountId(), characterName,
+                sex, height, skin, haircolor, face, primary, hairstyle, campaign);
 
         
         P378_UnknownAction sAction = new P378_UnknownAction();
@@ -110,9 +125,18 @@ public class CharacterCreation extends GenericShardlet
         buffer.putShort((short) 6);
         buffer.putShort((short) 248);
         buffer.put(new byte[] {0x33, 0x36, 0x31, 0x30});
-        buffer.put(action.getUnknown2());
+        
+        buffer.put((byte) ((skin << 5) | (height << 1) | sex));
+        buffer.put((byte) ((face << 7) | (skin >> 3)));
+        buffer.put((byte) ((primary << 4) | (face >> 1)));
+        buffer.put((byte) ((campaign << 6) | hairstyle));
+        
         buffer.put(new byte[16]);
-        buffer.put(new byte[] {0, -1, -0x23, -0x23, 0, -0x23, -0x23, -0x23, -0x23});
+
+        byte level = 0; // TODO: replace this dummy variable
+        buffer.put((byte) ((level << 4) | campaign));                                                   
+        
+        buffer.put(new byte[] {-1, -0x23, -0x23, 0, -0x23, -0x23, -0x23, -0x23});
         byte[] a = new byte[buffer.position()];
         buffer.position(0);
         buffer.get(a);

@@ -49,9 +49,18 @@ public class LoginView
         buffer.putShort((short) 6);
         buffer.putShort((short) 248);
         buffer.put(new byte[] {0x33, 0x36, 0x31, 0x30});
-        buffer.put(character.getAppearance());
+        
+        buffer.put((byte) ((character.getSkin() << 5) | (character.getHeight() << 1) | character.getSex()));
+        buffer.put((byte) ((character.getFace() << 7) | (character.getSkin() >> 3)));
+        buffer.put((byte) ((character.getPrimaryProfession() << 4) | (character.getFace() >> 1)));
+        buffer.put((byte) ((character.getCampaign() << 6) | character.getHairstyle()));
+        
         buffer.put(new byte[16]);
-        buffer.put(new byte[] {0, -1, -0x23, -0x23, 0, -0x23, -0x23, -0x23, -0x23});
+
+        byte level = 0; // TODO: replace this dummy variable
+        buffer.put((byte) ((level << 4) | character.getCampaign()));                                                   
+        
+        buffer.put(new byte[] {-1, -0x23, -0x23, 0, -0x23, -0x23, -0x23, -0x23});
         byte[] a = new byte[buffer.position()];
         buffer.position(0);
         buffer.get(a);
