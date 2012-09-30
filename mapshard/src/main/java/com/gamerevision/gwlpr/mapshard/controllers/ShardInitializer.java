@@ -9,6 +9,7 @@ import com.gamerevision.gwlpr.mapshard.events.MapShardStartupEvent;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
 import com.gamerevision.gwlpr.mapshard.views.LoginShardView;
 import com.realityshard.entitysystem.EntitySystemFacade;
+import com.realityshard.entitysystem.GenericEntity;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.events.GameAppCreatedEvent;
 import com.realityshard.shardlet.utils.GenericShardlet;
@@ -64,16 +65,16 @@ public class ShardInitializer extends GenericShardlet
                 this.getInitParameter("dbdatabase"),
                 this.getInitParameter("dbusername"),
                 this.getInitParameter("dbpassword"));
-        
+
         // create the entity system
-        //EntitySystemFacade entitySystem = new EntitySystemFacade();
+        EntitySystemFacade entitySystem = new EntitySystemFacade();
         
         // create the client lookup table
         ClientLookupTable lookupTable = new ClientLookupTable();
         
         MapShardStartupEvent ev = new MapShardStartupEvent(
                 connectionProvider,
-                null,
+                entitySystem,
                 lookupTable);
         
         // finally distribute the message!

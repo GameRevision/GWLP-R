@@ -51,7 +51,7 @@ public class LoginView
         buffer.put(new byte[] {0x33, 0x36, 0x31, 0x30});
         
         buffer.put((byte) ((character.getSkin() << 5) | (character.getHeight() << 1) | character.getSex()));
-        buffer.put((byte) ((character.getFace() << 7) | (character.getSkin() >> 3)));
+        buffer.put((byte) ((character.getFace() << 7) | (character.getHaircolor() << 2) | (character.getSkin() >> 3)));
         buffer.put((byte) ((character.getPrimaryProfession() << 4) | (character.getFace() >> 1)));
         buffer.put((byte) ((character.getCampaign() << 6) | character.getHairstyle()));
         
