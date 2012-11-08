@@ -32,7 +32,7 @@ public class Login extends GenericShardlet
 {
     
     private static Logger LOGGER = LoggerFactory.getLogger(Login.class);
-    private DatabaseConnectionProvider connectionProvider;
+    private DatabaseConnectionProvider db;
     private LoginView loginView;
     
     
@@ -42,52 +42,76 @@ public class Login extends GenericShardlet
     @Override
     protected void init() 
     {
-        LOGGER.debug("Login shardlet initialized!");
+        LOGGER.debug("LoginShard: init Login controller");
     }
     
     
     /**
-     * Event handler
+     * Executes startup features, like storing database references etc.
+     * 
+     * @param event 
+     */
+    @EventHandler
+    public void onStartUp(LoginShardStartupEvent event)
+    {
+        // get the database provider
+        db = event.getConnectionProvider();
+        
+        // and initialize the LoginView that we use to handle incoming clients.
+        loginView = new LoginView(getShardletContext(), db);
+    }
+    
+    
+    /**
+     * Executed when a client wants to log in.
      * 
      * @param action 
      */
     @EventHandler
-    public void accountLoginHandler(P004_AccountLoginAction action)
+    public void onAccountLogin(P004_AccountLoginAction action)
     {
-        // extract the data from the action
-        String eMail = new String(action.getEmail());
+        LOGGER.debug("LoginShard: a new client wants to log in.");
+        
+        // get the session attachment for that session
+        Session session = action.getSession();
+        SessionAttachment attach = (SessionAttachment) session.getAttachment();
+        
+        // set the login counter
+        attach.setLoginCount(action.getLoginCount());
+        
+        // get the login credentials
+        String email = new String(action.getEmail());
         String password = new String(action.getPassword(), Charset.forName("UTF-16LE"));
         String characterName = new String(action.getCharacterName());
         
-        LOGGER.debug("got the account login packet");
-        Session session = action.getSession();
-        SessionAttachment attachment = (SessionAttachment) session.getAttachment();
-        
-        attachment.setLoginCount(action.getLoginCount());
-        
-  
-        CheckLoginInfo checkInfo = new CheckLoginInfo(connectionProvider, eMail);
+        // now lets verify that data we just got,
+        // so call the model that handles that
+        CheckLoginInfo checkInfo = new CheckLoginInfo(db, email);
 
-        if (checkInfo.isValid(password) || true)
+        // TODO: STATIC Login verification!!!
+        if (!(checkInfo.isValid(password) || true)) 
         {
-            LOGGER.debug("successfully logged in");
-            attachment.setAccountId(DBAccount.getByEMail(connectionProvider, eMail).getId());        
-            attachment.setCharacterName(characterName);
-            
-            
-            List<DBCharacter> characters = DBCharacter.getAllCharacters(connectionProvider, attachment.getAccountId());
-            
-            for (DBCharacter character : characters)
-            {
-                loginView.addCharacter(session, character);
-            }
-            
-            loginView.loginSuccessful(session);
-        }
-        else
-        {
+            // login failed, abort the login process
             sendAction(StreamTerminatorView.create(session, checkInfo.getErrorCode()));
+            
+            LOGGER.debug("LoginShard: client login failed");
+            return;
         }
+        
+        LOGGER.debug("LoginShard: client successfully logged in");
+
+        // update the attachment with the data (because we now know 
+        // that it is correct)
+        attach.setAccountId(DBAccount.getByEMail(db, email).getId());        
+        attach.setCharacterId(DBCharacter.getCharacter(db, characterName).getId());
+
+        // it's our turn to continue with the login process now.
+        // the view we are using is
+        List<DBCharacter> characters = DBCharacter.getAllCharacters(db, attach.getAccountId());
+
+        // send all login specific packets as a reply
+        loginView.sendLoginInfo(session, attach.getAccountId());
+
     }
     
     
@@ -99,16 +123,9 @@ public class Login extends GenericShardlet
         
         SessionAttachment attachment = (SessionAttachment) session.getAttachment();
         attachment.setLoginCount(action.getUnknown1());
-        attachment.setCharacterName(new String(action.getUnknown2()));
+        attachment.setCharacterId(DBCharacter.getCharacter(db, new String(action.getUnknown2())).getId());
         
-        loginView.operationCompleted(session, 0);
+        loginView.sendFriendInfo(session, 0);
     }
     
-    
-    @EventHandler
-    public void databaseConnectionProviderHandler(LoginShardStartupEvent event)
-    {
-        this.connectionProvider = event.getConnectionProvider();
-        this.loginView = new LoginView(getShardletContext(), connectionProvider);
-    }
 }

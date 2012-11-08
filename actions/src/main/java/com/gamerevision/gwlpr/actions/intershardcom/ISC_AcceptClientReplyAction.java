@@ -10,6 +10,7 @@ import com.realityshard.shardlet.Session;
 
 /**
  * Answer of the AcceptSessionRequest from a MapShard to the LoginShard.
+ * This determines whether the map shard wants to accept the client or not.
  *
  * @author miracle444
  */
@@ -17,19 +18,23 @@ public final class ISC_AcceptClientReplyAction extends GenericTriggerableAction
 {
 
     private boolean accepted;   // whether the MapShard accepted the session or not
+    private final int accountId;
     private int mapId;          // the map id of this MapShard
     
     
     /**
      * Constructor.
      * 
-     * @param   session     the session we are talking about.
-     * @param   accepted    whether it was accepted by the MapShard or not.
+     * @param       session
+     * @param       accountId 
+     * @param       mapId 
+     * @param       accepted
      */
-    public ISC_AcceptClientReplyAction(Session session, boolean accepted, int mapId)
+    public ISC_AcceptClientReplyAction(Session session, int accountId, int mapId, boolean accepted)
     {
         init(session);
         this.accepted = accepted;
+        this.accountId = accountId;
         this.mapId = mapId;
     }
 
@@ -37,22 +42,33 @@ public final class ISC_AcceptClientReplyAction extends GenericTriggerableAction
     /**
      * Getter.
      * 
-     * @return  whether the MapShard accepted the session or not.
+     * @return      The account id of the account that we accepted to play on this mapshard.
      */
-    public boolean getAccepted()
+    public int getAccountId() 
     {
-        return this.accepted;
+        return accountId;
+    }
+    
+        
+    /**
+     * Getter.
+     * 
+     * @return      The map id of this MapShard.
+     */
+    public int getMapId()
+    {
+        return this.mapId;
     }
     
     
     /**
      * Getter.
      * 
-     * @return  he map id of this MapShard.
+     * @return      True if the MapShard accepted the session.
      */
-    public int getMapId()
+    public boolean acceptedSession()
     {
-        return this.mapId;
+        return this.accepted;
     }
     
     

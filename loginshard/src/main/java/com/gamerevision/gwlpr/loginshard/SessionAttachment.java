@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * This class describes the attachment of a session inside the login shard.
+ * This class is used to store account related data for a single session.
  * 
  * @author miracle444
  */
@@ -20,12 +20,12 @@ public class SessionAttachment
     private static Logger LOGGER = LoggerFactory.getLogger(SessionAttachment.class);
     private int loginCount;
     private int accountId;
-    private String characterName;
+    private int characterId;
     
     
     /**
      * Setter.
-     * 
+     *
      * @param loginCount
      */
     public void setLoginCount(int loginCount)
@@ -36,64 +36,64 @@ public class SessionAttachment
     
     /**
      * Getter.
-     * 
-     * @return 
+     *
+     * @return
      */
     public int getLoginCount()
     {
         return loginCount;
     }
+
     
+    /**
+     * Getter.
+     * 
+     * @return 
+     */
+    public int getAccountId() 
+    {
+        return accountId;
+    }
+
     
     /**
      * Setter.
      * 
      * @param accountId 
      */
-    public void setAccountId(int accountId)
+    public void setAccountId(int accountId) 
     {
         this.accountId = accountId;
     }
     
     
     /**
-     * Getter.
-     * 
-     * @return 
-     */
-    public int getAccountId()
-    {
-        return accountId;
-    }
-    
-    
-    /**
      * Setter.
-     * 
-     * @param characterName 
+     *
+     * @param characterId
      */
-    public void setCharacterName(String characterName)
+    public void setCharacterId(int characterId)
     {
-        this.characterName = characterName;
+        this.characterId = characterId;
     }
     
     
     /**
      * Getter.
-     * 
-     * @return 
+     *
+     * @return
      */
-    public String getCharacterName()
+    public int getCharacterId()
     {
-        return characterName;
+        return characterId;
     }
     
     
     /**
      * Static getter.
-     * 
+     *
      * @param session
-     * @return 
+     * @return
      */
     public static int getLoginCount(Session session)
     {
