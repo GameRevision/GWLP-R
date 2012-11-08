@@ -24,7 +24,6 @@
         <module>framework</module>
         <module>loginshard</module>
         <module>mapshard</module>
-        <module>fileshard</module>
         <module>host</module>
     </modules>
 
