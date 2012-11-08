@@ -103,7 +103,7 @@ public class Login extends GenericShardlet
         // update the attachment with the data (because we now know 
         // that it is correct)
         attach.setAccountId(DBAccount.getByEMail(db, email).getId());        
-        attach.setCharacterName(characterName);
+        attach.setCharacterId(DBCharacter.getCharacter(db, characterName).getId());
 
         // it's our turn to continue with the login process now.
         // the view we are using is
@@ -123,7 +123,7 @@ public class Login extends GenericShardlet
         
         SessionAttachment attachment = (SessionAttachment) session.getAttachment();
         attachment.setLoginCount(action.getUnknown1());
-        attachment.setCharacterName(new String(action.getUnknown2()));
+        attachment.setCharacterId(DBCharacter.getCharacter(db, new String(action.getUnknown2())).getId());
         
         loginView.sendFriendInfo(session, 0);
     }
