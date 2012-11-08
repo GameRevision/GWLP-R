@@ -4,7 +4,7 @@
 
 package com.gamerevision.gwlpr.loginshard.events;
 
-import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
+import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.realityshard.shardlet.Event;
 
 

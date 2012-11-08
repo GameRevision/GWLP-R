@@ -6,9 +6,9 @@ package com.gamerevision.gwlpr.loginshard.controllers;
 
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P004_AccountLoginAction;
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P010_UnknownAction;
-import com.gamerevision.gwlpr.framework.database.DBAccount;
-import com.gamerevision.gwlpr.framework.database.DBCharacter;
-import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
+import com.gamerevision.gwlpr.database.DBAccount;
+import com.gamerevision.gwlpr.database.DBCharacter;
+import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.loginshard.SessionAttachment;
 import com.gamerevision.gwlpr.loginshard.events.LoginShardStartupEvent;
 import com.gamerevision.gwlpr.loginshard.models.CheckLoginInfo;

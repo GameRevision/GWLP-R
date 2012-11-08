@@ -4,7 +4,7 @@
 
 package com.gamerevision.gwlpr.loginshard.controllers;
 
-import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
+import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.loginshard.SessionAttachment;
 import com.gamerevision.gwlpr.loginshard.events.LoginShardStartupEvent;
 import com.realityshard.shardlet.Action;

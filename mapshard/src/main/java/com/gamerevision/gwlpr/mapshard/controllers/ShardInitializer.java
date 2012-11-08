@@ -4,12 +4,11 @@
 
 package com.gamerevision.gwlpr.mapshard.controllers;
 
-import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
+import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.mapshard.events.MapShardStartupEvent;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
 import com.gamerevision.gwlpr.mapshard.views.LoginShardView;
 import com.realityshard.entitysystem.EntitySystemFacade;
-import com.realityshard.entitysystem.GenericEntity;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.events.GameAppCreatedEvent;
 import com.realityshard.shardlet.utils.GenericShardlet;

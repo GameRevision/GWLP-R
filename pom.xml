@@ -21,10 +21,9 @@
     <modules>
         <module>actions</module>
         <module>protocol</module>
-        <module>framework</module>
+        <module>database</module>
         <module>loginshard</module>
         <module>mapshard</module>
-        <module>fileshard</module>
         <module>host</module>
     </modules>
 

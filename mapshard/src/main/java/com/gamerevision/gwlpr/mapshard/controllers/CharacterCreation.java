@@ -9,8 +9,8 @@ import com.gamerevision.gwlpr.actions.gameserver.ctos.P130_CreateNewCharacterAct
 import com.gamerevision.gwlpr.actions.gameserver.ctos.P132_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.P141_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.P378_UnknownAction;
-import com.gamerevision.gwlpr.framework.database.DBCharacter;
-import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
+import com.gamerevision.gwlpr.database.DBCharacter;
+import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.mapshard.SessionAttachment;
 import com.gamerevision.gwlpr.mapshard.events.MapShardStartupEvent;
 import com.gamerevision.gwlpr.mapshard.views.CharacterCreateAcknowledgeView;
