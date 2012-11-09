@@ -25,10 +25,10 @@ import org.slf4j.LoggerFactory;
  * 
  * @author miracle444, _rusty
  */
-public class ShardInitializer extends GenericShardlet
+public class StartUp extends GenericShardlet
 {
     
-    private static Logger LOGGER = LoggerFactory.getLogger(ShardInitializer.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(StartUp.class);
     private LoginShardStartupEvent startupEvent;
     
     

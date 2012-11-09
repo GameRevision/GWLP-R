@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 /**
  * This class is used to store account related data for a single session.
  * 
- * @author miracle444
+ * @author miracle444, _rusty
  */
 public class SessionAttachment
 {
