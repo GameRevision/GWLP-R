@@ -11,47 +11,57 @@ import org.slf4j.LoggerFactory;
 /**
  * This class describes the attachment of a session inside the map shard.
  * 
- * @author miracle444
+ * @author miracle444, _rusty
  */
 public class SessionAttachment
 {
     
     private static Logger LOGGER = LoggerFactory.getLogger(SessionAttachment.class);
+    private int loginCount;
     private int accountId;
-    private String characterName;
+    private int characterId;
 
     
-    /**
-     * Constructor
-     * 
-     * @param accountId
-     * @param characterName 
-     */
-    public SessionAttachment(int accountId, String characterName) 
-    {
-        this.accountId = accountId;
-        this.characterName = characterName;
-    } 
-
-        
     /**
      * Getter.
      * 
      * @return 
      */
-    public int getAccountId()
+    public int getAccountId() 
     {
         return accountId;
+    }
+
+    
+    /**
+     * Setter.
+     * 
+     * @param accountId 
+     */
+    public void setAccountId(int accountId) 
+    {
+        this.accountId = accountId;
+    }
+    
+    
+    /**
+     * Setter.
+     *
+     * @param characterId
+     */
+    public void setCharacterId(int characterId)
+    {
+        this.characterId = characterId;
     }
     
     
     /**
      * Getter.
-     * 
-     * @return 
+     *
+     * @return
      */
-    public String getCharacterName()
+    public int getCharacterId()
     {
-        return characterName;
+        return characterId;
     }
 }

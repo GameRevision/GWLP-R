@@ -21,21 +21,20 @@ import org.slf4j.LoggerFactory;
  * 
  * @author miracle444, _rusty
  */
-public class ShardInitializer extends GenericShardlet
+public class StartUp extends GenericShardlet
 {
     
-    private static Logger LOGGER = LoggerFactory.getLogger(ShardInitializer.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(StartUp.class);
     
     
     /**
      * Initialize this shardlet.
-     * Because we will be running the whole startup process after all shardlets finished loading,
-     * we wont be doing much in here.
+     * We will be running the whole startup process right now, right here.
      */
     @Override
     protected void init()
     {
-        LOGGER.debug("Shard initializer shardlet initialized! [mapid = {}]", 
+        LOGGER.debug("MapShard: init Startup controller [mapid = {}]", 
                 this.getShardletContext().getInitParameter("MapId"));
     }
     
