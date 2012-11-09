@@ -18,13 +18,15 @@
 
 
     <dependencies>
-        <!--the GW-Framework-->
+        <!--the Database framework-->
         <dependency>
             <groupId>com.gamerevision.gwlpr</groupId>
             <artifactId>database</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
         </dependency>
+        
+        <!--the network actions-->
         <dependency>
             <groupId>com.gamerevision.gwlpr</groupId>
             <artifactId>actions</artifactId>
@@ -32,19 +34,6 @@
             <type>jar</type>
         </dependency>
 
-        <!--the shardlet stuff-->
-        <dependency>
-            <groupId>com.realityshard</groupId>
-            <artifactId>entitysystem</artifactId>
-            <version>0.1.1</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>com.realityshard</groupId>
-            <artifactId>shardlet</artifactId>
-            <version>0.1.1</version>
-            <type>jar</type>
-        </dependency>
     </dependencies>
 
 
