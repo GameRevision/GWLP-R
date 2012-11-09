@@ -34,8 +34,15 @@ public class StartUp extends GenericShardlet
     @Override
     protected void init()
     {
-        LOGGER.debug("MapShard: init Startup controller [mapid = {}]", 
-                this.getShardletContext().getInitParameter("MapId"));
+        // we will need the mapId to determine which map to load later on.
+        int mapId = this.getShardletContext().getInitParameter("MapId");
+
+        
+        LoginShardView.SetLoginShardContext(event.getParent());
+
+        LOGGER.debug("MapShard: init Startup controller [mapid = {}]", mapId);
+
+        // load the database stuff
     }
     
     
