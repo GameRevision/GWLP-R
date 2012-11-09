@@ -5,12 +5,10 @@
 package com.gamerevision.gwlpr.loginshard.controllers;
 
 import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
+import com.gamerevision.gwlpr.loginshard.ContextAttachment;
 import com.gamerevision.gwlpr.loginshard.SessionAttachment;
-import com.gamerevision.gwlpr.loginshard.events.LoginShardStartupEvent;
 import com.realityshard.shardlet.Action;
 import com.realityshard.shardlet.ClientVerifier;
-import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.events.GameAppCreatedEvent;
 import com.realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +16,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This shardlet is used to initialize the LoginShard.
- * It loads the database connection provider and distributes it, after the
- * game app context has finished loading the shardlets.
+ * It loads the database connection provider and creates the context's attachment.
  * This shardlet also registers the persistant client verifier, that is used
  * to accept any login clients.
  * 
@@ -29,11 +26,12 @@ public class StartUp extends GenericShardlet
 {
     
     private static Logger LOGGER = LoggerFactory.getLogger(StartUp.class);
-    private LoginShardStartupEvent startupEvent;
     
     
     /**
      * Initializes this shardlet.
+     * We will be running the whole startup process right now, right here.
+     * (There is no need for event handlers and the like)
      */
     @Override
     protected void init()
@@ -64,32 +62,17 @@ public class StartUp extends GenericShardlet
         
         // next step is starting up the database connection
         // we can use the init parameter that this shardlet got from the game.xml
-        DatabaseConnectionProvider connectionProvider = new DatabaseConnectionProvider(
+        DatabaseConnectionProvider db = new DatabaseConnectionProvider(
                 this.getInitParameter("dbip"),
                 this.getInitParameter("dbport"),
                 this.getInitParameter("dbdatabase"),
                 this.getInitParameter("dbusername"),
                 this.getInitParameter("dbpassword"));
         
-        // create the event
-        startupEvent = new LoginShardStartupEvent(connectionProvider);
+        // finally, create the context attachment
+        getShardletContext().setAttachment(new ContextAttachment(db));
         
-        // we'r done for now. when the gameapp created event is triggered by the context, 
-        // we can simply use that event we just created
+        // we'r done for now
         LOGGER.debug("LoginShard: finished loading initial data");
-    }
-    
-    
-    /**
-     * This handler is invoked by the container after all shardlets have been
-     * initialized.
-     * 
-     * @param       event                   The event carrying some context information.
-     */
-    @EventHandler
-    public void gameAppCreatedEventHandler(GameAppCreatedEvent event)
-    {
-        // we just need to distribute the event that we created in the init process
-        publishEvent(startupEvent);
     }
 }
