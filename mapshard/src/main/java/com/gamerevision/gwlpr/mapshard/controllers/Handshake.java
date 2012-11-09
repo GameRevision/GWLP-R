@@ -22,22 +22,31 @@ import org.slf4j.LoggerFactory;
  * This shardlet handles the handshake process for GW clients.
  * It establishes an encrypted session.
  * 
- * @author _rusty
+ * @author miracle444, _rusty
  */
 public class Handshake extends GenericShardlet
 {
+    
     private static Logger LOGGER = LoggerFactory.getLogger(Handshake.class);
     
     
+    /**
+     * Init this shardlet.
+     */
     @Override
     protected void init() 
     {
-        LOGGER.debug("handshake shardlet initialized!");
+        LOGGER.debug("MapShard: init Handshake controller");
     }
     
     
+    /**
+     * Event handler.
+     * 
+     * @param action 
+     */
     @EventHandler
-    public void clientSeedHandler(P16896_ClientSeedAction action)
+    public void onClientSeed(P16896_ClientSeedAction action)
     {
         LOGGER.debug("got the client seed packet");
         Session session = action.getSession();
@@ -56,29 +65,29 @@ public class Handshake extends GenericShardlet
         {
             LOGGER.debug("sending start character creation");
             sendAction(CharacterCreateHeadView.create(session));
+            return;
         }
-        else
-        {
-            LOGGER.debug("sending instance load stuff");
-            SessionAttachment attachment = (SessionAttachment) session.getAttachment();
-            
-            P371_UnknownAction instanceLoadCharName = new P371_UnknownAction();
-            instanceLoadCharName.init(session);
-            LOGGER.debug("sending instance load stuff1");
-            instanceLoadCharName.setUnknown1(attachment.getCharacterName().toCharArray());
-            LOGGER.debug("sending instance load stuff2");
-            sendAction(instanceLoadCharName);
-            
-            
-            P395_InstanceLoadDistrictInfoAction instanceLoadDistrictInfo = new P395_InstanceLoadDistrictInfoAction();
-            instanceLoadDistrictInfo.init(session);
-            instanceLoadDistrictInfo.setCharAgent(1);
-            instanceLoadDistrictInfo.setDistrictAndRegion(0);
-            instanceLoadDistrictInfo.setLanguage((byte) 0);
-            instanceLoadDistrictInfo.setMapID((short) mapId);
-            instanceLoadDistrictInfo.setisExplorable((byte) 1);
-            instanceLoadDistrictInfo.setisObserver((byte) 0);
-            sendAction(instanceLoadDistrictInfo);
-        }
+        
+        
+        LOGGER.debug("sending instance load stuff");
+        SessionAttachment attachment = (SessionAttachment) session.getAttachment();
+
+        P371_UnknownAction instanceLoadCharName = new P371_UnknownAction();
+        instanceLoadCharName.init(session);
+        LOGGER.debug("sending instance load stuff1");
+        instanceLoadCharName.setUnknown1(attachment.getCharacterName().toCharArray());
+        LOGGER.debug("sending instance load stuff2");
+        sendAction(instanceLoadCharName);
+
+
+        P395_InstanceLoadDistrictInfoAction instanceLoadDistrictInfo = new P395_InstanceLoadDistrictInfoAction();
+        instanceLoadDistrictInfo.init(session);
+        instanceLoadDistrictInfo.setCharAgent(1);
+        instanceLoadDistrictInfo.setDistrictAndRegion(0);
+        instanceLoadDistrictInfo.setLanguage((byte) 0);
+        instanceLoadDistrictInfo.setMapID((short) mapId);
+        instanceLoadDistrictInfo.setisExplorable((byte) 1);
+        instanceLoadDistrictInfo.setisObserver((byte) 0);
+        sendAction(instanceLoadDistrictInfo);
     }
 }
