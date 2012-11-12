@@ -38,6 +38,22 @@
 
 
     <dependencies>
+        <!--the Shardlet API-->
+        <dependency>
+            <groupId>com.realityshard</groupId>
+            <artifactId>shardlet</artifactId>
+            <version>0.1.2</version>
+            <type>jar</type>
+        </dependency>
+        
+        <!--the EntitySystem framework-->
+        <dependency>
+            <groupId>com.realityshard</groupId>
+            <artifactId>entitysystem</artifactId>
+            <version>0.1.1</version>
+            <type>jar</type>
+        </dependency>
+        
         <!-- JUnit for testing -->
         <dependency>
             <groupId>junit</groupId>

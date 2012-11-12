@@ -20,7 +20,7 @@ public class UpdatePrivateProfessionsView
     {
         P171_UpdatePrivProfessionsAction updatePrivateProfessions = new P171_UpdatePrivProfessionsAction();
         updatePrivateProfessions.init(session);
-        updatePrivateProfessions.setAgentID(50);
+        updatePrivateProfessions.setAgentID(50); // TODO BUG AGENTID!!
         updatePrivateProfessions.setPrimaryProf((byte) 1);
         updatePrivateProfessions.setSecondaryProf((byte) 0);
         updatePrivateProfessions.setisPvP((byte) 0);

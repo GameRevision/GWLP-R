@@ -9,13 +9,14 @@ import com.gamerevision.gwlpr.actions.loginserver.ctos.P010_UnknownAction;
 import com.gamerevision.gwlpr.database.DBAccount;
 import com.gamerevision.gwlpr.database.DBCharacter;
 import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
+import com.gamerevision.gwlpr.loginshard.ContextAttachment;
 import com.gamerevision.gwlpr.loginshard.SessionAttachment;
-import com.gamerevision.gwlpr.loginshard.events.LoginShardStartupEvent;
 import com.gamerevision.gwlpr.loginshard.models.CheckLoginInfo;
 import com.gamerevision.gwlpr.loginshard.views.LoginView;
 import com.gamerevision.gwlpr.loginshard.views.StreamTerminatorView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.Session;
+import com.realityshard.shardlet.events.GameAppCreatedEvent;
 import com.realityshard.shardlet.utils.GenericShardlet;
 import java.nio.charset.Charset;
 import java.util.List;
@@ -52,12 +53,14 @@ public class Login extends GenericShardlet
      * @param event 
      */
     @EventHandler
-    public void onStartUp(LoginShardStartupEvent event)
+    public void onStartUp(GameAppCreatedEvent event)
     {
-        // get the database provider
-        db = event.getConnectionProvider();
-        
+        // this event indicates that all shardlets have been loaded (including
+        // the startup shardlet) so we can safely use the context attachment now
         // and initialize the LoginView that we use to handle incoming clients.
+        
+        db = ((ContextAttachment) getShardletContext().getAttachment()).getDatabaseProvider();
+        
         loginView = new LoginView(getShardletContext(), db);
     }
     
