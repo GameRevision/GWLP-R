@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  * This shardlet handles all the actions of which we don't really process the data.
  * TODO: Check in case of strange errors, check if this shardlet is the cause.
  * 
- * @author miracle444
+ * @author miracle444, _rusty
  */
 public class StaticReply extends GenericShardlet
 {

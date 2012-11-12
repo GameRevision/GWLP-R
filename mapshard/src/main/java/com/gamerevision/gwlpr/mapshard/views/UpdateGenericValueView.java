@@ -19,7 +19,7 @@ import com.realityshard.shardlet.Session;
  * 
  * @author miracle444, _rusty
  */
-public class UpdateGenericValue
+public class UpdateGenericValueView
 {
 
     /**

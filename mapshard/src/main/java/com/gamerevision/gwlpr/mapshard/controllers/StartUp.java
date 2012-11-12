@@ -8,6 +8,7 @@ import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.mapshard.ContextAttachment;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
 import com.realityshard.entitysystem.EntitySystemFacade;
+import com.realityshard.shardlet.RemoteShardletContext;
 import com.realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,10 @@ public class StartUp extends GenericShardlet
 
         LOGGER.debug("MapShard: init Startup controller [mapid = {}]", mapId);
         
+        // get the parent of this mapshard (as that is the login server)
+        // TODO: maybe this should be an extra action coming from the LS?
+        RemoteShardletContext ls = getShardletContext().getParentContext();
+        
         // create the database stuff
         DatabaseConnectionProvider db = new DatabaseConnectionProvider(
                 this.getInitParameter("dbip"),
@@ -55,7 +60,7 @@ public class StartUp extends GenericShardlet
         
         // finally, create the context attachment
         getShardletContext().setAttachment(
-                new ContextAttachment(db, es, lt));
+                new ContextAttachment(ls, db, es, lt, mapId));
         
         // we'r finished...
         LOGGER.debug("MapShard: finished loading initial data");

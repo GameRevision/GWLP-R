@@ -10,7 +10,7 @@ import com.gamerevision.gwlpr.actions.gameserver.ctos.P138_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.*;
 import com.gamerevision.gwlpr.mapshard.SessionAttachment;
 import com.gamerevision.gwlpr.mapshard.views.UpdateAttribPtsView;
-import com.gamerevision.gwlpr.mapshard.views.UpdateGenericValue;
+import com.gamerevision.gwlpr.mapshard.views.UpdateGenericValueView;
 import com.gamerevision.gwlpr.mapshard.views.UpdatePrivateProfessionsView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.Session;
@@ -134,17 +134,17 @@ public class InstanceLoad extends GenericShardlet
         
         // TODO: Fix agentIDs!
         LOGGER.debug("Sending the generic value for energy");
-        sendAction(UpdateGenericValue.create(session, 50, UpdateGenericValue.Type.Energy, 20));
+        sendAction(UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.Energy, 20));
         LOGGER.debug("Sending the  generic value for health");
-        sendAction(UpdateGenericValue.create(session, 50, UpdateGenericValue.Type.Health, 20));
+        sendAction(UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.Health, 20));
         
         LOGGER.debug("Sending the generic value for energy regeneration");
-        sendAction(UpdateGenericValue.create(session, 50, UpdateGenericValue.Type.EnergyRegen, 0.033F));
+        sendAction(UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.EnergyRegen, 0.033F));
         LOGGER.debug("Sending the generic value for health regeneration");
-        sendAction(UpdateGenericValue.create(session, 50, UpdateGenericValue.Type.HealthRegen, 0));
+        sendAction(UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.HealthRegen, 0));
         
         LOGGER.debug("Sending the generic value for public level");
-        sendAction(UpdateGenericValue.create(session, 50, UpdateGenericValue.Type.PublicLevel, 1));
+        sendAction(UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.PublicLevel, 1));
         
         P127_UnknownAction zoneDataPrepMapData = new P127_UnknownAction();
         zoneDataPrepMapData.init(session);

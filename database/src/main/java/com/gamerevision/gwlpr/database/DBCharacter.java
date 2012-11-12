@@ -131,7 +131,7 @@ public class DBCharacter
     }
     
     
-    public static boolean createNewCharacter(
+    public static DBCharacter createNewCharacter(
             DatabaseConnectionProvider connectionProvider, 
             int accountId, 
             String characterName, 
@@ -168,14 +168,17 @@ public class DBCharacter
             ps.close();
             connection.close();
 
-            return rows == 1;
+            if (rows == 1)
+            {
+                return getCharacter(connectionProvider, characterName);
+            }
         } 
         catch (SQLException ex) 
         {
             LOGGER.error("sql error in create new character");
         }
         
-        return false;
+        return null;
     }
     
     

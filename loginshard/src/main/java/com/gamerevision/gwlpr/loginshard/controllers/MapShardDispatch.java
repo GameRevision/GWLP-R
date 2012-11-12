@@ -12,7 +12,6 @@ import com.gamerevision.gwlpr.loginshard.views.DispatcherView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.RemoteShardletContext;
 import com.realityshard.shardlet.Session;
-import com.realityshard.shardlet.ShardletContext;
 import com.realityshard.shardlet.utils.GenericShardlet;
 import java.util.HashMap;
 import java.util.Map;
