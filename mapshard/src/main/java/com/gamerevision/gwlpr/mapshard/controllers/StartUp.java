@@ -36,6 +36,8 @@ public class StartUp extends GenericShardlet
     protected void init()
     {
         // we will need the mapId to determine which map to load later on.
+        // this parameter is not set by default! this has to be done by the
+        // parent context
         int mapId =Integer.parseInt(this.getShardletContext().getInitParameter("MapId"));
 
         LOGGER.debug("MapShard: init Startup controller [mapid = {}]", mapId);
