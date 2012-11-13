@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gamerevision.gwlpr</groupId>
     <artifactId>gwlpr</artifactId>
-    <version>0.1.0_RC1</version>
+    <version>0.1.1</version>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
 
@@ -21,10 +21,9 @@
     <modules>
         <module>actions</module>
         <module>protocol</module>
-        <module>framework</module>
+        <module>database</module>
         <module>loginshard</module>
         <module>mapshard</module>
-        <module>fileshard</module>
         <module>host</module>
     </modules>
 
@@ -39,6 +38,38 @@
 
 
     <dependencies>
+        <!--the Shardlet API-->
+        <dependency>
+            <groupId>com.realityshard</groupId>
+            <artifactId>shardlet</artifactId>
+            <version>0.1.4</version>
+            <type>jar</type>
+        </dependency>
+
+        <!--the network layer-->
+        <dependency>
+            <groupId>com.realityshard</groupId>
+            <artifactId>network</artifactId>
+            <version>0.1.4</version>
+            <type>jar</type>
+        </dependency>
+
+        <!--the RS container-->
+        <dependency>
+            <groupId>com.realityshard</groupId>
+            <artifactId>container</artifactId>
+            <version>0.1.4</version>
+            <type>jar</type>
+        </dependency>
+
+        <!--the EntitySystem framework-->
+        <dependency>
+            <groupId>com.realityshard</groupId>
+            <artifactId>entitysystem</artifactId>
+            <version>0.1.1</version>
+            <type>jar</type>
+        </dependency>
+
         <!-- JUnit for testing -->
         <dependency>
             <groupId>junit</groupId>

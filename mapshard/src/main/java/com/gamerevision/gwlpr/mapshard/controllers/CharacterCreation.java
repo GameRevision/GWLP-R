@@ -7,21 +7,18 @@ package com.gamerevision.gwlpr.mapshard.controllers;
 import com.gamerevision.gwlpr.actions.gameserver.ctos.P088_CharacterCreateUpdateProfessionAndCampaignAction;
 import com.gamerevision.gwlpr.actions.gameserver.ctos.P130_CreateNewCharacterAction;
 import com.gamerevision.gwlpr.actions.gameserver.ctos.P132_UnknownAction;
-import com.gamerevision.gwlpr.actions.gameserver.stoc.P141_UnknownAction;
-import com.gamerevision.gwlpr.actions.gameserver.stoc.P378_UnknownAction;
-import com.gamerevision.gwlpr.framework.database.DBCharacter;
-import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
+import com.gamerevision.gwlpr.database.DBCharacter;
+import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
+import com.gamerevision.gwlpr.mapshard.ContextAttachment;
 import com.gamerevision.gwlpr.mapshard.SessionAttachment;
-import com.gamerevision.gwlpr.mapshard.events.MapShardStartupEvent;
-import com.gamerevision.gwlpr.mapshard.views.CharacterCreateAcknowledgeView;
+import com.gamerevision.gwlpr.mapshard.views.CharacterCreationView;
 import com.gamerevision.gwlpr.mapshard.views.UpdateAttribPtsView;
-import com.gamerevision.gwlpr.mapshard.views.UpdateGenericValue;
+import com.gamerevision.gwlpr.mapshard.views.UpdateGenericValueView;
 import com.gamerevision.gwlpr.mapshard.views.UpdatePrivateProfessionsView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.Session;
+import com.realityshard.shardlet.events.GameAppCreatedEvent;
 import com.realityshard.shardlet.utils.GenericShardlet;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,76 +26,97 @@ import org.slf4j.LoggerFactory;
 /**
  * This shardlet handles all about character creation.
  * 
- * @author miracle444
+ * TODO: review, clean up, refactor me!
+ * 
+ * @author miracle444, _rusty
  */
 public class CharacterCreation extends GenericShardlet
 {
     
     private static Logger LOGGER = LoggerFactory.getLogger(CharacterCreation.class);
-    private DatabaseConnectionProvider connectionProvider;
+    
+    private DatabaseConnectionProvider db;
     
     
+    /**
+     * Init this shardlet.
+     */ 
     @Override
     protected void init() 
     {
-        LOGGER.debug("character creation shardlet initialized!");
+        LOGGER.debug("MapShard: init CharacterCreation controller.");
     }
     
     
+    /**
+     * Executes startup features, like storing database references etc.
+     * 
+     * @param event 
+     */
     @EventHandler
-    public void createNewCharacterHandler(P130_CreateNewCharacterAction action)
+    public void onStartUp(GameAppCreatedEvent event)
     {
-        LOGGER.debug("got the create new character packet");
+        // this event indicates that all shardlets have been loaded (including
+        // the startup shardlet) so we can safely use the context attachment now.
+
+        db = ((ContextAttachment) getShardletContext().getAttachment()).getDatabaseProvider();
+    }
+    
+    
+    /**
+     * Event handler.
+     * 
+     * @param action 
+     */
+    @EventHandler
+    public void onCreateNewCharacter(P130_CreateNewCharacterAction action)
+    {
+        LOGGER.debug("Got the create new character packet");
+        
+        // extract the session...
         Session session = action.getSession();
         
-        
-        LOGGER.debug("sending update attribute points");
+        // and start the char creation process stuff
         sendAction(UpdateAttribPtsView.create(session));
-        
-        
-        LOGGER.debug("sending update generic value integer");
         // TODO: Fix agentID!
-        sendAction(UpdateGenericValue.create(session, 50, UpdateGenericValue.Type.Unknown14, 0));
-        
-        
-        LOGGER.debug("sending create character acknowledgement");
-        sendAction(CharacterCreateAcknowledgeView.create(session));
+        sendAction(UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.Unknown14, 0));
+        sendAction(CharacterCreationView.charCreateAck(session));
     }
     
     
+    /**
+     * Event handler.
+     * 
+     * @param action 
+     */
     @EventHandler
-    public void characterCreateUpdateProfessionAndCampaignActionHandler(P088_CharacterCreateUpdateProfessionAndCampaignAction action)
+    public void onCharacterCreateUpdateProfessionAndCampaign(P088_CharacterCreateUpdateProfessionAndCampaignAction action)
     {
-        LOGGER.debug("got the character create update profession and campaign packet");
+        LOGGER.debug("Got the character create update profession and campaign packet");
+        
+        // extract the session...
         Session session = action.getSession();
         
-        
-        LOGGER.debug("sending update private professions");
         sendAction(UpdatePrivateProfessionsView.create(session));
     }
     
     
+    /**
+     * Event handler.
+     * 
+     * @param action 
+     */
     @EventHandler
-    public void validateCreatedCharacterActionHandler(P132_UnknownAction action)
+    public void onValidateCreatedCharacter(P132_UnknownAction action)
     {
-        LOGGER.debug("got the validate created character packet");
+        LOGGER.debug("Got the validate created character packet");
+        
+        // extract the session and attachment...
         Session session = action.getSession();
         SessionAttachment attachment = (SessionAttachment) session.getAttachment();
         
-        P141_UnknownAction dAction = new P141_UnknownAction();
-        dAction.init(session);
-        dAction.setUnknown1((short) 248);
-        sendAction(dAction);
-        
+        // extract the data of the new char
         String characterName = new String(action.getUnknown1());
-        
-        // if name is in use ....
-        /*P381_UnknownAction mAction = new P381_UnknownAction();
-        mAction.init(session);
-        mAction.setUnknown1(29);
-        sendAction(mAction);*/
-        
-        // if name is not in use ....
         
         // get character properties
         byte[] appearance = action.getUnknown2();
@@ -107,48 +125,38 @@ public class CharacterCreation extends GenericShardlet
         byte skin = (byte) (((appearance[0] >> 5) | (appearance[1] << 3)) & 0x1F);
         byte haircolor = (byte) ((appearance[1] >> 2) & 0x1F);
         byte face = (byte) (((appearance[1] >> 7) | (appearance[2] << 1)) & 0x1F);
-        byte primary = (byte) ((appearance[2] >> 4) & 0xF);
         byte hairstyle = (byte) (appearance[3] & 0x1F);
         byte campaign = (byte) ((appearance[3] >> 6) & 3);
         
-        DBCharacter.createNewCharacter(connectionProvider, attachment.getAccountId(), characterName,
-                sex, height, skin, haircolor, face, primary, hairstyle, campaign);
+        // extract the professions
+        byte primary = (byte) ((appearance[2] >> 4) & 0xF);
+        byte secondary = 0;
+        
+        // perform some unkown action...
+        sendAction(CharacterCreationView.unkownStep1(session));
 
+        // TODO WTF?
+            // if name is in use ....
+            sendAction(CharacterCreationView.abort(session));
         
-        P378_UnknownAction sAction = new P378_UnknownAction();
-        sAction.init(session);
-        sAction.setUnknown1(new byte[16]);
-        sAction.setUnknown2(action.getUnknown1());
-        sAction.setUnknown3((short) 81);
-        
-        ByteBuffer buffer = ByteBuffer.allocate(100).order(ByteOrder.LITTLE_ENDIAN);
-        buffer.putShort((short) 6);
-        buffer.putShort((short) 248);
-        buffer.put(new byte[] {0x33, 0x36, 0x31, 0x30});
-        
-        buffer.put((byte) ((skin << 5) | (height << 1) | sex));
-        buffer.put((byte) ((face << 7) | (skin >> 3)));
-        buffer.put((byte) ((primary << 4) | (face >> 1)));
-        buffer.put((byte) ((campaign << 6) | hairstyle));
-        
-        buffer.put(new byte[16]);
+        // if name is not in use create a new char in the db
+        DBCharacter dbChar = DBCharacter.createNewCharacter(
+                db, 
+                attachment.getAccountId(), 
+                characterName,
+                sex, height, skin, haircolor, face, hairstyle, campaign, 
+                primary, 
+                secondary);
 
-        byte level = 0; // TODO: replace this dummy variable
-        buffer.put((byte) ((level << 4) | campaign));                                                   
+        if (dbChar != null)
+        {
+            sendAction(CharacterCreationView.charCreateFinish(session, dbChar));
+            return;
+        }
         
-        buffer.put(new byte[] {-1, -0x23, -0x23, 0, -0x23, -0x23, -0x23, -0x23});
-        byte[] a = new byte[buffer.position()];
-        buffer.position(0);
-        buffer.get(a);
-        sAction.setUnknown4(a);
-
-        sendAction(sAction);
-    }
-    
-    
-    @EventHandler
-    public void mapShardStartupEventHandler(MapShardStartupEvent event)
-    {
-        this.connectionProvider = event.getConnectionProvider();
+        LOGGER.error("GameShard: new character could not be created!");
+        
+        // kick the client if the character could not be created
+        session.invalidate();
     }
 }

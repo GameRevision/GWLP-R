@@ -7,7 +7,6 @@ package com.gamerevision.gwlpr.host;
 import com.realityshard.container.ContainerFacade;
 import com.realityshard.network.ConcurrentNetworkManager;
 import com.realityshard.shardlet.GlobalExecutor;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.concurrent.ScheduledExecutorService;
@@ -69,7 +68,7 @@ public final class HostApplication
         {
             // create the container
             // Note: we are using the dev environment here!
-            ContainerFacade container = new ContainerFacade(netMan, new DevEnvImpl());
+            ContainerFacade container = new ContainerFacade(netMan, "127.0.0.1", new DevEnvImpl());
         } 
         catch (Exception ex) 
         {

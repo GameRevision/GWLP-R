@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  * This shardlet handles the handshake process for GW clients.
  * It establishes an encrypted session.
  * 
- * @author miracle444
+ * @author miracle444, _rusty
  */
 public class Handshake extends GenericShardlet
 {
@@ -36,40 +36,41 @@ public class Handshake extends GenericShardlet
     {
         this.handshakeView = new HandshakeView(getShardletContext());
         
-        LOGGER.debug("Handshake shardlet initialized!");
+        LOGGER.debug("LoginShard: init Handshake controller");
     }
     
     
     /**
-     * Event handler.
+     * Handles the client version. This is actually the first packet that is send
+     * by the client after connecting to the server
      * 
      * @param action 
      */
     @EventHandler
-    public void clientVersionHandler(P1024_ClientVersionAction action)
+    public void onClientVersion(P1024_ClientVersionAction action)
     {
-        LOGGER.debug("Got the client version packet");
+        LOGGER.debug("LoginShard: got the client version packet");
         
         int clientVersion = action.getUnknown2();
         
         // lets's ask the model to check the version for us
         if (!HandshakeModel.verifyClientVersion(clientVersion))
         {
-            // create the sever seed out of the EncryptionData
+            // do something if the versio is wrong...
             handshakeView.wrongClientVersion(action.getSession());
         }        
     }
     
     
     /**
-     * Event handler.
+     * Handles the client encryption seed.
      * 
      * @param action 
      */
     @EventHandler
-    public void clientSeedHandler(P16896_ClientSeedAction action)
+    public void onClientSeed(P16896_ClientSeedAction action)
     {        
-        LOGGER.debug("Got the client seed packet");
+        LOGGER.debug("LoginShard: got the client seed packet");
         
         byte[] clientSeed = action.getClientSeed();
         

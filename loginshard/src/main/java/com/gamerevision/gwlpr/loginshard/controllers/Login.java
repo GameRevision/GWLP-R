@@ -6,16 +6,17 @@ package com.gamerevision.gwlpr.loginshard.controllers;
 
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P004_AccountLoginAction;
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P010_UnknownAction;
-import com.gamerevision.gwlpr.framework.database.DBAccount;
-import com.gamerevision.gwlpr.framework.database.DBCharacter;
-import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
+import com.gamerevision.gwlpr.database.DBAccount;
+import com.gamerevision.gwlpr.database.DBCharacter;
+import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
+import com.gamerevision.gwlpr.loginshard.ContextAttachment;
 import com.gamerevision.gwlpr.loginshard.SessionAttachment;
-import com.gamerevision.gwlpr.loginshard.events.LoginShardStartupEvent;
 import com.gamerevision.gwlpr.loginshard.models.CheckLoginInfo;
 import com.gamerevision.gwlpr.loginshard.views.LoginView;
 import com.gamerevision.gwlpr.loginshard.views.StreamTerminatorView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.Session;
+import com.realityshard.shardlet.events.GameAppCreatedEvent;
 import com.realityshard.shardlet.utils.GenericShardlet;
 import java.nio.charset.Charset;
 import java.util.List;
@@ -32,7 +33,7 @@ public class Login extends GenericShardlet
 {
     
     private static Logger LOGGER = LoggerFactory.getLogger(Login.class);
-    private DatabaseConnectionProvider connectionProvider;
+    private DatabaseConnectionProvider db;
     private LoginView loginView;
     
     
@@ -42,52 +43,78 @@ public class Login extends GenericShardlet
     @Override
     protected void init() 
     {
-        LOGGER.debug("Login shardlet initialized!");
+        LOGGER.debug("LoginShard: init Login controller");
     }
     
     
     /**
-     * Event handler
+     * Executes startup features, like storing database references etc.
+     * 
+     * @param event 
+     */
+    @EventHandler
+    public void onStartUp(GameAppCreatedEvent event)
+    {
+        // this event indicates that all shardlets have been loaded (including
+        // the startup shardlet) so we can safely use the context attachment now
+        // and initialize the LoginView that we use to handle incoming clients.
+        
+        db = ((ContextAttachment) getShardletContext().getAttachment()).getDatabaseProvider();
+        
+        loginView = new LoginView(getShardletContext(), db);
+    }
+    
+    
+    /**
+     * Executed when a client wants to log in.
      * 
      * @param action 
      */
     @EventHandler
-    public void accountLoginHandler(P004_AccountLoginAction action)
+    public void onAccountLogin(P004_AccountLoginAction action)
     {
-        // extract the data from the action
-        String eMail = new String(action.getEmail());
+        LOGGER.debug("LoginShard: a new client wants to log in.");
+        
+        // get the session attachment for that session
+        Session session = action.getSession();
+        SessionAttachment attach = (SessionAttachment) session.getAttachment();
+        
+        // set the login counter
+        attach.setLoginCount(action.getLoginCount());
+        
+        // get the login credentials
+        String email = new String(action.getEmail());
         String password = new String(action.getPassword(), Charset.forName("UTF-16LE"));
         String characterName = new String(action.getCharacterName());
         
-        LOGGER.debug("got the account login packet");
-        Session session = action.getSession();
-        SessionAttachment attachment = (SessionAttachment) session.getAttachment();
-        
-        attachment.setLoginCount(action.getLoginCount());
-        
-  
-        CheckLoginInfo checkInfo = new CheckLoginInfo(connectionProvider, eMail);
+        // now lets verify that data we just got,
+        // so call the model that handles that
+        CheckLoginInfo checkInfo = new CheckLoginInfo(db, email);
 
-        if (checkInfo.isValid(password) || true)
+        // TODO: STATIC Login verification!!!
+        if (!(checkInfo.isValid(password) || true)) 
         {
-            LOGGER.debug("successfully logged in");
-            attachment.setAccountId(DBAccount.getByEMail(connectionProvider, eMail).getId());        
-            attachment.setCharacterName(characterName);
-            
-            
-            List<DBCharacter> characters = DBCharacter.getAllCharacters(connectionProvider, attachment.getAccountId());
-            
-            for (DBCharacter character : characters)
-            {
-                loginView.addCharacter(session, character);
-            }
-            
-            loginView.loginSuccessful(session);
-        }
-        else
-        {
+            // login failed, abort the login process
             sendAction(StreamTerminatorView.create(session, checkInfo.getErrorCode()));
+            
+            LOGGER.debug("LoginShard: client login failed");
+            return;
         }
+        
+        LOGGER.debug("LoginShard: client successfully logged in");
+
+        // update the attachment with the data (because we now know 
+        // that it is correct)
+        attach.setAccountId(DBAccount.getByEMail(db, email).getId());        
+        attach.setCharacterId(DBCharacter.getCharacter(db, characterName).getId());
+
+        // it's our turn to continue with the login process now.
+        // the view we are using is
+        List<DBCharacter> characters = DBCharacter.getAllCharacters(db, attach.getAccountId());
+
+        // send all login specific packets as a reply
+        loginView.sendLoginInfo(session, attach.getAccountId());
+
     }
     
     
@@ -99,16 +126,9 @@ public class Login extends GenericShardlet
         
         SessionAttachment attachment = (SessionAttachment) session.getAttachment();
         attachment.setLoginCount(action.getUnknown1());
-        attachment.setCharacterName(new String(action.getUnknown2()));
+        attachment.setCharacterId(DBCharacter.getCharacter(db, new String(action.getUnknown2())).getId());
         
-        loginView.operationCompleted(session, 0);
+        loginView.sendFriendInfo(session, 0);
     }
     
-    
-    @EventHandler
-    public void databaseConnectionProviderHandler(LoginShardStartupEvent event)
-    {
-        this.connectionProvider = event.getConnectionProvider();
-        this.loginView = new LoginView(getShardletContext(), connectionProvider);
-    }
 }

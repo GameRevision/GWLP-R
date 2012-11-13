@@ -4,8 +4,8 @@
 
 package com.gamerevision.gwlpr.loginshard.models;
 
-import com.gamerevision.gwlpr.framework.database.DBAccount;
-import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
+import com.gamerevision.gwlpr.database.DBAccount;
+import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

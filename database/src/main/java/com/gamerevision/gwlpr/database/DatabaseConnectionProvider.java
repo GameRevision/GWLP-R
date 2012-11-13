@@ -2,7 +2,7 @@
  * For copyright information see the LICENSE document.
  */
 
-package com.gamerevision.gwlpr.framework.database;
+package com.gamerevision.gwlpr.database;
 
 import com.mysql.jdbc.Driver;
 import java.sql.Connection;

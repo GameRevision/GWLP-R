@@ -11,29 +11,34 @@ import com.realityshard.shardlet.utils.GenericTriggerableAction;
 /**
  * Request from the LoginShard to a MapShard to accept a session.
  *
- * @author miracle444
+ * @author miracle444, _rusty
  */
 public final class ISC_AcceptClientRequestAction extends GenericTriggerableAction
 {
 
     private int key1;
     private int key2;
-    private int accountId;
-    private String characterName;
+    private final int accountId;
+    private int characterId;
     
     
     /**
      * Constructor.
      * 
      * @param       session                 The session to be accepted by the MapShard.
+     * @param       key1                    The first security key (the client will
+     *                                      use that to connect with the map shard)
+     * @param       key2                    The second security key
+     * @param       accountId               The account ID of the client
+     * @param       characterId             The character ID of the client
      */
-    public ISC_AcceptClientRequestAction(Session session, int key1, int key2, int accountId, String characterName)
+    public ISC_AcceptClientRequestAction(Session session, int key1, int key2, int accountId, int characterId)
     {
         init(session);
         this.key1 = key1;
         this.key2 = key2;
         this.accountId = accountId;
-        this.characterName = characterName;
+        this.characterId = characterId;
     }
 
     
@@ -57,7 +62,7 @@ public final class ISC_AcceptClientRequestAction extends GenericTriggerableActio
     {
         return key2;
     }
-    
+
     
     /**
      * Getter.
@@ -68,18 +73,18 @@ public final class ISC_AcceptClientRequestAction extends GenericTriggerableActio
     {
         return accountId;
     }
-    
+      
     
     /**
      * Getter.
      * 
      * @return 
      */
-    public String getCharacterName()
+    public int getCharacterId() 
     {
-        return characterName;
+        return characterId;
     }
-        
+
     
     /**
      * This method is used by the context of a game app, when this action is 

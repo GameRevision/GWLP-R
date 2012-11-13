@@ -4,41 +4,44 @@
 
 package com.gamerevision.gwlpr.loginshard.controllers;
 
-import com.gamerevision.gwlpr.framework.database.DatabaseConnectionProvider;
+import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
+import com.gamerevision.gwlpr.loginshard.ContextAttachment;
 import com.gamerevision.gwlpr.loginshard.SessionAttachment;
-import com.gamerevision.gwlpr.loginshard.events.LoginShardStartupEvent;
 import com.realityshard.shardlet.Action;
 import com.realityshard.shardlet.ClientVerifier;
-import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.events.GameAppCreatedEvent;
 import com.realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 /**
- * This shardlet is used to initialize the MapShard.
+ * This shardlet is used to initialize the LoginShard.
+ * It loads the database connection provider and creates the context's attachment.
+ * This shardlet also registers the persistant client verifier, that is used
+ * to accept any login clients.
  * 
  * @author miracle444, _rusty
  */
-public class ShardInitializer extends GenericShardlet
+public class StartUp extends GenericShardlet
 {
     
-    private static Logger LOGGER = LoggerFactory.getLogger(ShardInitializer.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(StartUp.class);
     
     
     /**
-     * Initializes this shardlet
+     * Initializes this shardlet.
+     * We will be running the whole startup process right now, right here.
+     * (There is no need for event handlers and the like)
      */
     @Override
     protected void init()
     {
-        LOGGER.debug("Shard initializer shardlet initialized!");
+        LOGGER.debug("LoginShard: loading initial data...");
         
         // we simply register a persistant client verifier here, because the login server
         // will accept any client that actually uses its protocol
         ClientVerifier verf = new ClientVerifier() {
-
+            // use an anonymous class here...
             @Override
             public boolean check(Action action) 
             {
@@ -54,32 +57,22 @@ public class ShardInitializer extends GenericShardlet
         };
         
         // after creation we will have to add it to the context, so the context
-        // can decide if it should accept or refuse clients.
+        // can use the verifier to decide if it should accept or refuse clients.
         getShardletContext().addClientVerifier(verf, true);
-    }
-    
-    
-    /**
-     * This handler is invoked by the api when the gameapp is created.
-     * 
-     * @param   event  the event carrying the context information.
-     */
-    @EventHandler
-    public void gameAppCreatedEventHandler(GameAppCreatedEvent event)
-    {
-        // lets assemble the global startup message
         
-        // create the database stuff
-        DatabaseConnectionProvider connectionProvider = new DatabaseConnectionProvider(
+        // next step is starting up the database connection
+        // we can use the init parameter that this shardlet got from the game.xml
+        DatabaseConnectionProvider db = new DatabaseConnectionProvider(
                 this.getInitParameter("dbip"),
                 this.getInitParameter("dbport"),
                 this.getInitParameter("dbdatabase"),
                 this.getInitParameter("dbusername"),
                 this.getInitParameter("dbpassword"));
         
-        LoginShardStartupEvent ev = new LoginShardStartupEvent(connectionProvider);
+        // finally, create the context attachment
+        getShardletContext().setAttachment(new ContextAttachment(db));
         
-        // finally distribute the message!
-        publishEvent(ev);
+        // we'r done for now
+        LOGGER.debug("LoginShard: finished loading initial data");
     }
 }

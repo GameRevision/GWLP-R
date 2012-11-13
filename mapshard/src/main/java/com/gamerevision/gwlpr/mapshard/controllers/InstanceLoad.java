@@ -8,38 +8,81 @@ import com.gamerevision.gwlpr.actions.gameserver.ctos.P129_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.ctos.P137_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.ctos.P138_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.*;
+import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
+import com.gamerevision.gwlpr.mapshard.ContextAttachment;
 import com.gamerevision.gwlpr.mapshard.SessionAttachment;
+import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
 import com.gamerevision.gwlpr.mapshard.views.UpdateAttribPtsView;
-import com.gamerevision.gwlpr.mapshard.views.UpdateGenericValue;
+import com.gamerevision.gwlpr.mapshard.views.UpdateGenericValueView;
 import com.gamerevision.gwlpr.mapshard.views.UpdatePrivateProfessionsView;
+import com.realityshard.entitysystem.EntitySystemFacade;
 import com.realityshard.shardlet.EventHandler;
+import com.realityshard.shardlet.RemoteShardletContext;
 import com.realityshard.shardlet.Session;
+import com.realityshard.shardlet.events.GameAppCreatedEvent;
 import com.realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+/**
+ * This shardlet guides a client trough the instance load process.
+ * 
+ * TODO: review, clean-up, refactor me!
+ * 
+ * @author miracle444, _rusty
+ */
 public class InstanceLoad extends GenericShardlet
 {
     
     private static Logger LOGGER = LoggerFactory.getLogger(InstanceLoad.class);
     
+    private RemoteShardletContext loginShard;
+    private DatabaseConnectionProvider db;
+    private EntitySystemFacade entitySystem;
+    private ClientLookupTable clientlookup;
+    private int mapId;
     
+    
+    /**
+     * Init this shardlet.
+     */
     @Override
     protected void init() 
     {
-
+        LOGGER.debug("MapShard: init InstanceLoad controller");
+    }
+    
+    
+    /**
+     * Executes startup features, like storing database references etc.
+     * 
+     * @param event 
+     */
+    @EventHandler
+    public void onStartUp(GameAppCreatedEvent event)
+    {
+        // this event indicates that all shardlets have been loaded (including
+        // the startup shardlet) so we can safely use the context attachment now.
+        
+        // this is quite verbose, but luckily we only have to query for the 
+        // necessary references once
+        ContextAttachment attach = ((ContextAttachment) getShardletContext().getAttachment());
+        
+        loginShard = attach.getLoginShard();
+        db = attach.getDatabaseProvider();
+        entitySystem = attach.getEntitySystem();
+        clientlookup = attach.getClientLookup();
+        mapId = attach.getMapId();
     }
     
     
     @EventHandler
-    public void instanceLoadRequestItemsHandler(P138_UnknownAction action)
+    public void onInstanceLoadRequestItems(P138_UnknownAction action)
     {
-        LOGGER.debug("got the instance load request items packet");
+        LOGGER.debug("Got the instance load request items packet");
         Session session = action.getSession();
         
-        
-        int mapId = Integer.parseInt(getShardletContext().getInitParameter("MapId"));
         
         P314_ItemStreamCreateAction itemStreamCreate = new P314_ItemStreamCreateAction();
         itemStreamCreate.init(session);
@@ -80,7 +123,7 @@ public class InstanceLoad extends GenericShardlet
     
     
     @EventHandler
-    public void instanceLoadRequestSpawnPointHandler(P129_UnknownAction action)
+    public void onInstanceLoadRequestSpawnPoint(P129_UnknownAction action)
     {
         LOGGER.debug("got the instance load request spawn point packet");
         Session session = action.getSession();
@@ -98,7 +141,7 @@ public class InstanceLoad extends GenericShardlet
     
     
     @EventHandler
-    public void instanceLoadRequestPlayerDataHandler(P137_UnknownAction action)
+    public void onInstanceLoadRequestPlayerData(P137_UnknownAction action)
     {
         LOGGER.debug("got the instance load request player data packet");
         Session session = action.getSession();
@@ -134,17 +177,17 @@ public class InstanceLoad extends GenericShardlet
         
         // TODO: Fix agentIDs!
         LOGGER.debug("Sending the generic value for energy");
-        sendAction(UpdateGenericValue.create(session, 50, UpdateGenericValue.Type.Energy, 20));
+        sendAction(UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.Energy, 20));
         LOGGER.debug("Sending the  generic value for health");
-        sendAction(UpdateGenericValue.create(session, 50, UpdateGenericValue.Type.Health, 20));
+        sendAction(UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.Health, 20));
         
         LOGGER.debug("Sending the generic value for energy regeneration");
-        sendAction(UpdateGenericValue.create(session, 50, UpdateGenericValue.Type.EnergyRegen, 0.033F));
+        sendAction(UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.EnergyRegen, 0.033F));
         LOGGER.debug("Sending the generic value for health regeneration");
-        sendAction(UpdateGenericValue.create(session, 50, UpdateGenericValue.Type.HealthRegen, 0));
+        sendAction(UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.HealthRegen, 0));
         
         LOGGER.debug("Sending the generic value for public level");
-        sendAction(UpdateGenericValue.create(session, 50, UpdateGenericValue.Type.PublicLevel, 1));
+        sendAction(UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.PublicLevel, 1));
         
         P127_UnknownAction zoneDataPrepMapData = new P127_UnknownAction();
         zoneDataPrepMapData.init(session);

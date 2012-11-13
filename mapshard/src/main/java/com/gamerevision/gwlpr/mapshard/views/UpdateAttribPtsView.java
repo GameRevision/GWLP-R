@@ -20,7 +20,7 @@ public class UpdateAttribPtsView
     {
         P044_UpdateAttribPtsAction updateAttributePoints = new P044_UpdateAttribPtsAction();
         updateAttributePoints.init(session);
-        updateAttributePoints.setAgentID(50);
+        updateAttributePoints.setAgentID(50); // TODO BUG AGENTID
         updateAttributePoints.setFreePts((byte) 0);
         updateAttributePoints.setMaxPts((byte) 0);
         return updateAttributePoints;

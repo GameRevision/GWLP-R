@@ -9,15 +9,15 @@
         <HeartBeat>50</HeartBeat>
     </AppInfo>
     
-	<Shardlet name="LoginShard-ShardInitializer" class="com.gamerevision.gwlpr.loginshard.controllers.ShardInitializer">
-		<InitParam name="dbip" value="localhost" />
-		<InitParam name="dbport" value="3306" />
-		<InitParam name="dbdatabase" value="gwlp-r" />
-		<InitParam name="dbusername" value="root" />
-		<InitParam name="dbpassword" value="" />
-	</Shardlet>
-    <Shardlet name="LoginShard-Handshake" class="com.gamerevision.gwlpr.loginshard.controllers.Handshake"/>
-	<Shardlet name="LoginShard-GenericHandler" class="com.gamerevision.gwlpr.loginshard.controllers.GenericHandler"/>
-	<Shardlet name="LoginShard-Login" class="com.gamerevision.gwlpr.loginshard.controllers.Login"/>
-	<Shardlet name="LoginShard-Dispatcher" class="com.gamerevision.gwlpr.loginshard.controllers.Dispatcher"/>
+    <Shardlet name="LoginShard-StartUp"             class="com.gamerevision.gwlpr.loginshard.controllers.StartUp">
+            <InitParam name="dbip"          value="localhost" />
+            <InitParam name="dbport"        value="3306" />
+            <InitParam name="dbdatabase"    value="gwlp-r" />
+            <InitParam name="dbusername"    value="root" />
+            <InitParam name="dbpassword"    value="" />
+    </Shardlet>
+    <Shardlet name="LoginShard-Handshake"           class="com.gamerevision.gwlpr.loginshard.controllers.Handshake"/>
+    <Shardlet name="LoginShard-StaticReply"         class="com.gamerevision.gwlpr.loginshard.controllers.StaticReply"/>
+    <Shardlet name="LoginShard-Login"               class="com.gamerevision.gwlpr.loginshard.controllers.Login"/>
+    <Shardlet name="LoginShard-MapShardDispatch"    class="com.gamerevision.gwlpr.loginshard.controllers.MapShardDispatch"/>
 </GameApp>
