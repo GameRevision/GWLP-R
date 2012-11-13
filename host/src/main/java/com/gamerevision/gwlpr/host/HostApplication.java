@@ -68,7 +68,7 @@ public final class HostApplication
         {
             // create the container
             // Note: we are using the dev environment here!
-            ContainerFacade container = new ContainerFacade(netMan, new DevEnvImpl());
+            ContainerFacade container = new ContainerFacade(netMan, "127.0.0.1", new DevEnvImpl());
         } 
         catch (Exception ex) 
         {

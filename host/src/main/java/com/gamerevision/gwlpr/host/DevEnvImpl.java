@@ -96,7 +96,8 @@ public class DevEnvImpl implements DevelopmentEnvironment
     private GameAppFactoryDevEnv produceLoginShard()
     {
         GameAppFactoryDevEnv loginshard = new GameAppFactoryDevEnv(
-                "LoginShard", 
+                "LoginShard",
+                "127.0.0.1",
                 250, 
                 true, 
                 new HashMap<String, String>());
@@ -134,7 +135,8 @@ public class DevEnvImpl implements DevelopmentEnvironment
     private GameAppFactoryDevEnv produceMapShard()
     {
         GameAppFactoryDevEnv mapshard = new GameAppFactoryDevEnv(
-                "MapShard", 
+                "MapShard",
+                "127.0.0.1",
                 250, 
                 false, 
                 new HashMap<String, String>());
