@@ -71,9 +71,9 @@ public class DevEnvImpl implements DevelopmentEnvironment
      * @return 
      */
     @Override
-    public GameAppFactory[] getGameAppFactories() 
+    public List<GameAppFactory> getGameAppFactories() 
     {
-        return (GameAppFactory[]) gameFactories.toArray();
+        return gameFactories;
     }
 
     
@@ -83,9 +83,9 @@ public class DevEnvImpl implements DevelopmentEnvironment
      * @return 
      */
     @Override
-    public ProtocolDataContainer[] getProtocolDataContainers() 
+    public List<ProtocolDataContainer> getProtocolDataContainers() 
     {
-        return (ProtocolDataContainer[]) protContainers.toArray();
+        return protContainers;
     }
     
     
