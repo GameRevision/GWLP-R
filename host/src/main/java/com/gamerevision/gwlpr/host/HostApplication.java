@@ -5,10 +5,9 @@
 package com.gamerevision.gwlpr.host;
 
 import com.realityshard.container.ContainerFacade;
-import com.realityshard.network.ConcurrentNetworkManager;
+import com.realityshard.network.NetworkFacade;
 import com.realityshard.shardlet.GlobalExecutor;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import org.slf4j.Logger;
@@ -26,10 +25,8 @@ public final class HostApplication
      * Runs the application.
      * 
      * @param       args
-     * @throws      MalformedURLException   Should never happen.
      */
     public static void main(String[] args) 
-            throws MalformedURLException
     {
         // temporary logger
         Logger logger = LoggerFactory.getLogger(HostApplication.class);        
@@ -50,30 +47,24 @@ public final class HostApplication
         
         // we need a new concurrent network manager here
         // note that this has to be a concrete implementation atm
-        ConcurrentNetworkManager netMan = null;
-        try 
-        {
-            // TODO: BUG! using a CPU - load reducing looping here atm
-            // (will have to switch to some more sophisticated implementation of NetMan in the future)
-            netMan = new ConcurrentNetworkManager(512, 1000);
-        } 
-        catch (IOException ex) 
-        {
-            logger.error("Network manager failed to start up.", ex);
-            System.exit(1);
-        }
+        // NOTE: possible BUG here: FORCING IPv4
+        
+        //System.setProperty("java.net.preferIPv4Stack", "true");
+        NetworkFacade netMan = new NetworkFacade("127.0.0.1");
         
         // we've done anything we wanted to, so lets start the container!
         try 
         {
             // create the container
             // Note: we are using the dev environment here!
-            ContainerFacade container = new ContainerFacade(netMan, "127.0.0.1", new DevEnvImpl());
+            ContainerFacade container = new ContainerFacade(netMan, new DevEnvImpl());
         } 
         catch (Exception ex) 
         {
             logger.error("Container failed to start up.", ex);
             System.exit(1);
         }
+        
+        while (true) {}
     }
 }

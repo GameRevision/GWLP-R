@@ -49,7 +49,7 @@ public class DevEnvImpl implements DevelopmentEnvironment
         // also init some common parameters, like db
         dbParams.put("dbip", "localhost");
         dbParams.put("dbport", "3306");
-        dbParams.put("dbdatabase", "gwlp-r");
+        dbParams.put("dbdatabase", "gwlpr");
         dbParams.put("dbusername", "root");
         dbParams.put("dbpassword", "");
         
