@@ -49,7 +49,7 @@ public class DevEnvImpl implements DevelopmentEnvironment
         // also init some common parameters, like db
         dbParams.put("dbip", "localhost");
         dbParams.put("dbport", "3306");
-        dbParams.put("dbdatabase", "gwlp-r");
+        dbParams.put("dbdatabase", "gwlpr");
         dbParams.put("dbusername", "root");
         dbParams.put("dbpassword", "");
         
@@ -71,9 +71,9 @@ public class DevEnvImpl implements DevelopmentEnvironment
      * @return 
      */
     @Override
-    public GameAppFactory[] getGameAppFactories() 
+    public List<GameAppFactory> getGameAppFactories() 
     {
-        return (GameAppFactory[]) gameFactories.toArray();
+        return gameFactories;
     }
 
     
@@ -83,9 +83,9 @@ public class DevEnvImpl implements DevelopmentEnvironment
      * @return 
      */
     @Override
-    public ProtocolDataContainer[] getProtocolDataContainers() 
+    public List<ProtocolDataContainer> getProtocolDataContainers() 
     {
-        return (ProtocolDataContainer[]) protContainers.toArray();
+        return protContainers;
     }
     
     
