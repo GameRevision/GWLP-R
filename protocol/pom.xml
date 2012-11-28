@@ -3,8 +3,6 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>protocol</artifactId>
-    <name>${project.artifactId}</name>
-    <packaging>jar</packaging>
 
 
     <parent>
@@ -14,18 +12,17 @@
     </parent>
 
 
+    <name>${project.artifactId}</name>
     <description>The implementation of the GW protocol</description>
 
 
     <dependencies>
-        <!--actions-->
+        <!-- The network actions -->
         <dependency>
             <groupId>com.gamerevision.gwlpr</groupId>
             <artifactId>actions</artifactId>
             <version>${project.version}</version>
-            <type>jar</type>
         </dependency>
     </dependencies>
-
 
 </project>

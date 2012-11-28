@@ -7,7 +7,6 @@ package com.gamerevision.gwlpr.host;
 import com.realityshard.container.ContainerFacade;
 import com.realityshard.network.NetworkFacade;
 import com.realityshard.shardlet.GlobalExecutor;
-import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import org.slf4j.Logger;
@@ -44,6 +43,8 @@ public final class HostApplication
         // ok, we can now define the executor as global...
         // this can actually be done within the API
         GlobalExecutor.init(executor);
+        
+        executor.execute(new NetTest());
         
         // we need a new concurrent network manager here
         // note that this has to be a concrete implementation atm
