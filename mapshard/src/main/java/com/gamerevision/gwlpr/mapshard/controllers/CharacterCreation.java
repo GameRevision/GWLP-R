@@ -44,7 +44,7 @@ public class CharacterCreation extends GenericShardlet
     @Override
     protected void init() 
     {
-        LOGGER.debug("MapShard: init CharacterCreation controller.");
+        LOGGER.info("MapShard: init CharacterCreation controller.");
     }
     
     
@@ -154,7 +154,7 @@ public class CharacterCreation extends GenericShardlet
             return;
         }
         
-        LOGGER.error("GameShard: new character could not be created!");
+        LOGGER.error("MapShard: new character could not be created!");
         
         // kick the client if the character could not be created
         session.invalidate();

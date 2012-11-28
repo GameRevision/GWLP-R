@@ -50,7 +50,7 @@ public class Handshake extends GenericShardlet
     @Override
     protected void init() 
     {
-        LOGGER.debug("MapShard: init Handshake controller");
+        LOGGER.info("MapShard: init Handshake controller");
         // note that this shardlet relies on content that is loaded by the
         // StartUp controller.
         // see the onStartUp event handler for more initialization
@@ -94,7 +94,7 @@ public class Handshake extends GenericShardlet
     @EventHandler
     public void onAcceptSession(ISC_AcceptClientRequestAction action)
     {
-        LOGGER.debug("GameShard: got the request to accept a new client");
+        LOGGER.debug("Got the request to accept a new client");
         
         // create the verifier with all necessary info
         ClientVerifier verf = new MapClientVerifier(

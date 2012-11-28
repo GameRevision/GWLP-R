@@ -33,9 +33,9 @@ public final class DatabaseConnectionProvider
                 {
                     new Driver();
 		} 
-                catch (final SQLException e) 
+                catch (final SQLException ex) 
                 {
-                    LOGGER.error("could not connect to the mysql database.");
+                    LOGGER.error("Could not connect to the mysql database.", ex);
 		}
 	}
 
@@ -50,7 +50,7 @@ public final class DatabaseConnectionProvider
             } 
             catch (SQLException ex)
             {
-                LOGGER.error("could not create new mysql connection.");
+                LOGGER.error("Could not create new mysql connection.", ex);
             }
             
             return connection;

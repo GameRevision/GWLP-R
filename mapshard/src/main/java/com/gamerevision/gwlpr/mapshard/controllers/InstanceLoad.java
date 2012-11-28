@@ -50,7 +50,7 @@ public class InstanceLoad extends GenericShardlet
     @Override
     protected void init() 
     {
-        LOGGER.debug("MapShard: init InstanceLoad controller");
+        LOGGER.info("MapShard: init InstanceLoad controller");
     }
     
     
@@ -125,7 +125,7 @@ public class InstanceLoad extends GenericShardlet
     @EventHandler
     public void onInstanceLoadRequestSpawnPoint(P129_UnknownAction action)
     {
-        LOGGER.debug("got the instance load request spawn point packet");
+        LOGGER.debug("Got the instance load request spawn point packet");
         Session session = action.getSession();
         
         
@@ -143,7 +143,7 @@ public class InstanceLoad extends GenericShardlet
     @EventHandler
     public void onInstanceLoadRequestPlayerData(P137_UnknownAction action)
     {
-        LOGGER.debug("got the instance load request player data packet");
+        LOGGER.debug("Got the instance load request player data packet");
         Session session = action.getSession();
         SessionAttachment attachment = (SessionAttachment) session.getAttachment();
         
@@ -156,13 +156,13 @@ public class InstanceLoad extends GenericShardlet
         
         
         
-        LOGGER.debug("sending update attribute points");
+        LOGGER.debug("Sending update attribute points");
         sendAction(UpdateAttribPtsView.create(session));
         
         
         
         
-        LOGGER.debug("sending update private professions");
+        LOGGER.debug("Sending update private professions");
         sendAction(UpdatePrivateProfessionsView.create(session));
         
         

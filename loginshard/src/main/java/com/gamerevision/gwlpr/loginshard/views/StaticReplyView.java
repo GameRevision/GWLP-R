@@ -44,7 +44,7 @@ public class StaticReplyView
      */
     public void computerInfoReply(Session session)
     {
-        LOGGER.debug("LoginShard: sending computer info reply");
+        LOGGER.debug("Sending computer info reply");
         
         // assmble action
         P001_ComputerInfoReplyAction computerInfoReply = new P001_ComputerInfoReplyAction();
@@ -68,7 +68,7 @@ public class StaticReplyView
      */
     public void sendResponse(Session session, int errorNumber)
     {
-        LOGGER.debug("LoginShard: sending send response");
+        LOGGER.debug("Sending send-response");
         
         P038_SendResponseAction sendResponse = new P038_SendResponseAction();
         
@@ -78,7 +78,7 @@ public class StaticReplyView
         
         shardletContext.sendAction(sendResponse);
         
-        LOGGER.debug("LoginShard: sending stream terminator");
+        LOGGER.debug("Sending stream terminator");
         
         shardletContext.sendAction(StreamTerminatorView.create(session, errorNumber));
     }

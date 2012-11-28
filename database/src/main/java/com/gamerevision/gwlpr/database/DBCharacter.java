@@ -60,7 +60,7 @@ public class DBCharacter
         }
         catch (SQLException ex)
         {
-            LOGGER.error("sql error in constructor");
+            LOGGER.error("SQL error in constructor", ex);
         }
     }
     
@@ -175,7 +175,7 @@ public class DBCharacter
         } 
         catch (SQLException ex) 
         {
-            LOGGER.error("sql error in create new character");
+            LOGGER.error("SQL error in create new character", ex);
         }
         
         return null;
@@ -216,7 +216,7 @@ public class DBCharacter
         } 
         catch (SQLException ex) 
         {
-            LOGGER.error("sql error in getByEMail");
+            LOGGER.error("SQL error in getAllCharacters", ex);
         }
 
         return result;
@@ -244,7 +244,7 @@ public class DBCharacter
         } 
         catch (SQLException ex) 
         {
-            LOGGER.error("sql error in getByEMail");
+            LOGGER.error("SQL error in getCharacter", ex);
         }
 
         return result;
@@ -271,7 +271,7 @@ public class DBCharacter
         } 
         catch (SQLException ex) 
         {
-            LOGGER.error("sql error in getByEMail");
+            LOGGER.error("sql error in getCharacter", ex);
         }
 
         return result;

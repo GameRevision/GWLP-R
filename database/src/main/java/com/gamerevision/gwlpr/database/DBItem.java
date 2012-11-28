@@ -49,7 +49,7 @@ public class DBItem
         } 
         catch (SQLException ex) 
         {
-            LOGGER.error("sql error in getItemsByInventory");
+            LOGGER.error("SQL error in getItemsByInventory", ex);
         }
 
         return result;

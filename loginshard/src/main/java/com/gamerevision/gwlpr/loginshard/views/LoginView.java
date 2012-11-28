@@ -57,7 +57,7 @@ public class LoginView
      */
     public LoginView sendLoginInfo(Session session, int accountID)
     {
-        LOGGER.debug("LoginShard: sending character info");
+        LOGGER.debug("Sending character info");
         
         // get the characters
         List<DBCharacter> characters = DBCharacter.getAllCharacters(db, accountID);
@@ -109,7 +109,7 @@ public class LoginView
             
     public LoginView sendAccountGuiInfo(Session session)    
     {
-        LOGGER.debug("LoginShard: sending account gui settings");
+        LOGGER.debug("Sending account gui settings");
         
         P022_AccountGuiInfoAction accountGuiSettings = new P022_AccountGuiInfoAction();
         accountGuiSettings.init(session);
@@ -126,7 +126,7 @@ public class LoginView
     
     public LoginView sendFriendInfo(Session session, int errorNumber)
     {
-        LOGGER.debug("LoginShard: sending friend list end");
+        LOGGER.debug("Sending friend list end");
         
         P020_FriendsListEndAction friendListEnd = new P020_FriendsListEndAction();
         friendListEnd.init(session);
@@ -135,7 +135,7 @@ public class LoginView
         shardletContext.sendAction(friendListEnd);
 
 
-        LOGGER.debug("LoginShard: sending account permissions");
+        LOGGER.debug("Sending account permissions");
         
         P017_AccountPermissionsAction accountPermissions = new P017_AccountPermissionsAction();
         accountPermissions.init(session);
@@ -153,7 +153,7 @@ public class LoginView
         shardletContext.sendAction(accountPermissions);
 
         
-        LOGGER.debug("LoginShard: sending stream terminator");
+        LOGGER.debug("Sending stream terminator");
             
         shardletContext.sendAction(
                 StreamTerminatorView.create(session, errorNumber));

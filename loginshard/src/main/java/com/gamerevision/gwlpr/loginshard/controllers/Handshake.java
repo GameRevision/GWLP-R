@@ -36,7 +36,7 @@ public class Handshake extends GenericShardlet
     {
         this.handshakeView = new HandshakeView(getShardletContext());
         
-        LOGGER.debug("LoginShard: init Handshake controller");
+        LOGGER.info("LoginShard: init Handshake controller");
     }
     
     
@@ -49,7 +49,7 @@ public class Handshake extends GenericShardlet
     @EventHandler
     public void onClientVersion(P1024_ClientVersionAction action)
     {
-        LOGGER.debug("LoginShard: got the client version packet");
+        LOGGER.debug("Got the client version packet");
         
         int clientVersion = action.getUnknown2();
         
@@ -70,7 +70,7 @@ public class Handshake extends GenericShardlet
     @EventHandler
     public void onClientSeed(P16896_ClientSeedAction action)
     {        
-        LOGGER.debug("LoginShard: got the client seed packet");
+        LOGGER.debug("Got the client seed packet");
         
         byte[] clientSeed = action.getClientSeed();
         

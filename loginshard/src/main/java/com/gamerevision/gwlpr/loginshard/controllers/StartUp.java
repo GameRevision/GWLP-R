@@ -36,7 +36,7 @@ public class StartUp extends GenericShardlet
     @Override
     protected void init()
     {
-        LOGGER.debug("LoginShard: loading initial data...");
+        LOGGER.info("LoginShard: init StartUp controller.");
         
         // we simply register a persistant client verifier here, because the login server
         // will accept any client that actually uses its protocol
@@ -73,6 +73,6 @@ public class StartUp extends GenericShardlet
         getShardletContext().setAttachment(new ContextAttachment(db));
         
         // we'r done for now
-        LOGGER.debug("LoginShard: finished loading initial data");
+        LOGGER.debug("Finished loading initial data");
     }
 }
