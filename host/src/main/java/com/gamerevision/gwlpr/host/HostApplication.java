@@ -54,18 +54,10 @@ public final class HostApplication
         NetworkFacade netMan = new NetworkFacade("127.0.0.1");
         
         // we've done anything we wanted to, so lets start the container!
-        try 
-        {
-            // create the container
-            // Note: we are using the dev environment here!
-            ContainerFacade container = new ContainerFacade(netMan, new DevEnvImpl());
-        } 
-        catch (Exception ex) 
-        {
-            logger.error("Container failed to start up.", ex);
-            System.exit(1);
-        }
-        
+        // create the container
+        // Note: we are using the dev environment here!
+        ContainerFacade container = new ContainerFacade(netMan, new DevelopmentEnvironment());
+
         while (true) {}
     }
 }

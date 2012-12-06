@@ -133,14 +133,14 @@ public class Handshake extends GenericShardlet
         SessionAttachment attach = ((SessionAttachment) session.getAttachment());
         
         // send the usual handshake stuff
-        sendAction(HandshakeView.serverSeed(session));
-        sendAction(HandshakeView.instanceHead(session));
+        HandshakeView.serverSeed(session);
+        HandshakeView.instanceHead(session);
         
         // check if this is a character creation mapshard
         if (mapId == 0)
         {
             LOGGER.debug("Starting character creation");
-            sendAction(CharacterCreationView.charCreateHead(session));
+            CharacterCreationView.charCreateHead(session);
             return;
         }
         
@@ -151,8 +151,8 @@ public class Handshake extends GenericShardlet
         // update the session attachment prior to that
         attach.setCharacterName(charName);
         
-        sendAction(HandshakeView.charName(session, charName));
-        sendAction(HandshakeView.districtInfo(session, mapId));
+        HandshakeView.charName(session, charName);
+        HandshakeView.districtInfo(session, mapId);
         
     }
 }

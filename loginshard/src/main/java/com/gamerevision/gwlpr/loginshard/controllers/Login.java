@@ -95,7 +95,7 @@ public class Login extends GenericShardlet
         if (!(checkInfo.isValid(password) || true)) 
         {
             // login failed, abort the login process
-            sendAction(StreamTerminatorView.create(session, checkInfo.getErrorCode()));
+            StreamTerminatorView.create(session, checkInfo.getErrorCode());
             
             LOGGER.debug("Client login failed");
             return;

@@ -77,10 +77,10 @@ public class CharacterCreation extends GenericShardlet
         Session session = action.getSession();
         
         // and start the char creation process stuff
-        sendAction(UpdateAttribPtsView.create(session));
+        UpdateAttribPtsView.create(session);
         // TODO: Fix agentID!
-        sendAction(UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.Unknown14, 0));
-        sendAction(CharacterCreationView.charCreateAck(session));
+        UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.Unknown14, 0);
+        CharacterCreationView.charCreateAck(session);
     }
     
     
@@ -97,7 +97,7 @@ public class CharacterCreation extends GenericShardlet
         // extract the session...
         Session session = action.getSession();
         
-        sendAction(UpdatePrivateProfessionsView.create(session));
+        UpdatePrivateProfessionsView.create(session);
     }
     
     
@@ -133,11 +133,11 @@ public class CharacterCreation extends GenericShardlet
         byte secondary = 0;
         
         // perform some unkown action...
-        sendAction(CharacterCreationView.unkownStep1(session));
+        CharacterCreationView.unkownStep1(session);
 
         // TODO WTF?
             // if name is in use ....
-            sendAction(CharacterCreationView.abort(session));
+            CharacterCreationView.abort(session);
         
         // if name is not in use create a new char in the db
         DBCharacter dbChar = DBCharacter.createNewCharacter(
@@ -150,7 +150,7 @@ public class CharacterCreation extends GenericShardlet
 
         if (dbChar != null)
         {
-            sendAction(CharacterCreationView.charCreateFinish(session, dbChar));
+            CharacterCreationView.charCreateFinish(session, dbChar);
             return;
         }
         

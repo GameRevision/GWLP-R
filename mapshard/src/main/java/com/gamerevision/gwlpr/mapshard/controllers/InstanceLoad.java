@@ -88,13 +88,17 @@ public class InstanceLoad extends GenericShardlet
         itemStreamCreate.init(session);
         itemStreamCreate.setStreamID((short) 1);
         itemStreamCreate.setType((byte) 0);
-        sendAction(itemStreamCreate);
+        
+        session.send(itemStreamCreate);
+        
         
         P318_UpdateActiveWeaponsetAction updateActiveWeaponset = new P318_UpdateActiveWeaponsetAction();
         updateActiveWeaponset.init(session);
         updateActiveWeaponset.setStreamID((short) 1);
         updateActiveWeaponset.setSlot((byte) 0);
-        sendAction(updateActiveWeaponset);
+        
+        session.send(updateActiveWeaponset);
+        
         
         P309_CreateInventoryPageAction createInventoryPage = new P309_CreateInventoryPageAction();
         createInventoryPage.init(session);
@@ -104,13 +108,16 @@ public class InstanceLoad extends GenericShardlet
         createInventoryPage.setPageID((short) 16);
         createInventoryPage.setStorage((byte) 16);
         createInventoryPage.setAssociatedItem(0);
-        sendAction(createInventoryPage);
+        
+        session.send(createInventoryPage);
+        
         
         P310_UpdateGoldOnCharacterAction updateGoldOnCharacter = new P310_UpdateGoldOnCharacterAction();
         updateGoldOnCharacter.init(session);
         updateGoldOnCharacter.setStreamID((short) 1);
         updateGoldOnCharacter.setGold(0);
-        sendAction(updateGoldOnCharacter);
+        
+        session.send(updateGoldOnCharacter);
         
         
         P393_UnknownAction itemStreamTerminator = new P393_UnknownAction();
@@ -118,7 +125,8 @@ public class InstanceLoad extends GenericShardlet
         itemStreamTerminator.setUnknown1((byte) 0);
         itemStreamTerminator.setUnknown2((short) mapId);
         itemStreamTerminator.setUnknown3(0);
-        sendAction(itemStreamTerminator);
+        
+        session.send(itemStreamTerminator);
     }
     
     
@@ -136,7 +144,8 @@ public class InstanceLoad extends GenericShardlet
         instanceLoadSpawnPoint.setPlane((short) 0);
         instanceLoadSpawnPoint.setisCinematic((byte) 0);
         instanceLoadSpawnPoint.setData5((byte) 0);
-        sendAction(instanceLoadSpawnPoint);
+        
+        session.send(instanceLoadSpawnPoint);
     }
     
     
@@ -151,19 +160,15 @@ public class InstanceLoad extends GenericShardlet
         P230_UnknownAction zoneBeginCharInfo = new P230_UnknownAction();
         zoneBeginCharInfo.init(session);
         zoneBeginCharInfo.setUnknown1(1886151033);
-        sendAction(zoneBeginCharInfo);
-        
-        
-        
+        session.send(zoneBeginCharInfo);
+
         
         LOGGER.debug("Sending update attribute points");
-        sendAction(UpdateAttribPtsView.create(session));
+        UpdateAttribPtsView.create(session);
         
-        
-        
-        
+
         LOGGER.debug("Sending update private professions");
-        sendAction(UpdatePrivateProfessionsView.create(session));
+        UpdatePrivateProfessionsView.create(session);
         
         
         P206_UpdateSkillBarAction updateSkillbar = new P206_UpdateSkillBarAction();
@@ -172,48 +177,54 @@ public class InstanceLoad extends GenericShardlet
         updateSkillbar.setSkillBar(new int[8]);
         updateSkillbar.setSkillBarPvPMask(new int[8]);
         updateSkillbar.setData3((byte) 1);
-        sendAction(updateSkillbar);
+        
+        session.send(updateSkillbar);
         
         
         // TODO: Fix agentIDs!
         LOGGER.debug("Sending the generic value for energy");
-        sendAction(UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.Energy, 20));
+        UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.Energy, 20);
         LOGGER.debug("Sending the  generic value for health");
-        sendAction(UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.Health, 20));
+        UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.Health, 20);
         
         LOGGER.debug("Sending the generic value for energy regeneration");
-        sendAction(UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.EnergyRegen, 0.033F));
+        UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.EnergyRegen, 0.033F);
         LOGGER.debug("Sending the generic value for health regeneration");
-        sendAction(UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.HealthRegen, 0));
+        UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.HealthRegen, 0);
         
         LOGGER.debug("Sending the generic value for public level");
-        sendAction(UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.PublicLevel, 1));
+        UpdateGenericValueView.create(session, 50, UpdateGenericValueView.Type.PublicLevel, 1);
         
         P127_UnknownAction zoneDataPrepMapData = new P127_UnknownAction();
         zoneDataPrepMapData.init(session);
         zoneDataPrepMapData.setUnknown1(64);
         zoneDataPrepMapData.setUnknown2(128);
         zoneDataPrepMapData.setUnknown3(27);
-        sendAction(zoneDataPrepMapData);
+        
+        session.send(zoneDataPrepMapData);
+        
         
         P126_UnknownAction zoneDataMapData = new P126_UnknownAction();
         zoneDataMapData.init(session);
         zoneDataMapData.setUnknown1(new int[1]);
-        sendAction(zoneDataMapData);
+        
+        session.send(zoneDataMapData);
+        
         
         P221_UpdateFactionAction updateFaction = new P221_UpdateFactionAction();
         updateFaction.init(session);
         updateFaction.setLevel(1);
         updateFaction.setMorale(100);
-        sendAction(updateFaction);      
+        
+        session.send(updateFaction);
+        
         
         P207_UnknownAction updateAvailableSkills = new P207_UnknownAction();
         updateAvailableSkills.init(session);
         updateAvailableSkills.setUnknown1(new int[] {0x000B0000, 0x0354FFFF, 0x043A043B, 0x00E8043A, 0x00000000, 0x00000000, 0x17000000} );
-        sendAction(updateAvailableSkills);
         
-        
-        
+        session.send(updateAvailableSkills);
+
         
         P077_UnknownAction updateAgentAppearance = new P077_UnknownAction();
         updateAgentAppearance.init(session);
@@ -222,7 +233,8 @@ public class InstanceLoad extends GenericShardlet
         updateAgentAppearance.setUnknown3(0);
         updateAgentAppearance.setUnknown6(0x3cbfa094);
         updateAgentAppearance.setUnknown7(attachment.getCharacterName().toCharArray());
-        sendAction(updateAgentAppearance);
+        
+        session.send(updateAgentAppearance);
         
         
         P021_UnknownAction spawnObject = new P021_UnknownAction();
@@ -242,16 +254,16 @@ public class InstanceLoad extends GenericShardlet
         spawnObject.setUnknown18(new float[] { Float.POSITIVE_INFINITY,Float.POSITIVE_INFINITY});
         spawnObject.setUnknown19(new float[] { Float.POSITIVE_INFINITY,Float.POSITIVE_INFINITY});
         spawnObject.setUnknown22(new float[] { Float.POSITIVE_INFINITY,Float.POSITIVE_INFINITY});
-        sendAction(spawnObject);
-               
-               
-               
+        
+        session.send(spawnObject);
+  
         
         P023_UnknownAction fadeIntoMap = new P023_UnknownAction();
         fadeIntoMap.init(session);
         fadeIntoMap.setUnknown1(50);
         fadeIntoMap.setUnknown2(3);
-        sendAction(fadeIntoMap);
+        
+        session.send(fadeIntoMap);
         
     }
 }

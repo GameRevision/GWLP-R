@@ -9,11 +9,11 @@ import com.gamerevision.gwlpr.loginshard.controllers.MapShardDispatch;
 import com.gamerevision.gwlpr.mapshard.controllers.CharacterCreation;
 import com.gamerevision.gwlpr.mapshard.controllers.InstanceLoad;
 import com.gamerevision.gwlpr.protocol.SerialisationFilter;
-import com.realityshard.container.DevelopmentEnvironment;
-import com.realityshard.container.gameapp.GameAppFactory;
-import com.realityshard.container.gameapp.GameAppFactoryDevEnv;
-import com.realityshard.container.utils.ConfigFactory;
+import com.realityshard.container.gameapp.GenericGameAppFactory;
 import com.realityshard.shardlet.ProtocolFilter;
+import com.realityshard.shardlet.environment.Environment;
+import com.realityshard.shardlet.environment.GameAppFactory;
+import com.realityshard.shardlet.environment.ProtocolFactory;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,11 +26,11 @@ import java.util.Map;
  * 
  * @author _rusty
  */
-public class DevEnvImpl implements DevelopmentEnvironment
+public class DevelopmentEnvironment implements Environment
 {
     // The factories...
     private List<GameAppFactory> gameFactories;
-    private List<ProtocolDataContainer> protContainers;
+    private List<ProtocolFactory> protContainers;
     // The standard parameters
     private Map<String, String> dbParams = new HashMap<>();
 
@@ -38,9 +38,9 @@ public class DevEnvImpl implements DevelopmentEnvironment
     /**
      * Constructor.
      * (This is the place where you should add your own stuff)
+     * @throws Exception 
      */
-    public DevEnvImpl()
-            throws Exception
+    public DevelopmentEnvironment()
     {
         // init the lists so we can add the protocols and game apps
         gameFactories = new ArrayList<>();
@@ -83,7 +83,7 @@ public class DevEnvImpl implements DevelopmentEnvironment
      * @return 
      */
     @Override
-    public List<ProtocolDataContainer> getProtocolDataContainers() 
+    public List<ProtocolFactory> getProtocolFactories() 
     {
         return protContainers;
     }
@@ -93,36 +93,33 @@ public class DevEnvImpl implements DevelopmentEnvironment
      * Helper.
      * @return 
      */
-    private GameAppFactoryDevEnv produceLoginShard()
+    private GameAppFactory produceLoginShard()
     {
-        GameAppFactoryDevEnv loginshard = new GameAppFactoryDevEnv(
+        GameAppFactory loginshard = new GenericGameAppFactory(
                 "LoginShard",
                 "127.0.0.1",
                 250, 
                 true, 
                 new HashMap<String, String>());
         
+        Map<String, String> dummy = new HashMap<>();
+        
         loginshard
         .addShardlet(
             new com.gamerevision.gwlpr.loginshard.controllers.StartUp(), 
-            "StartUp Shardlet", 
             dbParams) // startup has its own parameters: the db stuff
         .addShardlet(
             new com.gamerevision.gwlpr.loginshard.controllers.Handshake(), 
-            "Handshake Shardlet", 
-            new HashMap<String, String>())
+            dummy)
         .addShardlet(
             new Login(), 
-            "Login Shardlet", 
-            new HashMap<String, String>())
+            dummy)
         .addShardlet(
             new MapShardDispatch(), 
-            "MapShardDispatch Shardlet", 
-            new HashMap<String, String>())
+            dummy)
         .addShardlet(
             new com.gamerevision.gwlpr.loginshard.controllers.StaticReply(), 
-            "StaticReply Shardlet", 
-            new HashMap<String, String>());
+            dummy);
         
         return loginshard;
     }
@@ -132,36 +129,33 @@ public class DevEnvImpl implements DevelopmentEnvironment
      * Helper.
      * @return 
      */
-    private GameAppFactoryDevEnv produceMapShard()
+    private GameAppFactory produceMapShard()
     {
-        GameAppFactoryDevEnv mapshard = new GameAppFactoryDevEnv(
+        GameAppFactory mapshard = new GenericGameAppFactory(
                 "MapShard",
                 "127.0.0.1",
                 250, 
                 false, 
                 new HashMap<String, String>());
         
+        Map<String, String> dummy = new HashMap<>();
+        
         mapshard
         .addShardlet(
             new com.gamerevision.gwlpr.mapshard.controllers.StartUp(), 
-            "StartUp Shardlet", 
             dbParams) // startup has its own parameters: the db stuff
         .addShardlet(
             new com.gamerevision.gwlpr.mapshard.controllers.Handshake(), 
-            "Handshake Shardlet", 
-            new HashMap<String, String>())
+            dummy)
         .addShardlet(
             new CharacterCreation(), 
-            "CharacterCreation Shardlet", 
-            new HashMap<String, String>())
+            dummy)
         .addShardlet(
             new InstanceLoad(), 
-            "InstanceLoad Shardlet", 
-            new HashMap<String, String>())
+            dummy)
         .addShardlet(
-            new com.gamerevision.gwlpr.mapshard.controllers.StaticReply(), 
-            "StaticReply Shardlet", 
-            new HashMap<String, String>());
+            new com.gamerevision.gwlpr.mapshard.controllers.StaticReply(),
+            dummy);
         
         return mapshard;
     }
@@ -171,32 +165,29 @@ public class DevEnvImpl implements DevelopmentEnvironment
      * Helper.
      * @return 
      */
-    private ProtocolDataContainer produceLoginProtocol()
-            throws Exception
+    private ProtocolFactory produceLoginProtocol()
     {
         ArrayList<ProtocolFilter> inFil = new ArrayList<>();
         ArrayList<ProtocolFilter> outFil = new ArrayList<>();
         
         // add the seralisation filter
-        SerialisationFilter serialFil = new SerialisationFilter();
+        ProtocolFilter serialFil = new SerialisationFilter();
         // init its params
         Map<String, String> params = new HashMap<>();
         params.put("ServerType", "LoginServer");
         
-        serialFil.init(ConfigFactory.produceConfigProtocolFilter(
-                "Serialization Filter",
-                params));
+        serialFil.init(params);
         
-        inFil.add(0, serialFil);
-        outFil.add(outFil.size(), serialFil); // is this size-1?
+        inFil.add(serialFil);
+        outFil.add(0, serialFil);
         
         // add some other filter...
         
-        // finally put the protocol dataholder together
-        ProtocolDataContainer loginprot = new ProtocolDataContainer(
+        // finally put the protocol factory together
+        ProtocolFactory loginprot = new ProtocolFactory(
             "GWLoginServerProtocol", 
             8221, 
-            inFil, // this should be a list of initialized 
+            inFil,
             outFil);
         
         return loginprot;
@@ -207,32 +198,29 @@ public class DevEnvImpl implements DevelopmentEnvironment
      * Helper.
      * @return 
      */
-    private ProtocolDataContainer produceGameProtocol()
-            throws Exception
+    private ProtocolFactory produceGameProtocol()
     {
         ArrayList<ProtocolFilter> inFil = new ArrayList<>();
         ArrayList<ProtocolFilter> outFil = new ArrayList<>();
         
         // add the seralisation filter
-        SerialisationFilter serialFil = new SerialisationFilter();
+        ProtocolFilter serialFil = new SerialisationFilter();
         // init its params
         Map<String, String> params = new HashMap<>();
         params.put("ServerType", "GameServer");
         
-        serialFil.init(ConfigFactory.produceConfigProtocolFilter(
-                "Serialization Filter",
-                params));
+        serialFil.init(params);
         
-        inFil.add(0, serialFil);
-        outFil.add(outFil.size(), serialFil); // is this size-1?
+        inFil.add(serialFil);
+        outFil.add(0, serialFil);
         
         // add some other filter...
         
         // finally put the protocol dataholder together
-        ProtocolDataContainer gameprot = new ProtocolDataContainer(
+        ProtocolFactory gameprot = new ProtocolFactory(
             "GWGameServerProtocol", 
             9221, 
-            inFil, // this should be a list of initialized 
+            inFil,
             outFil);
         
         return gameprot;

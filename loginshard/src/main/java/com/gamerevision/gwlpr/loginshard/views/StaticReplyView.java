@@ -55,7 +55,7 @@ public class StaticReplyView
         computerInfoReply.setData2(0);
         computerInfoReply.setData3(1);
         
-        shardletContext.sendAction(computerInfoReply);
+        session.send(computerInfoReply);
     }
     
     
@@ -76,10 +76,10 @@ public class StaticReplyView
         sendResponse.setLoginCount(SessionAttachment.getLoginCount(session));
         sendResponse.setData1(0);
         
-        shardletContext.sendAction(sendResponse);
+        session.send(sendResponse);
         
         LOGGER.debug("Sending stream terminator");
         
-        shardletContext.sendAction(StreamTerminatorView.create(session, errorNumber));
+        StreamTerminatorView.create(session, errorNumber);
     }
 }

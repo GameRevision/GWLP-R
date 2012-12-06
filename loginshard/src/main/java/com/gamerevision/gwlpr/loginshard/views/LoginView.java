@@ -96,7 +96,7 @@ public class LoginView
             buffer.get(a);
             characterInfo.setUnknown5(a);
 
-            shardletContext.sendAction(characterInfo);
+            session.send(characterInfo);
         }
 
         // next step:
@@ -114,7 +114,7 @@ public class LoginView
         P022_AccountGuiInfoAction accountGuiSettings = new P022_AccountGuiInfoAction();
         accountGuiSettings.init(session);
         accountGuiSettings.setLoginCount(SessionAttachment.getLoginCount(session));
-        shardletContext.sendAction(accountGuiSettings);
+        session.send(accountGuiSettings);
         
         // next step:
         sendFriendInfo(session, 0);
@@ -132,7 +132,7 @@ public class LoginView
         friendListEnd.init(session);
         friendListEnd.setLoginCount(SessionAttachment.getLoginCount(session));
         friendListEnd.setData1(1);
-        shardletContext.sendAction(friendListEnd);
+        session.send(friendListEnd);
 
 
         LOGGER.debug("Sending account permissions");
@@ -150,13 +150,12 @@ public class LoginView
         accountPermissions.setAccountFeatures(new byte[] { 0x01, 0x00, 0x06, 0x00, 0x57, 0x00, 0x01, 0x00 });
         accountPermissions.setEulaAccepted((byte) 23);
         accountPermissions.setData5(0);
-        shardletContext.sendAction(accountPermissions);
+        session.send(accountPermissions);
 
         
         LOGGER.debug("Sending stream terminator");
             
-        shardletContext.sendAction(
-                StreamTerminatorView.create(session, errorNumber));
+        StreamTerminatorView.create(session, errorNumber);
         
         // for convenience:
         return this;

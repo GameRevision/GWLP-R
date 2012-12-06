@@ -57,6 +57,6 @@ public class DispatcherView
                                                   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00});
         referToGameServer.setSecurityKey2(key2);
         
-        shardletContext.sendAction(referToGameServer);
+        session.send(referToGameServer);
     }
 }
