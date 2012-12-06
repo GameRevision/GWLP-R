@@ -144,6 +144,12 @@ public class MapShardDispatch extends GenericShardlet
         
         LOGGER.debug("The MapShard accepted the session");
 
-        dispatcherView.referToGameServer(session, 1, 2, action.getMapId());
+        dispatcherView.referToGameServer(
+                session, 
+                action.getIp(),
+                action.getPort(), 
+                1, 
+                2, 
+                action.getMapId());
     }
 }

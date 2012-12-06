@@ -78,6 +78,11 @@ public class DBAccount
             LOGGER.error("SQL error in getByEMail", ex);
         }
         
+        if (result == null)
+        {
+            LOGGER.error("We dont have any accounts with email: [{}]", eMail);
+        }
+        
         return result;
     }
 }

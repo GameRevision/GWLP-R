@@ -29,6 +29,8 @@ public final class DatabaseConnectionProvider
 		databaseConnectionInfo = "jdbc:mysql://" + ip + ":" + port + "/" + database +
                                     "?user=" + username + "&password=" + password;
                 
+                LOGGER.info("Using database: [{}]", databaseConnectionInfo);
+                
 		try 
                 {
                     new Driver();
@@ -51,6 +53,11 @@ public final class DatabaseConnectionProvider
             catch (SQLException ex)
             {
                 LOGGER.error("Could not create new mysql connection.", ex);
+            }
+            
+            if (connection == null)
+            {
+                LOGGER.error("Could not establish a db connection, but no exception caught!");
             }
             
             return connection;

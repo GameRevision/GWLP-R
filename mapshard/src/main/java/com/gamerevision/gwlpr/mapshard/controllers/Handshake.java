@@ -109,6 +109,8 @@ public class Handshake extends GenericShardlet
         // finally, reply to the action from the login shard
         loginShard.sendTriggerableAction(new ISC_AcceptClientReplyAction(
                 action.getSession(),
+                getShardletContext().getHostAddress(),
+                9112, // TODO BUG where do i get the port from?
                 action.getAccountId(),
                 mapId,
                 true));
@@ -145,7 +147,7 @@ public class Handshake extends GenericShardlet
         }
         
         // lets load that char name if it already exists...
-        String charName = DBCharacter.getCharacter(db, attach.getAccountId()).getName();
+        String charName = DBCharacter.getCharacter(db, attach.getCharacterId()).getName();
         
         // as we are about to use that name for other stuff, lets 
         // update the session attachment prior to that

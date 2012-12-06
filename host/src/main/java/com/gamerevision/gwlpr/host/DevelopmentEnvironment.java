@@ -97,7 +97,7 @@ public class DevelopmentEnvironment implements Environment
     {
         GameAppFactory loginshard = new GenericGameAppFactory(
                 "LoginShard",
-                "127.0.0.1",
+                "192.168.178.25",
                 250, 
                 true, 
                 new HashMap<String, String>());
@@ -133,7 +133,7 @@ public class DevelopmentEnvironment implements Environment
     {
         GameAppFactory mapshard = new GenericGameAppFactory(
                 "MapShard",
-                "127.0.0.1",
+                "192.168.178.25",
                 250, 
                 false, 
                 new HashMap<String, String>());
@@ -186,7 +186,7 @@ public class DevelopmentEnvironment implements Environment
         // finally put the protocol factory together
         ProtocolFactory loginprot = new ProtocolFactory(
             "GWLoginServerProtocol", 
-            8221, 
+            8112, 
             inFil,
             outFil);
         
@@ -219,7 +219,7 @@ public class DevelopmentEnvironment implements Environment
         // finally put the protocol dataholder together
         ProtocolFactory gameprot = new ProtocolFactory(
             "GWGameServerProtocol", 
-            9221, 
+            9112, 
             inFil,
             outFil);
         

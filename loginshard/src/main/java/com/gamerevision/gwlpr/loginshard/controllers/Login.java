@@ -101,7 +101,7 @@ public class Login extends GenericShardlet
             return;
         }
         
-        LOGGER.info("LoginShard: client successfully logged in. [email {}]", email);
+        LOGGER.info("LoginShard: client successfully logged in. [email {} ]", email);
 
         // update the attachment with the data (because we now know 
         // that it is correct)

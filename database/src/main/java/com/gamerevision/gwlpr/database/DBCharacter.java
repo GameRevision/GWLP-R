@@ -148,7 +148,7 @@ public class DBCharacter
         try
         {
             Connection connection = connectionProvider.getConnection();
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO characters (AccountID,Name,Sex,Height,Skin,Haircolor,Face,Hairstyle,Campaign,Primary,Secondary) VALUES (?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO characters (AccountID,Name,Sex,Height,Skin,Haircolor,Face,Hairstyle,Campaign,Primary,Secondary) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
             
             ps.setInt(1, accountId);
             ps.setString(2, characterName);
@@ -247,6 +247,11 @@ public class DBCharacter
             LOGGER.error("SQL error in getCharacter", ex);
         }
 
+        if (result == null)
+        {
+            LOGGER.error("We dont have any characters with name: [{}]", characterName);
+        }
+        
         return result;
     }
     
@@ -274,6 +279,11 @@ public class DBCharacter
             LOGGER.error("sql error in getCharacter", ex);
         }
 
+        if (result == null)
+        {
+            LOGGER.error("We dont have any characters with ID: [{}]", characterId);
+        }
+        
         return result;
     }
 }

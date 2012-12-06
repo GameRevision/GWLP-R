@@ -50,8 +50,8 @@ public final class HostApplication
         // note that this has to be a concrete implementation atm
         // NOTE: possible BUG here: FORCING IPv4
         
-        //System.setProperty("java.net.preferIPv4Stack", "true");
-        NetworkFacade netMan = new NetworkFacade("127.0.0.1");
+        System.setProperty("java.net.preferIPv4Stack", "true");
+        NetworkFacade netMan = new NetworkFacade("192.168.178.25");
         
         // we've done anything we wanted to, so lets start the container!
         // create the container
