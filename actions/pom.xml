@@ -3,8 +3,6 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>actions</artifactId>
-    <name>${project.artifactId}</name>
-    <packaging>jar</packaging>
 
 
     <parent>
@@ -14,6 +12,7 @@
     </parent>
 
 
-    <description>The action-framework of the GW protocol</description>
+    <name>${project.artifactId}</name>
+    <description>The action-framework of the GW protocol. This encapsulates the definitions for packet serialization.</description>
 
 </project>

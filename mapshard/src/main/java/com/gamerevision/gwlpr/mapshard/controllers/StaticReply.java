@@ -27,6 +27,6 @@ public class StaticReply extends GenericShardlet
     @Override
     protected void init() 
     {
-        LOGGER.debug("MapShard: init StaticReply controller");
+        LOGGER.info("MapShard: init StaticReply controller");
     }
 }

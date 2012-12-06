@@ -5,10 +5,12 @@
     <groupId>com.gamerevision.gwlpr</groupId>
     <artifactId>gwlpr</artifactId>
     <version>0.1.1</version>
+
+
     <packaging>pom</packaging>
+
+
     <name>${project.artifactId}</name>
-
-
     <description>GWLP:R is the most complete GW server sandbox</description>
     <url>http://github.com/GameRevision/GWLP-R</url>
     <inceptionYear>2010</inceptionYear>
@@ -29,45 +31,47 @@
 
 
     <properties>
+        <!-- Java compiler options -->
         <java.source>1.7</java.source>
         <java.target>1.7</java.target>
         <java.debug>true</java.debug>
         <java.optimize>true</java.optimize>
         <java.verbose>true</java.verbose>
+
+        <!-- RS dependency versions -->
+        <rs.api>0.1.6</rs.api>
+        <rs.imp>0.1.7</rs.imp>
+        <rs.utl>0.1.1</rs.utl>
     </properties>
 
 
     <dependencies>
-        <!--the Shardlet API-->
+        <!-- The Shardlet API -->
         <dependency>
             <groupId>com.realityshard</groupId>
             <artifactId>shardlet</artifactId>
-            <version>0.1.4</version>
-            <type>jar</type>
+            <version>${rs.api}</version>
         </dependency>
 
-        <!--the network layer-->
+        <!-- The NetworkLayer -->
         <dependency>
             <groupId>com.realityshard</groupId>
             <artifactId>network</artifactId>
-            <version>0.1.4</version>
-            <type>jar</type>
+            <version>${rs.imp}</version>
         </dependency>
 
-        <!--the RS container-->
+        <!-- The Container -->
         <dependency>
             <groupId>com.realityshard</groupId>
             <artifactId>container</artifactId>
-            <version>0.1.4</version>
-            <type>jar</type>
+            <version>${rs.imp}</version>
         </dependency>
 
-        <!--the EntitySystem framework-->
+        <!-- The EntitySystem-->
         <dependency>
             <groupId>com.realityshard</groupId>
             <artifactId>entitysystem</artifactId>
-            <version>0.1.1</version>
-            <type>jar</type>
+            <version>${rs.utl}</version>
         </dependency>
 
         <!-- JUnit for testing -->
@@ -92,25 +96,6 @@
                     <debug>${java.debug}</debug>
                     <optimize>${java.optimize}</optimize>
                     <verbose>${java.verbose}</verbose>
-                </configuration>
-            </plugin>
-            
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.2.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
-                  </executions>
-                <configuration>
-                    <executable>java</executable>
-                    <arguments>
-                        <argument>-Djava.net.preferIPv4Stack=true</argument>
-                    </arguments>
                 </configuration>
             </plugin>
         </plugins>

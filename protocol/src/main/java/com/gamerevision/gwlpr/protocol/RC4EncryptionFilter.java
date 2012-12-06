@@ -5,12 +5,12 @@
 package com.gamerevision.gwlpr.protocol;
 
 import com.realityshard.shardlet.Action;
-import com.realityshard.shardlet.ConfigProtocolFilter;
 import com.realityshard.shardlet.ProtocolFilter;
 import com.realityshard.shardlet.TriggerableAction;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Part of the GW1 protocol chain.
@@ -26,12 +26,10 @@ public class RC4EncryptionFilter implements ProtocolFilter
     /**
      * Init this filter.
      * 
-     * @param       filterConfig            The deserialized XML config file
-     *                                      (Deployment descriptor of this protocol)
-     * @throws      Exception               If anything went wrong with initializations
+     * @param       params                  Init parameters.
      */
     @Override
-    public void init(ConfigProtocolFilter filterConfig) throws Exception 
+    public void init(Map<String, String> params)
     {
         // TODO: Check if we need to do smth here.
     }

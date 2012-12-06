@@ -60,7 +60,7 @@ public class DBCharacter
         }
         catch (SQLException ex)
         {
-            LOGGER.error("sql error in constructor");
+            LOGGER.error("SQL error in constructor", ex);
         }
     }
     
@@ -148,7 +148,7 @@ public class DBCharacter
         try
         {
             Connection connection = connectionProvider.getConnection();
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO characters (AccountID,Name,Sex,Height,Skin,Haircolor,Face,Hairstyle,Campaign,Primary,Secondary) VALUES (?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO characters (AccountID,Name,Sex,Height,Skin,Haircolor,Face,Hairstyle,Campaign,Primary,Secondary) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
             
             ps.setInt(1, accountId);
             ps.setString(2, characterName);
@@ -175,7 +175,7 @@ public class DBCharacter
         } 
         catch (SQLException ex) 
         {
-            LOGGER.error("sql error in create new character");
+            LOGGER.error("SQL error in create new character", ex);
         }
         
         return null;
@@ -216,7 +216,7 @@ public class DBCharacter
         } 
         catch (SQLException ex) 
         {
-            LOGGER.error("sql error in getByEMail");
+            LOGGER.error("SQL error in getAllCharacters", ex);
         }
 
         return result;
@@ -244,9 +244,14 @@ public class DBCharacter
         } 
         catch (SQLException ex) 
         {
-            LOGGER.error("sql error in getByEMail");
+            LOGGER.error("SQL error in getCharacter", ex);
         }
 
+        if (result == null)
+        {
+            LOGGER.error("We dont have any characters with name: [{}]", characterName);
+        }
+        
         return result;
     }
     
@@ -271,9 +276,14 @@ public class DBCharacter
         } 
         catch (SQLException ex) 
         {
-            LOGGER.error("sql error in getByEMail");
+            LOGGER.error("sql error in getCharacter", ex);
         }
 
+        if (result == null)
+        {
+            LOGGER.error("We dont have any characters with ID: [{}]", characterId);
+        }
+        
         return result;
     }
 }

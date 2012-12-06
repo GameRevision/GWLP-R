@@ -16,13 +16,14 @@ import com.realityshard.shardlet.Session;
 public class UpdateAttribPtsView
 {
 
-    public static P044_UpdateAttribPtsAction create(Session session)
+    public static void create(Session session)
     {
         P044_UpdateAttribPtsAction updateAttributePoints = new P044_UpdateAttribPtsAction();
         updateAttributePoints.init(session);
         updateAttributePoints.setAgentID(50); // TODO BUG AGENTID
         updateAttributePoints.setFreePts((byte) 0);
         updateAttributePoints.setMaxPts((byte) 0);
-        return updateAttributePoints;
+        
+        session.send(updateAttributePoints);
     }
 }

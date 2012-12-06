@@ -3,9 +3,6 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>database</artifactId>
-    <name>${project.artifactId}</name>
-
-    <packaging>jar</packaging>
 
 
     <parent>
@@ -15,10 +12,12 @@
     </parent>
 
 
-    <description>The framework for GW / MMO specific content</description>
+    <name>${project.artifactId}</name>
+    <description>The database framework for the GWLPR databases.</description>
 
 
     <dependencies>
+        <!-- The MySQL framework -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>

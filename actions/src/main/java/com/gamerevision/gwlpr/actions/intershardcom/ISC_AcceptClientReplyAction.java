@@ -18,26 +18,54 @@ public final class ISC_AcceptClientReplyAction extends GenericTriggerableAction
 {
 
     private boolean accepted;   // whether the MapShard accepted the session or not
+    private final int port;
     private final int accountId;
     private int mapId;          // the map id of this MapShard
+    private final String ip;
     
     
     /**
      * Constructor.
      * 
      * @param       session
+     * @param       ip 
+     * @param       port 
      * @param       accountId 
      * @param       mapId 
      * @param       accepted
      */
-    public ISC_AcceptClientReplyAction(Session session, int accountId, int mapId, boolean accepted)
+    public ISC_AcceptClientReplyAction(Session session, String ip, int port, int accountId, int mapId, boolean accepted)
     {
         init(session);
         this.accepted = accepted;
+        this.port = port;
         this.accountId = accountId;
         this.mapId = mapId;
+        this.ip = ip;
     }
 
+    
+    /**
+     * Getter.
+     * 
+     * @return      The map shards port
+     */
+    public int getPort() 
+    {
+        return port;
+    }
+
+    
+    /**
+     * Getter.
+     * 
+     * @return      The map shards IP address
+     */
+    public String getIp() 
+    {
+        return ip;
+    }
+    
     
     /**
      * Getter.

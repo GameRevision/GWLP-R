@@ -40,7 +40,7 @@ public class StartUp extends GenericShardlet
         // parent context
         int mapId =Integer.parseInt(this.getShardletContext().getInitParameter("MapId"));
 
-        LOGGER.debug("MapShard: init Startup controller [mapid = {}]", mapId);
+        LOGGER.info("MapShard: init Startup controller. [mapid = {}]", mapId);
         
         // get the parent of this mapshard (as that is the login server)
         // TODO: maybe this should be an extra action coming from the LS?
@@ -65,6 +65,6 @@ public class StartUp extends GenericShardlet
                 new ContextAttachment(ls, db, es, lt, mapId));
         
         // we'r finished...
-        LOGGER.debug("MapShard: finished loading initial data");
+        LOGGER.debug("Finished loading initial data");
     }
 }

@@ -50,7 +50,7 @@ public class MapShardDispatch extends GenericShardlet
     {
         this.dispatcherView = new DispatcherView(getShardletContext());
         
-        LOGGER.debug("LoginShard: init Dispatch controller");
+        LOGGER.info("LoginShard: init Dispatch controller");
     }
     
     
@@ -62,7 +62,7 @@ public class MapShardDispatch extends GenericShardlet
     @EventHandler
     public void onCharacterPlayInfo(P041_CharacterPlayInfoAction action)
     {
-        LOGGER.debug("LoginShard: got the character play info packet");
+        LOGGER.debug("Got the character play info packet");
         
         Session session = action.getSession();
         SessionAttachment attach = (SessionAttachment) session.getAttachment();
@@ -109,7 +109,7 @@ public class MapShardDispatch extends GenericShardlet
         // lets check if we were successfull with the game app creation
         if (mapShard == null)
         {
-            LOGGER.error("Was unable to create a game app! Please check the log for other errors!");
+            LOGGER.warn("Was unable to create a game app! Please check the log for other errors!");
             return;
         }
         
@@ -132,18 +132,24 @@ public class MapShardDispatch extends GenericShardlet
     @EventHandler
     public void onAcceptClientReply(ISC_AcceptClientReplyAction action)
     {
-        LOGGER.debug("LoginShard: got the accept session reply action");
+        LOGGER.debug("Got the accept session reply action");
         Session session = action.getSession();
         
         if (!action.acceptedSession())
         {
-            LOGGER.debug("The MapShard did not accept the session");
+            LOGGER.warn("The MapShard did not accept the session!");
             // TODO: search for another mapshard or whatever here
             return;
         }
         
         LOGGER.debug("The MapShard accepted the session");
 
-        dispatcherView.referToGameServer(session, 1, 2, action.getMapId());
+        dispatcherView.referToGameServer(
+                session, 
+                action.getIp(),
+                action.getPort(), 
+                1, 
+                2, 
+                action.getMapId());
     }
 }

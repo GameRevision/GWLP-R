@@ -7,7 +7,6 @@ package com.gamerevision.gwlpr.host;
 import com.realityshard.container.ContainerFacade;
 import com.realityshard.network.NetworkFacade;
 import com.realityshard.shardlet.GlobalExecutor;
-import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import org.slf4j.Logger;
@@ -45,26 +44,20 @@ public final class HostApplication
         // this can actually be done within the API
         GlobalExecutor.init(executor);
         
+        executor.execute(new NetTest());
+        
         // we need a new concurrent network manager here
         // note that this has to be a concrete implementation atm
         // NOTE: possible BUG here: FORCING IPv4
         
-        //System.setProperty("java.net.preferIPv4Stack", "true");
-        NetworkFacade netMan = new NetworkFacade("127.0.0.1");
+        System.setProperty("java.net.preferIPv4Stack", "true");
+        NetworkFacade netMan = new NetworkFacade("192.168.178.25");
         
         // we've done anything we wanted to, so lets start the container!
-        try 
-        {
-            // create the container
-            // Note: we are using the dev environment here!
-            ContainerFacade container = new ContainerFacade(netMan, new DevEnvImpl());
-        } 
-        catch (Exception ex) 
-        {
-            logger.error("Container failed to start up.", ex);
-            System.exit(1);
-        }
-        
+        // create the container
+        // Note: we are using the dev environment here!
+        ContainerFacade container = new ContainerFacade(netMan, new DevelopmentEnvironment());
+
         while (true) {}
     }
 }

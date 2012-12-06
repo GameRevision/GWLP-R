@@ -26,53 +26,57 @@ public class CharacterCreationView
     /**
      * Step 1.
      */
-    public static P379_CharacterCreateHeadAction charCreateHead(Session session)
+    public static void charCreateHead(Session session)
     {
         P379_CharacterCreateHeadAction startCharacterCreation = new P379_CharacterCreateHeadAction();
         startCharacterCreation.init(session);
-        return startCharacterCreation;
+        
+        session.send(startCharacterCreation);
     }
 
     
     /**
      * Step 2.
      */
-    public static P380_CharacterCreateAcknowledgeAction charCreateAck(Session session)
+    public static void charCreateAck(Session session)
     {
         P380_CharacterCreateAcknowledgeAction createCharacterAck = new P380_CharacterCreateAcknowledgeAction();
         createCharacterAck.init(session);
-        return createCharacterAck;
+        
+        session.send(createCharacterAck);
     }
     
     
     /**
      * Step 3.
      */
-    public static P141_UnknownAction unkownStep1(Session session)
+    public static void unkownStep1(Session session)
     {
         P141_UnknownAction dAction = new P141_UnknownAction();
         dAction.init(session);
         dAction.setUnknown1((short) 248);
-        return dAction;
+        
+        session.send(dAction);
     }
     
     
     /**
      * Step 3.1. Abort due to false name...
      */
-    public static P381_UnknownAction abort(Session session)
+    public static void abort(Session session)
     {
         P381_UnknownAction mAction = new P381_UnknownAction();
         mAction.init(session);
         mAction.setUnknown1(29);
-        return mAction;
+        
+        session.send(mAction);
     }
     
     
     /**
      * Step 4. (final step)
      */
-    public static P378_UnknownAction charCreateFinish(Session session, DBCharacter chara)
+    public static void charCreateFinish(Session session, DBCharacter chara)
     {
         P378_UnknownAction sAction = new P378_UnknownAction();
         sAction.init(session);
@@ -101,6 +105,6 @@ public class CharacterCreationView
         buffer.get(a);
         sAction.setUnknown4(a);
 
-        return sAction;
+        session.send(sAction);
     }
 }

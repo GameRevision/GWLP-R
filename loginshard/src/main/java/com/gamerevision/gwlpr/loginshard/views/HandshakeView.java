@@ -66,6 +66,6 @@ public class HandshakeView
         seedAction.init(session);
         seedAction.setServerSeed(serverSeed);
         
-        shardletContext.sendAction(seedAction);
+        session.send(seedAction);
     }
 }

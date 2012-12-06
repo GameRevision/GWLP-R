@@ -57,7 +57,7 @@ public class LoginView
      */
     public LoginView sendLoginInfo(Session session, int accountID)
     {
-        LOGGER.debug("LoginShard: sending character info");
+        LOGGER.debug("Sending character info");
         
         // get the characters
         List<DBCharacter> characters = DBCharacter.getAllCharacters(db, accountID);
@@ -96,7 +96,7 @@ public class LoginView
             buffer.get(a);
             characterInfo.setUnknown5(a);
 
-            shardletContext.sendAction(characterInfo);
+            session.send(characterInfo);
         }
 
         // next step:
@@ -109,12 +109,12 @@ public class LoginView
             
     public LoginView sendAccountGuiInfo(Session session)    
     {
-        LOGGER.debug("LoginShard: sending account gui settings");
+        LOGGER.debug("Sending account gui settings");
         
         P022_AccountGuiInfoAction accountGuiSettings = new P022_AccountGuiInfoAction();
         accountGuiSettings.init(session);
         accountGuiSettings.setLoginCount(SessionAttachment.getLoginCount(session));
-        shardletContext.sendAction(accountGuiSettings);
+        session.send(accountGuiSettings);
         
         // next step:
         sendFriendInfo(session, 0);
@@ -126,16 +126,16 @@ public class LoginView
     
     public LoginView sendFriendInfo(Session session, int errorNumber)
     {
-        LOGGER.debug("LoginShard: sending friend list end");
+        LOGGER.debug("Sending friend list end");
         
         P020_FriendsListEndAction friendListEnd = new P020_FriendsListEndAction();
         friendListEnd.init(session);
         friendListEnd.setLoginCount(SessionAttachment.getLoginCount(session));
         friendListEnd.setData1(1);
-        shardletContext.sendAction(friendListEnd);
+        session.send(friendListEnd);
 
 
-        LOGGER.debug("LoginShard: sending account permissions");
+        LOGGER.debug("Sending account permissions");
         
         P017_AccountPermissionsAction accountPermissions = new P017_AccountPermissionsAction();
         accountPermissions.init(session);
@@ -150,13 +150,12 @@ public class LoginView
         accountPermissions.setAccountFeatures(new byte[] { 0x01, 0x00, 0x06, 0x00, 0x57, 0x00, 0x01, 0x00 });
         accountPermissions.setEulaAccepted((byte) 23);
         accountPermissions.setData5(0);
-        shardletContext.sendAction(accountPermissions);
+        session.send(accountPermissions);
 
         
-        LOGGER.debug("LoginShard: sending stream terminator");
+        LOGGER.debug("Sending stream terminator");
             
-        shardletContext.sendAction(
-                StreamTerminatorView.create(session, errorNumber));
+        StreamTerminatorView.create(session, errorNumber);
         
         // for convenience:
         return this;

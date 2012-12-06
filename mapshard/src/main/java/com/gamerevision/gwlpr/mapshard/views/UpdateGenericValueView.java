@@ -125,27 +125,29 @@ public class UpdateGenericValueView
         PvPTeam;        
     }
     
-    public static P147_UpdateGenericValueIntAction create(Session session, int agentID, Type valueID, int value)
+    public static void create(Session session, int agentID, Type valueID, int value)
     {
         P147_UpdateGenericValueIntAction updateGenericValueInt = new P147_UpdateGenericValueIntAction();
         updateGenericValueInt.init(session);
         updateGenericValueInt.setValueID(valueID.ordinal());
         updateGenericValueInt.setAgentID(agentID);
         updateGenericValueInt.setValue(value);
-        return updateGenericValueInt;
+        
+        session.send(updateGenericValueInt);
     }
     
-    public static P150_UpdateGenericValueFloatAction create(Session session, int agentID, Type valueID, float value)
+    public static void create(Session session, int agentID, Type valueID, float value)
     {
         P150_UpdateGenericValueFloatAction updateGenericValueFloat = new P150_UpdateGenericValueFloatAction();
         updateGenericValueFloat.init(session);
         updateGenericValueFloat.setValueID(valueID.ordinal());
         updateGenericValueFloat.setAgentID(agentID);
         updateGenericValueFloat.setValue(value);
-        return updateGenericValueFloat;
+        
+        session.send(updateGenericValueFloat);
     }
     
-    public static P148_UpdateGenericValueTargetAction create(Session session, int targetAgentID, int casterAgentID, Type valueID, int value)
+    public static void create(Session session, int targetAgentID, int casterAgentID, Type valueID, int value)
     {
         P148_UpdateGenericValueTargetAction updateGenericValueTarget = new P148_UpdateGenericValueTargetAction();
         updateGenericValueTarget.init(session);
@@ -153,10 +155,11 @@ public class UpdateGenericValueView
         updateGenericValueTarget.setTarget(targetAgentID);
         updateGenericValueTarget.setCaster(casterAgentID);
         updateGenericValueTarget.setValue(value);
-        return updateGenericValueTarget;
+        
+        session.send(updateGenericValueTarget);
     }
     
-    public static P151_UpdateGenericValueModifierAction create(Session session, int targetAgentID, int casterAgentID, Type valueID, float value)
+    public static void create(Session session, int targetAgentID, int casterAgentID, Type valueID, float value)
     {
         P151_UpdateGenericValueModifierAction updateGenericValueModifier = new P151_UpdateGenericValueModifierAction();
         updateGenericValueModifier.init(session);
@@ -164,6 +167,7 @@ public class UpdateGenericValueView
         updateGenericValueModifier.setTarget(targetAgentID);
         updateGenericValueModifier.setCaster(casterAgentID);
         //updateGenericValueModifier.setValue(value); // TODO: fixme
-        return updateGenericValueModifier;
+        
+        session.send(updateGenericValueModifier);
     }
 }
