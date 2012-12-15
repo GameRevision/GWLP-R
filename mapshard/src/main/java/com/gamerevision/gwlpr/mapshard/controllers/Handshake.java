@@ -50,7 +50,7 @@ public class Handshake extends GenericShardlet
     @Override
     protected void init() 
     {
-        LOGGER.debug("MapShard: init Handshake controller");
+        LOGGER.info("MapShard: init Handshake controller");
         // note that this shardlet relies on content that is loaded by the
         // StartUp controller.
         // see the onStartUp event handler for more initialization
@@ -94,7 +94,7 @@ public class Handshake extends GenericShardlet
     @EventHandler
     public void onAcceptSession(ISC_AcceptClientRequestAction action)
     {
-        LOGGER.debug("GameShard: got the request to accept a new client");
+        LOGGER.debug("Got the request to accept a new client");
         
         // create the verifier with all necessary info
         ClientVerifier verf = new MapClientVerifier(
@@ -109,6 +109,8 @@ public class Handshake extends GenericShardlet
         // finally, reply to the action from the login shard
         loginShard.sendTriggerableAction(new ISC_AcceptClientReplyAction(
                 action.getSession(),
+                getShardletContext().getHostAddress(),
+                9112, // TODO BUG where do i get the port from?
                 action.getAccountId(),
                 mapId,
                 true));
@@ -133,26 +135,26 @@ public class Handshake extends GenericShardlet
         SessionAttachment attach = ((SessionAttachment) session.getAttachment());
         
         // send the usual handshake stuff
-        sendAction(HandshakeView.serverSeed(session));
-        sendAction(HandshakeView.instanceHead(session));
+        HandshakeView.serverSeed(session);
+        HandshakeView.instanceHead(session);
         
         // check if this is a character creation mapshard
         if (mapId == 0)
         {
             LOGGER.debug("Starting character creation");
-            sendAction(CharacterCreationView.charCreateHead(session));
+            CharacterCreationView.charCreateHead(session);
             return;
         }
         
         // lets load that char name if it already exists...
-        String charName = DBCharacter.getCharacter(db, attach.getAccountId()).getName();
+        String charName = DBCharacter.getCharacter(db, attach.getCharacterId()).getName();
         
         // as we are about to use that name for other stuff, lets 
         // update the session attachment prior to that
         attach.setCharacterName(charName);
         
-        sendAction(HandshakeView.charName(session, charName));
-        sendAction(HandshakeView.districtInfo(session, mapId));
+        HandshakeView.charName(session, charName);
+        HandshakeView.districtInfo(session, mapId);
         
     }
 }

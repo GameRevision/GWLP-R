@@ -86,7 +86,7 @@ public class MapClientVerifier implements ClientVerifier
             // generate this new client's session's attachment
             action.getSession().setAttachment(new SessionAttachment(accountId, characterId));
             
-            LOGGER.debug("GameShard: accepted a new client");
+            LOGGER.debug("Accepted a new client");
             return true;
         }
 

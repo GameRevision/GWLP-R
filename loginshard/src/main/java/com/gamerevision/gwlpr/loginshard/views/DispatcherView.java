@@ -8,6 +8,11 @@ import com.gamerevision.gwlpr.actions.loginserver.stoc.P009_ReferToGameServerAct
 import com.gamerevision.gwlpr.loginshard.SessionAttachment;
 import com.realityshard.shardlet.Session;
 import com.realityshard.shardlet.ShardletContext;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,11 +45,13 @@ public class DispatcherView
      * TODO: BUG: IP and Port are STATIC!
      * 
      * @param       session
+     * @param ip 
+     * @param port 
      * @param       key1
      * @param       key2
      * @param       mapId 
      */
-    public void referToGameServer(Session session, int key1, int key2, int mapId)
+    public void referToGameServer(Session session, String ip, int port, int key1, int key2, int mapId)
     {
         P009_ReferToGameServerAction referToGameServer = new P009_ReferToGameServerAction();
         
@@ -52,11 +59,20 @@ public class DispatcherView
         referToGameServer.setLoginCount(((SessionAttachment) session.getAttachment()).getLoginCount());
         referToGameServer.setSecurityKey1(key1);
         referToGameServer.setGameMapID(mapId);
-        referToGameServer.setServerConnectionInfo(new byte[] {0x02, 0x00, 0x23, -0x68, 0x7F, 0x00, 0x00, 0x01,
-                                                  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-                                                  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00});
+        
+        ByteBuffer buf = ByteBuffer.allocate(24);
+        buf.order(ByteOrder.LITTLE_ENDIAN);
+        buf.putShort((short) 2);
+        buf.putShort((short) port);
+        try { buf.put(Inet4Address.getByName(ip).getAddress()); }
+        catch (UnknownHostException ex) 
+        {
+            LOGGER.error(String.format("Unkown host: [{}]", ip), ex);
+        }
+        
+        referToGameServer.setServerConnectionInfo(buf.array());
         referToGameServer.setSecurityKey2(key2);
         
-        shardletContext.sendAction(referToGameServer);
+        session.send(referToGameServer);
     }
 }

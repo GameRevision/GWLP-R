@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
 /**
  * This shardlet handles the login process.
  * 
- * @author miracle444
+ * @author miracle444, _rusty
  */
 public class Login extends GenericShardlet
 {
@@ -43,7 +43,7 @@ public class Login extends GenericShardlet
     @Override
     protected void init() 
     {
-        LOGGER.debug("LoginShard: init Login controller");
+        LOGGER.info("LoginShard: init Login controller");
     }
     
     
@@ -73,7 +73,7 @@ public class Login extends GenericShardlet
     @EventHandler
     public void onAccountLogin(P004_AccountLoginAction action)
     {
-        LOGGER.debug("LoginShard: a new client wants to log in.");
+        LOGGER.debug("A new client wants to log in");
         
         // get the session attachment for that session
         Session session = action.getSession();
@@ -95,13 +95,13 @@ public class Login extends GenericShardlet
         if (!(checkInfo.isValid(password) || true)) 
         {
             // login failed, abort the login process
-            sendAction(StreamTerminatorView.create(session, checkInfo.getErrorCode()));
+            StreamTerminatorView.create(session, checkInfo.getErrorCode());
             
-            LOGGER.debug("LoginShard: client login failed");
+            LOGGER.debug("Client login failed");
             return;
         }
         
-        LOGGER.debug("LoginShard: client successfully logged in");
+        LOGGER.info("LoginShard: client successfully logged in. [email {} ]", email);
 
         // update the attachment with the data (because we now know 
         // that it is correct)
@@ -118,15 +118,22 @@ public class Login extends GenericShardlet
     }
     
     
+    /**
+     * Executed when the client chooses a character to play with.
+     * 
+     * @param action 
+     */
     @EventHandler
-    public void characterPlayNameHandler(P010_UnknownAction action)
+    public void onCharacterPlayName(P010_UnknownAction action)
     {
-        LOGGER.debug("got the character play name packet");
-        Session session = action.getSession();
+        LOGGER.debug("Got the character play name packet");
         
-        SessionAttachment attachment = (SessionAttachment) session.getAttachment();
-        attachment.setLoginCount(action.getUnknown1());
-        attachment.setCharacterId(DBCharacter.getCharacter(db, new String(action.getUnknown2())).getId());
+        // get the session attachment for that session
+        Session session = action.getSession();
+        SessionAttachment attach = (SessionAttachment) session.getAttachment();
+        
+        attach.setLoginCount(action.getUnknown1());
+        attach.setCharacterId(DBCharacter.getCharacter(db, new String(action.getUnknown2())).getId());
         
         loginView.sendFriendInfo(session, 0);
     }

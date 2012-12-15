@@ -3,17 +3,16 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>actions</artifactId>
-    <name>${project.artifactId}</name>
-    <packaging>jar</packaging>
 
 
     <parent>
         <groupId>com.gamerevision.gwlpr</groupId>
         <artifactId>gwlpr</artifactId>
-        <version>0.1.1</version>
+        <version>0.1.2</version>
     </parent>
 
 
-    <description>The action-framework of the GW protocol</description>
+    <name>${project.artifactId}</name>
+    <description>The action-framework of the GW protocol. This encapsulates the definitions for packet serialization.</description>
 
 </project>

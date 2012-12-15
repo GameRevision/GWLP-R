@@ -437,7 +437,7 @@ public class GameServerDeserializer extends Deserializer
             case 16896:
                 return new P16896_ClientSeedAction();
             default:
-                LOGGER.warn("Could not deserialize unknown header: " + header);
+                LOGGER.warn("Could not deserialize unknown header: {}", header);
                 return null;
         }
     }

@@ -28,18 +28,16 @@ public class SerialisationFilter implements ProtocolFilter
     /**
      * Init this filter.
      * 
-     * @param       filterConfig            The deserialized XML config file
-     *                                      (Deployment descriptor of this protocol)
-     * @throws      Exception               If anything went wrong with initializations
+     * @param       params                  Init parameters.
      */
     @Override
-    public void init(ConfigProtocolFilter filterConfig) throws Exception 
+    public void init(Map<String, String> params)
     {
-        final String serverType = filterConfig.getInitParameter("ServerType");
+        final String serverType = params.get("ServerType");
         
-        this.loginServer = serverType.equals("LoginServer");
+        loginServer = serverType.equals("LoginServer");
 
-        this.deserializers = new HashMap<>();
+        deserializers = new HashMap<>();
     }
 
     

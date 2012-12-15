@@ -22,19 +22,20 @@ public class HandshakeView
     /**
      * Step 1
      */
-    public static P5633_ServerSeedAction serverSeed(Session session)
+    public static void serverSeed(Session session)
     {
         P5633_ServerSeedAction serverSeed = new P5633_ServerSeedAction();
         serverSeed.init(session);
         serverSeed.setServerSeed(new byte[20]);
-        return serverSeed;
+        
+        session.send(serverSeed);
     }
     
     
     /**
      * Step 2
      */
-    public static P370_InstanceLoadHeadAction instanceHead(Session session)
+    public static void instanceHead(Session session)
     {
         P370_InstanceLoadHeadAction instanceLoadHead = new P370_InstanceLoadHeadAction();
         instanceLoadHead.init(session);
@@ -42,26 +43,28 @@ public class HandshakeView
         instanceLoadHead.setData2((byte) 0x1F);
         instanceLoadHead.setData3((byte) 0);
         instanceLoadHead.setData4((byte) 0);
-        return instanceLoadHead;
+        
+        session.send(instanceLoadHead);
     }
     
     
     /**
      * Step 3
      */
-    public static P371_UnknownAction charName(Session session, String name) 
+    public static void charName(Session session, String name) 
     {
         P371_UnknownAction instanceLoadCharName = new P371_UnknownAction();
         instanceLoadCharName.init(session);
         instanceLoadCharName.setUnknown1(name.toCharArray());
-        return instanceLoadCharName;
+        
+        session.send(instanceLoadCharName);
     }
     
     
     /**
      * Step 4
      */
-    public static P395_InstanceLoadDistrictInfoAction districtInfo(Session session, int mapId)
+    public static void districtInfo(Session session, int mapId)
     {
         P395_InstanceLoadDistrictInfoAction instanceLoadDistrictInfo = new P395_InstanceLoadDistrictInfoAction();
         instanceLoadDistrictInfo.init(session);
@@ -71,6 +74,7 @@ public class HandshakeView
         instanceLoadDistrictInfo.setMapID((short) mapId);
         instanceLoadDistrictInfo.setisExplorable((byte) 1);
         instanceLoadDistrictInfo.setisObserver((byte) 0);
-        return instanceLoadDistrictInfo;
+        
+        session.send(instanceLoadDistrictInfo);
     }
 }

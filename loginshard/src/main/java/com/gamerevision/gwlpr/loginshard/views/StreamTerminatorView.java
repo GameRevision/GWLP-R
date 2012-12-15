@@ -17,12 +17,13 @@ import com.realityshard.shardlet.Session;
 public class StreamTerminatorView
 {
 
-    public static P003_StreamTerminatorAction create(Session session, int errorCode)
+    public static void create(Session session, int errorCode)
     {
         P003_StreamTerminatorAction streamTerminator = new P003_StreamTerminatorAction();
         streamTerminator.init(session);
         streamTerminator.setLoginCount(SessionAttachment.getLoginCount(session));
         streamTerminator.setErrorCode(errorCode);
-        return streamTerminator;
+        
+        session.send(streamTerminator);
     }
 }

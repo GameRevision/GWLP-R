@@ -36,7 +36,7 @@ public class StaticReply extends GenericShardlet
     {
         this.genericHandlerView = new StaticReplyView(getShardletContext());
         
-        LOGGER.debug("LoginShard: init StaticReply controller");
+        LOGGER.info("LoginShard: init StaticReply controller.");
     }
     
     
@@ -48,7 +48,7 @@ public class StaticReply extends GenericShardlet
     @EventHandler
     public void onComputerUser(P001_ComputerUserAction action)
     {
-        LOGGER.debug("LoginShard: got a computer user packet");
+        LOGGER.debug("Got a computer user packet");
         
         Session session = action.getSession();
 
@@ -64,7 +64,7 @@ public class StaticReply extends GenericShardlet
     @EventHandler
     public void onRequestResponse(P053_RequestResponseAction action)
     {
-        LOGGER.debug("LoginShard: got the request response packet");
+        LOGGER.debug("Got the request response packet");
         
         Session session = action.getSession();
         SessionAttachment attach = (SessionAttachment) session.getAttachment();

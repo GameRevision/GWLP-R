@@ -39,7 +39,7 @@ public class DBAccount
         }
         catch (SQLException ex)
         {
-            LOGGER.error("sql error in constructor");
+            LOGGER.error("SQL error in constructor", ex);
         }
     }
     
@@ -75,7 +75,12 @@ public class DBAccount
         } 
         catch (SQLException ex) 
         {
-            LOGGER.error("sql error in getByEMail");
+            LOGGER.error("SQL error in getByEMail", ex);
+        }
+        
+        if (result == null)
+        {
+            LOGGER.error("We dont have any accounts with email: [{}]", eMail);
         }
         
         return result;

@@ -16,7 +16,7 @@ import com.realityshard.shardlet.Session;
 public class UpdatePrivateProfessionsView
 {
 
-    public static P171_UpdatePrivProfessionsAction create(Session session)
+    public static void create(Session session)
     {
         P171_UpdatePrivProfessionsAction updatePrivateProfessions = new P171_UpdatePrivProfessionsAction();
         updatePrivateProfessions.init(session);
@@ -24,6 +24,7 @@ public class UpdatePrivateProfessionsView
         updatePrivateProfessions.setPrimaryProf((byte) 1);
         updatePrivateProfessions.setSecondaryProf((byte) 0);
         updatePrivateProfessions.setisPvP((byte) 0);
-        return updatePrivateProfessions;
+        
+        session.send(updatePrivateProfessions);
     }
 }
