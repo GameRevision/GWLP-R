@@ -6,8 +6,9 @@ package com.gamerevision.gwlpr.host;
 
 import com.gamerevision.gwlpr.loginshard.controllers.Login;
 import com.gamerevision.gwlpr.loginshard.controllers.MapShardDispatch;
-import com.gamerevision.gwlpr.mapshard.controllers.CharacterCreation;
-import com.gamerevision.gwlpr.mapshard.controllers.InstanceLoad;
+import com.gamerevision.gwlpr.mapshard.controllers.network.CharacterCreation;
+import com.gamerevision.gwlpr.mapshard.controllers.network.InstanceLoad;
+import com.gamerevision.gwlpr.mapshard.controllers.systems.AgentVisibilitySystem;
 import com.gamerevision.gwlpr.protocol.SerialisationFilter;
 import com.realityshard.container.gameapp.GenericGameAppFactory;
 import com.realityshard.shardlet.ProtocolFilter;
@@ -142,10 +143,10 @@ public class DevelopmentEnvironment implements Environment
         
         mapshard
         .addShardlet(
-            new com.gamerevision.gwlpr.mapshard.controllers.StartUp(), 
+            new com.gamerevision.gwlpr.mapshard.controllers.network.StartUp(), 
             dbParams) // startup has its own parameters: the db stuff
         .addShardlet(
-            new com.gamerevision.gwlpr.mapshard.controllers.Handshake(), 
+            new com.gamerevision.gwlpr.mapshard.controllers.network.Handshake(), 
             dummy)
         .addShardlet(
             new CharacterCreation(), 
@@ -154,7 +155,10 @@ public class DevelopmentEnvironment implements Environment
             new InstanceLoad(), 
             dummy)
         .addShardlet(
-            new com.gamerevision.gwlpr.mapshard.controllers.StaticReply(),
+            new com.gamerevision.gwlpr.mapshard.controllers.network.StaticReply(),
+            dummy)
+        .addShardlet(
+            new AgentVisibilitySystem(), 
             dummy);
         
         return mapshard;

@@ -160,7 +160,7 @@ public final class EntityManager
      * @param       clazz                   The type of component
      * @return      The entities possessing that component or an empty list.
      */
-    public Collection<Entity> getEntitiesOf(Class<? extends Component> clazz)
+    public Collection<Entity> getEntitiesWith(Class<? extends Component> clazz)
     {
         Collection<Entity> result = new ArrayList<>();
         
@@ -188,11 +188,11 @@ public final class EntityManager
         if (clazzes.length >= 1)
         {
             // pre-init this, so merging works later on
-            result = getEntitiesOf(clazzes[1]);
+            result = getEntitiesWith(clazzes[1]);
             
             for (Class<? extends Component> clazz : clazzes) 
             {
-                result.retainAll(getEntitiesOf(clazz));
+                result.retainAll(getEntitiesWith(clazz));
             }
         }
         
