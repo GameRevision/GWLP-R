@@ -15,7 +15,7 @@ import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
 import com.gamerevision.gwlpr.mapshard.models.MapClientVerifier;
 import com.gamerevision.gwlpr.mapshard.views.CharacterCreationView;
 import com.gamerevision.gwlpr.mapshard.views.HandshakeView;
-import com.realityshard.entitysystem.EntitySystemFacade;
+import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
 import com.realityshard.shardlet.ClientVerifier;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.RemoteShardletContext;
@@ -39,7 +39,7 @@ public class Handshake extends GenericShardlet
     
     private RemoteShardletContext loginShard;
     private DatabaseConnectionProvider db;
-    private EntitySystemFacade entitySystem;
+    private EntityManager entityManager;
     private ClientLookupTable clientlookup;
     private int mapId;
      
@@ -74,7 +74,7 @@ public class Handshake extends GenericShardlet
         
         loginShard = attach.getLoginShard();
         db = attach.getDatabaseProvider();
-        entitySystem = attach.getEntitySystem();
+        entityManager = attach.getEntitySystem();
         clientlookup = attach.getClientLookup();
         mapId = attach.getMapId();
     }

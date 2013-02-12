@@ -15,7 +15,7 @@ import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
 import com.gamerevision.gwlpr.mapshard.views.UpdateAttribPtsView;
 import com.gamerevision.gwlpr.mapshard.views.UpdateGenericValueView;
 import com.gamerevision.gwlpr.mapshard.views.UpdatePrivateProfessionsView;
-import com.realityshard.entitysystem.EntitySystemFacade;
+import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.RemoteShardletContext;
 import com.realityshard.shardlet.Session;
@@ -39,7 +39,7 @@ public class InstanceLoad extends GenericShardlet
     
     private RemoteShardletContext loginShard;
     private DatabaseConnectionProvider db;
-    private EntitySystemFacade entitySystem;
+    private EntityManager entityManager;
     private ClientLookupTable clientlookup;
     private int mapId;
     
@@ -71,7 +71,7 @@ public class InstanceLoad extends GenericShardlet
         
         loginShard = attach.getLoginShard();
         db = attach.getDatabaseProvider();
-        entitySystem = attach.getEntitySystem();
+        entityManager = attach.getEntitySystem();
         clientlookup = attach.getClientLookup();
         mapId = attach.getMapId();
     }

@@ -7,7 +7,7 @@ package com.gamerevision.gwlpr.mapshard.controllers;
 import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.mapshard.ContextAttachment;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
-import com.realityshard.entitysystem.EntitySystemFacade;
+import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
 import com.realityshard.shardlet.RemoteShardletContext;
 import com.realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
@@ -55,7 +55,7 @@ public class StartUp extends GenericShardlet
                 this.getInitParameter("dbpassword"));
 
         // create the entity system
-        EntitySystemFacade es = new EntitySystemFacade();
+        EntityManager es = new EntityManager();
         
         // create the client lookup table
         ClientLookupTable lt = new ClientLookupTable();

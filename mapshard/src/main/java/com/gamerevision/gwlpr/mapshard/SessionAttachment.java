@@ -4,7 +4,7 @@
 
 package com.gamerevision.gwlpr.mapshard;
 
-import com.realityshard.entitysystem.Entity;
+import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

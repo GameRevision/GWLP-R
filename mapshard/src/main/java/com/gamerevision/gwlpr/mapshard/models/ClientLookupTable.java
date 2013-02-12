@@ -4,7 +4,7 @@
 
 package com.gamerevision.gwlpr.mapshard.models;
 
-import com.realityshard.entitysystem.Entity;
+import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import com.realityshard.shardlet.Session;
 import java.util.HashMap;
 import java.util.Map;

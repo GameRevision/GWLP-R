@@ -6,12 +6,12 @@ package com.gamerevision.gwlpr.mapshard;
 
 import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
-import com.realityshard.entitysystem.EntitySystemFacade;
+import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
 import com.realityshard.shardlet.RemoteShardletContext;
 
 
 /**
- * This class is used to store all that sutff used globally by all shardlets.
+ * This class is used to store all that stuff used globally by all shardlets.
  * 
  * @author _rusty
  */
@@ -20,7 +20,7 @@ public class ContextAttachment
     
     private final RemoteShardletContext loginShard;
     private final DatabaseConnectionProvider dbProvider;
-    private final EntitySystemFacade esFacade;
+    private final EntityManager entityManager;
     private final ClientLookupTable clientLookup;
     private final int mapId;
     
@@ -30,20 +30,20 @@ public class ContextAttachment
      * 
      * @param loginShard 
      * @param       dbProvider              Database provider.
-     * @param       esFacade                Entity System
+     * @param       entityManager           Entity System
      * @param       clientLookpup           Lookup dict for client/entities
      * @param mapId  
      */
     public ContextAttachment(
             RemoteShardletContext loginShard,
             DatabaseConnectionProvider dbProvider,
-            EntitySystemFacade esFacade,
+            EntityManager entityManager,
             ClientLookupTable clientLookpup,
             int mapId)
     {
         this.loginShard = loginShard;
         this.dbProvider = dbProvider;
-        this.esFacade = esFacade;
+        this.entityManager = entityManager;
         this.clientLookup = clientLookpup;
         this.mapId = mapId;
     }
@@ -77,9 +77,9 @@ public class ContextAttachment
      * 
      * @return      The entity system facade, used to access this shards entity system.
      */
-    public EntitySystemFacade getEntitySystem() 
+    public EntityManager getEntitySystem() 
     {
-        return esFacade;
+        return entityManager;
     }
 
     
