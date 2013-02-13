@@ -7,8 +7,8 @@ package com.gamerevision.gwlpr.host;
 import com.gamerevision.gwlpr.loginshard.controllers.Login;
 import com.gamerevision.gwlpr.loginshard.controllers.MapShardDispatch;
 import com.gamerevision.gwlpr.mapshard.controllers.CharacterCreation;
+import com.gamerevision.gwlpr.mapshard.controllers.HeartBeat;
 import com.gamerevision.gwlpr.mapshard.controllers.InstanceLoad;
-import com.gamerevision.gwlpr.mapshard.entitysystem.systems.AgentVisibility;
 import com.gamerevision.gwlpr.protocol.SerialisationFilter;
 import com.realityshard.container.gameapp.GenericGameAppFactory;
 import com.realityshard.shardlet.ProtocolFilter;
@@ -147,6 +147,9 @@ public class DevelopmentEnvironment implements Environment
             dbParams) // startup has its own parameters: the db stuff
         .addShardlet(
             new com.gamerevision.gwlpr.mapshard.controllers.Handshake(), 
+            dummy)
+        .addShardlet(
+            new HeartBeat(), 
             dummy)
         .addShardlet(
             new CharacterCreation(), 

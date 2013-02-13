@@ -27,7 +27,7 @@ public class AgentVisibility extends GenericSystem
     private final static int UPDATEINTERVAL = 500;
     
     private EntityManager entityManager;
-    private ClientLookupTable clientlookup;
+    private ClientLookupTable clientLookup;
     
     
     /**
@@ -44,8 +44,11 @@ public class AgentVisibility extends GenericSystem
     {
         // we'll set some default time invocation value here...
         super(aggregator, UPDATEINTERVAL);
-        
+
         // DO NOT REGISTER WITH THE AGGREGATOR! THE STARTUP SHARDLET WILL DO THAT
+        
+        this.entityManager = entityManager;
+        this.clientLookup = clientLookupTable;
     }
     
     

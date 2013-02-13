@@ -90,8 +90,9 @@ public class StartUp extends GenericShardlet
     {
         // TODO make this non-static!
         
-        // sample data for GTB 
-        int mapID = 0;
+        // sample data for GTB
+        // TODO BUG: LOAD THE game map id INSTEAD OF USING THE DB MAPID
+        int mapID = dbMapID;
         int mapFileHash = 165811;
         float spawnX = -6558;
         float spawnY = -6010;

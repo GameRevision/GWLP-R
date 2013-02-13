@@ -7,7 +7,6 @@ package com.gamerevision.gwlpr.mapshard.controllers;
 import com.gamerevision.gwlpr.actions.gameserver.ctos.P16896_ClientSeedAction;
 import com.gamerevision.gwlpr.actions.intershardcom.ISC_AcceptClientReplyAction;
 import com.gamerevision.gwlpr.actions.intershardcom.ISC_AcceptClientRequestAction;
-import com.gamerevision.gwlpr.database.DBCharacter;
 import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.mapshard.ContextAttachment;
 import com.gamerevision.gwlpr.mapshard.SessionAttachment;
@@ -17,9 +16,7 @@ import com.gamerevision.gwlpr.mapshard.models.MapClientVerifier;
 import com.gamerevision.gwlpr.mapshard.views.CharacterCreationView;
 import com.gamerevision.gwlpr.mapshard.views.HandshakeView;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
-import com.gamerevision.gwlpr.mapshard.entitysystem.builders.PlayerBuilder;
 import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
-import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.gamerevision.gwlpr.mapshard.models.LoadCharacter;
 import com.gamerevision.gwlpr.mapshard.models.MapData;
 import com.realityshard.shardlet.ClientVerifier;
@@ -28,8 +25,6 @@ import com.realityshard.shardlet.RemoteShardletContext;
 import com.realityshard.shardlet.Session;
 import com.realityshard.shardlet.events.GameAppCreatedEvent;
 import com.realityshard.shardlet.utils.GenericShardlet;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -169,6 +164,9 @@ public class Handshake extends GenericShardlet
         attach.setCharacterName(player.get(Name.class));
         attach.setAgentID(player.get(AgentID.class));
         attach.setLocalID(player.get(LocalID.class));
+        
+        // update the client-lookup-table
+        clientlookup.addClient(session, player);
         
         // using the attachment now looks a bit ugly,
         // because we use the components here directly

@@ -89,10 +89,10 @@ public class Login extends GenericShardlet
         
         // now lets verify that data we just got,
         // so call the model that handles that
-        CheckLoginInfo checkInfo = new CheckLoginInfo(db, email);
+        CheckLoginInfo checkInfo = new CheckLoginInfo(db, email, characterName);
 
         // TODO: STATIC Login verification!!!
-        if (!(checkInfo.isValid(password) || true)) 
+        if (!checkInfo.isValid(password)) 
         {
             // login failed, abort the login process
             StreamTerminatorView.create(session, checkInfo.getErrorCode());

@@ -273,5 +273,8 @@ public class InstanceLoad extends GenericShardlet
         
         session.send(fadeIntoMap);
         
+        
+        // activate heart beat
+        attachment.setHeartBeatEnabled(true);
     }
 }

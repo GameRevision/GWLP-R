@@ -22,6 +22,9 @@ public class SessionAttachment
     
     private final int accountId;
     private final int characterId;
+    
+    private boolean heartBeatEnabled = false;
+    
     private Name characterName;
     private AgentID agentID;
     private LocalID localID;
@@ -63,6 +66,28 @@ public class SessionAttachment
     public int getCharacterId()
     {
         return characterId;
+    }
+
+    
+    /**
+     * Getter.
+     * 
+     * @return 
+     */
+    public boolean isHeartBeatEnabled() 
+    {
+        return heartBeatEnabled;
+    }
+
+    
+    /**
+     * Setter.
+     * 
+     * @param heartBeatEnabled 
+     */
+    public void setHeartBeatEnabled(boolean heartBeatEnabled) 
+    {
+        this.heartBeatEnabled = heartBeatEnabled;
     }
 
     
