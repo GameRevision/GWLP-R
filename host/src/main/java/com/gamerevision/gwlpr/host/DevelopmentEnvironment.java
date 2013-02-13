@@ -156,9 +156,6 @@ public class DevelopmentEnvironment implements Environment
             dummy)
         .addShardlet(
             new com.gamerevision.gwlpr.mapshard.controllers.StaticReply(),
-            dummy)
-        .addShardlet(
-            new AgentVisibility(), 
             dummy);
         
         return mapshard;
