@@ -2,7 +2,7 @@
  * For copyright information see the LICENSE document.
  */
 
-package com.gamerevision.gwlpr.mapshard.controllers.network;
+package com.gamerevision.gwlpr.mapshard.controllers;
 
 import com.realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;

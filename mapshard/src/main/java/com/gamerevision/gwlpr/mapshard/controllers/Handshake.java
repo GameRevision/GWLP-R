@@ -2,7 +2,7 @@
  * For copyright information see the LICENSE document.
  */
 
-package com.gamerevision.gwlpr.mapshard.controllers.network;
+package com.gamerevision.gwlpr.mapshard.controllers;
 
 import com.gamerevision.gwlpr.actions.gameserver.ctos.P16896_ClientSeedAction;
 import com.gamerevision.gwlpr.actions.intershardcom.ISC_AcceptClientReplyAction;

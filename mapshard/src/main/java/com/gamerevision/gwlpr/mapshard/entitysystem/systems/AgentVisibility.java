@@ -2,17 +2,14 @@
  * For copyright information see the LICENSE document.
  */
 
-package com.gamerevision.gwlpr.mapshard.controllers.systems;
+package com.gamerevision.gwlpr.mapshard.entitysystem.systems;
 
-import com.gamerevision.gwlpr.mapshard.ContextAttachment;
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
+import com.gamerevision.gwlpr.mapshard.entitysystem.GenericSystem;
 import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
-import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.events.GameAppCreatedEvent;
-import com.realityshard.shardlet.events.HeartBeatEvent;
-import com.realityshard.shardlet.utils.GenericShardlet;
+import com.realityshard.shardlet.EventAggregator;
 import java.util.Collection;
 
 
@@ -22,49 +19,43 @@ import java.util.Collection;
  * We need to switch agents visible / invisible depending on their
  * positions to each other.
  * 
- * TODO: Enable different distance settings by reading out the
- * shardlet's config value.
- * 
- * BUG: THIS IS EXECUTED ON EACH GAME TICK!
- * 
  * @author _rusty
  */
-public class AgentVisibilitySystem extends GenericShardlet
+public class AgentVisibility extends GenericSystem
 {
+    
+    private final static int UPDATEINTERVAL = 500;
     
     private EntityManager entityManager;
     private ClientLookupTable clientlookup;
     
     
     /**
-     * Init this shardlet.
+     * Constructor.
+     * 
+     * @param aggregator
+     * @param entityManager
+     * @param clientLookupTable 
      */
-    @Override
-    protected void init() {}
-
-    
-    /**
-     * Extracts some data from the ContextAttachment we need for computation.
-     */
-    @EventHandler
-    public void onStartUp(GameAppCreatedEvent event)
+    public AgentVisibility(
+            EventAggregator aggregator,
+            EntityManager entityManager, 
+            ClientLookupTable clientLookupTable)
     {
-        // this event indicates that all shardlets have been loaded (including
-        // the startup shardlet) so we can safely use the context attachment now.
+        // we'll set some default time invocation value here...
+        super(aggregator, UPDATEINTERVAL);
         
-        ContextAttachment attach = ((ContextAttachment) getShardletContext().getAttachment());
-        
-        entityManager = attach.getEntitySystem();
-        clientlookup = attach.getClientLookup();
+        // DO NOT REGISTER WITH THE AGGREGATOR! THE STARTUP SHARDLET WILL DO THAT
     }
     
     
     /**
+     * This is invoked periodically.
      * 
-     * @param event 
+     * @param timeDelta 
      */
-    @EventHandler
-    public void onheartBeat(HeartBeatEvent event)
+    @Override
+    protected void update(int timeDelta)
     {
         // this is where it gets interesting.
         // we fetch all the entities that have the components we need

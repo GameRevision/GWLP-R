@@ -2,14 +2,16 @@
  * For copyright information see the LICENSE document.
  */
 
-package com.gamerevision.gwlpr.mapshard.controllers.network;
+package com.gamerevision.gwlpr.mapshard.controllers;
 
 import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.mapshard.ContextAttachment;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
+import com.gamerevision.gwlpr.mapshard.entitysystem.systems.AgentVisibility;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.gamerevision.gwlpr.mapshard.models.MapData;
+import com.realityshard.shardlet.EventAggregator;
 import com.realityshard.shardlet.RemoteShardletContext;
 import com.realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
@@ -69,7 +71,11 @@ public class StartUp extends GenericShardlet
         getShardletContext().setAttachment(
                 new ContextAttachment(ls, db, es, lt, md));
         
-        // we'r finished...
+        // we'r almost finished...
+        // load up the systems
+        EventAggregator agg = getShardletContext().getAggregator();
+        agg.register(new AgentVisibility(agg, es, lt));
+        
         LOGGER.debug("Finished loading initial data");
     }
     
