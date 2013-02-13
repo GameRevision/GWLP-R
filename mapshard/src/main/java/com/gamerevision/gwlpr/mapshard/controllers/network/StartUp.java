@@ -8,6 +8,8 @@ import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.mapshard.ContextAttachment;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
+import com.gamerevision.gwlpr.mapshard.models.GWVector;
+import com.gamerevision.gwlpr.mapshard.models.MapData;
 import com.realityshard.shardlet.RemoteShardletContext;
 import com.realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
@@ -60,11 +62,35 @@ public class StartUp extends GenericShardlet
         // create the client lookup table
         ClientLookupTable lt = new ClientLookupTable();
         
+        // create the map data
+        MapData md = loadMapData(mapId);
+        
         // finally, create the context attachment
         getShardletContext().setAttachment(
-                new ContextAttachment(ls, db, es, lt, mapId));
+                new ContextAttachment(ls, db, es, lt, md));
         
         // we'r finished...
         LOGGER.debug("Finished loading initial data");
+    }
+    
+    
+    /**
+     * Helper. Generates the map data we need for this mapshard.
+     *  
+     * @param       dbMapID                 The map ID as used for the db records.
+     * @return      The completed map data.
+     */
+    private MapData loadMapData(int dbMapID)
+    {
+        // TODO make this non-static!
+        
+        // sample data for GTB 
+        int mapID = 0;
+        int mapFileHash = 165811;
+        float spawnX = -6558;
+        float spawnY = -6010;
+        int spawnPlane = 0;
+        
+        return new MapData(mapID, mapFileHash, new GWVector(spawnX, spawnY, spawnPlane));
     }
 }

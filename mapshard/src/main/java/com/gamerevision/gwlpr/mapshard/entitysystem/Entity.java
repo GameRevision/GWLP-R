@@ -38,6 +38,7 @@ public final class Entity
      */
     public Entity(EntityManager manager, Component... components)
     {
+        uuid = UUID.randomUUID();
         this.manager = manager;
         addAll(components);
     }
@@ -57,7 +58,14 @@ public final class Entity
     }
     
     
-    // Convenienece method. Use this to access a component of this entity.
+    /**
+     * Convenience method. Use this to access a component of this entity.
+     * 
+     * @param       <T>                     The component type
+     * @param       clazz                   The component type (as class)
+     * @return      The component, or null if this entity has no component of
+     *              that type.
+     */
     public <T extends Component> T get(Class<T> clazz)
     {
         Component comp = manager.getComponent(this, clazz);
@@ -71,6 +79,19 @@ public final class Entity
         
         // yes, this is an unchecked cast...
         return (T) comp;
+    }
+    
+    
+    /**
+     * Convenience method. Use this to check whether the entity 
+     * has a specific component
+     * 
+     * @param       clazz                   The component type (as class)
+     * @return      True if this entity has a component of the specified type.
+     */
+    public boolean has(Class<? extends Component> clazz)
+    {
+        return (get(clazz) != null);
     }
     
     

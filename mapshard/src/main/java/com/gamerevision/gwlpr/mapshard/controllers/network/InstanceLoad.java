@@ -16,6 +16,8 @@ import com.gamerevision.gwlpr.mapshard.views.UpdateAttribPtsView;
 import com.gamerevision.gwlpr.mapshard.views.UpdateGenericValueView;
 import com.gamerevision.gwlpr.mapshard.views.UpdatePrivateProfessionsView;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
+import com.gamerevision.gwlpr.mapshard.entitysystem.builders.PlayerBuilder;
+import com.gamerevision.gwlpr.mapshard.models.MapData;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.RemoteShardletContext;
 import com.realityshard.shardlet.Session;
@@ -41,7 +43,7 @@ public class InstanceLoad extends GenericShardlet
     private DatabaseConnectionProvider db;
     private EntityManager entityManager;
     private ClientLookupTable clientlookup;
-    private int mapId;
+    private MapData mapData;
     
     
     /**
@@ -73,13 +75,15 @@ public class InstanceLoad extends GenericShardlet
         db = attach.getDatabaseProvider();
         entityManager = attach.getEntitySystem();
         clientlookup = attach.getClientLookup();
-        mapId = attach.getMapId();
+        mapData = attach.getMapData();
     }
     
     
     @EventHandler
     public void onInstanceLoadRequestItems(P138_UnknownAction action)
     {
+        // TODO: Create Items, update this to be dynamic!
+        
         LOGGER.debug("Got the instance load request items packet");
         Session session = action.getSession();
         
@@ -123,7 +127,7 @@ public class InstanceLoad extends GenericShardlet
         P393_UnknownAction itemStreamTerminator = new P393_UnknownAction();
         itemStreamTerminator.init(session);
         itemStreamTerminator.setUnknown1((byte) 0);
-        itemStreamTerminator.setUnknown2((short) mapId);
+        itemStreamTerminator.setUnknown2((short) mapData.getMapID());
         itemStreamTerminator.setUnknown3(0);
         
         session.send(itemStreamTerminator);
@@ -139,9 +143,9 @@ public class InstanceLoad extends GenericShardlet
         
         P391_InstanceLoadSpawnPointAction instanceLoadSpawnPoint = new P391_InstanceLoadSpawnPointAction();
         instanceLoadSpawnPoint.init(session);
-        instanceLoadSpawnPoint.setMapFile(165811);
-        instanceLoadSpawnPoint.setPosition(new float[] { -6558, -6010});
-        instanceLoadSpawnPoint.setPlane((short) 0);
+        instanceLoadSpawnPoint.setMapFile(mapData.getMapFileHash());
+        instanceLoadSpawnPoint.setPosition(new float[] { mapData.getSpawn().getX(), mapData.getSpawn().getY()});
+        instanceLoadSpawnPoint.setPlane((short) mapData.getSpawn().getZPlane());
         instanceLoadSpawnPoint.setisCinematic((byte) 0);
         instanceLoadSpawnPoint.setData5((byte) 0);
         
@@ -155,6 +159,10 @@ public class InstanceLoad extends GenericShardlet
         LOGGER.debug("Got the instance load request player data packet");
         Session session = action.getSession();
         SessionAttachment attachment = (SessionAttachment) session.getAttachment();
+        
+        
+        // fetch the player entity..
+        
         
         
         P230_UnknownAction zoneBeginCharInfo = new P230_UnknownAction();
@@ -232,7 +240,7 @@ public class InstanceLoad extends GenericShardlet
         updateAgentAppearance.setUnknown2(50);
         updateAgentAppearance.setUnknown3(0);
         updateAgentAppearance.setUnknown6(0x3cbfa094);
-        updateAgentAppearance.setUnknown7(attachment.getCharacterName().toCharArray());
+        updateAgentAppearance.setUnknown7(attachment.getCharacterName().name.toCharArray());
         
         session.send(updateAgentAppearance);
         

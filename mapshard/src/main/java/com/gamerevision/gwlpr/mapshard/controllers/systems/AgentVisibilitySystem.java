@@ -76,11 +76,14 @@ public class AgentVisibilitySystem extends GenericShardlet
                 AgentID.class,
                 LocalID.class,
                 Position.class,
-                View.class,
                 Visibility.class);
         
         for (Entity thisEntity : entities) 
         {
+            // we dont need to calculate anything if this
+            // entity is 'blind':
+            if (!thisEntity.has(View.class)) { continue; }
+            
             for (Entity otherEntity : entities) 
             {
                 if (thisEntity == otherEntity) { continue; }

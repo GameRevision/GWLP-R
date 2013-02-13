@@ -7,6 +7,7 @@ package com.gamerevision.gwlpr.mapshard;
 import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
+import com.gamerevision.gwlpr.mapshard.models.MapData;
 import com.realityshard.shardlet.RemoteShardletContext;
 
 
@@ -22,30 +23,30 @@ public class ContextAttachment
     private final DatabaseConnectionProvider dbProvider;
     private final EntityManager entityManager;
     private final ClientLookupTable clientLookup;
-    private final int mapId;
+    private final MapData mapData;
     
     
     /**
      * Constructor.
      * 
-     * @param loginShard 
+     * @param       loginShard 
      * @param       dbProvider              Database provider.
      * @param       entityManager           Entity System
      * @param       clientLookpup           Lookup dict for client/entities
-     * @param mapId  
+     * @param       mapData                 The general map info/data
      */
     public ContextAttachment(
             RemoteShardletContext loginShard,
             DatabaseConnectionProvider dbProvider,
             EntityManager entityManager,
             ClientLookupTable clientLookpup,
-            int mapId)
+            MapData mapData)
     {
         this.loginShard = loginShard;
         this.dbProvider = dbProvider;
         this.entityManager = entityManager;
         this.clientLookup = clientLookpup;
-        this.mapId = mapId;
+        this.mapData = mapData;
     }
 
     
@@ -98,10 +99,10 @@ public class ContextAttachment
     /**
      * Getter.
      * 
-     * @return      The MapID of this mapshard, as used in the DB
+     * @return      The general map data of this mapshard
      */
-    public int getMapId() 
+    public MapData getMapData() 
     {
-        return mapId;
+        return mapData;
     }
 }

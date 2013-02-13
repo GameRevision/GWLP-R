@@ -5,8 +5,13 @@
 package com.gamerevision.gwlpr.mapshard.entitysystem.components;
 
 import com.gamerevision.gwlpr.mapshard.entitysystem.Component;
+import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
+import com.gamerevision.gwlpr.mapshard.models.GWRectangle;
+import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.gamerevision.gwlpr.mapshard.models.enums.MovementState;
 import com.gamerevision.gwlpr.mapshard.models.enums.MovementType;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -36,8 +41,7 @@ public class Components
 
     
     public static class Position implements Component {
-        public float x;
-        public float y;
+        public GWVector position; // absolute
     }
     
     
@@ -48,23 +52,20 @@ public class Components
     
     
     public static class Orientation implements Component {
-        public float vecX;
-        public float vecY;
+        public GWVector orientation;
     }
     
     
     public static class Movement implements Component {
-        public MovementState moveState;
-        public MovementType moveType;
+        public MovementState moveState = MovementState.Stop;
+        public MovementType moveType = MovementType.NotMoving;
     }
     
     
     public static class BoundingBox implements Component {
-        public float x;
-        public float y;
-        public float width;
-        public float depth;
-        public float height;
+        public GWRectangle bounds;
+        public float rotation; // if the rect needs to be rotated
+        public float height; // height (idk if this is equivalent to Z-Planes)
     }
     
     
@@ -74,13 +75,13 @@ public class Components
     
     
     public static class View implements Component {
-        public int[] agentsICannotSee;
-        public int[] agentsICanSee;
+        public List<Entity> agentsICannotSee = new ArrayList<>();
+        public List<Entity> agentsICanSee = new ArrayList<>();
         public float viewDistance;
     }
     
     
     public static class Visibility implements Component {
-        public boolean visible;
+        public boolean visible = true;
     }
 }

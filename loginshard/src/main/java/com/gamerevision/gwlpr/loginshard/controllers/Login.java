@@ -108,10 +108,6 @@ public class Login extends GenericShardlet
         attach.setAccountId(DBAccount.getByEMail(db, email).getId());        
         attach.setCharacterId(DBCharacter.getCharacter(db, characterName).getId());
 
-        // it's our turn to continue with the login process now.
-        // the view we are using is
-        List<DBCharacter> characters = DBCharacter.getAllCharacters(db, attach.getAccountId());
-
         // send all login specific packets as a reply
         loginView.sendLoginInfo(session, attach.getAccountId());
 

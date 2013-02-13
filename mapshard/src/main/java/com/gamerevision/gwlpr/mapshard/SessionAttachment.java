@@ -5,6 +5,7 @@
 package com.gamerevision.gwlpr.mapshard;
 
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
+import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +22,9 @@ public class SessionAttachment
     
     private final int accountId;
     private final int characterId;
-    private String characterName;
+    private Name characterName;
+    private AgentID agentID;
+    private LocalID localID;
     private Entity entity = null;
 
     
@@ -68,7 +71,7 @@ public class SessionAttachment
      * 
      * @return 
      */
-    public String getCharacterName() 
+    public Name getCharacterName() 
     {
         return characterName;
     }
@@ -79,9 +82,52 @@ public class SessionAttachment
      * 
      * @param characterName 
      */
-    public void setCharacterName(String characterName) 
+    public void setCharacterName(Name characterName) 
     {
         this.characterName = characterName;
+    }
+
+    
+    /**
+     * Getter.
+     * 
+     * @return 
+     */
+    public AgentID getAgentID() 
+    {
+        return agentID;
+    }
+
+    
+    /**
+     * Setter.
+     * 
+     * @param agentID 
+     */
+    public void setAgentID(AgentID agentID) 
+    {
+        this.agentID = agentID;
+    }
+
+    
+    /**
+     * Getter.
+     * 
+     * @return 
+     */
+    public LocalID getLocalID() 
+    {
+        return localID;
+    }
+
+    
+    /**
+     * Setter.
+     * @param localID 
+     */
+    public void setLocalID(LocalID localID) 
+    {
+        this.localID = localID;
     }
 
     
