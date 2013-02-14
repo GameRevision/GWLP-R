@@ -9,6 +9,7 @@ import com.gamerevision.gwlpr.loginshard.controllers.MapShardDispatch;
 import com.gamerevision.gwlpr.mapshard.controllers.CharacterCreation;
 import com.gamerevision.gwlpr.mapshard.controllers.HeartBeat;
 import com.gamerevision.gwlpr.mapshard.controllers.InstanceLoad;
+import com.gamerevision.gwlpr.mapshard.controllers.Ping;
 import com.gamerevision.gwlpr.protocol.SerialisationFilter;
 import com.realityshard.container.gameapp.GenericGameAppFactory;
 import com.realityshard.shardlet.ProtocolFilter;
@@ -156,6 +157,9 @@ public class DevelopmentEnvironment implements Environment
             dummy)
         .addShardlet(
             new InstanceLoad(), 
+            dummy)
+        .addShardlet(
+            new Ping(), 
             dummy)
         .addShardlet(
             new com.gamerevision.gwlpr.mapshard.controllers.StaticReply(),

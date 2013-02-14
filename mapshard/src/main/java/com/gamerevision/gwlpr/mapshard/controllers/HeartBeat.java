@@ -7,7 +7,8 @@ package com.gamerevision.gwlpr.mapshard.controllers;
 import com.gamerevision.gwlpr.mapshard.ContextAttachment;
 import com.gamerevision.gwlpr.mapshard.SessionAttachment;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
-import com.gamerevision.gwlpr.mapshard.views.HeartBeatView;
+import com.gamerevision.gwlpr.mapshard.models.enums.PlayerState;
+import com.gamerevision.gwlpr.mapshard.views.TimeDeltaView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.Session;
 import com.realityshard.shardlet.events.GameAppCreatedEvent;
@@ -67,9 +68,9 @@ public class HeartBeat extends GenericShardlet
         {
             // check if this session should receive a heartbeat packet
             SessionAttachment attach = (SessionAttachment) session.getAttachment();
-            if (!attach.isHeartBeatEnabled()) { continue; }
+            if (attach.getPlayerState() != PlayerState.Playing) { continue; }
             
-            HeartBeatView.heartBeat(session, event.getPassedTimeInterval());
+            TimeDeltaView.heartBeat(session, event.getPassedTimeInterval());
         }
     }
 }

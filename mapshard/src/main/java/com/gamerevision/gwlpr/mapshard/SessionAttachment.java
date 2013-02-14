@@ -6,6 +6,7 @@ package com.gamerevision.gwlpr.mapshard;
 
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
+import com.gamerevision.gwlpr.mapshard.models.enums.PlayerState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +24,9 @@ public class SessionAttachment
     private final int accountId;
     private final int characterId;
     
-    private boolean heartBeatEnabled = false;
+    private PlayerState playerState = PlayerState.LoadingInstance;
+    
+    private int latency;
     
     private Name characterName;
     private AgentID agentID;
@@ -74,20 +77,42 @@ public class SessionAttachment
      * 
      * @return 
      */
-    public boolean isHeartBeatEnabled() 
+    public PlayerState getPlayerState() 
     {
-        return heartBeatEnabled;
+        return playerState;
     }
 
     
     /**
      * Setter.
      * 
-     * @param heartBeatEnabled 
+     * @param playerState 
      */
-    public void setHeartBeatEnabled(boolean heartBeatEnabled) 
+    public void setPlayerState(PlayerState playerState) 
     {
-        this.heartBeatEnabled = heartBeatEnabled;
+        this.playerState = playerState;
+    }
+
+    
+    /**
+     * Getter.
+     * 
+     * @return 
+     */
+    public int getLatency() 
+    {
+        return latency;
+    }
+
+    
+    /**
+     * Setter.
+     * 
+     * @param latency 
+     */
+    public void setLatency(int latency) 
+    {
+        this.latency = latency;
     }
 
     

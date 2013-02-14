@@ -18,6 +18,7 @@ import com.gamerevision.gwlpr.mapshard.views.UpdatePrivateProfessionsView;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
 import com.gamerevision.gwlpr.mapshard.entitysystem.builders.PlayerBuilder;
 import com.gamerevision.gwlpr.mapshard.models.MapData;
+import com.gamerevision.gwlpr.mapshard.models.enums.PlayerState;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.RemoteShardletContext;
 import com.realityshard.shardlet.Session;
@@ -275,6 +276,6 @@ public class InstanceLoad extends GenericShardlet
         
         
         // activate heart beat
-        attachment.setHeartBeatEnabled(true);
+        attachment.setPlayerState(PlayerState.Playing);
     }
 }
