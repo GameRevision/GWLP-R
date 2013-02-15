@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
  */
 public class Ping extends GenericShardlet
 {
-    private final static Logger LOGGER = LoggerFactory.getLogger(HeartBeat.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(Ping.class);
     private final static int TIMEINTERVAL = 5000; // execute each 5 seconds
     
     private int timePassed = 0;

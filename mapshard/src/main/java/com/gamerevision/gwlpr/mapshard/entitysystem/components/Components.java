@@ -8,9 +8,11 @@ import com.gamerevision.gwlpr.mapshard.entitysystem.Component;
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import com.gamerevision.gwlpr.mapshard.models.GWRectangle;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
+import com.gamerevision.gwlpr.mapshard.models.enums.ChatColor;
 import com.gamerevision.gwlpr.mapshard.models.enums.MovementState;
 import com.gamerevision.gwlpr.mapshard.models.enums.MovementType;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -83,5 +85,14 @@ public class Components
     
     public static class Visibility implements Component {
         public boolean visible = true;
+    }
+    
+    
+    public static class ChatOptions implements Component {
+        public Collection<String> availableCommands;
+        public String chatPefix;
+        public boolean prefixVisible;
+        public ChatColor chatColor;
+        public boolean enableColor;
     }
 }
