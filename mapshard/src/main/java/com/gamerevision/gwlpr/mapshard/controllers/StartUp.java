@@ -8,7 +8,7 @@ import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.mapshard.ContextAttachment;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
-import com.gamerevision.gwlpr.mapshard.entitysystem.systems.AgentVisibility;
+import com.gamerevision.gwlpr.mapshard.entitysystem.systems.AgentVisibilitySystem;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.gamerevision.gwlpr.mapshard.models.MapData;
 import com.realityshard.shardlet.EventAggregator;
@@ -74,7 +74,7 @@ public class StartUp extends GenericShardlet
         // we'r almost finished...
         // load up the systems
         EventAggregator agg = getShardletContext().getAggregator();
-        agg.register(new AgentVisibility(agg, es, lt));
+        agg.register(new AgentVisibilitySystem(agg, es, lt));
         
         LOGGER.debug("Finished loading initial data");
     }
