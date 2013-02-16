@@ -234,7 +234,7 @@ public class InstanceLoad extends GenericShardlet
 
         session.send(updateAvailableSkills);
 
-        
+
         // at this point we should spawn the player
         // all other players and such will be spawned automatically by the
         // spawning system when the player can see them.

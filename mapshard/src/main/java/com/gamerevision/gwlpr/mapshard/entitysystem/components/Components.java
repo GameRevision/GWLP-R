@@ -9,8 +9,8 @@ import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import com.gamerevision.gwlpr.mapshard.models.GWRectangle;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.gamerevision.gwlpr.mapshard.models.enums.ChatColor;
-import com.gamerevision.gwlpr.mapshard.models.enums.MovementState;
 import com.gamerevision.gwlpr.mapshard.models.enums.MovementType;
+import com.gamerevision.gwlpr.mapshard.models.enums.MovementState;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -59,13 +59,14 @@ public class Components
 
 
     public static class Movement implements Component {
-        public MovementState moveState = MovementState.Stop;
-        public MovementType moveType = MovementType.NotMoving;
+        public MovementType moveState = MovementType.Stop;
+        public MovementState moveType = MovementState.NotMoving;
         public float speed = 288;
     }
 
 
     public static class BoundingBox implements Component {
+        // TODO this is crap. refactor/replace me
         public GWRectangle bounds = new GWRectangle(new GWVector(1,1,0), 50, 50);
         public float rotation = 0; // if the rect needs to be rotated
         public float height = 100; // height (idk if this is equivalent to Z-Planes)

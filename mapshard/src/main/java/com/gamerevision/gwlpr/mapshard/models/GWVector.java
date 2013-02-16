@@ -13,7 +13,7 @@ package com.gamerevision.gwlpr.mapshard.models;
  *
  * @author _rusty
  */
-public class GWVector
+public final class GWVector
 {
     private float x;
     private float y;
@@ -45,8 +45,31 @@ public class GWVector
     public int getZPlane() { return zPlane; }
     public void setZPlane(int zPlane) { this.zPlane = zPlane; }
 
+
+    /**
+     * Turn this gw vector in the float array used by GW.
+     * This will not include the z-plane!
+     *
+     * @return      The x/y float array.
+     */
     public float[] toFloatArray()
     {
         return new float[] {x, y};
+    }
+
+
+    /**
+     * Convert a float array plus zplane to a GWVector.
+     *
+     * @param       ar                      The float array.
+     * @param       zPlane                  The actual z-plane
+     * @return      A new GWVector, or null if the float array could not be read.
+     */
+    public static GWVector fromFloatArray(float[] ar, int zPlane)
+    {
+        // failcheck
+        if (ar.length != 2) { return null; }
+
+        return new GWVector(ar[0], ar[1], zPlane);
     }
 }
