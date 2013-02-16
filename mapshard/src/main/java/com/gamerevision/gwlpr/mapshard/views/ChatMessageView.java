@@ -7,6 +7,7 @@ package com.gamerevision.gwlpr.mapshard.views;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.P081_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.P082_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.P085_UnknownAction;
+import com.gamerevision.gwlpr.mapshard.models.GWString;
 import com.gamerevision.gwlpr.mapshard.models.enums.ChatColor;
 import com.realityshard.shardlet.Session;
 
@@ -18,6 +19,7 @@ import com.realityshard.shardlet.Session;
  */
 public class ChatMessageView
 {
+    
     /**
      * Send all the packets necessary to display one chat message.
      *
@@ -28,11 +30,11 @@ public class ChatMessageView
         // first construct the message
         P081_UnknownAction sendMessage = new P081_UnknownAction();
         sendMessage.init(session);
-        sendMessage.setUnknown1(message.toCharArray());
+        sendMessage.setUnknown1(GWString.formatChat(message).toCharArray());
 
         session.send(sendMessage);
 
-        // then tell the client about the owner
+        // then tell the client about the owner/sender
         if (ownerLocalID == 0)
         {
             P082_UnknownAction noOwner = new P082_UnknownAction();
