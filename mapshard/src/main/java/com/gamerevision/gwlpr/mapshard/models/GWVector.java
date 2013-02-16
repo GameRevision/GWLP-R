@@ -8,21 +8,21 @@ package com.gamerevision.gwlpr.mapshard.models;
 /**
  * Use this for the GW vector standart of:
  * (X, Y, Zplane)
- * 
+ *
  * THIS CLASS DOES NOT USE THE GENERAL CODING STYLE
- * 
+ *
  * @author _rusty
  */
-public class GWVector 
+public class GWVector
 {
     private float x;
     private float y;
     private int zPlane;
-    
-    
+
+
     /**
      * Constructor.
-     * 
+     *
      * @param       x                       Delta X
      * @param       y                       Delta Y
      * @param       zPlane                  Z-Plane (see pathing maps etc., this
@@ -35,7 +35,7 @@ public class GWVector
         this.zPlane = zPlane;
     }
 
-    
+
     public float getX() { return x; }
     public void setX(float x) { this.x = x; }
 
@@ -43,5 +43,10 @@ public class GWVector
     public void setY(float y) { this.y = y; }
 
     public int getZPlane() { return zPlane; }
-    public void setZPlane(int zPlane) { this.zPlane = zPlane; }    
+    public void setZPlane(int zPlane) { this.zPlane = zPlane; }
+
+    public float[] toFloatArray()
+    {
+        return new float[] {x, y};
+    }
 }

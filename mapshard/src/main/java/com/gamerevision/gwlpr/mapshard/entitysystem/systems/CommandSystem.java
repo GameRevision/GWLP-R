@@ -8,6 +8,7 @@ import com.gamerevision.gwlpr.mapshard.entitysystem.GenericSystem;
 import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
 import com.gamerevision.gwlpr.mapshard.events.ChatCommandEvent;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
+import com.gamerevision.gwlpr.mapshard.models.Strings;
 import com.gamerevision.gwlpr.mapshard.models.enums.ChatColor;
 import com.gamerevision.gwlpr.mapshard.views.ChatMessageView;
 import com.realityshard.shardlet.EventAggregator;
@@ -21,8 +22,6 @@ import java.util.List;
 /**
  * This system handles any chat-commands.
  *
- * This system does not need to be updated.
- *
  * @author _rusty
  */
 public final class CommandSystem extends GenericSystem
@@ -33,7 +32,7 @@ public final class CommandSystem extends GenericSystem
 
 
     /**
-     * Constrcutor.
+     * Constructor.
      *
      * @param       aggregator
      * @param       clientLookup
@@ -82,7 +81,11 @@ public final class CommandSystem extends GenericSystem
             // if the sender was a network client (as opposed to NPCs etc.)
             // we'll tell her that the execution failed:
             String cmdFailed = "The command does not exist or you dont have sufficient permissions to execute it.";
-            ChatMessageView.sendMessage(client, 0, ChatColor.DarkOrange_DarkOrange, cmdFailed);
+            ChatMessageView.sendMessage(
+                    client,
+                    0,
+                    ChatColor.DarkOrange_DarkOrange,
+                    Strings.CmdNotAvail.text());
 
             return;
         }
