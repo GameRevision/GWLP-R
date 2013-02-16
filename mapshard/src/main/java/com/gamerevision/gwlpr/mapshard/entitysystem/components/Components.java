@@ -28,17 +28,17 @@ import java.util.List;
 public class Components
 {
     public static class Name implements Component {
-        public String name;
+        public String name = "NoName";
     }
 
 
     public static class AgentID implements Component {
-        public int agentID;
+        public int agentID = 0;
     }
 
 
     public static class LocalID implements Component {
-        public int localID;
+        public int localID = 0;
     }
 
 
@@ -48,27 +48,27 @@ public class Components
 
 
     public static class Rotation implements Component {
-        public float rotation;
-        public boolean isRotating;
+        public float rotation = 0;
+        public boolean isRotating = false;
     }
 
 
     public static class Orientation implements Component {
-        public GWVector orientation;
+        public GWVector orientation = new GWVector(1, 1, 0);
     }
 
 
     public static class Movement implements Component {
         public MovementState moveState = MovementState.Stop;
         public MovementType moveType = MovementType.NotMoving;
-        public float speed = 255;
+        public float speed = 288;
     }
 
 
     public static class BoundingBox implements Component {
-        public GWRectangle bounds;
-        public float rotation; // if the rect needs to be rotated
-        public float height; // height (idk if this is equivalent to Z-Planes)
+        public GWRectangle bounds = new GWRectangle(new GWVector(1,1,0), 50, 50);
+        public float rotation = 0; // if the rect needs to be rotated
+        public float height = 100; // height (idk if this is equivalent to Z-Planes)
     }
 
 
@@ -80,7 +80,8 @@ public class Components
     public static class View implements Component {
         public List<Entity> agentsICannotSee = new ArrayList<>();
         public List<Entity> agentsICanSee = new ArrayList<>();
-        public float viewDistance;
+        public float viewDistance = 100;
+        public boolean isBlind = true; // this will be set to true by the builder or other classes.
     }
 
 
@@ -90,10 +91,10 @@ public class Components
 
 
     public static class ChatOptions implements Component {
-        public Collection<String> availableCommands;
-        public String chatPefix;
-        public boolean prefixVisible;
-        public ChatColor chatColor;
-        public boolean enableColor;
+        public Collection<String> availableCommands = new ArrayList<>();
+        public String chatPefix = "";
+        public boolean prefixVisible = false;
+        public ChatColor chatColor = ChatColor.Yellow_White;
+        public boolean enableColor = false;
     }
 }

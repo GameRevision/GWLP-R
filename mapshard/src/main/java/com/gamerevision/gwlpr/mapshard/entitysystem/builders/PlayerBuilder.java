@@ -13,24 +13,24 @@ import com.gamerevision.gwlpr.mapshard.models.GWVector;
 
 /**
  * Use this class to create a new player entity.
- * 
+ *
  * @author _rusty
  */
-public final class PlayerBuilder 
+public final class PlayerBuilder
 {
-    
+
     private final Entity entity;
-    
-    
+
+
     /**
      * Constructor.
      */
-    private PlayerBuilder(Entity entity) 
-    {    
+    private PlayerBuilder(Entity entity)
+    {
         this.entity = entity;
     }
-    
-    
+
+
     /**
      * Start building process.
      */
@@ -39,31 +39,31 @@ public final class PlayerBuilder
         // create the entity, and add some default components
         return new PlayerBuilder(
                 new Entity(
-                    manager, 
+                    manager,
                     new Movement()));
     }
-    
-    
+
+
     /**
      * Step 1.
      */
-    public PlayerBuilder withAgentData(String playerName, int playerAgentID, int playerLocalID) 
+    public PlayerBuilder withAgentData(String playerName, int playerAgentID, int playerLocalID)
     {
         Name name = new Name(); name.name = playerName;
         AgentID agentID = new AgentID(); agentID.agentID = playerAgentID;
         LocalID localID = new LocalID(); localID.localID = playerLocalID;
-        
+
         entity.addAll(name, agentID, localID);
         return this;
     }
-    
-    
+
+
     /**
      * Step 2.
      */
     public PlayerBuilder withPhysics(
-            GWVector playerPosition, 
-            float playerRotation, 
+            GWVector playerPosition,
+            float playerRotation,
             GWVector playerOrientation,
             float boundsRectWidth,
             float boundsRectHeight,
@@ -72,17 +72,17 @@ public final class PlayerBuilder
         Position position = new Position(); position.position = playerPosition;
         Rotation rotation = new Rotation(); rotation.rotation = playerRotation;
         Orientation orientation = new Orientation(); orientation.orientation = playerOrientation;
-        
+
         BoundingBox bBox = new BoundingBox();
         bBox.bounds = GWRectangle.createWithCenter(playerPosition, boundsRectWidth, boundsRectHeight);
         bBox.rotation = playerRotation;
         bBox.height = boundsPlayerHeight;
-        
+
         entity.addAll(position, rotation, orientation, bBox);
         return this;
     }
-    
-    
+
+
     /**
      * Step 3.
      */
@@ -91,12 +91,26 @@ public final class PlayerBuilder
         Appearance appearance = new Appearance(); appearance.appearanceDump = playerAppearance;
         View view = new View(); view.viewDistance = playerViewDistance;
         Visibility visibility = new Visibility(); visibility.visible = isVisible;
-        
+
         entity.addAll(appearance, view, visibility);
         return this;
     }
-    
-    
+
+
+    /**
+     * Step 4.
+     *
+     * TODO: change this method once this is supported by database features.
+     */
+    public PlayerBuilder withChatOptions()
+    {
+        ChatOptions chatOpts = new ChatOptions();
+
+        entity.addAll(chatOpts);
+        return this;
+    }
+
+
     /**
      * Last Step.
      */

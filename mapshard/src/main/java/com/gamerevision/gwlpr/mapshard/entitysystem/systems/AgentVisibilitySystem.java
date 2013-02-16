@@ -75,8 +75,10 @@ public final class AgentVisibilitySystem extends GenericSystem
         for (Entity thisEntity : entities)
         {
             // we dont need to calculate anything if this
-            // entity is 'blind':
+            // entity is 'blind' by not having a view component:
             if (!thisEntity.has(View.class)) { continue; }
+
+            // or by having the 'blind' option set
 
             for (Entity otherEntity : entities)
             {
