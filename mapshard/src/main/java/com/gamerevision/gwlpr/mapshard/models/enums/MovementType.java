@@ -44,4 +44,7 @@ public enum MovementType
         // thats why we will have to decrement that...
         return MovementType.values()[type - 1];
     }
+
+    public byte getVal() { return (byte)gwVal; }
+    public float getSpeedModifier() { return speedModifier; }
 }

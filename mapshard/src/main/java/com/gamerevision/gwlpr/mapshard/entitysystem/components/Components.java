@@ -6,7 +6,6 @@ package com.gamerevision.gwlpr.mapshard.entitysystem.components;
 
 import com.gamerevision.gwlpr.mapshard.entitysystem.Component;
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
-import com.gamerevision.gwlpr.mapshard.models.GWRectangle;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.gamerevision.gwlpr.mapshard.models.enums.ChatColor;
 import com.gamerevision.gwlpr.mapshard.models.enums.MovementType;
@@ -47,29 +46,24 @@ public class Components
     }
 
 
-    public static class Rotation implements Component {
-        public float rotation = 0;
+    public static class Direction implements Component {
+        public GWVector direction = new GWVector(1, 1, 0);
         public boolean isRotating = false;
     }
 
 
-    public static class Orientation implements Component {
-        public GWVector orientation = new GWVector(1, 1, 0);
-    }
-
-
     public static class Movement implements Component {
-        public MovementType moveState = MovementType.Stop;
-        public MovementState moveType = MovementState.NotMoving;
+        public GWVector moveToPoint = new GWVector(1, 1, 0);
+        public MovementType moveType = MovementType.Stop;
+        public MovementState moveState = MovementState.NotMoving;
         public float speed = 288;
     }
 
 
     public static class BoundingBox implements Component {
-        // TODO this is crap. refactor/replace me
-        public GWRectangle bounds = new GWRectangle(new GWVector(1,1,0), 50, 50);
-        public float rotation = 0; // if the rect needs to be rotated
-        public float height = 100; // height (idk if this is equivalent to Z-Planes)
+        public float width = 50; // x
+        public float depth = 50; // y
+        public float height = 96; // height in game-units
     }
 
 

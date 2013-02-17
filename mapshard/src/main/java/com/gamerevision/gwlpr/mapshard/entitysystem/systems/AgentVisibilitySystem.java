@@ -8,7 +8,9 @@ import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
 import com.gamerevision.gwlpr.mapshard.entitysystem.GenericSystem;
 import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
-import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
+import com.gamerevision.gwlpr.mapshard.events.CanSeeEvent;
+import com.gamerevision.gwlpr.mapshard.events.LostSightEvent;
+import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.realityshard.shardlet.EventAggregator;
 import java.util.Collection;
 
@@ -27,7 +29,6 @@ public final class AgentVisibilitySystem extends GenericSystem
     private final static int UPDATEINTERVAL = 500;
 
     private EntityManager entityManager;
-    private ClientLookupTable clientLookup;
 
 
     /**
@@ -39,8 +40,7 @@ public final class AgentVisibilitySystem extends GenericSystem
      */
     public AgentVisibilitySystem(
             EventAggregator aggregator,
-            EntityManager entityManager,
-            ClientLookupTable clientLookupTable)
+            EntityManager entityManager)
     {
         // we'll set some default time invocation value here...
         super(aggregator, UPDATEINTERVAL);
@@ -48,7 +48,6 @@ public final class AgentVisibilitySystem extends GenericSystem
         // DO NOT REGISTER WITH THE AGGREGATOR! THE STARTUP SHARDLET WILL DO THAT
 
         this.entityManager = entityManager;
-        this.clientLookup = clientLookupTable;
     }
 
 
@@ -79,38 +78,65 @@ public final class AgentVisibilitySystem extends GenericSystem
             if (!thisEntity.has(View.class)) { continue; }
 
             // or by having the 'blind' option set
+            View thisView = thisEntity.get(View.class);
+            if (thisView.isBlind) { continue; }
+
+            // get the position for distance calcs later on
+            GWVector thisPostion = thisEntity.get(Position.class).position;
 
             for (Entity otherEntity : entities)
             {
                 if (thisEntity == otherEntity) { continue; }
 
-                // if the other entity is visible by its Visibility component
+                // get the position for distance calcs later on
+                GWVector otherPostion = otherEntity.get(Position.class).position;
 
+                boolean canSee = false;
+
+                // if the other entity is visible by its Visibility component
+                if (otherEntity.get(Visibility.class).visible)
+                {
                     // get this entities view distance
                     // calculate the distance between both entities
+                    if (thisPostion.getDistanceTo(otherPostion) <= thisView.viewDistance)
+                    {
+                        canSee = true;
+                    }
+                }
 
                 // then check the following (if it is invisible, the second
                 // part should be executed
 
                 // if this entity can see the other one:
-
+                if (canSee)
+                {
                     // check if the other entity is in this entities
                     // can-see list, if not,
-                    // 1) trigger a OnCanSee event
-                    // 2) add it to the list, (remove it from cannot-see list)
+                    if (!thisView.agentsICanSee.contains(otherEntity))
+                    {
+                        // 1) add it to the list, (remove it from cannot-see list)
+                        thisView.agentsICanSee.add(otherEntity);
+                        thisView.agentsICannotSee.remove(otherEntity);
 
-                    // (optional) check if we or another system sends the
-                    // spawn player packet
-
+                        // 2) trigger a OnCanSee event
+                        trigger(new CanSeeEvent(thisEntity, otherEntity));
+                    }
+                }
                 // if this entity cannot see the other one:
-
+                else
+                {
                     // check if the other entity is in this entities
                     // cannot-see list, if not,
-                    // 1) trigger a OnLostSight event
-                    // 2) add it to the list, (remove it from can-see list)
+                    if (!thisView.agentsICanSee.contains(otherEntity))
+                    {
+                        // 1) add it to the list, (remove it from can-see list)
+                        thisView.agentsICannotSee.add(otherEntity);
+                        thisView.agentsICanSee.remove(otherEntity);
 
-                    // (optional) check if we or another system sends the
-                    // de-spawn player packet
+                        // 2) trigger a OnLostSight event
+                        trigger(new LostSightEvent(thisEntity, otherEntity));
+                    }
+                }
             }
         }
     }

@@ -9,7 +9,9 @@ import com.gamerevision.gwlpr.actions.gameserver.ctos.P055_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.ctos.P057_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.ctos.P064_UnknownAction;
 import com.gamerevision.gwlpr.mapshard.SessionAttachment;
+import com.gamerevision.gwlpr.mapshard.events.RotateEvent;
 import com.gamerevision.gwlpr.mapshard.events.StartMovingEvent;
+import com.gamerevision.gwlpr.mapshard.events.StopMovingEvent;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.gamerevision.gwlpr.mapshard.models.enums.MovementType;
 import com.realityshard.shardlet.EventHandler;
@@ -85,7 +87,13 @@ public class MoveRotateClick extends GenericShardlet
         Session session = stopMove.getSession();
         SessionAttachment attach = (SessionAttachment) session.getAttachment();
 
-        // TODO implement me!
+        // extract info
+        GWVector position = GWVector.fromFloatArray(
+                stopMove.getUnknown1(),
+                stopMove.getUnknown2());
+
+        // the internal event:
+        publishEvent(new StopMovingEvent(attach.getEntity()));
     }
 
 
@@ -99,9 +107,11 @@ public class MoveRotateClick extends GenericShardlet
         Session session = keybRot.getSession();
         SessionAttachment attach = (SessionAttachment) session.getAttachment();
 
-        // TODO implement me!
-        // new event?
-        // what system handles this? we one though, NPCs can rotate as well
+        // extract info
+        float rot = keybRot.getUnknown1();
+
+        // send internal event
+        publishEvent(new RotateEvent(attach.getEntity(), rot, true));
     }
 
 

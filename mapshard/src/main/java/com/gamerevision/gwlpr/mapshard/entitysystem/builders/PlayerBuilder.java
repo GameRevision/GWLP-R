@@ -7,7 +7,6 @@ package com.gamerevision.gwlpr.mapshard.entitysystem.builders;
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
 import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
-import com.gamerevision.gwlpr.mapshard.models.GWRectangle;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
 
 
@@ -63,22 +62,20 @@ public final class PlayerBuilder
      */
     public PlayerBuilder withPhysics(
             GWVector playerPosition,
-            float playerRotation,
-            GWVector playerOrientation,
+            GWVector playerDirection,
             float boundsRectWidth,
             float boundsRectHeight,
             float boundsPlayerHeight)
     {
         Position position = new Position(); position.position = playerPosition;
-        Rotation rotation = new Rotation(); rotation.rotation = playerRotation;
-        Orientation orientation = new Orientation(); orientation.orientation = playerOrientation;
+        Direction direction = new Direction(); direction.direction = playerDirection;
 
         BoundingBox bBox = new BoundingBox();
-        bBox.bounds = GWRectangle.createWithCenter(playerPosition, boundsRectWidth, boundsRectHeight);
-        bBox.rotation = playerRotation;
+        bBox.width = boundsRectWidth;
+        bBox.depth = boundsRectHeight;
         bBox.height = boundsPlayerHeight;
 
-        entity.addAll(position, rotation, orientation, bBox);
+        entity.addAll(position, direction, bBox);
         return this;
     }
 

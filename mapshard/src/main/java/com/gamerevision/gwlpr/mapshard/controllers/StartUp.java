@@ -11,6 +11,7 @@ import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
 import com.gamerevision.gwlpr.mapshard.entitysystem.systems.AgentVisibilitySystem;
 import com.gamerevision.gwlpr.mapshard.entitysystem.systems.ChatSystem;
 import com.gamerevision.gwlpr.mapshard.entitysystem.systems.CommandSystem;
+import com.gamerevision.gwlpr.mapshard.entitysystem.systems.MovementSystem;
 import com.gamerevision.gwlpr.mapshard.entitysystem.systems.SpawningSystem;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.gamerevision.gwlpr.mapshard.models.MapData;
@@ -77,9 +78,10 @@ public class StartUp extends GenericShardlet
         // we'r almost finished...
         // load up the systems
         EventAggregator agg = getShardletContext().getAggregator();
-        agg.register(new AgentVisibilitySystem(agg, es, lt));
+        agg.register(new AgentVisibilitySystem(agg, es));
         agg.register(new ChatSystem(agg, lt));
         agg.register(new CommandSystem(agg, lt));
+        agg.register(new MovementSystem(agg, es, lt));
         agg.register(new SpawningSystem(agg, lt));
 
         LOGGER.debug("Finished loading initial data");

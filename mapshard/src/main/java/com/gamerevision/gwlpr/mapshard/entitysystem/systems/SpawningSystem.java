@@ -78,7 +78,7 @@ public class SpawningSystem extends GenericSystem
         int localID = et.get(LocalID.class).localID;
         byte[] appear = et.get(Appearance.class).appearanceDump;
         GWVector pos = et.get(Position.class).position;
-        float rot = et.get(Rotation.class).rotation;
+        GWVector dir = et.get(Direction.class).direction;
         float speed = et.get(Movement.class).speed;
 
         // send the spawn packets
@@ -89,7 +89,7 @@ public class SpawningSystem extends GenericSystem
                 localID,
                 appear,
                 pos,
-                rot,
+                dir.toRotation(),
                 speed);
     }
 

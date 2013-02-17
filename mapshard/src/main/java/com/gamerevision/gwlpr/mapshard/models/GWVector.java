@@ -42,12 +42,71 @@ public final class GWVector
     public float getY() { return y; }
     public void setY(float y) { this.y = y; }
 
-    public int getZPlane() { return zPlane; }
+    public short getZPlane() { return (short) zPlane; }
     public void setZPlane(int zPlane) { this.zPlane = zPlane; }
 
 
+    public GWVector add(GWVector vec)
+    {
+        return new GWVector(
+                x + vec.getX(),
+                y + vec.getY(),
+                zPlane);
+    }
+
+
+    public GWVector sub(GWVector vec)
+    {
+        return new GWVector(
+                x - vec.getX(),
+                y - vec.getY(),
+                zPlane);
+    }
+
+
+    public GWVector div(float div)
+    {
+        if (div == 0) return null;
+        return new GWVector(
+                x / div,
+                y / div,
+                zPlane);
+    }
+
+
+    public GWVector mul(float mul)
+    {
+        return new GWVector(
+                x * mul,
+                y * mul,
+                zPlane);
+    }
+
+
+    public float getLength()
+    {
+        return (float) Math.sqrt((x * x) + (y * y));
+    }
+
+
+    public GWVector getUnit()
+    {
+        return this.div(getLength());
+    }
+
+
     /**
-     * Turn this gw vector in the float array used by GW.
+     * This method regards this class as absolute (points in the coord)
+     * @param pt
+     * @return
+     */
+    public float getDistanceTo(GWVector pt)
+    {
+        return sub(pt).getLength();
+    }
+
+    /**
+     * Turn this gw vector into the float array used by GW.
      * This will not include the z-plane!
      *
      * @return      The x/y float array.
@@ -55,6 +114,17 @@ public final class GWVector
     public float[] toFloatArray()
     {
         return new float[] {x, y};
+    }
+
+
+    /**
+     * Turn this gw vector into a rotation value (radian measure?)
+     *
+     * @return
+     */
+    public float toRotation()
+    {
+        return (float) Math.atan2(y, x);
     }
 
 
@@ -71,5 +141,22 @@ public final class GWVector
         if (ar.length != 2) { return null; }
 
         return new GWVector(ar[0], ar[1], zPlane);
+    }
+
+
+    /**
+     * Convert a rotation and r (polar coord) to a GWVector.
+     * No Z plane given, cause rotation usually doesnt have a plane.
+     *
+     * @param       rotation                The rotation in radian measure.
+     * @param       r                       Distance from coord zero.
+     * @return      A new GWVector.
+     */
+    public static GWVector fromRotation(float rotation, float r)
+    {
+        float x = (float) (r * Math.cos(rotation));
+        float y = (float) (r * Math.sin(rotation));
+
+        return new GWVector(x, y, 0);
     }
 }

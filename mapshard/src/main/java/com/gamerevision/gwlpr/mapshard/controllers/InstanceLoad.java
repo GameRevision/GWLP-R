@@ -173,7 +173,7 @@ public class InstanceLoad extends GenericShardlet
         int localID = et.get(LocalID.class).localID;
         byte[] appear = et.get(Appearance.class).appearanceDump;
         GWVector pos = et.get(Position.class).position;
-        float rot = et.get(Rotation.class).rotation;
+        float rotation = et.get(Direction.class).direction.toRotation();
         float speed = et.get(Movement.class).speed;
 
 
@@ -245,7 +245,7 @@ public class InstanceLoad extends GenericShardlet
                 localID,
                 appear,
                 pos,
-                rot,
+                rotation,
                 speed);
 
 
