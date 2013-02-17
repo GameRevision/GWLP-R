@@ -8,6 +8,7 @@ import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
 import com.gamerevision.gwlpr.mapshard.entitysystem.GenericSystem;
 import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
+import com.gamerevision.gwlpr.mapshard.events.RotateEvent;
 import com.gamerevision.gwlpr.mapshard.events.StartMovingEvent;
 import com.gamerevision.gwlpr.mapshard.events.StopMovingEvent;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
@@ -151,6 +152,34 @@ public class MovementSystem extends GenericSystem
                     agentID,
                     pos,
                     move.moveType);
+        }
+    }
+
+
+    /**
+     * Event handler.
+     * Rotate event, this siganls that an entity changed its direction
+     * while not moving.
+     *
+     * @param rot
+     */
+    public void onRotate(RotateEvent rot)
+    {
+        // fetch some entity info
+        Entity et = rot.getThisEntity();
+        int agentID = et.get(AgentID.class).agentID;
+        
+        // and update the direction
+        Direction dir = et.get(Direction.class);
+        dir.direction = rot.getNewDirection();
+        float rotation = dir.direction.toRotation();
+
+        for (Session session : lookupTable.getAllSessions())
+        {
+            MovementView.sendRotateAgent(
+                    session,
+                    agentID,
+                    rotation);
         }
     }
 }

@@ -8,6 +8,7 @@ package com.gamerevision.gwlpr.mapshard.views;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.P026_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.P030_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.P032_UnknownAction;
+import com.gamerevision.gwlpr.actions.gameserver.stoc.P035_UnknownAction;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.gamerevision.gwlpr.mapshard.models.enums.MovementType;
 import com.realityshard.shardlet.Session;
@@ -65,5 +66,20 @@ public class MovementView
         moveToPoint.setUnknown4((short)0);
 
         session.send(moveToPoint);
+    }
+
+
+    /**
+     * Update an agents rotation
+     * (The rotation is the direction actually, there might be differences but who cares
+     * though this could be a possible BUG)
+     */
+    public static void sendRotateAgent(Session session, int agentID, float rotation)
+    {
+        P035_UnknownAction rot = new P035_UnknownAction();
+        rot.init(session);
+        rot.setUnknown1(agentID);
+        rot.setUnknown2(rotation);
+        rot.setUnknown3(0x40060A92);
     }
 }

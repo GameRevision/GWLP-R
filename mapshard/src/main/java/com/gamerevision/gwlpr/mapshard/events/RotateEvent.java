@@ -5,6 +5,7 @@
 package com.gamerevision.gwlpr.mapshard.events;
 
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
+import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.realityshard.shardlet.Event;
 
 
@@ -17,22 +18,18 @@ public class RotateEvent implements Event
 {
 
     private final Entity thisEntity;
-    private final float rotation;
-    private final boolean isRotating;
+    private final GWVector newDirection;
 
 
     /**
      * Constructor.
      *
      * @param       thisEntity
-     * @param       rotation
-     * @param       isRotating
      */
-    public RotateEvent(Entity thisEntity, float rotation, boolean isRotating)
+    public RotateEvent(Entity thisEntity, GWVector newDirection)
     {
         this.thisEntity = thisEntity;
-        this.rotation = rotation;
-        this.isRotating = isRotating;
+        this.newDirection = newDirection;
     }
 
 
@@ -49,22 +46,11 @@ public class RotateEvent implements Event
 
     /**
      * Getter.
-     *
+     *  
      * @return
      */
-    public float getRotation()
+    public GWVector getNewDirection()
     {
-        return rotation;
-    }
-
-
-    /**
-     * Getter.
-     *
-     * @return
-     */
-    public boolean isRotating()
-    {
-        return isRotating;
+        return newDirection;
     }
 }

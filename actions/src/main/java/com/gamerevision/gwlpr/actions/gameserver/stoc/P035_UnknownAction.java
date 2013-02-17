@@ -15,10 +15,10 @@ import java.nio.ByteOrder;
 
 /**
  * This is an automatically generated ShardletAction.
- * It resembles the packet template that has been 
+ * It resembles the packet template that has been
  * parsed from our packet templates xml.
  *
- * Auto generated 
+ * Auto generated
  *
  * @author GWLPR Template Updater
  */
@@ -26,8 +26,8 @@ public final class P035_UnknownAction extends GenericAction
 {
 
     private int unknown1;
-    private int unknown2;
-    private int unknown3;
+    private float unknown2;
+    private float unknown3;
 
 
     public short getHeader()
@@ -42,13 +42,13 @@ public final class P035_UnknownAction extends GenericAction
     }
 
 
-    public void setUnknown2(int newValue)
+    public void setUnknown2(float newValue)
     {
         unknown2 = newValue;
     }
 
 
-    public void setUnknown3(int newValue)
+    public void setUnknown3(float newValue)
     {
         unknown3 = newValue;
     }
@@ -77,8 +77,8 @@ public final class P035_UnknownAction extends GenericAction
             buffer.putShort(getHeader());
 
             buffer.putInt(unknown1);
-            buffer.putInt(unknown2);
-            buffer.putInt(unknown3);
+            buffer.putFloat(unknown2);
+            buffer.putFloat(unknown3);
         }
         catch (BufferOverflowException e)
         {

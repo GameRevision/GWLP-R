@@ -108,10 +108,10 @@ public class MoveRotateClick extends GenericShardlet
         SessionAttachment attach = (SessionAttachment) session.getAttachment();
 
         // extract info
-        float rot = keybRot.getUnknown1();
+        GWVector direction = GWVector.fromRotation(keybRot.getUnknown1(), 1);
 
         // send internal event
-        publishEvent(new RotateEvent(attach.getEntity(), rot, true));
+        publishEvent(new RotateEvent(attach.getEntity(), direction));
     }
 
 
