@@ -12,6 +12,7 @@ import com.gamerevision.gwlpr.mapshard.entitysystem.systems.AgentVisibilitySyste
 import com.gamerevision.gwlpr.mapshard.entitysystem.systems.ChatSystem;
 import com.gamerevision.gwlpr.mapshard.entitysystem.systems.CommandSystem;
 import com.gamerevision.gwlpr.mapshard.entitysystem.systems.MovementSystem;
+import com.gamerevision.gwlpr.mapshard.entitysystem.systems.SchedulingSystem;
 import com.gamerevision.gwlpr.mapshard.entitysystem.systems.SpawningSystem;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.gamerevision.gwlpr.mapshard.models.MapData;
@@ -82,6 +83,7 @@ public class StartUp extends GenericShardlet
         agg.register(new ChatSystem(agg, lt));
         agg.register(new CommandSystem(agg, lt));
         agg.register(new MovementSystem(agg, es, lt));
+        agg.register(new SchedulingSystem(agg));
         agg.register(new SpawningSystem(agg, lt));
 
         LOGGER.debug("Finished loading initial data");
