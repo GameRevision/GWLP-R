@@ -1,6 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * For copyright information see the LICENSE document.
  */
 
 package com.gamerevision.gwlpr.mapshard.test;

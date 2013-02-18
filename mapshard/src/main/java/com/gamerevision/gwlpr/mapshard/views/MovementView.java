@@ -81,5 +81,7 @@ public class MovementView
         rot.setUnknown1(agentID);
         rot.setUnknown2(rotation);
         rot.setUnknown3(0x40060A92);
+
+        session.send(rot);
     }
 }
