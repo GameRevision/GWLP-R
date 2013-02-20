@@ -92,4 +92,13 @@ public class Components
         public ChatColor chatColor = ChatColor.Yellow_White;
         public boolean enableColor = false;
     }
+
+    
+    public static class NPCData implements Component {
+        public int fileID = 0;
+        public int texture = 0;
+        public byte[] modelHash = new byte[] {};
+        public int flags = 0;
+        public int scale = 0;
+    }
 }
