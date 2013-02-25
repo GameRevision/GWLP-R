@@ -47,10 +47,10 @@ public final class IDManager
         freeLocalIDs.clear();
         
         // init the agentIDs from 1000-10
-        for (int i = MAX; i < MIN; i--) { freeAgentIDs.push(i); }
+        for (int i = MAX; i >= MIN; i--) { freeAgentIDs.push(i); }
         
         // init the localIDs from 1000-10
-        for (int i = MAX; i < MIN; i--) { freeLocalIDs.push(i); }
+        for (int i = MAX; i >= MIN; i--) { freeLocalIDs.push(i); }
     }
     
     
