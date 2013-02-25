@@ -58,21 +58,21 @@ public class SpawningView
         P021_UnknownAction spawnAgent = new P021_UnknownAction();
         spawnAgent.init(session);
         spawnAgent.setUnknown1(agentID);
-        spawnAgent.setUnknown2((0x30 << 24) |  localID); // is this the localid?
+        spawnAgent.setUnknown2((0x30 << 24) | localID); // is this the localid?
         spawnAgent.setUnknown3((byte) 1);
         spawnAgent.setUnknown4((byte) 5);
         spawnAgent.setUnknown5(position.toFloatArray());
-        spawnAgent.setUnknown6((short) position.getZPlane());
-        spawnAgent.setUnknown7(new float[] {Float.POSITIVE_INFINITY, rotation});
+        spawnAgent.setUnknown6(position.getZPlane());
+        spawnAgent.setUnknown7(new float[] {Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY});//, rotation});
         spawnAgent.setUnknown8((byte) 1);
-        spawnAgent.setUnknown9(speed);
+        spawnAgent.setUnknown9(42);//speed);
         spawnAgent.setUnknown10(Float.POSITIVE_INFINITY);
         spawnAgent.setUnknown11(0x41400000);
-        spawnAgent.setUnknown12(1886151033);
-        spawnAgent.setUnknown18(new float[] { Float.POSITIVE_INFINITY,Float.POSITIVE_INFINITY});
-        spawnAgent.setUnknown19(new float[] { Float.POSITIVE_INFINITY,Float.POSITIVE_INFINITY});
-        spawnAgent.setUnknown22(new float[] { Float.POSITIVE_INFINITY,Float.POSITIVE_INFINITY});
-
+        spawnAgent.setUnknown12(0x61747431);
+        spawnAgent.setUnknown18(new float[] {Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY});
+        spawnAgent.setUnknown19(new float[] {Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY});
+        spawnAgent.setUnknown22(new float[] {Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY});
+        
         session.send(spawnAgent);
     }
 

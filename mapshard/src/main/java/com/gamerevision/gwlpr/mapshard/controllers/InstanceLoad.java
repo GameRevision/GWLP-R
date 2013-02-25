@@ -149,8 +149,8 @@ public class InstanceLoad extends GenericShardlet
         P391_InstanceLoadSpawnPointAction instanceLoadSpawnPoint = new P391_InstanceLoadSpawnPointAction();
         instanceLoadSpawnPoint.init(session);
         instanceLoadSpawnPoint.setMapFile(mapData.getMapFileHash());
-        instanceLoadSpawnPoint.setPosition(new float[] { mapData.getSpawn().getX(), mapData.getSpawn().getY()});
-        instanceLoadSpawnPoint.setPlane((short) mapData.getSpawn().getZPlane());
+        instanceLoadSpawnPoint.setPosition(mapData.getSpawn().toFloatArray());
+        instanceLoadSpawnPoint.setPlane(mapData.getSpawn().getZPlane());
         instanceLoadSpawnPoint.setisCinematic((byte) 0);
         instanceLoadSpawnPoint.setData5((byte) 0);
 
