@@ -58,6 +58,8 @@ public class Chat extends GenericShardlet
 
         // failcheck
         if (chan == null) { return; }
+        
+        LOGGER.debug("Got new chat message for channel {}: {}", chan.name(), msg);
 
         // if it's a special channel we might want to distinguish between
         // different actions.

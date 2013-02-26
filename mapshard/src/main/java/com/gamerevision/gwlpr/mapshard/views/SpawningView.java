@@ -63,12 +63,12 @@ public class SpawningView
         spawnAgent.setUnknown4((byte) 5);
         spawnAgent.setUnknown5(position.toFloatArray());
         spawnAgent.setUnknown6(position.getZPlane());
-        spawnAgent.setUnknown7(new float[] {Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY});//, rotation});
+        spawnAgent.setUnknown7(new float[] {Float.POSITIVE_INFINITY, rotation});
         spawnAgent.setUnknown8((byte) 1);
-        spawnAgent.setUnknown9(42);//speed);
+        spawnAgent.setUnknown9(speed);
         spawnAgent.setUnknown10(Float.POSITIVE_INFINITY);
         spawnAgent.setUnknown11(0x41400000);
-        spawnAgent.setUnknown12(0x61747431);
+        spawnAgent.setUnknown12(1886151033); // "play" backwards
         spawnAgent.setUnknown18(new float[] {Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY});
         spawnAgent.setUnknown19(new float[] {Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY});
         spawnAgent.setUnknown22(new float[] {Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY});
@@ -99,9 +99,9 @@ public class SpawningView
      */
     private static int byteArrayToInt(byte[] b)
     {
-        return   b[3] & 0xFF |
-                (b[2] & 0xFF) << 8 |
-                (b[1] & 0xFF) << 16 |
-                (b[0] & 0xFF) << 24;
+        return   b[0] & 0xFF |
+                (b[1] & 0xFF) << 8 |
+                (b[2] & 0xFF) << 16 |
+                (b[3] & 0xFF) << 24;
     }
 }

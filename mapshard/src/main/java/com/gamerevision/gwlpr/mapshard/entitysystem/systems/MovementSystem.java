@@ -14,7 +14,6 @@ import com.gamerevision.gwlpr.mapshard.events.StopMovingEvent;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.gamerevision.gwlpr.mapshard.models.enums.MovementState;
-import com.gamerevision.gwlpr.mapshard.models.enums.MovementType;
 import com.gamerevision.gwlpr.mapshard.views.MovementView;
 import com.realityshard.shardlet.EventAggregator;
 import com.realityshard.shardlet.EventHandler;
@@ -73,10 +72,17 @@ public class MovementSystem extends GenericSystem
             {
                 continue;
             }
+            
+            GWVector pos = entity.get(Position.class).position;
+            GWVector dir = entity.get(Direction.class).direction;
 
             // else we need to calculate the next position
             // (and actually test if it collides with any walls)
             // and update the entities position, (or trigger a collision event)
+            
+            // TODO check this:
+            // do a quick calculation of the future position of the agent
+            pos = pos.add(dir.mul(0.001F * timeDelta));
         }
     }
 

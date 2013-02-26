@@ -11,6 +11,7 @@ import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
 import com.gamerevision.gwlpr.mapshard.models.enums.ChatColor;
 import com.gamerevision.gwlpr.mapshard.views.ChatMessageView;
 import com.realityshard.shardlet.EventAggregator;
+import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.Session;
 
 
@@ -60,6 +61,7 @@ public final class ChatSystem extends GenericSystem
      *
      * @param msg
      */
+    @EventHandler
     public void onChatMessage(ChatMessageEvent msg)
     {
         // TODO implement me properly!
@@ -75,7 +77,7 @@ public final class ChatSystem extends GenericSystem
             ChatMessageView.sendMessage(
                     session,
                     ownerLID,
-                    ChatColor.Yellow_White,
+                    ChatColor.Orange_White,
                     msg.getMessage());
         }
     }
