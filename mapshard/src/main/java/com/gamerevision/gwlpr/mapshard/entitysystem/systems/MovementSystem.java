@@ -82,7 +82,7 @@ public class MovementSystem extends GenericSystem
             
             // TODO check this:
             // do a quick calculation of the future position of the agent
-            pos = pos.add(dir.mul(0.001F * timeDelta));
+            entity.get(Position.class).position = pos.add(dir.mul(0.001F * timeDelta));
         }
     }
 
