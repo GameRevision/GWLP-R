@@ -27,8 +27,12 @@ public class EntityManagerTest
     {
         // create the entity manager
         EntityManager eMan = new EntityManager();
-        Collection<Entity> ents;
-
+        
+        // before adding any entities, try to retrieve some...
+        Collection<Entity> ents = eMan.getEntitiesWith(Name.class, AgentID.class, LocalID.class, Position.class);
+        assert ents.isEmpty();
+        
+        // now lets add some entities
         Name n1 = new Name();
         Name n2 = new Name();
         Name n3 = new Name();
