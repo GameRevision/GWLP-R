@@ -129,14 +129,14 @@ public final class EntityManager
      * Use this method to access all components of a certain kind.
      * 
      * @param       clazz                   The class of the components that you want to get
-     * @return      The components, or null if we've got no entries for that class
+     * @return      The components, or an empty collection if we've got no entries for that class
      */
     public Collection<Component> getComponentsOf(Class<? extends Component> clazz)
     {
         Map<Entity, Component> comps = compsOfCompType.get(clazz);
         
         // failcheck
-        if (comps == null){ return null; }
+        if (comps == null){ return new ArrayList<>(); }
         
         return comps.values();
     }
@@ -166,7 +166,13 @@ public final class EntityManager
         
         for (Component component : getComponentsOf(clazz)) 
         {
-            result.add(getEntityOf(component));
+            Entity ent = getEntityOf(component);
+            
+            if (ent != null)
+            {
+                // failcheck
+                result.add(ent);
+            }
         }
         
         return result;
