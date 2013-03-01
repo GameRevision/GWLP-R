@@ -4,19 +4,28 @@
 
 package com.gamerevision.gwlpr.mapshard.entitysystem.systems;
 
+import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
+import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
 import com.gamerevision.gwlpr.mapshard.entitysystem.GenericSystem;
+import com.gamerevision.gwlpr.mapshard.entitysystem.builders.NPCBuilder;
 import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
 import com.gamerevision.gwlpr.mapshard.events.ChatCommandEvent;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
+import com.gamerevision.gwlpr.mapshard.models.GWString;
+import com.gamerevision.gwlpr.mapshard.models.GWVector;
+import com.gamerevision.gwlpr.mapshard.models.IDManager;
 import com.gamerevision.gwlpr.mapshard.models.Strings;
 import com.gamerevision.gwlpr.mapshard.models.enums.ChatColor;
 import com.gamerevision.gwlpr.mapshard.views.ChatMessageView;
+import com.gamerevision.gwlpr.mapshard.views.NPCView;
 import com.realityshard.shardlet.EventAggregator;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.Session;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -27,7 +36,10 @@ import java.util.List;
 public final class CommandSystem extends GenericSystem
 {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(CommandSystem.class);
+    
     private final static int UPDATEINTERVAL = 0;
+    private final EntityManager entityManager;
     private final ClientLookupTable clientLookup;
 
 
@@ -35,11 +47,13 @@ public final class CommandSystem extends GenericSystem
      * Constructor.
      *
      * @param       aggregator
+     * @param       entityManager 
      * @param       clientLookup
      */
-    public CommandSystem(EventAggregator aggregator, ClientLookupTable clientLookup)
+    public CommandSystem(EventAggregator aggregator, EntityManager entityManager, ClientLookupTable clientLookup)
     {
         super(aggregator, UPDATEINTERVAL);
+        this.entityManager = entityManager;
         this.clientLookup = clientLookup;
     }
 
@@ -72,8 +86,29 @@ public final class CommandSystem extends GenericSystem
         // has not chat option compontent)
         ChatOptions senderChatOptions = chatCmd.getSender().get(ChatOptions.class);
         if (senderChatOptions == null) { return; }
+        
+        LOGGER.debug("Got command '{}' with parameters '{}'", command, parameters.toString());
 
-        if (!senderChatOptions.availableCommands.contains(command))
+        if ("fun".equals(command))
+        {
+            // TODO remove me when not needed anyore ;)
+            Entity ply = chatCmd.getSender();
+            Session client = clientLookup.getByEntity(chatCmd.getSender());
+            
+            // first send the NPC packets
+            NPCView.sendNPCGeneralStats(client, 1095, 116228, 100, 4, 1, 5, 0, String.copyValueOf(new char[] {0x8102, 0x5299, 0xc20f, 0xb939, 0x0463}));
+            NPCView.sendNPCModel(client, 1095, new int[] { 0x026c4a });
+            
+            Entity npc = NPCBuilder
+                    .createFor(entityManager)
+                    .withAgentData("Blubb", 1095, 1095)
+                    .withPhysics(ply.get(Position.class).position, new GWVector(1,1,0), 1, 1, 1)
+                    .withVisuals(new byte[0], 1000, true)
+                    .withChatOptions()
+                    .withNPCData(116228, new byte[] {0x08, -0x3D, 0x03}, 0, 1)
+                    .build();
+        }
+        else if (!senderChatOptions.availableCommands.contains(command))
         {
             // command is not available for the sender
             Session client = clientLookup.getByEntity(chatCmd.getSender());

@@ -82,7 +82,7 @@ public class StartUp extends GenericShardlet
         EventAggregator agg = getShardletContext().getAggregator();
         agg.register(new AgentVisibilitySystem(agg, es));
         agg.register(new ChatSystem(agg, lt));
-        agg.register(new CommandSystem(agg, lt));
+        agg.register(new CommandSystem(agg, es, lt));
         agg.register(new MovementSystem(agg, es, lt, tick));
         agg.register(new SchedulingSystem(agg));
         agg.register(new SpawningSystem(agg, lt));

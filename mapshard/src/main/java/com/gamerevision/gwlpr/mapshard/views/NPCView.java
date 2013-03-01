@@ -16,7 +16,7 @@ import com.realityshard.shardlet.Session;
  */
 public class NPCView
 {
-    public void sendNPCGeneralStats(
+    public static void sendNPCGeneralStats(
             Session session,
             int localID,
             int fileID,
@@ -31,7 +31,7 @@ public class NPCView
         genStats.init(session);
         genStats.setLocalID(localID);
         genStats.setNPCFile(fileID);
-        genStats.setScale(scale);
+        genStats.setScale(scale << 24);
         genStats.setFlags(flags);
         genStats.setProfession((byte) profession);
         genStats.setLevel((byte) level);
@@ -42,7 +42,7 @@ public class NPCView
         session.send(genStats);
     }
 
-    public void sendNPCModel(Session session, int localID, int[] modelHash)
+    public static void sendNPCModel(Session session, int localID, int[] modelHash)
     {
         P075_NPCModelAction npcModel = new P075_NPCModelAction();
         npcModel.init(session);
