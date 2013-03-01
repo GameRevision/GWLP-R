@@ -35,6 +35,7 @@ public class MovementSystem extends GenericSystem
 
     private final EntityManager entityManager;
     private final ClientLookupTable lookupTable;
+    private final int heartBeatInterval;
 
 
     /**
@@ -42,13 +43,20 @@ public class MovementSystem extends GenericSystem
      *
      * @param       aggregator
      * @param       entityManager
+     * @param       lookupTable 
+     * @param       heartBeatInterval  
      */
-    public MovementSystem(EventAggregator aggregator, EntityManager entityManager, ClientLookupTable lookupTable)
+    public MovementSystem(
+            EventAggregator aggregator, 
+            EntityManager entityManager, 
+            ClientLookupTable lookupTable,
+            int heartBeatInterval)
     {
         super(aggregator, UPDATEINTERVAL);
 
         this.entityManager = entityManager;
         this.lookupTable = lookupTable;
+        this.heartBeatInterval = heartBeatInterval;
     }
 
 
@@ -111,7 +119,7 @@ public class MovementSystem extends GenericSystem
         move.moveState = MovementState.Moving;
 
         // do a quick calculation of the future position of the agent
-        GWVector futurePos = pos.add(dir.mul(0.001F * 250)); // some float multip with the server tick
+        GWVector futurePos = pos.add(dir.mul(0.001F * heartBeatInterval)); // some float multip with the server tick
 
         for (Session session : lookupTable.getAllSessions())
         {

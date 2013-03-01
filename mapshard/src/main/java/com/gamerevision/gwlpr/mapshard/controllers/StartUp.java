@@ -48,6 +48,7 @@ public class StartUp extends GenericShardlet
         // this parameter is not set by default! this has to be done by the
         // parent context
         int mapId =Integer.parseInt(this.getShardletContext().getInitParameter("MapId"));
+        int tick = this.getShardletContext().getHeartBeatInterval();
 
         LOGGER.info("MapShard: init Startup controller. [mapid = {}]", mapId);
 
@@ -82,7 +83,7 @@ public class StartUp extends GenericShardlet
         agg.register(new AgentVisibilitySystem(agg, es));
         agg.register(new ChatSystem(agg, lt));
         agg.register(new CommandSystem(agg, lt));
-        agg.register(new MovementSystem(agg, es, lt));
+        agg.register(new MovementSystem(agg, es, lt, tick));
         agg.register(new SchedulingSystem(agg));
         agg.register(new SpawningSystem(agg, lt));
 
