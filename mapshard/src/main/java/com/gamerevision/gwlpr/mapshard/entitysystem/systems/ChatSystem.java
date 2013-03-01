@@ -77,7 +77,7 @@ public final class ChatSystem extends GenericSystem
             ChatMessageView.sendMessage(
                     session,
                     ownerLID,
-                    ChatColor.Orange_White,
+                    ChatColor.Yellow_White,
                     msg.getMessage());
         }
     }

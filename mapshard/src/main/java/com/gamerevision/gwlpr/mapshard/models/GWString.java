@@ -26,9 +26,10 @@ public class GWString
     {
         StringBuilder sb = new StringBuilder();
         
-        sb.append(String.copyValueOf(new char[] {0x08, 0x01, 0x07, 0x01}));
+        sb.append((char) 0x0108);
+        sb.append((char) 0x0107);
         sb.append(msg);
-        sb.append(String.copyValueOf(new char[] {0x01, 0x00}));
+        sb.append((char) 0x0001);
         
         return sb.toString();
     }
