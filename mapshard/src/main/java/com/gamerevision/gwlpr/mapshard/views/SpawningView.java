@@ -8,6 +8,7 @@ import com.gamerevision.gwlpr.actions.gameserver.stoc.P021_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.P022_DespawnAgentAction;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.P077_UnknownAction;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
+import com.gamerevision.gwlpr.mapshard.models.enums.SpawningFaction;
 import com.realityshard.shardlet.Session;
 
 
@@ -21,6 +22,8 @@ public class SpawningView
 
     /**
      * Spawns an agent. This is very incomplete...
+     * 
+     * TODO refactor me!
      *
      * @param session
      * @param name
@@ -39,36 +42,44 @@ public class SpawningView
             byte[] appearance,
             GWVector position,
             float rotation,
-            float speed)
+            float speed,
+            SpawningFaction fac)
     {
-        // send update agent appearance
-        P077_UnknownAction updateAppear= new P077_UnknownAction();
-        updateAppear.init(session);
-        updateAppear.setUnknown1(localID);
-        updateAppear.setUnknown2(agentID);
-        updateAppear.setUnknown3(byteArrayToInt(appearance));
-        updateAppear.setUnknown4((byte) 0);
-        updateAppear.setUnknown5(0);
-        updateAppear.setUnknown6(0x3CBFA094);
-        updateAppear.setUnknown7(name.toCharArray());
+        byte localIDShift = 0x20;
+        
+        if (fac == SpawningFaction.Player || fac == SpawningFaction.Ally)
+        {
+            // send update agent appearance
+            P077_UnknownAction updateAppear= new P077_UnknownAction();
+            updateAppear.init(session);
+            updateAppear.setUnknown1(localID);
+            updateAppear.setUnknown2(agentID);
+            updateAppear.setUnknown3(byteArrayToInt(appearance));
+            updateAppear.setUnknown4((byte) 0);
+            updateAppear.setUnknown5(0);
+            updateAppear.setUnknown6(0x3CBFA094);
+            updateAppear.setUnknown7(name.toCharArray());
 
-        session.send(updateAppear);
+            session.send(updateAppear);
+            
+            localIDShift = 0x30;
+        }
 
         // send spawn agent packet
         P021_UnknownAction spawnAgent = new P021_UnknownAction();
         spawnAgent.init(session);
         spawnAgent.setUnknown1(agentID);
-        spawnAgent.setUnknown2((0x30 << 24) | localID); // is this the localid?
+        spawnAgent.setUnknown2((localIDShift << 24) | localID); // is this the localid?
         spawnAgent.setUnknown3((byte) 1);
-        spawnAgent.setUnknown4((byte) 5);
+        spawnAgent.setUnknown4((byte) 9);//5);
         spawnAgent.setUnknown5(position.toFloatArray());
         spawnAgent.setUnknown6(position.getZPlane());
         spawnAgent.setUnknown7(new float[] {Float.POSITIVE_INFINITY, rotation});
         spawnAgent.setUnknown8((byte) 1);
         spawnAgent.setUnknown9(speed);
-        spawnAgent.setUnknown10(Float.POSITIVE_INFINITY);
+        spawnAgent.setUnknown10(1F);//Float.POSITIVE_INFINITY);
         spawnAgent.setUnknown11(0x41400000);
-        spawnAgent.setUnknown12(1886151033); // "play" backwards
+        spawnAgent.setUnknown12(fac.getIntString()); // "play" backwards
         spawnAgent.setUnknown18(new float[] {Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY});
         spawnAgent.setUnknown19(new float[] {Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY});
         spawnAgent.setUnknown22(new float[] {Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY});

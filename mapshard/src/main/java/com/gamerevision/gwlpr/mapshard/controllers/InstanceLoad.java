@@ -22,6 +22,7 @@ import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.gamerevision.gwlpr.mapshard.models.MapData;
 import com.gamerevision.gwlpr.mapshard.models.enums.GenericValue;
 import com.gamerevision.gwlpr.mapshard.models.enums.PlayerState;
+import com.gamerevision.gwlpr.mapshard.models.enums.SpawningFaction;
 import com.gamerevision.gwlpr.mapshard.views.SpawningView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.RemoteShardletContext;
@@ -49,6 +50,7 @@ public class InstanceLoad extends GenericShardlet
     private EntityManager entityManager;
     private ClientLookupTable clientlookup;
     private MapData mapData;
+    private SpawningFaction SpawningFaction;
 
 
     /**
@@ -246,7 +248,8 @@ public class InstanceLoad extends GenericShardlet
                 appear,
                 pos,
                 rotation,
-                speed);
+                speed,
+                SpawningFaction.Player);
 
 
         P023_UnknownAction fadeIntoMap = new P023_UnknownAction();

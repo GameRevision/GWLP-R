@@ -11,6 +11,7 @@ import com.gamerevision.gwlpr.mapshard.events.CanSeeEvent;
 import com.gamerevision.gwlpr.mapshard.events.LostSightEvent;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
+import com.gamerevision.gwlpr.mapshard.models.enums.SpawningFaction;
 import com.gamerevision.gwlpr.mapshard.views.SpawningView;
 import com.realityshard.shardlet.EventAggregator;
 import com.realityshard.shardlet.EventHandler;
@@ -80,6 +81,14 @@ public class SpawningSystem extends GenericSystem
         GWVector pos = et.get(Position.class).position;
         GWVector dir = et.get(Direction.class).direction;
         float speed = et.get(Movement.class).speed;
+        
+        SpawningFaction fac = SpawningFaction.Ally;
+        
+        if (et.has(NPCData.class))
+        {
+            // TODO this should probably be a separate spawning component...
+            fac = SpawningFaction.NPC;
+        }
 
         // send the spawn packets
         SpawningView.spawnAgent(
@@ -90,7 +99,8 @@ public class SpawningSystem extends GenericSystem
                 appear,
                 pos,
                 dir.toRotation(),
-                speed);
+                speed,
+                fac);
     }
 
 
