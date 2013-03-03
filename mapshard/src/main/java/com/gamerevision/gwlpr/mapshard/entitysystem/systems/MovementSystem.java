@@ -161,6 +161,7 @@ public class MovementSystem extends GenericSystem
      *
      * @param stopMove
      */
+    @EventHandler
     public void onStopMoving(StopMovingEvent stopMove)
     {
         // we need to inform the connected clients and
@@ -198,6 +199,7 @@ public class MovementSystem extends GenericSystem
      *
      * @param rot
      */
+    @EventHandler
     public void onRotate(RotateEvent rot)
     {
         // fetch some entity info
