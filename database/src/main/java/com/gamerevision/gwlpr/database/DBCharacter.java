@@ -55,8 +55,8 @@ public class DBCharacter
             this.hairstyle = resultSet.getByte("Hairstyle");
             this.campaign = resultSet.getByte("Campaign");
             
-            this.primary = resultSet.getByte("Primary");
-            this.secondary = resultSet.getByte("Secondary");
+            this.primary = resultSet.getByte("PrimaryProfession");
+            this.secondary = resultSet.getByte("SecondaryProfession");
         }
         catch (SQLException ex)
         {

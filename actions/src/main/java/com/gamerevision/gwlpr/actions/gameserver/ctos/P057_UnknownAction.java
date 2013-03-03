@@ -15,18 +15,18 @@ import java.nio.ByteBuffer;
 
 /**
  * This is an automatically generated ShardletAction.
- * It resembles the packet template that has been 
+ * It resembles the packet template that has been
  * parsed from our packet templates xml.
  *
- * Auto generated 
+ * Auto generated
  *
  * @author GWLPR Template Updater
  */
 public final class P057_UnknownAction extends GenericTriggerableAction
 {
 
-    private int unknown1;
-    private int unknown2;
+    private float unknown1;
+    private float unknown2;
 
 
     public short getHeader()
@@ -35,13 +35,13 @@ public final class P057_UnknownAction extends GenericTriggerableAction
     }
 
 
-    public int getUnknown1()
+    public float getUnknown1()
     {
         return unknown1;
     }
 
 
-    public int getUnknown2()
+    public float getUnknown2()
     {
         return unknown2;
     }
@@ -55,8 +55,8 @@ public final class P057_UnknownAction extends GenericTriggerableAction
 
         try
         {
-            unknown1 = buffer.getInt();
-            unknown2 = buffer.getInt();
+            unknown1 = buffer.getFloat();
+            unknown2 = buffer.getFloat();
         }
         catch (BufferUnderflowException e)
         {

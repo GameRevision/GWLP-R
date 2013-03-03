@@ -64,11 +64,11 @@ public class HandshakeView
     /**
      * Step 4
      */
-    public static void districtInfo(Session session, int mapId)
+    public static void districtInfo(Session session, int localID, int mapId)
     {
         P395_InstanceLoadDistrictInfoAction instanceLoadDistrictInfo = new P395_InstanceLoadDistrictInfoAction();
         instanceLoadDistrictInfo.init(session);
-        instanceLoadDistrictInfo.setCharAgent(1);
+        instanceLoadDistrictInfo.setCharAgent(localID);
         instanceLoadDistrictInfo.setDistrictAndRegion(0);
         instanceLoadDistrictInfo.setLanguage((byte) 0);
         instanceLoadDistrictInfo.setMapID((short) mapId);

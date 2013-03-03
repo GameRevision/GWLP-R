@@ -35,7 +35,7 @@ public class LoginView
 
     
     /**
-     * Constrcutor.
+     * Constructor.
      * 
      * @param shardletContext
      * @param connectionProvider 

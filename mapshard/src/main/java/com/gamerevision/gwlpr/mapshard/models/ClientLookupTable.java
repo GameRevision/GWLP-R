@@ -4,8 +4,9 @@
 
 package com.gamerevision.gwlpr.mapshard.models;
 
-import com.realityshard.entitysystem.Entity;
+import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import com.realityshard.shardlet.Session;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,6 +47,27 @@ public class ClientLookupTable
     
     
     /**
+     * Remove a client and its entity entry.
+     * 
+     * @param       session                 The session of the client
+     */
+    public void removeClient(Session session)
+    {
+        Entity et = bySession.get(session);
+        
+        // failcheck
+        if (et == null) { return; }
+        
+        bySession.remove(session);
+        
+        // failcheck
+        if (byEntity.get(et) == null) { return; }
+        
+        byEntity.remove(et);
+    }
+    
+    
+    /**
      * Getter.
      * 
      * @return      A session by its corresponding entity
@@ -64,5 +86,16 @@ public class ClientLookupTable
     public Entity getBySession(Session session)
     {
         return bySession.get(session);
+    }
+    
+    
+    /**
+     * Use this to access all sessions available for this game app.
+     * 
+     * @return      All the sessions (or an empty collection)
+     */
+    public Collection<Session> getAllSessions()
+    {
+        return bySession.keySet();
     }
 }

@@ -6,7 +6,6 @@ package com.gamerevision.gwlpr.database;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Formatter;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,23 +14,23 @@ import org.slf4j.LoggerFactory;
 /**
  * This class handles character related database access and provides independent
  * properties to encapsulate sql related code.
- * 
+ *
  * @author miracle444
  */
 public class DBItem
 {
-    
+
     private static Logger LOGGER = LoggerFactory.getLogger(DBItem.class);
-    
+
     private DBItem(ResultSet resultSet)
     {
 
-    }    
-    
+    }
+
     private static List<DBItem> getItemsByInventory(DatabaseConnectionProvider connectionProvider, int characterId, int inventoryPage)
     {
         final List<DBItem> result = new ArrayList<>();
-        
+
         try
         {
             Connection connection = connectionProvider.getConnection();
@@ -46,22 +45,22 @@ public class DBItem
             resultSet.close();
             stmt.close();
             connection.close();
-        } 
-        catch (SQLException ex) 
+        }
+        catch (SQLException ex)
         {
             LOGGER.error("SQL error in getItemsByInventory", ex);
         }
 
         return result;
     }
-    
+
     public static List<DBItem> getBackpackItems(DatabaseConnectionProvider connectionProvider, int characterId)
     {
         return getItemsByInventory(connectionProvider, characterId, 0);
     }
-    
-    
-    public static List<DBItem> getEquippedItems(DatabaseConnectionProvider connectionProvider, int characterId) 
+
+
+    public static List<DBItem> getEquippedItems(DatabaseConnectionProvider connectionProvider, int characterId)
     {
         return getItemsByInventory(connectionProvider, characterId, 1);
     }
