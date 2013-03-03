@@ -2,7 +2,7 @@
 
 ## Overview
     Project:       GWLP:R
-    Info:          It's a set of game-app for Reality:Shard that emulates a GW (1) server.
+    Info:          It's a set of game-apps for Reality:Shard that emulates a GW (1) server.
     Languages:     Java
     People:        _rusty, ACB, miracle444
 
