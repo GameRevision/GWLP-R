@@ -8,6 +8,7 @@ import com.gamerevision.gwlpr.loginshard.controllers.Login;
 import com.gamerevision.gwlpr.loginshard.controllers.MapShardDispatch;
 import com.gamerevision.gwlpr.mapshard.controllers.CharacterCreation;
 import com.gamerevision.gwlpr.mapshard.controllers.Chat;
+import com.gamerevision.gwlpr.mapshard.controllers.Disconnect;
 import com.gamerevision.gwlpr.mapshard.controllers.HeartBeat;
 import com.gamerevision.gwlpr.mapshard.controllers.InstanceLoad;
 import com.gamerevision.gwlpr.mapshard.controllers.MoveRotateClick;
@@ -116,12 +117,8 @@ public class DevelopmentEnvironment implements Environment
         .addShardlet(
             new com.gamerevision.gwlpr.loginshard.controllers.Handshake(),
             dummy)
-        .addShardlet(
-            new Login(),
-            dummy)
-        .addShardlet(
-            new MapShardDispatch(),
-            dummy)
+        .addShardlet(new Login(),               dummy)
+        .addShardlet(new MapShardDispatch(),    dummy)
         .addShardlet(
             new com.gamerevision.gwlpr.loginshard.controllers.StaticReply(),
             dummy);
@@ -152,27 +149,16 @@ public class DevelopmentEnvironment implements Environment
         .addShardlet(
             new com.gamerevision.gwlpr.mapshard.controllers.Handshake(),
             dummy)
+        .addShardlet(new HeartBeat(),           dummy)
+        .addShardlet(new CharacterCreation(),   dummy)
+        .addShardlet(new Chat(),                dummy)
+        .addShardlet(new Disconnect(),          dummy)
+        .addShardlet(new InstanceLoad(),        dummy)
+        .addShardlet(new MoveRotateClick(),     dummy)
+        .addShardlet(new Ping(),                dummy)
         .addShardlet(
-            new HeartBeat(),
-            dummy)
-        .addShardlet(
-            new CharacterCreation(),
-            dummy)
-        .addShardlet(
-            new Chat(),
-            dummy)
-        .addShardlet(
-            new InstanceLoad(),
-            dummy)
-        .addShardlet(
-            new MoveRotateClick(),
-            dummy)
-        .addShardlet(
-            new Ping(),
-            dummy)
-        .addShardlet(
-            new com.gamerevision.gwlpr.mapshard.controllers.StaticReply(),
-            dummy);
+                new com.gamerevision.gwlpr.mapshard.controllers.StaticReply(), 
+                dummy);
 
         return mapshard;
     }
