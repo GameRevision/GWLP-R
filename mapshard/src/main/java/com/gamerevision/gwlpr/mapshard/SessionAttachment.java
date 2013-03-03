@@ -29,8 +29,7 @@ public class SessionAttachment
     private int latency;
     
     private Name characterName;
-    private AgentID agentID;
-    private LocalID localID;
+    private AgentIdentifiers agentIDs;
     private Entity entity = null;
 
     
@@ -143,9 +142,9 @@ public class SessionAttachment
      * 
      * @return 
      */
-    public AgentID getAgentID() 
+    public AgentIdentifiers getAgentIDs() 
     {
-        return agentID;
+        return agentIDs;
     }
 
     
@@ -154,30 +153,9 @@ public class SessionAttachment
      * 
      * @param agentID 
      */
-    public void setAgentID(AgentID agentID) 
+    public void setAgentIDs(AgentIdentifiers agentID) 
     {
-        this.agentID = agentID;
-    }
-
-    
-    /**
-     * Getter.
-     * 
-     * @return 
-     */
-    public LocalID getLocalID() 
-    {
-        return localID;
-    }
-
-    
-    /**
-     * Setter.
-     * @param localID 
-     */
-    public void setLocalID(LocalID localID) 
-    {
-        this.localID = localID;
+        this.agentIDs = agentID;
     }
 
     

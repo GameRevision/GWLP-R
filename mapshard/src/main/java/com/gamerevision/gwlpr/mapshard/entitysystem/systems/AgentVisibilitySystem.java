@@ -66,8 +66,7 @@ public final class AgentVisibilitySystem extends GenericSystem
         // doing this though
 
         Collection<Entity> entities = entityManager.getEntitiesWith(
-                AgentID.class,
-                LocalID.class,
+                AgentIdentifiers.class,
                 Position.class,
                 Visibility.class);
 

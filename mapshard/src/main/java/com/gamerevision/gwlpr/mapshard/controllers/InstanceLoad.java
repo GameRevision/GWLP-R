@@ -171,8 +171,8 @@ public class InstanceLoad extends GenericShardlet
         Entity et = attachment.getEntity();
 
         String name = et.get(Name.class).name;
-        int agentID = et.get(AgentID.class).agentID;
-        int localID = et.get(LocalID.class).localID;
+        int agentID = et.get(AgentIdentifiers.class).agentID;
+        int localID = et.get(AgentIdentifiers.class).localID;
         byte[] appear = et.get(Appearance.class).appearanceDump;
         GWVector pos = et.get(Position.class).position;
         float rotation = et.get(Direction.class).direction.toRotation();

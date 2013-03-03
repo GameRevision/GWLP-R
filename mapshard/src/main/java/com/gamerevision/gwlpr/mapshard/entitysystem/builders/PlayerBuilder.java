@@ -39,7 +39,8 @@ public final class PlayerBuilder
         return new PlayerBuilder(
                 new Entity(
                     manager,
-                    new Movement()));
+                    new Movement(),
+                    new ChatOptions()));
     }
 
 
@@ -49,10 +50,11 @@ public final class PlayerBuilder
     public PlayerBuilder withAgentData(String playerName, int playerAgentID, int playerLocalID)
     {
         Name name = new Name(); name.name = playerName;
-        AgentID agentID = new AgentID(); agentID.agentID = playerAgentID;
-        LocalID localID = new LocalID(); localID.localID = playerLocalID;
+        AgentIdentifiers agentIDs = new AgentIdentifiers(); 
+        agentIDs.agentID = playerAgentID;
+        agentIDs.localID = playerLocalID;
 
-        entity.addAll(name, agentID, localID);
+        entity.addAll(name, agentIDs);
         return this;
     }
 
@@ -90,20 +92,6 @@ public final class PlayerBuilder
         Visibility visibility = new Visibility(); visibility.visible = isVisible;
 
         entity.addAll(appearance, view, visibility);
-        return this;
-    }
-
-
-    /**
-     * Step 4.
-     *
-     * TODO: change this method once this is supported by database features.
-     */
-    public PlayerBuilder withChatOptions()
-    {
-        ChatOptions chatOpts = new ChatOptions();
-
-        entity.addAll(chatOpts);
         return this;
     }
 

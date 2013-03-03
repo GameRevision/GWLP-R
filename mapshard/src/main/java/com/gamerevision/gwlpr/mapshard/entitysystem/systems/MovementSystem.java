@@ -82,7 +82,7 @@ public class MovementSystem extends GenericSystem
                 continue;
             }
             
-            int agentID = entity.get(AgentID.class).agentID;
+            int agentID = entity.get(AgentIdentifiers.class).agentID;
             GWVector pos = entity.get(Position.class).position;
             GWVector dir = entity.get(Direction.class).direction;
             Movement move = entity.get(Movement.class);
@@ -122,7 +122,7 @@ public class MovementSystem extends GenericSystem
         // set the movement state to moving (if that has not yet happened)
 
         Entity et = startMove.getThisEntity();
-        int agentID = et.get(AgentID.class).agentID;
+        int agentID = et.get(AgentIdentifiers.class).agentID;
         GWVector pos = et.get(Position.class).position;
         GWVector dir = startMove.getDirection(); // use the new direction here
 
@@ -169,7 +169,7 @@ public class MovementSystem extends GenericSystem
 
         // fetch some entity info
         Entity et = stopMove.getThisEntity();
-        int agentID = et.get(AgentID.class).agentID;
+        int agentID = et.get(AgentIdentifiers.class).agentID;
         GWVector pos = et.get(Position.class).position;
         GWVector dir = et.get(Direction.class).direction;
         Movement move = et.get(Movement.class);
@@ -204,7 +204,7 @@ public class MovementSystem extends GenericSystem
     {
         // fetch some entity info
         Entity et = rot.getThisEntity();
-        int agentID = et.get(AgentID.class).agentID;
+        int agentID = et.get(AgentIdentifiers.class).agentID;
         
         // and update the direction
         Direction dir = et.get(Direction.class);

@@ -91,7 +91,6 @@ public class LoadCharacter
                 .withAgentData(charName, agentID, localID)
                 .withPhysics(pos, direction, boundsRectWidth, boundsRectHeight, playerHeight)
                 .withVisuals(appearance, viewDistance, visible)
-                .withChatOptions()
                 .build();
     }
 

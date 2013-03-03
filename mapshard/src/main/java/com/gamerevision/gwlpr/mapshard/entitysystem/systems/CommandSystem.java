@@ -103,7 +103,6 @@ public final class CommandSystem extends GenericSystem
                     .withAgentData("Blubb", IDManager.reserveAgentID(), 1095)
                     .withPhysics(ply.get(Position.class).position, new GWVector(1,1,0), 1, 1, 1)
                     .withVisuals(new byte[0], 1000, true)
-                    .withChatOptions()
                     .withNPCData(116228, new byte[] {0x08, -0x3D, 0x03}, 0, 1)
                     .build();
         }

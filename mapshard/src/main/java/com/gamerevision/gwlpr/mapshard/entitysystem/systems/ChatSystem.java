@@ -68,9 +68,9 @@ public final class ChatSystem extends GenericSystem
         // TODO implement me properly!
 
         // find out the localID of the sender
-        LocalID lid = msg.getSender().get(LocalID.class);
+        AgentIdentifiers aIDs = msg.getSender().get(AgentIdentifiers.class);
         int ownerLID = 0;
-        if (lid != null) { ownerLID = lid.localID; }
+        if (aIDs != null) { ownerLID = aIDs.localID; }
 
         // for now, we'll be sending the message to all people on the server
         for (Session session : clientLookup.getAllSessions())

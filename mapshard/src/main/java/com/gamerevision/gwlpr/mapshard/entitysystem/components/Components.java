@@ -31,15 +31,11 @@ public class Components
     }
 
 
-    public static class AgentID implements Component {
+    public static class AgentIdentifiers implements Component {
         public volatile int agentID = 0;
-    }
-
-
-    public static class LocalID implements Component {
         public volatile int localID = 0;
     }
-
+    
 
     public static class Position implements Component {
         public volatile GWVector position; // absolute

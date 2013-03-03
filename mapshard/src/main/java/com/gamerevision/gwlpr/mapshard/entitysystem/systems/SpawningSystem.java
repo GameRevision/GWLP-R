@@ -75,8 +75,8 @@ public class SpawningSystem extends GenericSystem
         Entity et = canSee.getOtherEntity();
 
         String name = et.get(Name.class).name;
-        int agentID = et.get(AgentID.class).agentID;
-        int localID = et.get(LocalID.class).localID;
+        int agentID = et.get(AgentIdentifiers.class).agentID;
+        int localID = et.get(AgentIdentifiers.class).localID;
         byte[] appear = et.get(Appearance.class).appearanceDump;
         GWVector pos = et.get(Position.class).position;
         GWVector dir = et.get(Direction.class).direction;
@@ -120,7 +120,7 @@ public class SpawningSystem extends GenericSystem
 
         Entity et = lostSight.getOtherEntity();
 
-        int agentID = et.get(AgentID.class).agentID;
+        int agentID = et.get(AgentIdentifiers.class).agentID;
 
         // send the despawn packets
         SpawningView.despawnAgent(session, agentID);
