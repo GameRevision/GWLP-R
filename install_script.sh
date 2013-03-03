@@ -86,7 +86,6 @@ echo ""
 cd "$INSTALLTO/RealityShard"
 git clone https://github.com/rusty-gr/Reality-Shard-api-jv.git Api/
 git clone https://github.com/rusty-gr/Reality-Shard-impl-jv.git Impl/
-git clone https://github.com/rusty-gr/Reality-Shard-utils-jv.git Util/
 echo ""
 
 echo "Installing Reality:Shard..."
@@ -94,7 +93,6 @@ read -p "[Press any key to continue]" -n 1 -s
 echo ""
 cd "$INSTALLTO/RealityShard/Api" && mvn clean install
 cd "$INSTALLTO/RealityShard/Impl" && mvn clean install
-cd "$INSTALLTO/RealityShard/Util/productionhost" && mvn clean install
 echo ""
 
 
