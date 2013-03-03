@@ -71,7 +71,9 @@ public class MovementSystem extends GenericSystem
     {
         // get all moving entities
         Collection<Entity> entities = entityManager.getEntitiesWith(
+                AgentIdentifiers.class,
                 Position.class,
+                Direction.class,
                 Movement.class);
 
         for (Entity entity : entities)

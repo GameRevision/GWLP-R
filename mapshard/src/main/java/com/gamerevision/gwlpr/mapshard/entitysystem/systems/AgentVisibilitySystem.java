@@ -78,7 +78,6 @@ public final class AgentVisibilitySystem extends GenericSystem
 
             // or by having the 'blind' option set
             View thisView = thisEntity.get(View.class);
-            if (thisView.isBlind) { continue; }
 
             // get the position for distance calcs later on
             GWVector thisPostion = thisEntity.get(Position.class).position;
@@ -92,8 +91,9 @@ public final class AgentVisibilitySystem extends GenericSystem
 
                 boolean canSee = false;
 
-                // if the other entity is visible by its Visibility component
-                if (otherEntity.get(Visibility.class).visible)
+                // we need to be able to see the other entity, and it needs to be visible in general
+                // then we can check if it is also in view-distance
+                if (!thisView.isBlind && otherEntity.get(Visibility.class).visible)
                 {
                     // get this entities view distance
                     // calculate the distance between both entities

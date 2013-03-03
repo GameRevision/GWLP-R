@@ -72,7 +72,7 @@ public class Components
         public volatile List<Entity> agentsICannotSee = new ArrayList<>();
         public volatile List<Entity> agentsICanSee = new ArrayList<>();
         public volatile float viewDistance = 100;
-        public volatile boolean isBlind = true; // this will be set to true by the builder or other classes.
+        public volatile boolean isBlind = true; // this will be set to false by the builder or other classes.
     }
 
 
