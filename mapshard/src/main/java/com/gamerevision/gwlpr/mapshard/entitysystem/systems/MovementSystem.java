@@ -14,6 +14,7 @@ import com.gamerevision.gwlpr.mapshard.events.StopMovingEvent;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.gamerevision.gwlpr.mapshard.models.enums.MovementState;
+import com.gamerevision.gwlpr.mapshard.models.enums.MovementType;
 import com.gamerevision.gwlpr.mapshard.views.MovementView;
 import com.realityshard.shardlet.EventAggregator;
 import com.realityshard.shardlet.EventHandler;
@@ -81,8 +82,10 @@ public class MovementSystem extends GenericSystem
                 continue;
             }
             
+            int agentID = entity.get(AgentID.class).agentID;
             GWVector pos = entity.get(Position.class).position;
             GWVector dir = entity.get(Direction.class).direction;
+            Movement move = entity.get(Movement.class);
 
             // else we need to calculate the next position
             // (and actually test if it collides with any walls)
@@ -90,7 +93,18 @@ public class MovementSystem extends GenericSystem
             
             // TODO check this:
             // do a quick calculation of the future position of the agent
-            entity.get(Position.class).position = pos.add(dir.mul(0.001F * timeDelta));
+            GWVector futurePos = pos.add(dir.mul(0.001F * timeDelta));
+            
+            entity.get(Position.class).position = futurePos;
+            
+            for (Session session : lookupTable.getAllSessions())
+            {
+                MovementView.sendUpdateMovement(
+                        session,
+                        agentID,
+                        futurePos,
+                        move.moveType);
+            }
         }
     }
 
@@ -110,12 +124,12 @@ public class MovementSystem extends GenericSystem
         Entity et = startMove.getThisEntity();
         int agentID = et.get(AgentID.class).agentID;
         GWVector pos = et.get(Position.class).position;
-        GWVector dir = startMove.getDirection();
+        GWVector dir = startMove.getDirection(); // use the new direction here
 
         // update the entities values
         et.get(Direction.class).direction = dir;
         Movement move = et.get(Movement.class);
-        move.moveType = startMove.getType();
+        move.moveType = startMove.getType(); // use the new movement type here
         move.moveState = MovementState.Moving;
 
         // do a quick calculation of the future position of the agent
@@ -156,11 +170,18 @@ public class MovementSystem extends GenericSystem
         Entity et = stopMove.getThisEntity();
         int agentID = et.get(AgentID.class).agentID;
         GWVector pos = et.get(Position.class).position;
+        GWVector dir = et.get(Direction.class).direction;
         Movement move = et.get(Movement.class);
+        move.moveType = MovementType.Stop;
         move.moveState = MovementState.NotMoving;
 
         for (Session session : lookupTable.getAllSessions())
         {
+            MovementView.sendRotateAgent(
+                    session, 
+                    agentID, 
+                    dir.toRotation());
+            
             MovementView.sendUpdateMovement(
                     session,
                     agentID,

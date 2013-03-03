@@ -4,14 +4,11 @@
 
 package com.gamerevision.gwlpr.mapshard.controllers;
 
-import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.mapshard.ContextAttachment;
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
-import com.gamerevision.gwlpr.mapshard.models.MapData;
 import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.RemoteShardletContext;
 import com.realityshard.shardlet.Session;
 import com.realityshard.shardlet.events.GameAppCreatedEvent;
 import com.realityshard.shardlet.events.NetworkClientDisconnectedEvent;

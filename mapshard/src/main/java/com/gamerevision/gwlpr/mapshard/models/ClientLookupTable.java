@@ -47,6 +47,27 @@ public class ClientLookupTable
     
     
     /**
+     * Remove a client and its entity entry.
+     * 
+     * @param       session                 The session of the client
+     */
+    public void removeClient(Session session)
+    {
+        Entity et = bySession.get(session);
+        
+        // failcheck
+        if (et == null) { return; }
+        
+        bySession.remove(session);
+        
+        // failcheck
+        if (byEntity.get(et) == null) { return; }
+        
+        byEntity.remove(et);
+    }
+    
+    
+    /**
      * Getter.
      * 
      * @return      A session by its corresponding entity
