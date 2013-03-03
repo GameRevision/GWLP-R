@@ -12,6 +12,7 @@ import com.gamerevision.gwlpr.mapshard.models.enums.MovementType;
 import com.gamerevision.gwlpr.mapshard.models.enums.MovementState;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -69,8 +70,7 @@ public class Components
 
 
     public static class View implements Component {
-        public volatile List<Entity> agentsICannotSee = new ArrayList<>();
-        public volatile List<Entity> agentsICanSee = new ArrayList<>();
+        public volatile Collection<Entity> visibleAgents = new HashSet<>();
         public volatile float viewDistance = 100;
         public volatile boolean isBlind = true; // this will be set to false by the builder or other classes.
     }
