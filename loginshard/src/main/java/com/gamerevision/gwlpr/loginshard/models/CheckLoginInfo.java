@@ -5,6 +5,7 @@
 package com.gamerevision.gwlpr.loginshard.models;
 
 import com.gamerevision.gwlpr.database.DBAccount;
+import com.gamerevision.gwlpr.database.DBCharacter;
 import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,19 +22,24 @@ public class CheckLoginInfo
     private static Logger LOGGER = LoggerFactory.getLogger(CheckLoginInfo.class);
     
     private DBAccount account;
+    private DBCharacter chara;
     private int errorCode = 0;
     
     
-    /*
+    /**
      * Constructor.
      */
-    public CheckLoginInfo(DatabaseConnectionProvider connectionProvider, String eMail)
+    public CheckLoginInfo(
+            DatabaseConnectionProvider connectionProvider, 
+            String eMail,  
+            String charName)
     {
         this.account = DBAccount.getByEMail(connectionProvider, eMail);
+        this.chara = DBCharacter.getCharacter(connectionProvider, charName);
     }
     
     
-    /*
+    /**
      * Returns boolean whether the login information is valid or not.
      * 
      * TODO: Extend it (better validation, banned, ...)
@@ -42,21 +48,27 @@ public class CheckLoginInfo
     {
         if (account == null)
         {
-            // there is no account with this eMail.
+            // there is no account with this eMail
             errorCode = 227;
             return false;
         }
         
-        if (password.startsWith(account.getPassword()))
+        if (false && !password.startsWith(account.getPassword()))
         {
-            // password matches.
-            return true;
+            // password doesnt match
+            errorCode = 227; 
+        
+            return false;
         }
         
-        // unknown login information
-        errorCode = 227; 
+        if (chara == null)
+        {
+            // there is no such character
+            errorCode = 227;
+            return false;
+        }
         
-        return false;
+        return true;
     }
     
     

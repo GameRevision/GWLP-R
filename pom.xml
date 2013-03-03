@@ -39,9 +39,8 @@
         <java.verbose>true</java.verbose>
 
         <!-- RS dependency versions -->
-        <rs.api>0.2.0</rs.api>
-        <rs.imp>0.2.0</rs.imp>
-        <rs.ent>0.1.1</rs.ent>
+        <rs.api>0.2.1</rs.api>
+        <rs.imp>0.2.1</rs.imp>
     </properties>
 
 
@@ -65,13 +64,6 @@
             <groupId>com.realityshard</groupId>
             <artifactId>container</artifactId>
             <version>${rs.imp}</version>
-        </dependency>
-
-        <!-- The EntitySystem-->
-        <dependency>
-            <groupId>com.realityshard</groupId>
-            <artifactId>entitysystem</artifactId>
-            <version>${rs.ent}</version>
         </dependency>
 
         <!-- JUnit for testing -->

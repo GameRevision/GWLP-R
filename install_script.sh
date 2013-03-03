@@ -94,7 +94,6 @@ read -p "[Press any key to continue]" -n 1 -s
 echo ""
 cd "$INSTALLTO/RealityShard/Api" && mvn clean install
 cd "$INSTALLTO/RealityShard/Impl" && mvn clean install
-cd "$INSTALLTO/RealityShard/Util/entitysystem" && mvn clean install
 cd "$INSTALLTO/RealityShard/Util/productionhost" && mvn clean install
 echo ""
 
