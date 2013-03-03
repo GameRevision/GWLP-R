@@ -31,6 +31,7 @@ public final class ChatSystem extends GenericSystem
      * Constructor.
      *
      * @param       aggregator
+     * @param       clientLookup  
      */
     public ChatSystem(EventAggregator aggregator, ClientLookupTable clientLookup)
     {
