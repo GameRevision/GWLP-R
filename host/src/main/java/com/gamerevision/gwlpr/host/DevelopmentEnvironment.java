@@ -12,6 +12,7 @@ import com.gamerevision.gwlpr.mapshard.controllers.HeartBeat;
 import com.gamerevision.gwlpr.mapshard.controllers.InstanceLoad;
 import com.gamerevision.gwlpr.mapshard.controllers.MoveRotateClick;
 import com.gamerevision.gwlpr.mapshard.controllers.Ping;
+import com.gamerevision.gwlpr.protocol.LoggingFilter;
 import com.gamerevision.gwlpr.protocol.SerialisationFilter;
 import com.realityshard.container.gameapp.GenericGameAppFactory;
 import com.realityshard.shardlet.ProtocolFilter;
@@ -185,15 +186,15 @@ public class DevelopmentEnvironment implements Environment
     {
         ArrayList<ProtocolFilter> inFil = new ArrayList<>();
         ArrayList<ProtocolFilter> outFil = new ArrayList<>();
+        Map<String, String> params;
 
-        // add the seralisation filter
+        // create the seralisation filter and init its params
         ProtocolFilter serialFil = new SerialisationFilter();
-        // init its params
-        Map<String, String> params = new HashMap<>();
+        params = new HashMap<>();
         params.put("ServerType", "LoginServer");
-
         serialFil.init(params);
 
+        // add the filters appropriately
         inFil.add(serialFil);
         outFil.add(0, serialFil);
 
@@ -218,17 +219,28 @@ public class DevelopmentEnvironment implements Environment
     {
         ArrayList<ProtocolFilter> inFil = new ArrayList<>();
         ArrayList<ProtocolFilter> outFil = new ArrayList<>();
+        Map<String, String> params;
 
-        // add the seralisation filter
+        // create the seralisation filter
         ProtocolFilter serialFil = new SerialisationFilter();
         // init its params
-        Map<String, String> params = new HashMap<>();
+        params = new HashMap<>();
         params.put("ServerType", "GameServer");
-
         serialFil.init(params);
+        
+        // create the outgoing logging filter (we will only log outgoing packets)
+        ProtocolFilter outLoggingFil = new LoggingFilter();
+        // init its params
+        params = new HashMap<>();
+        params.put("OperationMethod", "BlackList");
+        params.put("HeaderList", "1 2 19"); // suppress outgoing ping and heartbeat packets
+        outLoggingFil.init(params);
 
+        // add the filters appropriately (out filters basically in the opposite order)
         inFil.add(serialFil);
+        outFil.add(0, outLoggingFil);
         outFil.add(0, serialFil);
+        
 
         // add some other filter...
 
