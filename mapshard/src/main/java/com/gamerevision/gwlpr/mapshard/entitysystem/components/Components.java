@@ -27,70 +27,70 @@ import java.util.List;
 public class Components
 {
     public static class Name implements Component {
-        public String name = "NoName";
+        public volatile String name = "NoName";
     }
 
 
     public static class AgentID implements Component {
-        public int agentID = 0;
+        public volatile int agentID = 0;
     }
 
 
     public static class LocalID implements Component {
-        public int localID = 0;
+        public volatile int localID = 0;
     }
 
 
     public static class Position implements Component {
-        public GWVector position; // absolute
+        public volatile GWVector position; // absolute
     }
 
 
     public static class Direction implements Component {
-        public GWVector direction = new GWVector(1, 1, 0);
-        public boolean isRotating = false;
+        public volatile GWVector direction = new GWVector(1, 1, 0);
+        public volatile boolean isRotating = false;
     }
 
 
     public static class Movement implements Component {
-        public GWVector moveToPoint = new GWVector(1, 1, 0);
-        public MovementType moveType = MovementType.Stop;
-        public MovementState moveState = MovementState.NotMoving;
-        public float speed = 288;
+        public volatile GWVector moveToPoint = new GWVector(1, 1, 0);
+        public volatile MovementType moveType = MovementType.Stop;
+        public volatile MovementState moveState = MovementState.NotMoving;
+        public volatile float speed = 288;
     }
 
 
     public static class BoundingBox implements Component {
-        public float width = 50; // x
-        public float depth = 50; // y
-        public float height = 96; // height in game-units
+        public volatile float width = 50; // x
+        public volatile float depth = 50; // y
+        public volatile float height = 96; // height in game-units
     }
 
 
     public static class Appearance implements Component {
-        public byte[] appearanceDump;
+        public volatile byte[] appearanceDump;
     }
 
 
     public static class View implements Component {
-        public List<Entity> agentsICannotSee = new ArrayList<>();
-        public List<Entity> agentsICanSee = new ArrayList<>();
-        public float viewDistance = 100;
-        public boolean isBlind = true; // this will be set to true by the builder or other classes.
+        public volatile List<Entity> agentsICannotSee = new ArrayList<>();
+        public volatile List<Entity> agentsICanSee = new ArrayList<>();
+        public volatile float viewDistance = 100;
+        public volatile boolean isBlind = true; // this will be set to true by the builder or other classes.
     }
 
 
     public static class Visibility implements Component {
-        public boolean visible = true;
+        public volatile boolean visible = true;
     }
 
 
     public static class ChatOptions implements Component {
-        public Collection<String> availableCommands = new ArrayList<>();
-        public String chatPefix = "";
-        public boolean prefixVisible = false;
-        public ChatColor chatColor = ChatColor.Yellow_White;
-        public boolean enableColor = false;
+        public volatile Collection<String> availableCommands = new ArrayList<>();
+        public volatile String chatPefix = "";
+        public volatile boolean prefixVisible = false;
+        public volatile ChatColor chatColor = ChatColor.Yellow_White;
+        public volatile boolean enableColor = false;
     }
 
     
