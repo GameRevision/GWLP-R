@@ -11,7 +11,6 @@ import com.gamerevision.gwlpr.mapshard.entitysystem.builders.NPCBuilder;
 import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
 import com.gamerevision.gwlpr.mapshard.events.ChatCommandEvent;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
-import com.gamerevision.gwlpr.mapshard.models.GWString;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.gamerevision.gwlpr.mapshard.models.IDManager;
 import com.gamerevision.gwlpr.mapshard.models.Strings;
@@ -101,7 +100,7 @@ public final class CommandSystem extends GenericSystem
             
             Entity npc = NPCBuilder
                     .createFor(entityManager)
-                    .withAgentData("Blubb", 1095, 1095)
+                    .withAgentData("Blubb", IDManager.reserveAgentID(), 1095)
                     .withPhysics(ply.get(Position.class).position, new GWVector(1,1,0), 1, 1, 1)
                     .withVisuals(new byte[0], 1000, true)
                     .withChatOptions()

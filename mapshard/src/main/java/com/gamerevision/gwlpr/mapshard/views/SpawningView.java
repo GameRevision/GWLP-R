@@ -37,8 +37,8 @@ public class SpawningView
     public static void spawnAgent(
             Session session,
             String name,
-            int localID,
             int agentID,
+            int localID,
             byte[] appearance,
             GWVector position,
             float rotation,
