@@ -95,7 +95,9 @@ public class MovementSystem extends GenericSystem
             
             // TODO check this:
             // do a quick calculation of the future position of the agent
-            GWVector futurePos = pos.add(dir.mul(0.001F * timeDelta));
+            float timeDiff = 0.001F * timeDelta;
+            GWVector newDir = dir.mul(move.speed * timeDiff);
+            GWVector futurePos = pos.add(newDir);
             
             entity.get(Position.class).position = futurePos;
             

@@ -83,7 +83,6 @@ public final class AgentVisibilitySystem extends GenericSystem
             // entity is 'blind' by not having a view component:
             if (!thisEntity.has(View.class)) { continue; }
 
-            // or by having the 'blind' option set
             View thisView = thisEntity.get(View.class);
 
             // get the position for distance calcs later on
