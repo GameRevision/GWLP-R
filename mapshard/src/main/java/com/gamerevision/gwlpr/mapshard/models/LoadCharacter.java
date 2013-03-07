@@ -9,6 +9,7 @@ import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
 import com.gamerevision.gwlpr.mapshard.entitysystem.builders.PlayerBuilder;
+import com.gamerevision.gwlpr.mapshard.models.enums.Profession;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -37,6 +38,10 @@ public class LoadCharacter
     private byte[] appearance;
     private float viewDistance;
     private boolean visible;
+    
+    private Profession primary;
+    private Profession secondary;
+    private int level;
 
 
     /**
@@ -75,6 +80,10 @@ public class LoadCharacter
         // set some defaults
         viewDistance = 1000;
         visible = true;
+        
+        // load some char data
+        primary = Profession.values()[dBChar.getPrimary()];
+        secondary = Profession.values()[dBChar.getSecondary()];
     }
 
 
@@ -91,6 +100,8 @@ public class LoadCharacter
                 .withAgentData(charName, agentID, localID)
                 .withPhysics(pos, direction, boundsRectWidth, boundsRectHeight, playerHeight)
                 .withVisuals(appearance, viewDistance, visible)
+                .withCharData(primary, secondary, 1, 100) // fix level and morale
+                .withFactionData()
                 .build();
     }
 

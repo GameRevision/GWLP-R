@@ -12,15 +12,17 @@ import com.gamerevision.gwlpr.actions.gameserver.stoc.P077_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.P143_UpdateNpcNameAction;
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
+import com.gamerevision.gwlpr.mapshard.models.GWString;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
-import com.gamerevision.gwlpr.mapshard.models.enums.MovementType;
-import com.gamerevision.gwlpr.mapshard.models.enums.Profession;
 import com.gamerevision.gwlpr.mapshard.models.enums.SpawnType;
 import com.realityshard.shardlet.Session;
 
 
 /**
  * Handles agent spawning actions.
+ * 
+ * TODO: we should make sure the entity actually has all the required components
+ * before trying to spawn it.
  *
  * @author _rusty
  */
@@ -51,7 +53,7 @@ public class EntitySpawningView
         {
            sendPlayerAppearance(session, entity);
         }
-        if (faction.spawnType == SpawnType.NPC || faction.spawnType == SpawnType.Ally)
+        else if (faction.spawnType == SpawnType.NPC || faction.spawnType == SpawnType.Ally)
         {
             sendNPCGeneralPackets(session, entity);
         }
@@ -164,7 +166,7 @@ public class EntitySpawningView
         P143_UpdateNpcNameAction updNPCName = new P143_UpdateNpcNameAction();
         updNPCName.init(session);
         updNPCName.setAgentID(agentIDs.agentID);
-        updNPCName.setName(name.toCharArray());
+        updNPCName.setName(GWString.formatChat(name).toCharArray());
         
         session.send(updNPCName);
     }

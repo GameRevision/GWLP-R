@@ -82,7 +82,7 @@ public final class CommandSystem extends GenericSystem
         List<String> parameters = getParameters(chatCmd.getMessage());
 
         // fail check (command execution fails automatically if the sender
-        // has not chat option compontent)
+        // has no chat option compontent)
         ChatOptions senderChatOptions = chatCmd.getSender().get(ChatOptions.class);
         if (senderChatOptions == null) { return; }
         
@@ -100,7 +100,7 @@ public final class CommandSystem extends GenericSystem
                     .withVisuals(new byte[0], 1000, true)
                     .withCharData(Profession.Mesmer, Profession.None, 1, 100)
                     .withFactionData()
-                    .withNPCData(116228, new int[] { 0x00033D08 }, 0, 1, String.copyValueOf(new char[] {0x8102, 0x5299, 0xc20f, 0xb939, 0x0463}))
+                    .withNPCData(116228, new int[] { 0x026c4a }, 4, 100, String.copyValueOf(new char[] {0x8102, 0x5299, 0xc20f, 0xb939, 0x0463}))
                     .build();
         }
         else if (!senderChatOptions.availableCommands.contains(command))
