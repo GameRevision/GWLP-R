@@ -50,7 +50,7 @@ public class Components
 
 
     public static class Movement implements Component {
-        public volatile GWVector moveToPoint = new GWVector(1, 1, 0);
+        public volatile GWVector futurePosition = new GWVector(1, 1, 0);
         public volatile MovementType moveType = MovementType.Stop;
         public volatile MovementState moveState = MovementState.NotMoving;
         public volatile float speed = 288;
