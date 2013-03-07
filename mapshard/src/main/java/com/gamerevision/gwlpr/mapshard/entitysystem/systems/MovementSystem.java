@@ -26,6 +26,9 @@ import java.util.Collection;
  * This system handles movement of entities, without collision.
  * Collision handling might be done in a separate system, though it could
  * be reasonable to merge both of these systems...
+ * 
+ * Hint: Make sure to use a unit-vector as the direction of the player
+ * before calculating anything.
  *
  * @author _rusty
  */
@@ -86,7 +89,7 @@ public class MovementSystem extends GenericSystem
             
             int agentID = entity.get(AgentIdentifiers.class).agentID;
             GWVector pos = entity.get(Position.class).position;
-            GWVector dir = entity.get(Direction.class).direction;
+            GWVector dir = entity.get(Direction.class).direction.getUnit();
             Movement move = entity.get(Movement.class);
 
             // else we need to calculate the next position
@@ -131,7 +134,7 @@ public class MovementSystem extends GenericSystem
         GWVector dir = startMove.getDirection(); // use the new direction here
 
         // update the entities values
-        et.get(Direction.class).direction = dir;
+        et.get(Direction.class).direction = dir.getUnit();
         Movement move = et.get(Movement.class);
         move.moveType = startMove.getType(); // use the new movement type here
         move.moveState = MovementState.Moving;
@@ -212,7 +215,7 @@ public class MovementSystem extends GenericSystem
         
         // and update the direction
         Direction dir = et.get(Direction.class);
-        dir.direction = rot.getNewDirection();
+        dir.direction = rot.getNewDirection().getUnit();
         float rotation = dir.direction.toRotation();
 
         for (Session session : lookupTable.getAllSessions())
