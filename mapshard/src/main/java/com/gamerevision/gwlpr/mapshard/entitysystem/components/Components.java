@@ -10,10 +10,11 @@ import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.gamerevision.gwlpr.mapshard.models.enums.ChatColor;
 import com.gamerevision.gwlpr.mapshard.models.enums.MovementType;
 import com.gamerevision.gwlpr.mapshard.models.enums.MovementState;
+import com.gamerevision.gwlpr.mapshard.models.enums.Profession;
+import com.gamerevision.gwlpr.mapshard.models.enums.SpawnType;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 
 /**
@@ -28,7 +29,7 @@ import java.util.List;
 public class Components
 {
     public static class Name implements Component {
-        public volatile String name = "NoName";
+        public volatile String name = "";
     }
 
 
@@ -91,10 +92,25 @@ public class Components
 
     
     public static class NPCData implements Component {
-        public int fileID = 0;
-        public int texture = 0;
-        public byte[] modelHash = new byte[] {};
-        public int flags = 0;
-        public int scale = 0;
+        public volatile int fileID = 0;
+        public volatile int texture = 0;
+        public volatile String hashedName = ""; 
+        public volatile int[] modelHashes = new int[] {};
+        public volatile int flags = 0;
+        public volatile int scale = 0;
+    }
+    
+    
+    public static class FactionData implements Component {
+        public volatile SpawnType spawnType = SpawnType.Player;
+        public volatile byte factionColor = 0x30; // TODO: enum pls. and find the colors. //npc=0x20, some other player=0x30
+    }
+    
+    
+    public static class CharData implements Component {
+        public volatile Profession primary = Profession.Mesmer;
+        public volatile Profession secondary = Profession.None;
+        public volatile int level = 1;
+        public volatile int morale = 100;
     }
 }

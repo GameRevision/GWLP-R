@@ -22,8 +22,8 @@ import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.gamerevision.gwlpr.mapshard.models.MapData;
 import com.gamerevision.gwlpr.mapshard.models.enums.GenericValue;
 import com.gamerevision.gwlpr.mapshard.models.enums.PlayerState;
-import com.gamerevision.gwlpr.mapshard.models.enums.SpawningFaction;
-import com.gamerevision.gwlpr.mapshard.views.SpawningView;
+import com.gamerevision.gwlpr.mapshard.models.enums.SpawnType;
+import com.gamerevision.gwlpr.mapshard.views.EntitySpawningView;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.RemoteShardletContext;
 import com.realityshard.shardlet.Session;
@@ -50,7 +50,7 @@ public class InstanceLoad extends GenericShardlet
     private EntityManager entityManager;
     private ClientLookupTable clientlookup;
     private MapData mapData;
-    private SpawningFaction SpawningFaction;
+    private SpawnType SpawningFaction;
 
 
     /**
@@ -240,16 +240,7 @@ public class InstanceLoad extends GenericShardlet
         // at this point we should spawn the player
         // all other players and such will be spawned automatically by the
         // spawning system when the player can see them.
-        SpawningView.spawnAgent(
-                session,
-                name,
-                agentID,
-                localID,
-                appear,
-                pos,
-                rotation,
-                speed,
-                SpawningFaction.Player);
+        EntitySpawningView.spawnAgent(session, et);
 
 
         P023_UnknownAction fadeIntoMap = new P023_UnknownAction();

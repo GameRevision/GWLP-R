@@ -9,6 +9,8 @@ import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
 import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
 import com.gamerevision.gwlpr.mapshard.models.GWString;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
+import com.gamerevision.gwlpr.mapshard.models.enums.Profession;
+import com.gamerevision.gwlpr.mapshard.models.enums.SpawnType;
 
 
 /**
@@ -56,7 +58,7 @@ public final class NPCBuilder
      */
     public NPCBuilder withAgentData(String playerName, int playerAgentID, int playerLocalID)
     {
-        playerBuilder.withAgentData(GWString.formatChat(playerName), playerAgentID, playerLocalID);
+        playerBuilder.withAgentData(playerName, playerAgentID, playerLocalID);
         
         return this;
     }
@@ -87,18 +89,44 @@ public final class NPCBuilder
         
         return this;
     }
-
-
+    
+    
+    /**
+     * Step 4.
+     */
+    public NPCBuilder withCharData(Profession primary, Profession secondary, int level, int morale)
+    {
+        playerBuilder.withCharData(primary, secondary, level, morale);
+        
+        return this;
+    }
+    
+    
     /**
      * Step 5.
      */
-    public NPCBuilder withNPCData(int fileID, byte[] modelHash, int flags, int scale)
+    public NPCBuilder withFactionData()
+    {
+        FactionData fd = new FactionData();
+        fd.spawnType = SpawnType.NPC;
+        fd.factionColor = 0x20;
+        
+        entity.addAll(fd);
+        return this;
+    }
+
+
+    /**
+     * Step 6.
+     */
+    public NPCBuilder withNPCData(int fileID, int[] modelHashes, int flags, int scale, String hashedName)
     {
         NPCData npcData = new NPCData();
         npcData.fileID = fileID;
-        npcData.modelHash = modelHash;
+        npcData.modelHashes = modelHashes;
         npcData.flags = flags;
         npcData.scale = scale;
+        npcData.hashedName = hashedName;
 
         // we can simply use our own entity reference, as the constructor made sure that
         // its the same as the one of the underlying player builder.

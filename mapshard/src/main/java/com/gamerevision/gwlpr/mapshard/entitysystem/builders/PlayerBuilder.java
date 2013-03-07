@@ -8,6 +8,8 @@ import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
 import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
+import com.gamerevision.gwlpr.mapshard.models.enums.Profession;
+import com.gamerevision.gwlpr.mapshard.models.enums.SpawnType;
 
 
 /**
@@ -92,6 +94,36 @@ public final class PlayerBuilder
         Visibility visibility = new Visibility(); visibility.visible = isVisible;
 
         entity.addAll(appearance, view, visibility);
+        return this;
+    }
+    
+    
+    /**
+     * Step 4.
+     */
+    public PlayerBuilder withCharData(Profession primary, Profession secondary, int level, int morale)
+    {
+        CharData charData = new CharData();
+        charData.primary = primary;
+        charData.secondary = secondary;
+        charData.level = level;
+        charData.morale = morale;
+        
+        entity.addAll(charData);
+        return this;
+    }
+    
+    
+    /**
+     * Step 5.
+     */
+    public PlayerBuilder withFactionData()
+    {
+        FactionData fd = new FactionData();
+        fd.spawnType = SpawnType.Player;
+        fd.factionColor = 0x30;
+        
+        entity.addAll(fd);
         return this;
     }
 

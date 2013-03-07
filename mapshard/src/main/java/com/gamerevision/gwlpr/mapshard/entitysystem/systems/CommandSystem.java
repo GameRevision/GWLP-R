@@ -15,8 +15,8 @@ import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.gamerevision.gwlpr.mapshard.models.IDManager;
 import com.gamerevision.gwlpr.mapshard.models.Strings;
 import com.gamerevision.gwlpr.mapshard.models.enums.ChatColor;
+import com.gamerevision.gwlpr.mapshard.models.enums.Profession;
 import com.gamerevision.gwlpr.mapshard.views.ChatMessageView;
-import com.gamerevision.gwlpr.mapshard.views.NPCView;
 import com.realityshard.shardlet.EventAggregator;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.Session;
@@ -92,18 +92,15 @@ public final class CommandSystem extends GenericSystem
         {
             // TODO remove me when not needed anyore ;)
             Entity ply = chatCmd.getSender();
-            Session client = clientLookup.getByEntity(chatCmd.getSender());
-            
-            // first send the NPC packets
-            NPCView.sendNPCGeneralStats(client, 1095, 116228, 100, 4, 1, 5, 0, String.copyValueOf(new char[] {0x8102, 0x5299, 0xc20f, 0xb939, 0x0463}));
-            NPCView.sendNPCModel(client, 1095, new int[] { 0x026c4a });
             
             Entity npc = NPCBuilder
                     .createFor(entityManager)
                     .withAgentData("Blubb", IDManager.reserveAgentID(), 1095)
                     .withPhysics(ply.get(Position.class).position, new GWVector(1,1,0), 1, 1, 1)
                     .withVisuals(new byte[0], 1000, true)
-                    .withNPCData(116228, new byte[] {0x08, -0x3D, 0x03}, 0, 1)
+                    .withCharData(Profession.Mesmer, Profession.None, 1, 100)
+                    .withFactionData()
+                    .withNPCData(116228, new int[] { 0x00033D08 }, 0, 1, String.copyValueOf(new char[] {0x8102, 0x5299, 0xc20f, 0xb939, 0x0463}))
                     .build();
         }
         else if (!senderChatOptions.availableCommands.contains(command))
