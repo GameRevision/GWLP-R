@@ -29,7 +29,7 @@ public class EntityManagerTest
         EntityManager eMan = new EntityManager();
         
         // before adding any entities, try to retrieve some...
-        Collection<Entity> ents = eMan.getEntitiesWith(Name.class, AgentID.class, LocalID.class, Position.class);
+        Collection<Entity> ents = eMan.getEntitiesWith(Name.class, AgentIdentifiers.class, Position.class, Direction.class);
         assert ents.isEmpty();
         
         // now lets add some entities
@@ -38,33 +38,33 @@ public class EntityManagerTest
         Name n3 = new Name();
         Name n4 = new Name();
 
-        AgentID a1 = new AgentID();
-        AgentID a2 = new AgentID();
-        AgentID a3 = new AgentID();
-
-        LocalID l1 = new LocalID();
-        LocalID l2 = new LocalID();
+        AgentIdentifiers a1 = new AgentIdentifiers();
+        AgentIdentifiers a2 = new AgentIdentifiers();
+        AgentIdentifiers a3 = new AgentIdentifiers();
 
         Position p1 = new Position();
+        Position p2 = new Position();
+        
+        Direction d1 = new Direction();
 
         // register the entities
-        Entity e1 = new Entity(eMan, n1, a1, l1, p1);
-        Entity e2 = new Entity(eMan, n2, a2, l2);
+        Entity e1 = new Entity(eMan, n1, a1, p1, d1);
+        Entity e2 = new Entity(eMan, n2, a2, p2);
         Entity e3 = new Entity(eMan, n3, a3);
         Entity e4 = new Entity(eMan, n4);
         Entity e5 = new Entity(eMan);
 
         // retrieve entities with specific components
-        ents = eMan.getEntitiesWith(Name.class, AgentID.class, LocalID.class, Position.class);
+        ents = eMan.getEntitiesWith(Name.class, AgentIdentifiers.class, Position.class, Direction.class);
         assert ents.size() == 1;
         assert ents.contains(e1);
 
-        ents = eMan.getEntitiesWith(Name.class, AgentID.class, LocalID.class);
+        ents = eMan.getEntitiesWith(Name.class, AgentIdentifiers.class, Position.class);
         assert ents.size() == 2;
         assert ents.contains(e1);
         assert ents.contains(e2);
 
-        ents = eMan.getEntitiesWith(Name.class, AgentID.class);
+        ents = eMan.getEntitiesWith(Name.class, AgentIdentifiers.class);
         assert ents.size() == 3;
         assert ents.contains(e1);
         assert ents.contains(e2);
@@ -84,13 +84,13 @@ public class EntityManagerTest
         Name n = e1.get(Name.class); // e1 has a Name
         assert n == n1;
 
-        AgentID a = e2.get(AgentID.class); // e2 has an AgentID
+        AgentIdentifiers a = e2.get(AgentIdentifiers.class); // e2 has an AgentID
         assert a == a2;
 
-        LocalID l = e3.get(LocalID.class); // e3 has no LocalID
-        assert l == null;
-
-        Position p = e5.get(Position.class); // e5 has no components
+        Position p = e3.get(Position.class); // e3 has no LocalID
         assert p == null;
+
+        Direction d = e5.get(Direction.class); // e5 has no components
+        assert d == null;
     }
 }

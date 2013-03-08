@@ -9,11 +9,15 @@ import com.gamerevision.gwlpr.actions.gameserver.ctos.P055_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.ctos.P057_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.ctos.P064_UnknownAction;
 import com.gamerevision.gwlpr.mapshard.SessionAttachment;
+import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
+import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
 import com.gamerevision.gwlpr.mapshard.events.RotateEvent;
 import com.gamerevision.gwlpr.mapshard.events.StartMovingEvent;
 import com.gamerevision.gwlpr.mapshard.events.StopMovingEvent;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
+import com.gamerevision.gwlpr.mapshard.models.enums.MovementState;
 import com.gamerevision.gwlpr.mapshard.models.enums.MovementType;
+import com.gamerevision.gwlpr.mapshard.models.enums.StandardValue;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.Session;
 import com.realityshard.shardlet.utils.GenericShardlet;
@@ -54,6 +58,8 @@ public class MoveRotateClick extends GenericShardlet
 
         Session session = keybMove.getSession();
         SessionAttachment attach = (SessionAttachment) session.getAttachment();
+        Entity et = attach.getEntity();
+        Movement move = et.get(Movement.class);
 
         // extract all the necessary info from the action and convert it
         GWVector position = GWVector.fromFloatArray(
@@ -65,10 +71,20 @@ public class MoveRotateClick extends GenericShardlet
                 0);
 
         MovementType moveType = MovementType.fromInt(keybMove.getUnknown4());
+        
+        // TODO: check of this position calculation is correct...
+        // check if the client has a reasonable position (is near our calculated future position)
+        // in that case, update the position of the internal client representation
+        float dist = position.getDistanceTo(move.futurePosition);
+        
+        if (dist <= StandardValue.RangeAdjacent.getVal())
+        {
+            move.futurePosition = position;
+        }
 
         // produce an internal event. this might seem unnecessary, but another
         // module will handle the actual movement. this is just a front controller
-        publishEvent(new StartMovingEvent(attach.getEntity(), direction, moveType));
+        publishEvent(new StartMovingEvent(et, direction, moveType));
 
         // we could also set/update the entities position here...
         // but we need to be sure it is valid (inside the map and no teleport)
@@ -86,11 +102,28 @@ public class MoveRotateClick extends GenericShardlet
     {
         Session session = stopMove.getSession();
         SessionAttachment attach = (SessionAttachment) session.getAttachment();
+        Entity et = attach.getEntity();
+        Position pos = et.get(Position.class);
+        Movement move = et.get(Movement.class);
 
         // extract info
         GWVector position = GWVector.fromFloatArray(
                 stopMove.getUnknown1(),
                 stopMove.getUnknown2());
+        
+        // TODO: check of this position calculation is correct...
+        // check if the client has a reasonable position (is near our calculated future position)
+        // in that case, update the position of the internal client representation
+        float dist = position.getDistanceTo(move.futurePosition);
+        
+        if (dist <= StandardValue.RangeAdjacent.getVal())
+        {
+            // set the position directly, as the char will not be moving anymore anyway
+            pos.position = position;
+        }
+        
+        // also update the movement state, it can be done right now with no harm
+        move.moveState = MovementState.NotMoving;
 
         // the internal event:
         publishEvent(new StopMovingEvent(attach.getEntity()));

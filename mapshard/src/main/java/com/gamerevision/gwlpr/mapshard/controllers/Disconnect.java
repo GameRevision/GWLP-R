@@ -5,9 +5,11 @@
 package com.gamerevision.gwlpr.mapshard.controllers;
 
 import com.gamerevision.gwlpr.mapshard.ContextAttachment;
+import com.gamerevision.gwlpr.mapshard.SessionAttachment;
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
+import com.gamerevision.gwlpr.mapshard.models.enums.PlayerState;
 import com.realityshard.shardlet.EventHandler;
 import com.realityshard.shardlet.Session;
 import com.realityshard.shardlet.events.GameAppCreatedEvent;
@@ -67,14 +69,20 @@ public class Disconnect extends GenericShardlet
     @EventHandler
     public void onClientDisconnect(NetworkClientDisconnectedEvent disc)
     {
-        // get the entity and session
         Session session = disc.getSession();
-        Entity entity = clientlookup.getBySession(session);
+        SessionAttachment attachment = (SessionAttachment) session.getAttachment();
         
-        // delete the entity
+        // deactivate heart beat and ping and such
+        attachment.setPlayerState(PlayerState.Playing);
+        
+        // remove the entity
+        Entity entity = clientlookup.getBySession(session);
         entityManager.unregister(entity);
         
         // clean up the client lookup dict
         clientlookup.removeClient(session);
+        
+        // invalidate the session
+        session.invalidate();
     }
 }

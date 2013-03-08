@@ -8,6 +8,8 @@ import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
 import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
+import com.gamerevision.gwlpr.mapshard.models.enums.Profession;
+import com.gamerevision.gwlpr.mapshard.models.enums.SpawnType;
 
 
 /**
@@ -39,7 +41,8 @@ public final class PlayerBuilder
         return new PlayerBuilder(
                 new Entity(
                     manager,
-                    new Movement()));
+                    new Movement(),
+                    new ChatOptions()));
     }
 
 
@@ -49,10 +52,11 @@ public final class PlayerBuilder
     public PlayerBuilder withAgentData(String playerName, int playerAgentID, int playerLocalID)
     {
         Name name = new Name(); name.name = playerName;
-        AgentID agentID = new AgentID(); agentID.agentID = playerAgentID;
-        LocalID localID = new LocalID(); localID.localID = playerLocalID;
+        AgentIdentifiers agentIDs = new AgentIdentifiers(); 
+        agentIDs.agentID = playerAgentID;
+        agentIDs.localID = playerLocalID;
 
-        entity.addAll(name, agentID, localID);
+        entity.addAll(name, agentIDs);
         return this;
     }
 
@@ -92,18 +96,34 @@ public final class PlayerBuilder
         entity.addAll(appearance, view, visibility);
         return this;
     }
-
-
+    
+    
     /**
      * Step 4.
-     *
-     * TODO: change this method once this is supported by database features.
      */
-    public PlayerBuilder withChatOptions()
+    public PlayerBuilder withCharData(Profession primary, Profession secondary, int level, int morale)
     {
-        ChatOptions chatOpts = new ChatOptions();
-
-        entity.addAll(chatOpts);
+        CharData charData = new CharData();
+        charData.primary = primary;
+        charData.secondary = secondary;
+        charData.level = level;
+        charData.morale = morale;
+        
+        entity.addAll(charData);
+        return this;
+    }
+    
+    
+    /**
+     * Step 5.
+     */
+    public PlayerBuilder withFactionData()
+    {
+        FactionData fd = new FactionData();
+        fd.spawnType = SpawnType.Player;
+        fd.factionColor = 0x30;
+        
+        entity.addAll(fd);
         return this;
     }
 
