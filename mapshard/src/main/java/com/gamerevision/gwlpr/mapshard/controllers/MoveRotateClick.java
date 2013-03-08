@@ -10,7 +10,7 @@ import com.gamerevision.gwlpr.actions.gameserver.ctos.P057_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.ctos.P064_UnknownAction;
 import com.gamerevision.gwlpr.mapshard.SessionAttachment;
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
-import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.Movement;
+import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
 import com.gamerevision.gwlpr.mapshard.events.RotateEvent;
 import com.gamerevision.gwlpr.mapshard.events.StartMovingEvent;
 import com.gamerevision.gwlpr.mapshard.events.StopMovingEvent;
@@ -103,6 +103,7 @@ public class MoveRotateClick extends GenericShardlet
         Session session = stopMove.getSession();
         SessionAttachment attach = (SessionAttachment) session.getAttachment();
         Entity et = attach.getEntity();
+        Position pos = et.get(Position.class);
         Movement move = et.get(Movement.class);
 
         // extract info
@@ -117,7 +118,8 @@ public class MoveRotateClick extends GenericShardlet
         
         if (dist <= StandardValue.RangeAdjacent.getVal())
         {
-            move.futurePosition = position;
+            // set the position directly, as the char will not be moving anymore anyway
+            pos.position = position;
         }
         
         // also update the movement state, it can be done right now with no harm
