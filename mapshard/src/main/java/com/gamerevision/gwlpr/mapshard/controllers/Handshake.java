@@ -162,8 +162,7 @@ public class Handshake extends GenericShardlet
         attach.setEntity(player);
         // these are the only concrete component refernces we keep!
         attach.setCharacterName(player.get(Name.class));
-        attach.setAgentID(player.get(AgentID.class));
-        attach.setLocalID(player.get(LocalID.class));
+        attach.setAgentIDs(player.get(AgentIdentifiers.class));
         
         // update the client-lookup-table
         clientlookup.addClient(session, player);
@@ -172,6 +171,6 @@ public class Handshake extends GenericShardlet
         // because we use the components here directly
         // (this should not happen with other components!)
         HandshakeView.charName(session, attach.getCharacterName().name);
-        HandshakeView.districtInfo(session, attach.getLocalID().localID, mapData.getMapID());
+        HandshakeView.districtInfo(session, attach.getAgentIDs().localID, mapData.getMapID());
     }
 }

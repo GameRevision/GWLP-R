@@ -20,6 +20,14 @@ import java.util.Collection;
  *
  * We need to switch agents visible / invisible depending on their
  * positions to each other.
+ * 
+ * Note on 'blindness':
+ * If an entity was not blind before, and suddenly turned blind,
+ * it will lose sight of the other entities it could see before. (LostSightEvent)
+ * If an entity was blind before and can suddenly see again (a miracle! :P)
+ * it will see entities could not see before (duh) (CanSeeEvent)
+ * 
+ * TODO: test if the update interval is OK
  *
  * @author _rusty
  */
@@ -34,9 +42,8 @@ public final class AgentVisibilitySystem extends GenericSystem
     /**
      * Constructor.
      *
-     * @param aggregator
-     * @param entityManager
-     * @param clientLookupTable
+     * @param       aggregator
+     * @param       entityManager
      */
     public AgentVisibilitySystem(
             EventAggregator aggregator,
@@ -54,7 +61,7 @@ public final class AgentVisibilitySystem extends GenericSystem
     /**
      * This is invoked periodically.
      *
-     * @param timeDelta
+     * @param       timeDelta
      */
     @Override
     protected void update(int timeDelta)
@@ -66,8 +73,7 @@ public final class AgentVisibilitySystem extends GenericSystem
         // doing this though
 
         Collection<Entity> entities = entityManager.getEntitiesWith(
-                AgentID.class,
-                LocalID.class,
+                AgentIdentifiers.class,
                 Position.class,
                 Visibility.class);
 
@@ -77,9 +83,7 @@ public final class AgentVisibilitySystem extends GenericSystem
             // entity is 'blind' by not having a view component:
             if (!thisEntity.has(View.class)) { continue; }
 
-            // or by having the 'blind' option set
             View thisView = thisEntity.get(View.class);
-            if (thisView.isBlind) { continue; }
 
             // get the position for distance calcs later on
             GWVector thisPostion = thisEntity.get(Position.class).position;
@@ -93,8 +97,9 @@ public final class AgentVisibilitySystem extends GenericSystem
 
                 boolean canSee = false;
 
-                // if the other entity is visible by its Visibility component
-                if (otherEntity.get(Visibility.class).visible)
+                // we need to be able to see the other entity, and it needs to be visible in general
+                // then we can check if it is also in view-distance
+                if (!thisView.isBlind && otherEntity.get(Visibility.class).visible)
                 {
                     // get this entities view distance
                     // calculate the distance between both entities
@@ -110,13 +115,11 @@ public final class AgentVisibilitySystem extends GenericSystem
                 // if this entity can see the other one:
                 if (canSee)
                 {
-                    // check if the other entity is in this entities
-                    // can-see list, if not,
-                    if (!thisView.agentsICanSee.contains(otherEntity))
+                    // check if this entity did not yet see the other entity
+                    if (!thisView.visibleAgents.contains(otherEntity))
                     {
-                        // 1) add it to the list, (remove it from cannot-see list)
-                        thisView.agentsICanSee.add(otherEntity);
-                        thisView.agentsICannotSee.remove(otherEntity);
+                        // 1) add it to the list
+                        thisView.visibleAgents.add(otherEntity);
 
                         // 2) trigger a OnCanSee event
                         trigger(new CanSeeEvent(thisEntity, otherEntity));
@@ -125,13 +128,11 @@ public final class AgentVisibilitySystem extends GenericSystem
                 // if this entity cannot see the other one:
                 else
                 {
-                    // check if the other entity is in this entities
-                    // cannot-see list, if not,
-                    if (!thisView.agentsICanSee.contains(otherEntity))
+                    // check if this entity could see the other entity before
+                    if (thisView.visibleAgents.contains(otherEntity))
                     {
-                        // 1) add it to the list, (remove it from can-see list)
-                        thisView.agentsICannotSee.add(otherEntity);
-                        thisView.agentsICanSee.remove(otherEntity);
+                        // 1) remove it from list
+                        thisView.visibleAgents.remove(otherEntity);
 
                         // 2) trigger a OnLostSight event
                         trigger(new LostSightEvent(thisEntity, otherEntity));

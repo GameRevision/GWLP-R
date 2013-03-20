@@ -10,7 +10,7 @@ package com.gamerevision.gwlpr.mapshard.models.enums;
  * 
  * @author _rusty
  */
-public enum SpawningFaction 
+public enum SpawnType 
 {
     Player              (1886151033), // "play"
     NPC                 (1852796515), // "nonc"
@@ -19,7 +19,7 @@ public enum SpawningFaction
     
     private final int intString;
 
-    private SpawningFaction(int intString) 
+    private SpawnType(int intString) 
     {    
         this.intString = intString;
     }
