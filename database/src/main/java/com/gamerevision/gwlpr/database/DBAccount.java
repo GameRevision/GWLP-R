@@ -5,9 +5,9 @@
 package com.gamerevision.gwlpr.database;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  * This class handles account related database access and provides independent
  * properties to encapsulate sql related code.
  * 
- * @author miracle444
+ * @author miracle444, _rusty
  */
 public class DBAccount
 {
@@ -27,8 +27,8 @@ public class DBAccount
     private String password;
     
     
-    /*
-     * Returns all login information (null if none exist).
+    /**
+     * Constructor.
      */
     private DBAccount(ResultSet resultSet)
     {
@@ -44,35 +44,55 @@ public class DBAccount
     }
     
     
+    /**
+     * Getter.
+     * 
+     * @return 
+     */
     public int getId()
     {
         return id;
     }
     
     
+    /**
+     * Getter.
+     * 
+     * @return 
+     */
     public String getPassword()
     {
         return password;
     }
     
     
+    /**
+     * Factory method.
+     * Loads an account from the db and creates a new dbaccount object.
+     * 
+     * @param       connectionProvider
+     * @param       eMail
+     * @return      The new DBAccount, or null if none was found.
+     */
     public static DBAccount getByEMail(DatabaseConnectionProvider connectionProvider, String eMail)
     {
         DBAccount result = null;
         
-        try
+        String query = "SELECT * FROM accounts WHERE EMail = ?";        
+
+        try (Connection connection = connectionProvider.getConnection(); 
+             PreparedStatement preStm = connection.prepareStatement(query)) 
         {
-            Connection connection = connectionProvider.getConnection();
-            Statement stmt = connection.createStatement();
-            ResultSet resultSet = stmt.executeQuery("SELECT * FROM accounts WHERE EMail='"+eMail+"';");
-            if (resultSet.next())
+            preStm.setString(1, eMail);
+            
+            try (ResultSet resultSet = preStm.executeQuery())
             {
-                result = new DBAccount(resultSet);
+                if (resultSet.next())
+                {
+                    result = new DBAccount(resultSet);
+                }
             }
-            resultSet.close();
-            stmt.close();
-            connection.close();
-        } 
+        }
         catch (SQLException ex) 
         {
             LOGGER.error("SQL error in getByEMail", ex);

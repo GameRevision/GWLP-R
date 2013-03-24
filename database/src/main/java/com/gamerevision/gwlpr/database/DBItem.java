@@ -12,57 +12,98 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * This class handles character related database access and provides independent
+ * This class handles item related database access and provides independent
  * properties to encapsulate sql related code.
+ * 
+ * TODO: complete me!
  *
- * @author miracle444
+ * @author miracle444, _rusty
  */
 public class DBItem
 {
 
     private static Logger LOGGER = LoggerFactory.getLogger(DBItem.class);
 
+    
+    /**
+     * Constructor.
+     */
     private DBItem(ResultSet resultSet)
     {
 
     }
 
+    
+    /**
+     * Factory method.
+     * Load all items of a certain character's inventory page
+     * 
+     * @param       connectionProvider
+     * @param       characterId
+     * @param       inventoryPage
+     * @return      The items, or an empty list if none were found.
+     */
     private static List<DBItem> getItemsByInventory(DatabaseConnectionProvider connectionProvider, int characterId, int inventoryPage)
     {
         final List<DBItem> result = new ArrayList<>();
+        
+        String query = "SELECT * FROM items WHERE CharacterID = ? AND InventoryPage = ?";
 
         try
         {
-            Connection connection = connectionProvider.getConnection();
-            Statement stmt = connection.createStatement();
-            ResultSet resultSet = stmt.executeQuery("SELECT * FROM items WHERE CharacterID="+characterId+" AND InventoryPage="+inventoryPage+";");
-
-            while (resultSet.next())
+            try (Connection connection = connectionProvider.getConnection();
+                PreparedStatement preStm = connection.prepareStatement(query))
             {
-                result.add(new DBItem(resultSet));
+                preStm.setInt(1, characterId);
+                preStm.setInt(2, inventoryPage);
+                
+                try (ResultSet resultSet = preStm.executeQuery())
+                {
+                    while (resultSet.next())
+                    {
+                        result.add(new DBItem(resultSet));
+                    }
+                }
             }
-
-            resultSet.close();
-            stmt.close();
-            connection.close();
         }
         catch (SQLException ex)
         {
             LOGGER.error("SQL error in getItemsByInventory", ex);
         }
+        
+        if (result.isEmpty())
+        {
+            LOGGER.error(String.format("We dont have any items for character [%s] with inventory-page [%s]", characterId, inventoryPage));
+        }
 
         return result;
     }
 
+    
+    /**
+     * Factory method.
+     * Load all items of a certain character's backpack
+     * 
+     * @param       connectionProvider
+     * @param       characterId
+     * @return      The items, or an empty list if none were found.
+     */
     public static List<DBItem> getBackpackItems(DatabaseConnectionProvider connectionProvider, int characterId)
     {
         return getItemsByInventory(connectionProvider, characterId, 0);
     }
 
 
+    /**
+     * Factory method.
+     * Load all items of a certain character's equipped-items
+     * 
+     * @param       connectionProvider
+     * @param       characterId
+     * @return      The items, of an empty list if none were found.
+     */
     public static List<DBItem> getEquippedItems(DatabaseConnectionProvider connectionProvider, int characterId)
     {
         return getItemsByInventory(connectionProvider, characterId, 1);
     }
-
 }
