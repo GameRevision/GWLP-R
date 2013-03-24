@@ -65,7 +65,7 @@ public class DBMap
     
     
     /**
-     * Constrcutor.
+     * Constructor.
      */
     private DBMap(ResultSet resultSet, Collection<DBSpawn> spawns)
     {
@@ -95,10 +95,10 @@ public class DBMap
      * @param       id                      The ID (database internal) of the map.
      * @return      The map with all needed data, or null if none was found.
      */
-    public DBMap getByDbId(DatabaseConnectionProvider connectionProvider, int id)
+    public static DBMap getByDbId(DatabaseConnectionProvider connectionProvider, int id)
     {
         DBMap result = null;
-        Collection<DBSpawn> spawns = getSpawnsById(connectionProvider, id);
+        Collection<DBSpawn> mapSpawns = getSpawnsById(connectionProvider, id);
        
         String queryMap = "SELECT * FROM maps WHERE ID = ?";
         
@@ -111,7 +111,7 @@ public class DBMap
             {
                 if (resultSet.next())
                 {
-                    result = new DBMap(resultSet, spawns);
+                    result = new DBMap(resultSet, mapSpawns);
                 }
             }
         }
@@ -198,7 +198,7 @@ public class DBMap
     /**
      * Helper.
      */
-    private Collection<DBSpawn> getSpawnsById(DatabaseConnectionProvider connectionProvider, int id)
+    private static Collection<DBSpawn> getSpawnsById(DatabaseConnectionProvider connectionProvider, int id)
     {
         Collection<DBSpawn> result = new ArrayList<>();
         
@@ -213,7 +213,7 @@ public class DBMap
             {
                 while (resultSet.next())
                 {
-                    spawns.add(new DBSpawn(resultSet));
+                    result.add(new DBSpawn(resultSet));
                 }
             }
         }
