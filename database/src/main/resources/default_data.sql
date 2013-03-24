@@ -648,10 +648,10 @@ DROP TABLE IF EXISTS `spawnpoints`;
 CREATE TABLE `spawnpoints` (
   `ID` int(4) NOT NULL AUTO_INCREMENT,
   `MapID` int(4) NOT NULL,
-  `x` float(4,0) NOT NULL,
-  `y` float(4,0) NOT NULL,
-  `plane` int(4) NOT NULL,
-  `radius` int(4) NOT NULL,
+  `X` float(4,0) NOT NULL,
+  `Y` float(4,0) NOT NULL,
+  `Plane` int(4) NOT NULL,
+  `Radius` int(4) NOT NULL,
   PRIMARY KEY (`ID`,`MapID`),
   KEY `SpawnPointsMapID` (`MapID`),
   CONSTRAINT `SpawnPointsMapID` FOREIGN KEY (`MapID`) REFERENCES `maps` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
