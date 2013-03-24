@@ -153,7 +153,7 @@ public class Handshake extends GenericShardlet
         // to create a new entity.
         
         // remember: better have no business logic in the controllers!
-        LoadCharacter loader = new LoadCharacter(db, attach.getCharacterId(), mapData.getSpawn());
+        LoadCharacter loader = new LoadCharacter(db, attach.getCharacterId(), mapData.getRandomSpawn());
         
         Entity player = loader.createPlayerEntityFor(entityManager);
         
