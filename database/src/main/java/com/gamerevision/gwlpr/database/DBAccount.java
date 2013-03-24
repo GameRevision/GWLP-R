@@ -45,28 +45,6 @@ public class DBAccount
     
     
     /**
-     * Getter.
-     * 
-     * @return 
-     */
-    public int getId()
-    {
-        return id;
-    }
-    
-    
-    /**
-     * Getter.
-     * 
-     * @return 
-     */
-    public String getPassword()
-    {
-        return password;
-    }
-    
-    
-    /**
      * Factory method.
      * Loads an account from the db and creates a new dbaccount object.
      * 
@@ -104,5 +82,27 @@ public class DBAccount
         }
         
         return result;
+    }
+    
+    
+    /**
+     * Getter.
+     * 
+     * @return 
+     */
+    public int getId()
+    {
+        return id;
+    }
+    
+    
+    /**
+     * Getter.
+     * 
+     * @return 
+     */
+    public String getPassword()
+    {
+        return password;
     }
 }
