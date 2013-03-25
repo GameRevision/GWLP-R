@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author _rusty
  */
-public class DBMap 
+public class MapEntity 
 {
     
     /**
@@ -52,7 +52,7 @@ public class DBMap
     }
     
     
-    private static Logger LOGGER = LoggerFactory.getLogger(DBMap.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(MapEntity.class);
      
     private int id;
     private int gameId;
@@ -67,7 +67,7 @@ public class DBMap
     /**
      * Constructor.
      */
-    private DBMap(ResultSet resultSet, Collection<DBSpawn> spawns)
+    private MapEntity(ResultSet resultSet, Collection<DBSpawn> spawns)
     {
         try
         {
@@ -95,9 +95,9 @@ public class DBMap
      * @param       id                      The ID (database internal) of the map.
      * @return      The map with all needed data, or null if none was found.
      */
-    public static DBMap getByDbId(DatabaseConnectionProvider connectionProvider, int id)
+    public static MapEntity getByDbId(DatabaseConnectionProvider connectionProvider, int id)
     {
-        DBMap result = null;
+        MapEntity result = null;
         Collection<DBSpawn> mapSpawns = getSpawnsById(connectionProvider, id);
        
         String queryMap = "SELECT * FROM maps WHERE ID = ?";
@@ -111,7 +111,7 @@ public class DBMap
             {
                 if (resultSet.next())
                 {
-                    result = new DBMap(resultSet, mapSpawns);
+                    result = new MapEntity(resultSet, mapSpawns);
                 }
             }
         }
@@ -202,7 +202,7 @@ public class DBMap
     {
         Collection<DBSpawn> result = new ArrayList<>();
         
-        String query = "SELECT * FROM spawns WHERE MapID = ?";
+        String query = "SELECT * FROM spawnpoints WHERE MapID = ?";
         
         try (Connection connection = connectionProvider.getConnection(); 
              PreparedStatement preStmSpawns = connection.prepareStatement(query)) 

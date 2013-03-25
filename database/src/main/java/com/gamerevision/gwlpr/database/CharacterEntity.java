@@ -18,10 +18,10 @@ import org.slf4j.LoggerFactory;
  * 
  * @author miracle444, _rusty
  */
-public class DBCharacter
+public class CharacterEntity
 {
     
-    private static Logger LOGGER = LoggerFactory.getLogger(DBCharacter.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(CharacterEntity.class);
 
     private String name;
     private int id;
@@ -41,7 +41,7 @@ public class DBCharacter
     /**
      * Constructor. 
      */
-    private DBCharacter(ResultSet resultSet)
+    private CharacterEntity(ResultSet resultSet)
     {
         try
         {
@@ -83,7 +83,7 @@ public class DBCharacter
      * @param       secondary
      * @return      The newly created character, or null if none was created.
      */
-    public static DBCharacter createNewCharacter(
+    public static CharacterEntity createNewCharacter(
             DatabaseConnectionProvider connectionProvider, 
             int accountId, 
             String characterName, 
@@ -139,9 +139,9 @@ public class DBCharacter
      * @param       accountId
      * @return      The characters or an empty list.
      */
-    public static List<DBCharacter> getAllCharacters(DatabaseConnectionProvider connectionProvider, int accountId)
+    public static List<CharacterEntity> getAllCharacters(DatabaseConnectionProvider connectionProvider, int accountId)
     {
-        final List<DBCharacter> result = new ArrayList<>();
+        final List<CharacterEntity> result = new ArrayList<>();
         
         String query = "SELECT * FROM characters WHERE AccountID = ?";
         
@@ -154,7 +154,7 @@ public class DBCharacter
             {
                 while (resultSet.next())
                 {
-                    result.add(new DBCharacter(resultSet));
+                    result.add(new CharacterEntity(resultSet));
                 }
             }
         }
@@ -180,9 +180,9 @@ public class DBCharacter
      * @param       characterName
      * @return      The character, or null if none was found.
      */
-    public static DBCharacter getCharacter(DatabaseConnectionProvider connectionProvider, String characterName)
+    public static CharacterEntity getCharacter(DatabaseConnectionProvider connectionProvider, String characterName)
     {
-        DBCharacter result = null;
+        CharacterEntity result = null;
         
         String query = "SELECT * FROM characters WHERE Name = ?";
         
@@ -196,7 +196,7 @@ public class DBCharacter
             {
                 if (resultSet.next())
                 {
-                    result = new DBCharacter(resultSet);
+                    result = new CharacterEntity(resultSet);
                 }
             }
         }
@@ -222,9 +222,9 @@ public class DBCharacter
      * @param       characterId
      * @return      The character or null if none was found.
      */
-    public static DBCharacter getCharacter(DatabaseConnectionProvider connectionProvider, int characterId)
+    public static CharacterEntity getCharacter(DatabaseConnectionProvider connectionProvider, int characterId)
     {
-        DBCharacter result = null;
+        CharacterEntity result = null;
         
         String query = "SELECT * FROM characters WHERE ID = ?";
         
@@ -238,7 +238,7 @@ public class DBCharacter
             {
                 if (resultSet.next())
                 {
-                    result = new DBCharacter(resultSet);
+                    result = new CharacterEntity(resultSet);
                 }
             }
         }

@@ -18,10 +18,10 @@ import org.slf4j.LoggerFactory;
  * 
  * @author miracle444, _rusty
  */
-public class DBAccount
+public class AccountEntity
 {
     
-    private static Logger LOGGER = LoggerFactory.getLogger(DBAccount.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(AccountEntity.class);
     
     private int id;
     private String password;
@@ -30,7 +30,7 @@ public class DBAccount
     /**
      * Constructor.
      */
-    private DBAccount(ResultSet resultSet)
+    private AccountEntity(ResultSet resultSet)
     {
         try
         {
@@ -52,9 +52,9 @@ public class DBAccount
      * @param       eMail
      * @return      The new DBAccount, or null if none was found.
      */
-    public static DBAccount getByEMail(DatabaseConnectionProvider connectionProvider, String eMail)
+    public static AccountEntity getByEMail(DatabaseConnectionProvider connectionProvider, String eMail)
     {
-        DBAccount result = null;
+        AccountEntity result = null;
         
         String query = "SELECT * FROM accounts WHERE EMail = ?";        
 
@@ -67,7 +67,7 @@ public class DBAccount
             {
                 if (resultSet.next())
                 {
-                    result = new DBAccount(resultSet);
+                    result = new AccountEntity(resultSet);
                 }
             }
         }

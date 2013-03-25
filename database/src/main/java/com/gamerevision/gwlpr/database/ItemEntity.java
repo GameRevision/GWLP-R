@@ -19,16 +19,16 @@ import org.slf4j.LoggerFactory;
  *
  * @author miracle444, _rusty
  */
-public class DBItem
+public class ItemEntity
 {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(DBItem.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(ItemEntity.class);
 
     
     /**
      * Constructor.
      */
-    private DBItem(ResultSet resultSet)
+    private ItemEntity(ResultSet resultSet)
     {
 
     }
@@ -43,9 +43,9 @@ public class DBItem
      * @param       inventoryPage
      * @return      The items, or an empty list if none were found.
      */
-    private static List<DBItem> getItemsByInventory(DatabaseConnectionProvider connectionProvider, int characterId, int inventoryPage)
+    private static List<ItemEntity> getItemsByInventory(DatabaseConnectionProvider connectionProvider, int characterId, int inventoryPage)
     {
-        final List<DBItem> result = new ArrayList<>();
+        final List<ItemEntity> result = new ArrayList<>();
         
         String query = "SELECT * FROM items WHERE CharacterID = ? AND InventoryPage = ?";
 
@@ -61,7 +61,7 @@ public class DBItem
                 {
                     while (resultSet.next())
                     {
-                        result.add(new DBItem(resultSet));
+                        result.add(new ItemEntity(resultSet));
                     }
                 }
             }
@@ -88,7 +88,7 @@ public class DBItem
      * @param       characterId
      * @return      The items, or an empty list if none were found.
      */
-    public static List<DBItem> getBackpackItems(DatabaseConnectionProvider connectionProvider, int characterId)
+    public static List<ItemEntity> getBackpackItems(DatabaseConnectionProvider connectionProvider, int characterId)
     {
         return getItemsByInventory(connectionProvider, characterId, 0);
     }
@@ -102,7 +102,7 @@ public class DBItem
      * @param       characterId
      * @return      The items, of an empty list if none were found.
      */
-    public static List<DBItem> getEquippedItems(DatabaseConnectionProvider connectionProvider, int characterId)
+    public static List<ItemEntity> getEquippedItems(DatabaseConnectionProvider connectionProvider, int characterId)
     {
         return getItemsByInventory(connectionProvider, characterId, 1);
     }
