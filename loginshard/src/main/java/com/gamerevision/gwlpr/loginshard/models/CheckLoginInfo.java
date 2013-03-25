@@ -4,8 +4,8 @@
 
 package com.gamerevision.gwlpr.loginshard.models;
 
-import com.gamerevision.gwlpr.database.DBAccount;
-import com.gamerevision.gwlpr.database.DBCharacter;
+import com.gamerevision.gwlpr.database.AccountEntity;
+import com.gamerevision.gwlpr.database.CharacterEntity;
 import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +21,8 @@ public class CheckLoginInfo
     
     private static Logger LOGGER = LoggerFactory.getLogger(CheckLoginInfo.class);
     
-    private DBAccount account;
-    private DBCharacter chara;
+    private AccountEntity account;
+    private CharacterEntity chara;
     private int errorCode = 0;
     
     
@@ -34,8 +34,8 @@ public class CheckLoginInfo
             String eMail,  
             String charName)
     {
-        this.account = DBAccount.getByEMail(connectionProvider, eMail);
-        this.chara = DBCharacter.getCharacter(connectionProvider, charName);
+        this.account = AccountEntity.getByEMail(connectionProvider, eMail);
+        this.chara = CharacterEntity.getCharacter(connectionProvider, charName);
     }
     
     

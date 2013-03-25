@@ -74,10 +74,9 @@ public class MapShardDispatch extends GenericShardlet
         // handles that instance
         // ... this is probably a TODO!
         
+        // TODO: BUG THIS SHOULD NOT BE TAKEN FROM THIS PACKET DIRECTLY,
+        // AS IT CAN BE ABUSED!!
         int mapId = action.getGameMapId();
-        
-        // DEBUG: Using a static map-ID
-        mapId = (mapId == 0) ? mapId : 248;
         
         HashMap<String,String> params = new HashMap<>();
         params.put("MapId", String.valueOf(mapId));

@@ -6,8 +6,8 @@ package com.gamerevision.gwlpr.loginshard.controllers;
 
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P004_AccountLoginAction;
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P010_UnknownAction;
-import com.gamerevision.gwlpr.database.DBAccount;
-import com.gamerevision.gwlpr.database.DBCharacter;
+import com.gamerevision.gwlpr.database.AccountEntity;
+import com.gamerevision.gwlpr.database.CharacterEntity;
 import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.loginshard.ContextAttachment;
 import com.gamerevision.gwlpr.loginshard.SessionAttachment;
@@ -105,8 +105,8 @@ public class Login extends GenericShardlet
 
         // update the attachment with the data (because we now know 
         // that it is correct)
-        attach.setAccountId(DBAccount.getByEMail(db, email).getId());        
-        attach.setCharacterId(DBCharacter.getCharacter(db, characterName).getId());
+        attach.setAccountId(AccountEntity.getByEMail(db, email).getId());        
+        attach.setCharacterId(CharacterEntity.getCharacter(db, characterName).getId());
 
         // send all login specific packets as a reply
         loginView.sendLoginInfo(session, attach.getAccountId());
@@ -129,7 +129,7 @@ public class Login extends GenericShardlet
         SessionAttachment attach = (SessionAttachment) session.getAttachment();
         
         attach.setLoginCount(action.getUnknown1());
-        attach.setCharacterId(DBCharacter.getCharacter(db, new String(action.getUnknown2())).getId());
+        attach.setCharacterId(CharacterEntity.getCharacter(db, new String(action.getUnknown2())).getId());
         
         loginView.sendFriendInfo(session, 0);
     }

@@ -8,7 +8,7 @@ import com.gamerevision.gwlpr.actions.loginserver.stoc.P007_UnknownAction;
 import com.gamerevision.gwlpr.actions.loginserver.stoc.P017_AccountPermissionsAction;
 import com.gamerevision.gwlpr.actions.loginserver.stoc.P020_FriendsListEndAction;
 import com.gamerevision.gwlpr.actions.loginserver.stoc.P022_AccountGuiInfoAction;
-import com.gamerevision.gwlpr.database.DBCharacter;
+import com.gamerevision.gwlpr.database.CharacterEntity;
 import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.loginshard.SessionAttachment;
 import com.realityshard.shardlet.Session;
@@ -60,10 +60,10 @@ public class LoginView
         LOGGER.debug("Sending character info");
         
         // get the characters
-        List<DBCharacter> characters = DBCharacter.getAllCharacters(db, accountID);
+        List<CharacterEntity> characters = CharacterEntity.getAllCharacters(db, accountID);
         
         // and build the characterInfo actions
-        for (DBCharacter character : characters) 
+        for (CharacterEntity character : characters) 
         {
             // assemble the action
             P007_UnknownAction characterInfo = new P007_UnknownAction();
@@ -77,7 +77,7 @@ public class LoginView
 
             ByteBuffer buffer = ByteBuffer.allocate(100).order(ByteOrder.LITTLE_ENDIAN);
             buffer.putShort((short) 6);
-            buffer.putShort((short) 248);
+            buffer.putShort((short) character.getLastOutpost());
             buffer.put(new byte[] {0x33, 0x36, 0x31, 0x30});
 
             buffer.put((byte) ((character.getSkin() << 5) | (character.getHeight() << 1) | character.getSex()));
