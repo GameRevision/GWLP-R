@@ -9,7 +9,7 @@ import com.gamerevision.gwlpr.actions.gameserver.stoc.P378_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.P379_CharacterCreateHeadAction;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.P380_CharacterCreateAcknowledgeAction;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.P381_UnknownAction;
-import com.gamerevision.gwlpr.database.DBCharacter;
+import com.gamerevision.gwlpr.database.CharacterEntity;
 import com.realityshard.shardlet.Session;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -76,7 +76,7 @@ public class CharacterCreationView
     /**
      * Step 4. (final step)
      */
-    public static void charCreateFinish(Session session, DBCharacter chara)
+    public static void charCreateFinish(Session session, CharacterEntity chara)
     {
         P378_UnknownAction sAction = new P378_UnknownAction();
         sAction.init(session);

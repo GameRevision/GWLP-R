@@ -4,7 +4,7 @@
 
 package com.gamerevision.gwlpr.mapshard.controllers;
 
-import com.gamerevision.gwlpr.database.DBMap;
+import com.gamerevision.gwlpr.database.MapEntity;
 import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.mapshard.ContextAttachment;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
@@ -102,10 +102,10 @@ public class StartUp extends GenericShardlet
      */
     private MapData loadMapData(DatabaseConnectionProvider db, int dbMapID)
     {
-        DBMap dbMap = DBMap.getByDbId(db, dbMapID);
+        MapEntity dbMap = MapEntity.getByDbId(db, dbMapID);
         Collection<GWVector> convertedSpawns = new ArrayList<>();
 
-        for (DBMap.DBSpawn dbSpawn : dbMap.getSpawns()) 
+        for (MapEntity.DBSpawn dbSpawn : dbMap.getSpawns()) 
         {
             convertedSpawns.add(new GWVector(dbSpawn.posX, dbSpawn.posY, dbSpawn.planeZ));
         }

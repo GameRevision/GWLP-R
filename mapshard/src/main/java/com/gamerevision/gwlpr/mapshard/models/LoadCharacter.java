@@ -4,7 +4,7 @@
 
 package com.gamerevision.gwlpr.mapshard.models;
 
-import com.gamerevision.gwlpr.database.DBCharacter;
+import com.gamerevision.gwlpr.database.CharacterEntity;
 import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
@@ -54,7 +54,7 @@ public class LoadCharacter
     public LoadCharacter(DatabaseConnectionProvider db, int charID, GWVector mapSpawn)
     {
         // load the database representation of the character
-        DBCharacter dBChar = DBCharacter.getCharacter(db, charID);
+        CharacterEntity dBChar = CharacterEntity.getCharacter(db, charID);
 
         // load the basic character identification data
         charName = dBChar.getName();
