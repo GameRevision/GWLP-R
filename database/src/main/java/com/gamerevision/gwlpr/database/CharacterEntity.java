@@ -26,6 +26,8 @@ public class CharacterEntity
     private String name;
     private int id;
     
+    private int lastOutpost;
+    
     private byte skin;
     private byte sex;
     private byte height;
@@ -47,6 +49,8 @@ public class CharacterEntity
         {
             this.name = resultSet.getString("Name");
             this.id = resultSet.getInt("ID");
+            
+            this.lastOutpost = resultSet.getInt("LastOutpost");
             
             this.skin = resultSet.getByte("Skin");
             this.sex = resultSet.getByte("Sex");
@@ -97,7 +101,7 @@ public class CharacterEntity
             byte primary,
             byte secondary)
     {
-        String query = "INSERT INTO characters (AccountID,Name,Sex,Height,Skin,Haircolor,Face,Hairstyle,Campaign,Primary,Secondary) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        String query = "INSERT INTO characters (AccountID,LastOutpost,Name,Sex,Height,Skin,Haircolor,Face,Hairstyle,Campaign,Primary,Secondary) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
         
         int rows = 0;
             
@@ -105,16 +109,17 @@ public class CharacterEntity
              PreparedStatement ps = connection.prepareStatement(query))
         {
             ps.setInt(1, accountId);
-            ps.setString(2, characterName);
-            ps.setByte(3, sex);
-            ps.setByte(4, height);
-            ps.setByte(5, skin);
-            ps.setByte(6, haircolor);
-            ps.setByte(7, face);
-            ps.setByte(8, hairstyle);
-            ps.setByte(9, campaign);
-            ps.setByte(10, primary);
-            ps.setByte(11, secondary);
+            ps.setInt(2, 248); // TODO BUG: the first outpost is always GTB
+            ps.setString(3, characterName);
+            ps.setByte(4, sex);
+            ps.setByte(5, height);
+            ps.setByte(6, skin);
+            ps.setByte(7, haircolor);
+            ps.setByte(8, face);
+            ps.setByte(9, hairstyle);
+            ps.setByte(10, campaign);
+            ps.setByte(11, primary);
+            ps.setByte(12, secondary);
             rows = ps.executeUpdate();
         }
         catch (SQLException ex) 
@@ -275,6 +280,17 @@ public class CharacterEntity
     public int getId()
     {
         return id;
+    }
+
+    
+    /**
+     * Getter.
+     * 
+     * @return 
+     */
+    public int getLastOutpost() 
+    {
+        return lastOutpost;
     }
     
 
