@@ -146,13 +146,19 @@ public class InstanceLoad extends GenericShardlet
     {
         LOGGER.debug("Got the instance load request spawn point packet");
         Session session = action.getSession();
+        SessionAttachment attachment = (SessionAttachment) session.getAttachment();
+
+        // fetch the players postion (this was already initialized by the handshake controller,
+        // when it instructed some other class to create the entity
+        Entity et = attachment.getEntity();
+        GWVector pos = et.get(Position.class).position;
 
 
         P391_InstanceLoadSpawnPointAction instanceLoadSpawnPoint = new P391_InstanceLoadSpawnPointAction();
         instanceLoadSpawnPoint.init(session);
         instanceLoadSpawnPoint.setMapFile(mapData.getMapFileHash());
-        instanceLoadSpawnPoint.setPosition(mapData.getSpawn().toFloatArray());
-        instanceLoadSpawnPoint.setPlane(mapData.getSpawn().getZPlane());
+        instanceLoadSpawnPoint.setPosition(pos.toFloatArray());
+        instanceLoadSpawnPoint.setPlane(pos.getZPlane());
         instanceLoadSpawnPoint.setisCinematic((byte) 0);
         instanceLoadSpawnPoint.setData5((byte) 0);
 
