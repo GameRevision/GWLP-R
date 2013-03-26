@@ -5,7 +5,6 @@
 package com.gamerevision.gwlpr.actions.intershardcom;
 
 import com.realityshard.shardlet.EventAggregator;
-import com.realityshard.shardlet.Session;
 import com.realityshard.shardlet.utils.GenericTriggerableAction;
 
 /**
@@ -25,16 +24,15 @@ public final class ISC_AcceptClientRequestAction extends GenericTriggerableActio
     /**
      * Constructor.
      * 
-     * @param       session                 The session to be accepted by the MapShard.
      * @param       key1                    The first security key (the client will
      *                                      use that to connect with the map shard)
      * @param       key2                    The second security key
      * @param       accountId               The account ID of the client
      * @param       characterId             The character ID of the client
      */
-    public ISC_AcceptClientRequestAction(Session session, int key1, int key2, int accountId, int characterId)
+    public ISC_AcceptClientRequestAction(int key1, int key2, int accountId, int characterId)
     {
-        init(session);
+        init(null);
         this.key1 = key1;
         this.key2 = key2;
         this.accountId = accountId;
