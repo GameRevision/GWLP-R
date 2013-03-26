@@ -12,7 +12,6 @@ import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,8 +44,8 @@ public class DispatcherView
      * TODO: BUG: IP and Port are STATIC!
      * 
      * @param       session
-     * @param ip 
-     * @param port 
+     * @param       ip 
+     * @param       port 
      * @param       key1
      * @param       key2
      * @param       mapId 
@@ -63,7 +62,10 @@ public class DispatcherView
         ByteBuffer buf = ByteBuffer.allocate(24);
         buf.order(ByteOrder.LITTLE_ENDIAN);
         buf.putShort((short) 2);
-        buf.putShort((short) port);
+        buf.order(ByteOrder.BIG_ENDIAN);
+        buf.putShort((short) port); // DONT FORGET THIS NEEDS TO BE BIG ENDIAN!!!!
+        buf.order(ByteOrder.LITTLE_ENDIAN);
+        
         try { buf.put(Inet4Address.getByName(ip).getAddress()); }
         catch (UnknownHostException ex) 
         {
