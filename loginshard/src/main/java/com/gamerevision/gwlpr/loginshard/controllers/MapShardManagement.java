@@ -32,6 +32,7 @@ public class MapShardManagement extends GenericShardlet
     private static Logger LOGGER = LoggerFactory.getLogger(MapShardManagement.class);
     
     private final Map<Integer, RemoteShardletContext> mapShards;
+    private final Map<Integer, Session> waitingClients;
     private DispatcherView dispatcherView;
     
     
@@ -41,6 +42,7 @@ public class MapShardManagement extends GenericShardlet
     public MapShardManagement()
     {
         mapShards = new HashMap<>();
+        waitingClients = new HashMap<>();
     }
     
     
@@ -120,6 +122,8 @@ public class MapShardManagement extends GenericShardlet
         
         mapShard.sendTriggerableAction(new ISC_AcceptClientRequestAction(1, 2, accId, charId));
         
+        waitingClients.put(accId, session);
+        
         // note that our second method will be invoked when the map shard replies.
     }
     
@@ -134,7 +138,14 @@ public class MapShardManagement extends GenericShardlet
     public void onAcceptClientReply(ISC_AcceptClientReplyAction action)
     {
         LOGGER.debug("Got the accept session reply action");
-        Session session = action.getSession();
+        // we need to retrieve the session from our saved ones...
+        Session session = waitingClients.get(action.getAccountId());
+        
+        // failcheck
+        if (session == null) { return; }
+        
+        // remove from waiting clients
+        waitingClients.remove(action.getAccountId());
         
         if (!action.acceptedSession())
         {
