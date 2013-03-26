@@ -6,6 +6,8 @@ package com.gamerevision.gwlpr.loginshard.controllers;
 
 import com.gamerevision.gwlpr.actions.intershardcom.ISC_AcceptClientReplyAction;
 import com.gamerevision.gwlpr.actions.intershardcom.ISC_AcceptClientRequestAction;
+import com.gamerevision.gwlpr.actions.intershardcom.ISC_EmptyMapshardNotifyAction;
+import com.gamerevision.gwlpr.actions.intershardcom.ISC_ShutdownMapshardRequestAction;
 import com.gamerevision.gwlpr.actions.loginserver.ctos.P041_CharacterPlayInfoAction;
 import com.gamerevision.gwlpr.loginshard.SessionAttachment;
 import com.gamerevision.gwlpr.loginshard.views.DispatcherView;
@@ -24,10 +26,10 @@ import org.slf4j.LoggerFactory;
  * 
  * @author miracle444, _rusty
  */
-public class MapShardDispatch extends GenericShardlet
+public class MapShardManagement extends GenericShardlet
 {
     
-    private static Logger LOGGER = LoggerFactory.getLogger(MapShardDispatch.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(MapShardManagement.class);
     
     private final Map<Integer, RemoteShardletContext> mapShards;
     private DispatcherView dispatcherView;
@@ -36,7 +38,7 @@ public class MapShardDispatch extends GenericShardlet
     /**
      * Constructor.
      */
-    public MapShardDispatch()
+    public MapShardManagement()
     {
         mapShards = new HashMap<>();
     }
@@ -116,7 +118,7 @@ public class MapShardDispatch extends GenericShardlet
         int accId = attach.getAccountId();
         int charId = attach.getCharacterId();
         
-        mapShard.sendTriggerableAction(new ISC_AcceptClientRequestAction(session, 1, 2, accId, charId));
+        mapShard.sendTriggerableAction(new ISC_AcceptClientRequestAction(1, 2, accId, charId));
         
         // note that our second method will be invoked when the map shard replies.
     }
@@ -150,5 +152,31 @@ public class MapShardDispatch extends GenericShardlet
                 1, 
                 2, 
                 action.getMapId());
+    }
+    
+    
+    /**
+     * Event handler.
+     * Triggered when a map shard runs out of clients. We need to decide whether
+     * it should terminate in that case.
+     * 
+     * @param action 
+     */
+    @EventHandler
+    public void onEmptyMapShard(ISC_EmptyMapshardNotifyAction action)
+    {
+        // default behaviour: always terminate instantly
+        
+        RemoteShardletContext mapShard = null;
+        
+        // lets see if we got that map shard:
+        if (mapShards.containsKey(action.getMapId()))
+        {
+            mapShard = mapShards.get(action.getMapId());
+            
+            mapShard.sendTriggerableAction(new ISC_ShutdownMapshardRequestAction());
+            
+            mapShards.remove(action.getMapId());
+        }
     }
 }

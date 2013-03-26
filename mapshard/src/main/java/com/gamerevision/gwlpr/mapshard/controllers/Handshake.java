@@ -111,7 +111,6 @@ public class Handshake extends GenericShardlet
         
         // finally, reply to the action from the login shard
         loginShard.sendTriggerableAction(new ISC_AcceptClientReplyAction(
-                action.getSession(),
                 getShardletContext().getHostAddress(),
                 9112, // TODO BUG where do i get the port from?
                 action.getAccountId(),
