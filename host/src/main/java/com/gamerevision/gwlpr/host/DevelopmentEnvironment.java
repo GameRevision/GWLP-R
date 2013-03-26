@@ -104,7 +104,7 @@ public class DevelopmentEnvironment implements Environment
     {
         GameAppFactory loginshard = new GenericGameAppFactory(
                 "LoginShard",
-                "192.168.1.44",
+                "192.168.1.44", // not used currently
                 250,
                 true,
                 new HashMap<String, String>());

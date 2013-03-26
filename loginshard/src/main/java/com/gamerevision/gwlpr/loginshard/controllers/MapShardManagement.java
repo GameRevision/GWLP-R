@@ -165,18 +165,18 @@ public class MapShardManagement extends GenericShardlet
     @EventHandler
     public void onEmptyMapShard(ISC_EmptyMapshardNotifyAction action)
     {
-        // default behaviour: always terminate instantly
+        // default behaviour: ado nothing
         
-        RemoteShardletContext mapShard = null;
-        
-        // lets see if we got that map shard:
-        if (mapShards.containsKey(action.getMapId()))
-        {
-            mapShard = mapShards.get(action.getMapId());
-            
-            mapShard.sendTriggerableAction(new ISC_ShutdownMapshardRequestAction());
-            
-            mapShards.remove(action.getMapId());
-        }
+//        RemoteShardletContext mapShard = null;
+//        
+//        // lets see if we got that map shard:
+//        if (mapShards.containsKey(action.getMapId()))
+//        {
+//            mapShard = mapShards.get(action.getMapId());
+//            
+//            mapShard.sendTriggerableAction(new ISC_ShutdownMapshardRequestAction());
+//            
+//            mapShards.remove(action.getMapId());
+//        }
     }
 }
