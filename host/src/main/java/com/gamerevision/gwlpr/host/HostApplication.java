@@ -44,7 +44,6 @@ public final class HostApplication
         // this can actually be done within the API
         GlobalExecutor.init(executor);
         
-        executor.execute(new NetTest());
         
         // we need a new concurrent network manager here
         // note that this has to be a concrete implementation atm
@@ -58,6 +57,6 @@ public final class HostApplication
         // Note: we are using the dev environment here!
         ContainerFacade container = new ContainerFacade(netMan, new DevelopmentEnvironment());
 
-        while (true) {}
+        while (true) {} // TODO: do we need to process stdio input?
     }
 }
