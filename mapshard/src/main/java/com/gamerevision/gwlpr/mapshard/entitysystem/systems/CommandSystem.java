@@ -152,7 +152,7 @@ public final class CommandSystem extends GenericSystem
      */
     private List<String> getParameters(String message)
     {
-        List<String> words = Arrays.asList(message.split(" "));
+        List<String> words = new ArrayList<>(Arrays.asList(message.split(" ")));
 
         // failcheck
         if (words.size() <= 1) { return new ArrayList<>(); }
