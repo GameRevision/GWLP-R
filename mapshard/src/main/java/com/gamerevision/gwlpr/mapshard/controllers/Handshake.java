@@ -111,7 +111,6 @@ public class Handshake extends GenericShardlet
         
         // finally, reply to the action from the login shard
         loginShard.sendTriggerableAction(new ISC_AcceptClientReplyAction(
-                action.getSession(),
                 getShardletContext().getHostAddress(),
                 9112, // TODO BUG where do i get the port from?
                 action.getAccountId(),
@@ -153,7 +152,7 @@ public class Handshake extends GenericShardlet
         // to create a new entity.
         
         // remember: better have no business logic in the controllers!
-        LoadCharacter loader = new LoadCharacter(db, attach.getCharacterId(), mapData.getSpawn());
+        LoadCharacter loader = new LoadCharacter(db, attach.getCharacterId(), mapData.getRandomSpawn());
         
         Entity player = loader.createPlayerEntityFor(entityManager);
         

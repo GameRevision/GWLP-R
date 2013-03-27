@@ -4,6 +4,7 @@
 
 package com.gamerevision.gwlpr.mapshard.controllers;
 
+import com.gamerevision.gwlpr.database.MapEntity;
 import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.mapshard.ContextAttachment;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
@@ -19,6 +20,8 @@ import com.gamerevision.gwlpr.mapshard.models.MapData;
 import com.realityshard.shardlet.EventAggregator;
 import com.realityshard.shardlet.RemoteShardletContext;
 import com.realityshard.shardlet.utils.GenericShardlet;
+import java.util.ArrayList;
+import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +74,7 @@ public class StartUp extends GenericShardlet
         ClientLookupTable lt = new ClientLookupTable();
 
         // create the map data
-        MapData md = loadMapData(mapId);
+        MapData md = loadMapData(db, mapId);
 
         // finally, create the context attachment
         getShardletContext().setAttachment(
@@ -97,18 +100,16 @@ public class StartUp extends GenericShardlet
      * @param       dbMapID                 The map ID as used for the db records.
      * @return      The completed map data.
      */
-    private MapData loadMapData(int dbMapID)
+    private MapData loadMapData(DatabaseConnectionProvider db, int dbMapID)
     {
-        // TODO make this non-static!
+        MapEntity dbMap = MapEntity.getByDbId(db, dbMapID);
+        Collection<GWVector> convertedSpawns = new ArrayList<>();
 
-        // sample data for GTB
-        // TODO BUG: LOAD THE game map id INSTEAD OF USING THE DB MAPID
-        int mapID = dbMapID;
-        int mapFileHash = 165811;
-        float spawnX = -6558;
-        float spawnY = -6010;
-        int spawnPlane = 0;
+        for (MapEntity.DBSpawn dbSpawn : dbMap.getSpawns()) 
+        {
+            convertedSpawns.add(new GWVector(dbSpawn.posX, dbSpawn.posY, dbSpawn.planeZ));
+        }
 
-        return new MapData(mapID, mapFileHash, new GWVector(spawnX, spawnY, spawnPlane));
+        return new MapData(dbMap.getId(), dbMap.getGameId(), dbMap.getHash(), convertedSpawns);
     }
 }

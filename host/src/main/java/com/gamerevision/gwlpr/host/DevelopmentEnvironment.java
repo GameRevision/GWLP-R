@@ -5,7 +5,7 @@
 package com.gamerevision.gwlpr.host;
 
 import com.gamerevision.gwlpr.loginshard.controllers.Login;
-import com.gamerevision.gwlpr.loginshard.controllers.MapShardDispatch;
+import com.gamerevision.gwlpr.loginshard.controllers.MapShardManagement;
 import com.gamerevision.gwlpr.mapshard.controllers.CharacterCreation;
 import com.gamerevision.gwlpr.mapshard.controllers.Chat;
 import com.gamerevision.gwlpr.mapshard.controllers.Disconnect;
@@ -13,6 +13,7 @@ import com.gamerevision.gwlpr.mapshard.controllers.HeartBeat;
 import com.gamerevision.gwlpr.mapshard.controllers.InstanceLoad;
 import com.gamerevision.gwlpr.mapshard.controllers.MoveRotateClick;
 import com.gamerevision.gwlpr.mapshard.controllers.Ping;
+import com.gamerevision.gwlpr.mapshard.controllers.ShutDown;
 import com.gamerevision.gwlpr.protocol.LoggingFilter;
 import com.gamerevision.gwlpr.protocol.SerialisationFilter;
 import com.realityshard.container.gameapp.GenericGameAppFactory;
@@ -103,7 +104,7 @@ public class DevelopmentEnvironment implements Environment
     {
         GameAppFactory loginshard = new GenericGameAppFactory(
                 "LoginShard",
-                "192.168.1.44",
+                "192.168.1.44", // not used currently
                 250,
                 true,
                 new HashMap<String, String>());
@@ -118,7 +119,7 @@ public class DevelopmentEnvironment implements Environment
             new com.gamerevision.gwlpr.loginshard.controllers.Handshake(),
             dummy)
         .addShardlet(new Login(),               dummy)
-        .addShardlet(new MapShardDispatch(),    dummy)
+        .addShardlet(new MapShardManagement(),  dummy)
         .addShardlet(
             new com.gamerevision.gwlpr.loginshard.controllers.StaticReply(),
             dummy);
@@ -156,6 +157,7 @@ public class DevelopmentEnvironment implements Environment
         .addShardlet(new InstanceLoad(),        dummy)
         .addShardlet(new MoveRotateClick(),     dummy)
         .addShardlet(new Ping(),                dummy)
+        .addShardlet(new ShutDown(),            dummy)
         .addShardlet(
                 new com.gamerevision.gwlpr.mapshard.controllers.StaticReply(), 
                 dummy);

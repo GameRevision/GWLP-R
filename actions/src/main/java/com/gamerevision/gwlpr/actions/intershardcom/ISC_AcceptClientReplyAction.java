@@ -6,7 +6,6 @@ package com.gamerevision.gwlpr.actions.intershardcom;
 
 import com.realityshard.shardlet.EventAggregator;
 import com.realityshard.shardlet.utils.GenericTriggerableAction;
-import com.realityshard.shardlet.Session;
 
 /**
  * Answer of the AcceptSessionRequest from a MapShard to the LoginShard.
@@ -27,16 +26,15 @@ public final class ISC_AcceptClientReplyAction extends GenericTriggerableAction
     /**
      * Constructor.
      * 
-     * @param       session
      * @param       ip 
      * @param       port 
      * @param       accountId 
      * @param       mapId 
      * @param       accepted
      */
-    public ISC_AcceptClientReplyAction(Session session, String ip, int port, int accountId, int mapId, boolean accepted)
+    public ISC_AcceptClientReplyAction(String ip, int port, int accountId, int mapId, boolean accepted)
     {
-        init(session);
+        init(null);
         this.accepted = accepted;
         this.port = port;
         this.accountId = accountId;

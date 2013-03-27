@@ -44,20 +44,30 @@ public final class HostApplication
         // this can actually be done within the API
         GlobalExecutor.init(executor);
         
-        executor.execute(new NetTest());
         
         // we need a new concurrent network manager here
         // note that this has to be a concrete implementation atm
         // NOTE: possible BUG here: FORCING IPv4
         
         System.setProperty("java.net.preferIPv4Stack", "true");
-        NetworkFacade netMan = new NetworkFacade("192.168.178.25");
+        final NetworkFacade netMan = new NetworkFacade("192.168.178.25");
         
         // we've done anything we wanted to, so lets start the container!
         // create the container
         // Note: we are using the dev environment here!
-        ContainerFacade container = new ContainerFacade(netMan, new DevelopmentEnvironment());
+        final ContainerFacade container = new ContainerFacade(netMan, new DevelopmentEnvironment());
+        
+        // what happens when the server is shut down?
+        Runtime.getRuntime().addShutdownHook(new Thread()
+            {
+                @Override
+                public void run()
+                {
+                    container.shutdown();
+                    netMan.shutdown();
+                }
+            });
 
-        while (true) {}
+        while (true) {} // TODO: do we need to process stdio input?
     }
 }

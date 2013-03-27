@@ -98,4 +98,17 @@ public class ClientLookupTable
     {
         return bySession.keySet();
     }
+    
+    
+    /**
+     * Getter.
+     * 
+     * @return      True if there are no clients that we have registered.
+     */
+    public boolean isEmpty()
+    {
+        // we do only need to test one of the collections here...
+        // (i know there might be race conditions, but fuck it seriously)
+        return bySession.isEmpty();
+    }
 }

@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.gamerevision.gwlpr</groupId>
         <artifactId>gwlpr</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.1</version>
     </parent>
 
 
@@ -44,5 +44,20 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+
+
+    <build>
+        <plugins>
+            <!-- Allows Maven to launch this server -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <configuration>
+                    <mainClass>com.gamerevision.gwlpr.host.HostApplication</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
