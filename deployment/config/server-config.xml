@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ServerConfig>
-    <ServerName>TestServer</ServerName>
-    <Description>A test server configuration</Description>
-    <Version>0.1.0 RC1 pre-Alpha</Version>
-    <OpenPorts cluster="6211" rmi="6212" maintenance="6213"/>
-    <ClusterInfo></ClusterInfo>
-</ServerConfig>
