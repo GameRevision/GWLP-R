@@ -2,7 +2,7 @@
  * For copyright information see the LICENSE document.
  */
 
-package com.gamerevision.gwlpr.protocol;
+package com.gamerevision.gwlpr.protocol.serialization;
 
 import com.realityshard.shardlet.Session;
 import com.realityshard.shardlet.TriggerableAction;

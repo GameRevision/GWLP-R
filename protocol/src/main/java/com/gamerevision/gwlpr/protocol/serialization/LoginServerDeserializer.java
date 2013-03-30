@@ -2,10 +2,10 @@
  * For copyright information see the LICENSE document.
  */
 
-package com.gamerevision.gwlpr.protocol.loginserver;
+package com.gamerevision.gwlpr.protocol.serialization;
 
 import com.gamerevision.gwlpr.actions.loginserver.ctos.*;
-import com.gamerevision.gwlpr.protocol.Deserializer;
+import com.gamerevision.gwlpr.protocol.serialization.Deserializer;
 import com.realityshard.shardlet.Session;
 import com.realityshard.shardlet.TriggerableAction;
 import org.slf4j.Logger;

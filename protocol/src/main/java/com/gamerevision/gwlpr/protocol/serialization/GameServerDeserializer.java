@@ -2,17 +2,16 @@
  * For copyright information see the LICENSE document.
  */
 
-package com.gamerevision.gwlpr.protocol.gameserver;
+package com.gamerevision.gwlpr.protocol.serialization;
 
 import com.gamerevision.gwlpr.actions.gameserver.ctos.*;
-import com.gamerevision.gwlpr.protocol.Deserializer;
 import com.realityshard.shardlet.Session;
 import com.realityshard.shardlet.TriggerableAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Part of the deserialisation procedure.
+ * Part of the deserialization procedure.
  * Creates concrete actions and manages remaining data for GameServer packets.
  * 
  * @author miracle444

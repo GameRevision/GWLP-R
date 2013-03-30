@@ -4,8 +4,9 @@
 
 package com.gamerevision.gwlpr.protocol;
 
-import com.gamerevision.gwlpr.protocol.gameserver.GameServerDeserializer;
-import com.gamerevision.gwlpr.protocol.loginserver.LoginServerDeserializer;
+import com.gamerevision.gwlpr.protocol.serialization.Deserializer;
+import com.gamerevision.gwlpr.protocol.serialization.GameServerDeserializer;
+import com.gamerevision.gwlpr.protocol.serialization.LoginServerDeserializer;
 import com.realityshard.shardlet.*;
 import java.util.HashMap;
 import java.util.List;
@@ -19,11 +20,11 @@ import java.util.Map;
  * 
  * @author miracle444
  */
-public class SerialisationFilter implements ProtocolFilter
+public class SerializationFilter implements ProtocolFilter
 {
     
     private Map<Session, Deserializer> deserializers;
-    private boolean loginServer;
+    private boolean isLoginServer;
     
     /**
      * Init this filter.
@@ -35,7 +36,7 @@ public class SerialisationFilter implements ProtocolFilter
     {
         final String serverType = params.get("ServerType");
         
-        loginServer = serverType.equals("LoginServer");
+        isLoginServer = serverType.equals("LoginServer");
 
         deserializers = new HashMap<>();
     }
@@ -59,7 +60,7 @@ public class SerialisationFilter implements ProtocolFilter
             // the filter didnt know the deserializer for this session yet
             
             // create a deserializer for this session
-            deserializer = this.loginServer ?
+            deserializer = this.isLoginServer ?
                                 new LoginServerDeserializer(action.getSession()) :
                                 new GameServerDeserializer(action.getSession());
             
