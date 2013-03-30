@@ -15,7 +15,7 @@ import com.gamerevision.gwlpr.mapshard.controllers.MoveRotateClick;
 import com.gamerevision.gwlpr.mapshard.controllers.Ping;
 import com.gamerevision.gwlpr.mapshard.controllers.ShutDown;
 import com.gamerevision.gwlpr.protocol.LoggingFilter;
-import com.gamerevision.gwlpr.protocol.SerialisationFilter;
+import com.gamerevision.gwlpr.protocol.SerializationFilter;
 import com.realityshard.container.gameapp.GenericGameAppFactory;
 import com.realityshard.shardlet.ProtocolFilter;
 import com.realityshard.shardlet.environment.Environment;
@@ -177,7 +177,7 @@ public class DevelopmentEnvironment implements Environment
         Map<String, String> params;
 
         // create the seralisation filter and init its params
-        ProtocolFilter serialFil = new SerialisationFilter();
+        ProtocolFilter serialFil = new SerializationFilter();
         params = new HashMap<>();
         params.put("ServerType", "LoginServer");
         serialFil.init(params);
@@ -210,7 +210,7 @@ public class DevelopmentEnvironment implements Environment
         Map<String, String> params;
 
         // create the seralisation filter
-        ProtocolFilter serialFil = new SerialisationFilter();
+        ProtocolFilter serialFil = new SerializationFilter();
         // init its params
         params = new HashMap<>();
         params.put("ServerType", "GameServer");
