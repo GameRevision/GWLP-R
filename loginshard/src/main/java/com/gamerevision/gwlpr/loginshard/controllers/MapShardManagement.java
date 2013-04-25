@@ -120,10 +120,10 @@ public class MapShardManagement extends GenericShardlet
         int accId = attach.getAccountId();
         int charId = attach.getCharacterId();
         
-        mapShard.sendTriggerableAction(new ISC_AcceptClientRequestAction(1, 2, accId, charId));
-        
         waitingClients.put(accId, session);
         
+        mapShard.sendTriggerableAction(new ISC_AcceptClientRequestAction(1, 2, accId, charId));
+
         // note that our second method will be invoked when the map shard replies.
     }
     
