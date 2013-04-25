@@ -86,7 +86,7 @@ public class StartUp extends GenericShardlet
         agg.register(new AgentVisibilitySystem(agg, es));
         agg.register(new ChatSystem(agg, lt));
         agg.register(new CommandSystem(agg, es, lt));
-        agg.register(new MovementSystem(agg, es, lt, tick));
+        agg.register(new MovementSystem(agg, es, lt));
         agg.register(new SchedulingSystem(agg));
         agg.register(new SpawningSystem(agg, lt));
 

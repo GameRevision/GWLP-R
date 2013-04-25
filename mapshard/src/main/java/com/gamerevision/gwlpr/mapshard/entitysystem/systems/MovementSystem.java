@@ -9,7 +9,7 @@ import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
 import com.gamerevision.gwlpr.mapshard.entitysystem.GenericSystem;
 import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
 import com.gamerevision.gwlpr.mapshard.events.RotateEvent;
-import com.gamerevision.gwlpr.mapshard.events.StartMovingEvent;
+import com.gamerevision.gwlpr.mapshard.events.MoveEvent;
 import com.gamerevision.gwlpr.mapshard.events.StopMovingEvent;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
@@ -39,7 +39,6 @@ public class MovementSystem extends GenericSystem
 
     private final EntityManager entityManager;
     private final ClientLookupTable lookupTable;
-    private final int heartBeatInterval;
 
 
     /**
@@ -47,20 +46,17 @@ public class MovementSystem extends GenericSystem
      *
      * @param       aggregator
      * @param       entityManager
-     * @param       lookupTable 
-     * @param       heartBeatInterval  
+     * @param       lookupTable
      */
     public MovementSystem(
             EventAggregator aggregator, 
             EntityManager entityManager, 
-            ClientLookupTable lookupTable,
-            int heartBeatInterval)
+            ClientLookupTable lookupTable)
     {
         super(aggregator, UPDATEINTERVAL);
 
         this.entityManager = entityManager;
         this.lookupTable = lookupTable;
-        this.heartBeatInterval = heartBeatInterval;
     }
 
 
@@ -81,7 +77,7 @@ public class MovementSystem extends GenericSystem
         for (Entity entity : entities)
         {
             // check if entity is not moving
-            if (entity.get(Movement.class).moveState == MovementState.NotMoving)
+            if (entity.get(Movement.class).moveState != MovementState.MoveKeepDir)
             {
                 continue;
             }
@@ -91,13 +87,13 @@ public class MovementSystem extends GenericSystem
             GWVector dir = entity.get(Direction.class).direction.getUnit();
             Movement move = entity.get(Movement.class);
             
-            // update the position (we simply assume that the client has now reached its future position)
-            pos.position = move.futurePosition;
+//            // update the position (we simply assume that the client has now reached its future position)
+//            pos.position = move.futurePosition;
 
             // calculate the next future position (the next movement aim)
             // we do not actually change the current position of the agent!
             // formula: posVec + ( dirVec * (speedScal * (0.001 * timeDeltaScal)))
-            move.futurePosition = pos.position.add(dir.mul(move.speed * (0.001F * timeDelta))); 
+            pos.position = pos.position.add(dir.mul(move.speed * (0.001F * timeDelta))); 
             
             // inform the clients
             for (Session session : lookupTable.getAllSessions())
@@ -112,21 +108,21 @@ public class MovementSystem extends GenericSystem
      * Handles movement events.
      * This only concerns entities that just started moving or changed direction.
      *
-     * @param startMove
+     * @param moveEvt
      */
     @EventHandler
-    public void onStartMoving(StartMovingEvent startMove)
+    public void onMove(MoveEvent moveEvt)
     {
         // we need to inform the connected clients and
         // set the movement state to moving (if that has not yet happened)
         
-        Entity et = startMove.getThisEntity();
+        Entity et = moveEvt.getThisEntity();
 
         // update the entities values
-        et.get(Direction.class).direction = startMove.getDirection().getUnit();
+//        et.get(Direction.class).direction = moveEvt.getDirection().getUnit();
         Movement move = et.get(Movement.class);
-        move.moveType = startMove.getType(); // use the new movement type here
-        move.moveState = MovementState.Moving;
+//        move.moveType = moveEvt.getType(); // use the new movement type here
+//        move.moveState = MovementState.Moving;
 
         // inform the clients
         for (Session session : lookupTable.getAllSessions())
@@ -136,6 +132,8 @@ public class MovementSystem extends GenericSystem
             // anything else will be send on server tick. no need to repeat the
             // calculations here
         }
+        
+        move.moveState = MovementState.MoveKeepDir;
     }
 
 

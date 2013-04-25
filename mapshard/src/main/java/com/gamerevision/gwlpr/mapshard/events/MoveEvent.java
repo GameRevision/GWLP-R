@@ -16,7 +16,7 @@ import com.realityshard.shardlet.Event;
  *
  * @author _rusty
  */
-public class StartMovingEvent implements Event
+public class MoveEvent implements Event
 {
     private final Entity thisEntity;
     private final GWVector direction;
@@ -30,7 +30,7 @@ public class StartMovingEvent implements Event
      * @param       direction
      * @param       type
      */
-    public StartMovingEvent(Entity thisEntity, GWVector direction, MovementType type)
+    public MoveEvent(Entity thisEntity, GWVector direction, MovementType type)
     {
         this.thisEntity = thisEntity;
         this.direction = direction;

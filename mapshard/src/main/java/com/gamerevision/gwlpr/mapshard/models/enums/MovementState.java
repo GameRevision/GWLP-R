@@ -12,5 +12,6 @@ package com.gamerevision.gwlpr.mapshard.models.enums;
 public enum MovementState
 {
     NotMoving,
-    Moving,
+    MoveChangeDir,
+    MoveKeepDir,
 }

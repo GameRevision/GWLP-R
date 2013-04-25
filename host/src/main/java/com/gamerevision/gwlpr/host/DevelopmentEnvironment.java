@@ -136,7 +136,7 @@ public class DevelopmentEnvironment implements Environment
     {
         GameAppFactory mapshard = new GenericGameAppFactory(
                 "MapShard",
-                "127.0.0.1",
+                "192.168.1.44",
                 250,
                 false,
                 new HashMap<String, String>());
@@ -181,9 +181,18 @@ public class DevelopmentEnvironment implements Environment
         params = new HashMap<>();
         params.put("ServerType", "LoginServer");
         serialFil.init(params);
+        
+        // create the outgoing logging filter (we will only log outgoing packets)
+        ProtocolFilter outLoggingFil = new LoggingFilter();
+        // init its params
+        params = new HashMap<>();
+        params.put("OperationMethod", "BlackList");
+        params.put("HeaderList", "0");
+        outLoggingFil.init(params);
 
         // add the filters appropriately
         inFil.add(serialFil);
+        outFil.add(0, outLoggingFil);
         outFil.add(0, serialFil);
 
         // add some other filter...
