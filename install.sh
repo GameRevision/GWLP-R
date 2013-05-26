@@ -16,7 +16,7 @@
 
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
+RSDIR="$DIR/../RealityShard"
 
 # MySQL host, port, user id, password and database.
 # When using the default settings, the script will access
@@ -28,7 +28,7 @@ MYSQLHOST="127.0.0.1"
 MYSQLPORT="3306"
 MYSQLUID="root"
 MYSQLPWD=""
-MYSQLDB="testgwlpr"
+MYSQLDB="gwlpr"
 
 
 clear
@@ -66,8 +66,8 @@ echo ""
 
 
 echo "Creating Reality:Shard install dir..."
-mkdir "$DIR/RealityShard"
-if [ ! -d "$DIR/RealityShard" ]; then
+mkdir "$RSDIR"
+if [ ! -d "$RSDIR" ]; then
     echo "Failed to create the directories. Check if the path is correct and you have sufficient rights."
     exit 1
 fi
@@ -77,14 +77,14 @@ echo ""
 echo "Cloning Reality:Shard..."
 read -p "[Press any key to continue]" -n 1 -s
 echo ""
-git clone https://github.com/RealityShard/RealityShard.git "$DIR/RealityShard"
+git clone https://github.com/RealityShard/RealityShard.git "$RSDIR"
 echo ""
 
 
 echo "Installing Reality:Shard..."
 read -p "[Press any key to continue]" -n 1 -s
 echo ""
-cd "$DIR/RealityShard" && chmod +x install.sh && ./install.sh
+cd "$RSDIR" && chmod +x install.sh && ./install.sh
 echo ""
 
 
