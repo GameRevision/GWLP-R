@@ -20,8 +20,17 @@ Yes, this guide was made for the diaspora project, but it covers the basics quit
  - Join the dev chat at irc://irc.rizon.net/gwlpr (if your using an IRC client, try joining #gwlpr on the server irc.rizon.net)
  - Leave message in the forums on [GameRevision](http://www.gamerevision.com/forumdisplay.php?61-GWLP-R)
 
+
 ### Install notes for users (you still have to compile it :P):
 
+---
+
+*You may want to use a Virtual-Machine (running Linux) to run the server, especially if you dont have a machine that runs Linux (or a Unix system) natively. Trying to follow the instructions on Windows probably wont work - but there might be a Windows package on the GR forums somewhere.*
+
+**On Windows (Or any OS that will run the GW client later on)**
+ - Download, compile and config the Launcher from the [utils](https://github.com/GameRevision/GWLP-R-Utils/tree/master/Launcher)
+ 
+**On Linux/Unix (Or any OS that will run the server later on)**
  - Make sure you have Maven 3+, JDK 7+ and MySQL 5.5+ installed and configured
  - Run `git clone git://github.com/GameRevision/GWLP-R.git` anywhere you like on your system
  - Edit the install script from within the project you just cloned to match your MySQL settings (username, password and database)
@@ -29,10 +38,20 @@ Yes, this guide was made for the diaspora project, but it covers the basics quit
  - The script recommends executing a certain command to fill the database - do that
  - Edit DevelopmentEnvironment.java in the "host" project to match your MySQL settings AND to change the IP of your Game Server (search for "MapShard" and you'll find an IP there that you can change).
  - Run `mvn clean package exec:java` from inside the "host" directory
- - Open your GW client and connect using email: "root@gwlp.ps" / password: "root" / character: "Test Char"
+ 
+**Finally, run your GW client by using the Launcher and login with `email: "root@gwlp.ps"` / `password: "root"` / `character: "Test Char"`**
+
 
 ### Install notes for developers:
+
+
+---
+
  - _Have a look at the existing guide here:_  [The Developer's Guide](https://github.com/GameRevision/GWLP-R/wiki/Dev-HowTo)
 
+
 ### Links:
+
+---
+
  - [Reality:Shard](https://github.com/RealityShard/RealityShard)
