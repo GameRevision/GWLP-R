@@ -11,7 +11,7 @@ import com.gamerevision.gwlpr.actions.gameserver.stoc.P075_NPCModelAction;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.P077_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.stoc.P143_UpdateNpcNameAction;
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
-import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
+import com.gamerevision.gwlpr.mapshard.entitysystem.Components.*;
 import com.gamerevision.gwlpr.mapshard.models.GWString;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.gamerevision.gwlpr.mapshard.models.enums.SpawnType;

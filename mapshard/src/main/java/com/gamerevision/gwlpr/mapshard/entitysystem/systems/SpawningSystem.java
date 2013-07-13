@@ -6,7 +6,7 @@ package com.gamerevision.gwlpr.mapshard.entitysystem.systems;
 
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import com.gamerevision.gwlpr.mapshard.entitysystem.GenericSystem;
-import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
+import com.gamerevision.gwlpr.mapshard.entitysystem.Components.*;
 import com.gamerevision.gwlpr.mapshard.events.CanSeeEvent;
 import com.gamerevision.gwlpr.mapshard.events.LostSightEvent;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;

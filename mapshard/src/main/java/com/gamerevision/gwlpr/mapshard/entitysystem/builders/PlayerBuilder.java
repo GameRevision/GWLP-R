@@ -6,7 +6,7 @@ package com.gamerevision.gwlpr.mapshard.entitysystem.builders;
 
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
-import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
+import com.gamerevision.gwlpr.mapshard.entitysystem.Components.*;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.gamerevision.gwlpr.mapshard.models.enums.Profession;
 import com.gamerevision.gwlpr.mapshard.models.enums.SpawnType;

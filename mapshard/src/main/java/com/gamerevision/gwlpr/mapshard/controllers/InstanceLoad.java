@@ -17,7 +17,7 @@ import com.gamerevision.gwlpr.mapshard.views.UpdateAttribPtsView;
 import com.gamerevision.gwlpr.mapshard.views.UpdateGenericValueView;
 import com.gamerevision.gwlpr.mapshard.views.UpdatePrivateProfessionsView;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
-import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
+import com.gamerevision.gwlpr.mapshard.entitysystem.Components.*;
 import com.gamerevision.gwlpr.mapshard.models.GWVector;
 import com.gamerevision.gwlpr.mapshard.models.MapData;
 import com.gamerevision.gwlpr.mapshard.models.enums.GenericValue;

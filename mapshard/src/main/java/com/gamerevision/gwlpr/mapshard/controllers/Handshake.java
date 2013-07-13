@@ -16,7 +16,7 @@ import com.gamerevision.gwlpr.mapshard.models.MapClientVerifier;
 import com.gamerevision.gwlpr.mapshard.views.CharacterCreationView;
 import com.gamerevision.gwlpr.mapshard.views.HandshakeView;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
-import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
+import com.gamerevision.gwlpr.mapshard.entitysystem.Components.*;
 import com.gamerevision.gwlpr.mapshard.models.LoadCharacter;
 import com.gamerevision.gwlpr.mapshard.models.MapData;
 import com.realityshard.shardlet.ClientVerifier;

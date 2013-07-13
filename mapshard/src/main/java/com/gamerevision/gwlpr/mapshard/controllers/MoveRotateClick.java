@@ -10,7 +10,7 @@ import com.gamerevision.gwlpr.actions.gameserver.ctos.P057_UnknownAction;
 import com.gamerevision.gwlpr.actions.gameserver.ctos.P064_UnknownAction;
 import com.gamerevision.gwlpr.mapshard.SessionAttachment;
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
-import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
+import com.gamerevision.gwlpr.mapshard.entitysystem.Components.*;
 import com.gamerevision.gwlpr.mapshard.events.RotateEvent;
 import com.gamerevision.gwlpr.mapshard.events.MoveEvent;
 import com.gamerevision.gwlpr.mapshard.events.StopMovingEvent;

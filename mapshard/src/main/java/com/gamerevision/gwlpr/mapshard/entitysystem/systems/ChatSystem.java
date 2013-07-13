@@ -5,7 +5,7 @@
 package com.gamerevision.gwlpr.mapshard.entitysystem.systems;
 
 import com.gamerevision.gwlpr.mapshard.entitysystem.GenericSystem;
-import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
+import com.gamerevision.gwlpr.mapshard.entitysystem.Components.*;
 import com.gamerevision.gwlpr.mapshard.events.ChatMessageEvent;
 import com.gamerevision.gwlpr.mapshard.models.ClientLookupTable;
 import com.gamerevision.gwlpr.mapshard.models.enums.ChatColor;

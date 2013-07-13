@@ -5,7 +5,7 @@
 package com.gamerevision.gwlpr.mapshard;
 
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
-import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
+import com.gamerevision.gwlpr.mapshard.entitysystem.Components.*;
 import com.gamerevision.gwlpr.mapshard.models.enums.PlayerState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

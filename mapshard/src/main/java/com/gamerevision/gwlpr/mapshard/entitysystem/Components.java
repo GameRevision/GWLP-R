@@ -2,7 +2,7 @@
  * For copyright information see the LICENSE document.
  */
 
-package com.gamerevision.gwlpr.mapshard.entitysystem.components;
+package com.gamerevision.gwlpr.mapshard.entitysystem;
 
 import com.gamerevision.gwlpr.mapshard.entitysystem.Component;
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;

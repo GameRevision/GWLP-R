@@ -7,7 +7,7 @@ package com.gamerevision.gwlpr.mapshard.entitysystem.systems;
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
 import com.gamerevision.gwlpr.mapshard.entitysystem.GenericSystem;
-import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
+import com.gamerevision.gwlpr.mapshard.entitysystem.Components.*;
 import com.gamerevision.gwlpr.mapshard.events.RotateEvent;
 import com.gamerevision.gwlpr.mapshard.events.MoveEvent;
 import com.gamerevision.gwlpr.mapshard.events.StopMovingEvent;

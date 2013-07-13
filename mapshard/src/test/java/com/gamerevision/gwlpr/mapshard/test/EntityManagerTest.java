@@ -6,7 +6,7 @@ package com.gamerevision.gwlpr.mapshard.test;
 
 import com.gamerevision.gwlpr.mapshard.entitysystem.Entity;
 import com.gamerevision.gwlpr.mapshard.entitysystem.EntityManager;
-import com.gamerevision.gwlpr.mapshard.entitysystem.components.Components.*;
+import com.gamerevision.gwlpr.mapshard.entitysystem.Components.*;
 import java.util.Collection;
 import org.junit.Test;
 
