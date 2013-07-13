@@ -5,7 +5,7 @@
 package com.gamerevision.gwlpr.host;
 
 import com.realityshard.container.ContainerFacade;
-import com.realityshard.network.NetworkFacade;
+import com.realityshard.network.NetworkLayer;
 import com.realityshard.shardlet.GlobalExecutor;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class HostApplication 
 {
+    
     /**
      * Runs the application.
      * 
@@ -36,26 +37,21 @@ public final class HostApplication
         
         
         // create the executor
-        // TODO: let the parameter be defined by command line args
-        // TODO: check if the implementation is appropriate
-        ScheduledExecutorService executor = new ScheduledThreadPoolExecutor(12);
+        ScheduledExecutorService executor = new ScheduledThreadPoolExecutor(
+                Runtime.getRuntime().availableProcessors() * 3);
         
         // ok, we can now define the executor as global...
         // this can actually be done within the API
         GlobalExecutor.init(executor);
         
         
-        // we need a new concurrent network manager here
-        // note that this has to be a concrete implementation atm
-        // NOTE: possible BUG here: FORCING IPv4
-        
+        // we need a new network manager here, net layer must use IPv4, due to GW
         System.setProperty("java.net.preferIPv4Stack", "true");
-        final NetworkFacade netMan = new NetworkFacade("192.168.178.25");
+        final NetworkLayer netLayer = NetworkLayer.Factory.createUsingMina();
         
         // we've done anything we wanted to, so lets start the container!
-        // create the container
         // Note: we are using the dev environment here!
-        final ContainerFacade container = new ContainerFacade(netMan, new DevelopmentEnvironment());
+        final ContainerFacade container = new ContainerFacade(netLayer, new DevelopmentEnvironment());
         
         // what happens when the server is shut down?
         Runtime.getRuntime().addShutdownHook(new Thread()
@@ -64,10 +60,8 @@ public final class HostApplication
                 public void run()
                 {
                     container.shutdown();
-                    netMan.shutdown();
+                    netLayer.shutdown();
                 }
             });
-
-        while (true) {} // TODO: do we need to process stdio input?
     }
 }
