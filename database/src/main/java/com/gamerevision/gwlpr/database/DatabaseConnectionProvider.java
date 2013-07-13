@@ -22,8 +22,21 @@ public final class DatabaseConnectionProvider
         private final static Logger LOGGER = LoggerFactory.getLogger(DatabaseConnectionProvider.class);
         
         
-	public DatabaseConnectionProvider(final String ip, final String port, final String database,
-                                final String username, final String password)
+        /**
+         * Constructor.
+         * 
+         * @param       ip
+         * @param       port
+         * @param       database
+         * @param       username
+         * @param       password 
+         */
+	public DatabaseConnectionProvider(
+                final String ip, 
+                final String port, 
+                final String database,
+                final String username, 
+                final String password)
         {
 		
 		databaseConnectionInfo = "jdbc:mysql://" + ip + ":" + port + "/" + database +
@@ -42,6 +55,11 @@ public final class DatabaseConnectionProvider
 	}
 
         
+        /**
+         * Tries to establish a new database connection.
+         * 
+         * @return      The db connection if successful, null if not.
+         */
 	public final Connection getConnection() 
         {
             Connection connection = null;
