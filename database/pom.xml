@@ -14,27 +14,34 @@
 
     <name>${project.artifactId}</name>
     <description>The database framework for the GWLPR databases.</description>
+    
+    
     <repositories>
         <repository>
-            <url>http://download.eclipse.org/rt/eclipselink/maven.repo/</url>
-            <id>jpa20-persistence</id>
-            <layout>default</layout>
-            <name>Repository for library Persistence (JPA 2.0)</name>
+            <id>java.net</id>
+            <url>http://download.java.net/maven/2/</url>
         </repository>
     </repositories>
+
+    
     <dependencies>
-        <!-- The MySQL framework -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.21</version>
-        </dependency>
-        
         <!-- The Database connection framework -->
         <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>javax.persistence</artifactId>
-            <version>2.0.3</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate</artifactId>
+            <version>3.2.5.ga</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>1.0.0.Draft-16</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>javax.transaction</groupId>
+            <artifactId>jta</artifactId>
+            <type>jar</type>
+            <version>1.0.1B</version>
         </dependency>
     </dependencies>
 

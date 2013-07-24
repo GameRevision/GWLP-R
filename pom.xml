@@ -14,10 +14,6 @@
     <description>GWLP:R is the most complete GW server sandbox</description>
     <url>http://github.com/GameRevision/GWLP-R</url>
     <inceptionYear>2010</inceptionYear>
-    <organization>
-        <name>Game Revision</name>
-        <url>http://www.gamerevision.com</url>
-    </organization>
 
 
     <modules>
