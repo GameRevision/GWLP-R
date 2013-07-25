@@ -13,7 +13,7 @@ import gwlpr.mapshard.entitysystem.Entity;
 import gwlpr.mapshard.entitysystem.Components.*;
 import gwlpr.mapshard.models.GWVector;
 import gwlpr.mapshard.models.enums.MovementType;
-import com.realityshard.shardlet.Session;
+import realityshard.shardlet.Session;
 
 
 /**

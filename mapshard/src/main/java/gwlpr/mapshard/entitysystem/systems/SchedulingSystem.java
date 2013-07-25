@@ -6,10 +6,10 @@ package gwlpr.mapshard.entitysystem.systems;
 
 import gwlpr.mapshard.entitysystem.GenericSystem;
 import gwlpr.mapshard.events.SchedulingEvent;
-import com.realityshard.shardlet.Event;
-import com.realityshard.shardlet.EventAggregator;
-import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.GlobalExecutor;
+import realityshard.shardlet.Event;
+import realityshard.shardlet.EventAggregator;
+import realityshard.shardlet.EventHandler;
+import realityshard.shardlet.GlobalExecutor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;

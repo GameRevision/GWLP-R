@@ -9,7 +9,7 @@ import gwlpr.actions.gameserver.stoc.P148_UpdateGenericValueTargetAction;
 import gwlpr.actions.gameserver.stoc.P150_UpdateGenericValueFloatAction;
 import gwlpr.actions.gameserver.stoc.P151_UpdateGenericValueModifierAction;
 import gwlpr.mapshard.models.enums.GenericValue;
-import com.realityshard.shardlet.Session;
+import realityshard.shardlet.Session;
 
 
 /**

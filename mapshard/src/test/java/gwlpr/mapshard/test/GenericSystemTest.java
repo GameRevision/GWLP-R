@@ -5,12 +5,12 @@
 package gwlpr.mapshard.test;
 
 import gwlpr.mapshard.entitysystem.GenericSystem;
-import com.realityshard.shardlet.Event;
-import com.realityshard.shardlet.EventAggregator;
-import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.GlobalExecutor;
-import com.realityshard.shardlet.events.HeartBeatEvent;
-import com.realityshard.shardlet.utils.ConcurrentEventAggregator;
+import realityshard.shardlet.Event;
+import realityshard.shardlet.EventAggregator;
+import realityshard.shardlet.EventHandler;
+import realityshard.shardlet.GlobalExecutor;
+import realityshard.shardlet.events.HeartBeatEvent;
+import realityshard.shardlet.utils.ConcurrentEventAggregator;
 import java.lang.reflect.Method;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import org.junit.Test;

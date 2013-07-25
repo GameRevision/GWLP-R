@@ -5,7 +5,7 @@
 package gwlpr.mapshard.models;
 
 import gwlpr.mapshard.entitysystem.Entity;
-import com.realityshard.shardlet.Session;
+import realityshard.shardlet.Session;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;

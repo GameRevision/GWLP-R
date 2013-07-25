@@ -5,7 +5,7 @@
 package gwlpr.mapshard.views;
 
 import gwlpr.actions.gameserver.stoc.P044_UpdateAttribPtsAction;
-import com.realityshard.shardlet.Session;
+import realityshard.shardlet.Session;
 
 
 /**

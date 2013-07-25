@@ -10,7 +10,7 @@ import gwlpr.actions.gameserver.stoc.P379_CharacterCreateHeadAction;
 import gwlpr.actions.gameserver.stoc.P380_CharacterCreateAcknowledgeAction;
 import gwlpr.actions.gameserver.stoc.P381_UnknownAction;
 import com.gamerevision.gwlpr.database.CharacterEntity;
-import com.realityshard.shardlet.Session;
+import realityshard.shardlet.Session;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 

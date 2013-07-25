@@ -11,7 +11,7 @@ import gwlpr.mapshard.entitysystem.Components.*;
 import gwlpr.mapshard.events.CanSeeEvent;
 import gwlpr.mapshard.events.LostSightEvent;
 import gwlpr.mapshard.models.GWVector;
-import com.realityshard.shardlet.EventAggregator;
+import realityshard.shardlet.EventAggregator;
 import java.util.Collection;
 
 

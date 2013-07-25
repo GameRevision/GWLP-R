@@ -8,9 +8,9 @@ import gwlpr.actions.loginserver.ctos.P001_ComputerUserAction;
 import gwlpr.actions.loginserver.ctos.P053_RequestResponseAction;
 import gwlpr.loginshard.SessionAttachment;
 import gwlpr.loginshard.views.StaticReplyView;
-import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.Session;
-import com.realityshard.shardlet.utils.GenericShardlet;
+import realityshard.shardlet.EventHandler;
+import realityshard.shardlet.Session;
+import realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

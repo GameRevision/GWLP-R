@@ -11,9 +11,9 @@ import gwlpr.mapshard.events.CanSeeEvent;
 import gwlpr.mapshard.events.LostSightEvent;
 import gwlpr.mapshard.models.ClientLookupTable;
 import gwlpr.mapshard.views.EntitySpawningView;
-import com.realityshard.shardlet.EventAggregator;
-import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.Session;
+import realityshard.shardlet.EventAggregator;
+import realityshard.shardlet.EventHandler;
+import realityshard.shardlet.Session;
 
 
 /**

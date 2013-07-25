@@ -199,8 +199,8 @@ import gwlpr.actions.gameserver.ctos.P152_UnknownAction;
 import gwlpr.actions.gameserver.ctos.P123_UnknownAction;
 import gwlpr.actions.gameserver.ctos.P092_UnknownAction;
 import gwlpr.actions.gameserver.ctos.P112_UnknownAction;
-import com.realityshard.shardlet.Session;
-import com.realityshard.shardlet.TriggerableAction;
+import realityshard.shardlet.Session;
+import realityshard.shardlet.TriggerableAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

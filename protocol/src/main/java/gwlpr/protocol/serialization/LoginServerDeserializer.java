@@ -63,8 +63,8 @@ import gwlpr.actions.loginserver.ctos.P003_UnknownAction;
 import gwlpr.actions.loginserver.ctos.P050_UnknownAction;
 import gwlpr.actions.loginserver.ctos.P031_UnknownAction;
 import gwlpr.protocol.serialization.Deserializer;
-import com.realityshard.shardlet.Session;
-import com.realityshard.shardlet.TriggerableAction;
+import realityshard.shardlet.Session;
+import realityshard.shardlet.TriggerableAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

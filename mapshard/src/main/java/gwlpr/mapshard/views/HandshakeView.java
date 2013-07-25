@@ -8,7 +8,7 @@ import gwlpr.actions.gameserver.stoc.P370_InstanceLoadHeadAction;
 import gwlpr.actions.gameserver.stoc.P371_UnknownAction;
 import gwlpr.actions.gameserver.stoc.P395_InstanceLoadDistrictInfoAction;
 import gwlpr.actions.loginserver.stoc.P5633_ServerSeedAction;
-import com.realityshard.shardlet.Session;
+import realityshard.shardlet.Session;
 
 
 /**

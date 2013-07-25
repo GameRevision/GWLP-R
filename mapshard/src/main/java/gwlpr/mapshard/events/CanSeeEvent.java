@@ -5,7 +5,7 @@
 package gwlpr.mapshard.events;
 
 import gwlpr.mapshard.entitysystem.Entity;
-import com.realityshard.shardlet.Event;
+import realityshard.shardlet.Event;
 
 /**
  * Triggered when an entity can see another one

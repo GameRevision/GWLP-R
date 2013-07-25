@@ -6,8 +6,8 @@ package gwlpr.mapshard.models;
 
 import gwlpr.actions.gameserver.ctos.P1280_VerifyClientAction;
 import gwlpr.mapshard.SessionAttachment;
-import com.realityshard.shardlet.Action;
-import com.realityshard.shardlet.ClientVerifier;
+import realityshard.shardlet.Action;
+import realityshard.shardlet.ClientVerifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

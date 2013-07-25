@@ -15,7 +15,7 @@ import gwlpr.mapshard.entitysystem.Components.*;
 import gwlpr.mapshard.models.GWString;
 import gwlpr.mapshard.models.GWVector;
 import gwlpr.mapshard.models.enums.SpawnType;
-import com.realityshard.shardlet.Session;
+import realityshard.shardlet.Session;
 
 
 /**

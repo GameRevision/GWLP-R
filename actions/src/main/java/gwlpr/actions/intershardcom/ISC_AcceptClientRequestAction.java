@@ -4,8 +4,8 @@
 
 package gwlpr.actions.intershardcom;
 
-import com.realityshard.shardlet.EventAggregator;
-import com.realityshard.shardlet.utils.GenericTriggerableAction;
+import realityshard.shardlet.EventAggregator;
+import realityshard.shardlet.utils.GenericTriggerableAction;
 
 /**
  * Request from the LoginShard to a MapShard to accept a session.

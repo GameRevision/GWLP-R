@@ -7,7 +7,7 @@ package gwlpr.mapshard.views;
 import gwlpr.actions.gameserver.stoc.P001_UnknownAction;
 import gwlpr.actions.gameserver.stoc.P002_UnknownAction;
 import gwlpr.actions.gameserver.stoc.P019_UnknownAction;
-import com.realityshard.shardlet.Session;
+import realityshard.shardlet.Session;
 
 
 /**

@@ -6,7 +6,7 @@ package gwlpr.loginshard.views;
 
 import gwlpr.actions.loginserver.stoc.P003_StreamTerminatorAction;
 import gwlpr.loginshard.SessionAttachment;
-import com.realityshard.shardlet.Session;
+import realityshard.shardlet.Session;
 
 
 /**

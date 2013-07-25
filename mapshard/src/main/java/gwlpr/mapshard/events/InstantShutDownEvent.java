@@ -4,7 +4,7 @@
 
 package gwlpr.mapshard.events;
 
-import com.realityshard.shardlet.Event;
+import realityshard.shardlet.Event;
 
 
 /**

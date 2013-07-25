@@ -6,8 +6,8 @@ package gwlpr.loginshard.views;
 
 import gwlpr.actions.loginserver.stoc.P009_ReferToGameServerAction;
 import gwlpr.loginshard.SessionAttachment;
-import com.realityshard.shardlet.Session;
-import com.realityshard.shardlet.ShardletContext;
+import realityshard.shardlet.Session;
+import realityshard.shardlet.ShardletContext;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;

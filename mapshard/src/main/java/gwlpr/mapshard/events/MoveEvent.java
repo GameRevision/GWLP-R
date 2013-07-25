@@ -7,7 +7,7 @@ package gwlpr.mapshard.events;
 import gwlpr.mapshard.entitysystem.Entity;
 import gwlpr.mapshard.models.GWVector;
 import gwlpr.mapshard.models.enums.MovementType;
-import com.realityshard.shardlet.Event;
+import realityshard.shardlet.Event;
 
 
 /**

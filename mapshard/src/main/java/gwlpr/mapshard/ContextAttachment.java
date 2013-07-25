@@ -8,7 +8,7 @@ import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import gwlpr.mapshard.models.ClientLookupTable;
 import gwlpr.mapshard.entitysystem.EntityManager;
 import gwlpr.mapshard.models.MapData;
-import com.realityshard.shardlet.RemoteShardletContext;
+import realityshard.shardlet.RemoteShardletContext;
 
 
 /**

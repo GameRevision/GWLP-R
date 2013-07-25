@@ -7,9 +7,9 @@ package gwlpr.loginshard.controllers;
 import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.loginshard.ContextAttachment;
 import gwlpr.loginshard.SessionAttachment;
-import com.realityshard.shardlet.Action;
-import com.realityshard.shardlet.ClientVerifier;
-import com.realityshard.shardlet.utils.GenericShardlet;
+import realityshard.shardlet.Action;
+import realityshard.shardlet.ClientVerifier;
+import realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

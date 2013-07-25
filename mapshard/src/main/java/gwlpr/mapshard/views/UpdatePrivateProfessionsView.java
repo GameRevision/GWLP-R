@@ -5,7 +5,7 @@
 package gwlpr.mapshard.views;
 
 import gwlpr.actions.gameserver.stoc.P171_UpdatePrivProfessionsAction;
-import com.realityshard.shardlet.Session;
+import realityshard.shardlet.Session;
 
 
 /**

@@ -4,7 +4,7 @@
 
 package gwlpr.loginshard;
 
-import com.realityshard.shardlet.Session;
+import realityshard.shardlet.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

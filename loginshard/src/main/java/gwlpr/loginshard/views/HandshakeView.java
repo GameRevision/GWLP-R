@@ -6,8 +6,8 @@ package gwlpr.loginshard.views;
 
 import gwlpr.actions.loginserver.stoc.P5633_ServerSeedAction;
 import gwlpr.loginshard.models.EncryptionDataHolder;
-import com.realityshard.shardlet.Session;
-import com.realityshard.shardlet.ShardletContext;
+import realityshard.shardlet.Session;
+import realityshard.shardlet.ShardletContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

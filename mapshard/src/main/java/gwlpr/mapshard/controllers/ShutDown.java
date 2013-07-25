@@ -9,10 +9,10 @@ import gwlpr.actions.intershardcom.ISC_ShutdownMapshardRequestAction;
 import gwlpr.mapshard.ContextAttachment;
 import gwlpr.mapshard.events.InstantShutDownEvent;
 import gwlpr.mapshard.models.ClientLookupTable;
-import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.events.GameAppCreatedEvent;
-import com.realityshard.shardlet.events.HeartBeatEvent;
-import com.realityshard.shardlet.utils.GenericShardlet;
+import realityshard.shardlet.EventHandler;
+import realityshard.shardlet.events.GameAppCreatedEvent;
+import realityshard.shardlet.events.HeartBeatEvent;
+import realityshard.shardlet.utils.GenericShardlet;
 
 
 /**

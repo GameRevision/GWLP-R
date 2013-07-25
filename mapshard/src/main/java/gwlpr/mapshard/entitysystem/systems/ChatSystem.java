@@ -10,9 +10,9 @@ import gwlpr.mapshard.events.ChatMessageEvent;
 import gwlpr.mapshard.models.ClientLookupTable;
 import gwlpr.mapshard.models.enums.ChatColor;
 import gwlpr.mapshard.views.ChatMessageView;
-import com.realityshard.shardlet.EventAggregator;
-import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.Session;
+import realityshard.shardlet.EventAggregator;
+import realityshard.shardlet.EventHandler;
+import realityshard.shardlet.Session;
 
 
 /**

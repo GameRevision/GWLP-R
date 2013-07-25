@@ -4,9 +4,9 @@
 
 package gwlpr.protocol;
 
-import com.realityshard.shardlet.Action;
-import com.realityshard.shardlet.ProtocolFilter;
-import com.realityshard.shardlet.TriggerableAction;
+import realityshard.shardlet.Action;
+import realityshard.shardlet.ProtocolFilter;
+import realityshard.shardlet.TriggerableAction;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;

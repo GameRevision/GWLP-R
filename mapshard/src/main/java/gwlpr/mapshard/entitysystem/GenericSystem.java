@@ -4,10 +4,10 @@
 
 package gwlpr.mapshard.entitysystem;
 
-import com.realityshard.shardlet.Event;
-import com.realityshard.shardlet.EventAggregator;
-import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.events.HeartBeatEvent;
+import realityshard.shardlet.Event;
+import realityshard.shardlet.EventAggregator;
+import realityshard.shardlet.EventHandler;
+import realityshard.shardlet.events.HeartBeatEvent;
 
 
 /**

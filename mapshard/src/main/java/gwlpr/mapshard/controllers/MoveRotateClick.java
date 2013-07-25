@@ -18,9 +18,9 @@ import gwlpr.mapshard.models.GWVector;
 import gwlpr.mapshard.models.enums.MovementState;
 import gwlpr.mapshard.models.enums.MovementType;
 import gwlpr.mapshard.models.enums.StandardValue;
-import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.Session;
-import com.realityshard.shardlet.utils.GenericShardlet;
+import realityshard.shardlet.EventHandler;
+import realityshard.shardlet.Session;
+import realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

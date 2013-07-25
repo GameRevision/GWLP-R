@@ -4,9 +4,9 @@
 
 package gwlpr.host;
 
-import com.realityshard.container.ContainerFacade;
-import com.realityshard.network.NetworkLayer;
-import com.realityshard.shardlet.GlobalExecutor;
+import realityshard.container.ContainerFacade;
+import realityshard.network.NetworkLayer;
+import realityshard.shardlet.GlobalExecutor;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import org.slf4j.Logger;

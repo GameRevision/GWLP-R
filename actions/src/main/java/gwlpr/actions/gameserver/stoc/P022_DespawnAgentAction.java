@@ -8,7 +8,7 @@
 
 package gwlpr.actions.gameserver.stoc;
 
-import com.realityshard.shardlet.utils.GenericAction;
+import realityshard.shardlet.utils.GenericAction;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

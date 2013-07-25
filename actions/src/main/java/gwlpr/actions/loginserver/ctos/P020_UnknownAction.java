@@ -8,8 +8,8 @@
 
 package gwlpr.actions.loginserver.ctos;
 
-import com.realityshard.shardlet.EventAggregator;
-import com.realityshard.shardlet.utils.GenericTriggerableAction;
+import realityshard.shardlet.EventAggregator;
+import realityshard.shardlet.utils.GenericTriggerableAction;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 

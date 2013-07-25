@@ -6,7 +6,7 @@ package gwlpr.mapshard.events;
 
 import gwlpr.mapshard.entitysystem.Entity;
 import gwlpr.mapshard.models.GWVector;
-import com.realityshard.shardlet.Event;
+import realityshard.shardlet.Event;
 
 
 /**

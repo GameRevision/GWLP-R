@@ -4,8 +4,8 @@
 
 package gwlpr.protocol.serialization;
 
-import com.realityshard.shardlet.Session;
-import com.realityshard.shardlet.TriggerableAction;
+import realityshard.shardlet.Session;
+import realityshard.shardlet.TriggerableAction;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;

@@ -9,7 +9,7 @@ import gwlpr.actions.gameserver.stoc.P082_UnknownAction;
 import gwlpr.actions.gameserver.stoc.P085_UnknownAction;
 import gwlpr.mapshard.models.GWString;
 import gwlpr.mapshard.models.enums.ChatColor;
-import com.realityshard.shardlet.Session;
+import realityshard.shardlet.Session;
 
 
 /**

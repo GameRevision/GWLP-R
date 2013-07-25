@@ -15,10 +15,10 @@ import gwlpr.mapshard.views.CharacterCreationView;
 import gwlpr.mapshard.views.UpdateAttribPtsView;
 import gwlpr.mapshard.views.UpdateGenericValueView;
 import gwlpr.mapshard.views.UpdatePrivateProfessionsView;
-import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.Session;
-import com.realityshard.shardlet.events.GameAppCreatedEvent;
-import com.realityshard.shardlet.utils.GenericShardlet;
+import realityshard.shardlet.EventHandler;
+import realityshard.shardlet.Session;
+import realityshard.shardlet.events.GameAppCreatedEvent;
+import realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

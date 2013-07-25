@@ -36,11 +36,11 @@ import gwlpr.mapshard.models.enums.GenericValue;
 import gwlpr.mapshard.models.enums.PlayerState;
 import gwlpr.mapshard.models.enums.SpawnType;
 import gwlpr.mapshard.views.EntitySpawningView;
-import com.realityshard.shardlet.EventHandler;
-import com.realityshard.shardlet.RemoteShardletContext;
-import com.realityshard.shardlet.Session;
-import com.realityshard.shardlet.events.GameAppCreatedEvent;
-import com.realityshard.shardlet.utils.GenericShardlet;
+import realityshard.shardlet.EventHandler;
+import realityshard.shardlet.RemoteShardletContext;
+import realityshard.shardlet.Session;
+import realityshard.shardlet.events.GameAppCreatedEvent;
+import realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

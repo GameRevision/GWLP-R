@@ -4,7 +4,7 @@
 
 package gwlpr.mapshard.controllers;
 
-import com.realityshard.shardlet.utils.GenericShardlet;
+import realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
