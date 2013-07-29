@@ -4,8 +4,7 @@
 
 package gwlpr.actions.intershardcom;
 
-import realityshard.shardlet.EventAggregator;
-import realityshard.shardlet.utils.GenericTriggerableAction;
+import realityshard.shardlet.utils.GenericAction;
 
 /**
  * Answer of the AcceptSessionRequest from a MapShard to the LoginShard.
@@ -13,7 +12,7 @@ import realityshard.shardlet.utils.GenericTriggerableAction;
  *
  * @author miracle444
  */
-public final class ISC_AcceptClientReplyAction extends GenericTriggerableAction
+public final class ISC_AcceptClientReplyAction extends GenericAction
 {
 
     private boolean accepted;   // whether the MapShard accepted the session or not
@@ -95,18 +94,5 @@ public final class ISC_AcceptClientReplyAction extends GenericTriggerableAction
     public boolean acceptedSession()
     {
         return this.accepted;
-    }
-    
-    
-    /**
-     * This method is used by the context of a game app, when this action is 
-     * transmitted to another game app.
-     * The purpose is to let the action trigger the event by itself instead of
-     * having to know the exact type.
-     */
-    @Override
-    public void triggerEvent(EventAggregator aggregator)
-    {
-        aggregator.triggerEvent(this);
     }
 }

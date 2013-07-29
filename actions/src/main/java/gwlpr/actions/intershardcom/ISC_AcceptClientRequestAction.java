@@ -4,15 +4,14 @@
 
 package gwlpr.actions.intershardcom;
 
-import realityshard.shardlet.EventAggregator;
-import realityshard.shardlet.utils.GenericTriggerableAction;
+import realityshard.shardlet.utils.GenericAction;
 
 /**
  * Request from the LoginShard to a MapShard to accept a session.
  *
  * @author miracle444, _rusty
  */
-public final class ISC_AcceptClientRequestAction extends GenericTriggerableAction
+public final class ISC_AcceptClientRequestAction extends GenericAction
 {
 
     private int key1;
@@ -81,18 +80,5 @@ public final class ISC_AcceptClientRequestAction extends GenericTriggerableActio
     public int getCharacterId() 
     {
         return characterId;
-    }
-
-    
-    /**
-     * This method is used by the context of a game app, when this action is 
-     * transmitted to another game app.
-     * The purpose is to let the action trigger the event by itself instead of
-     * having to know the exact type.
-     */
-    @Override
-    public void triggerEvent(EventAggregator aggregator)
-    {
-        aggregator.triggerEvent(this);
     }
 }
