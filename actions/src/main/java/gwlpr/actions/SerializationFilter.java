@@ -38,7 +38,7 @@ public interface SerializationFilter
     
     
     /**
-     * Serializes a certain field of an action T and puts the data
+     * Serializes a certain field of an object and puts the data
      * into the given buffer. 
      * NO LENGTH CHECKS HERE! MAKE SURE THE BUFFER IS LONG ENOUGH!
      */
@@ -47,7 +47,7 @@ public interface SerializationFilter
     
     /**
      * Deserializes a certain amount of bytes of the given buffer into
-     * a certain field of the action T.
+     * a certain field of the object.
      */
     boolean deserialize(ByteBuffer buf, Object object);
     
@@ -79,13 +79,11 @@ public interface SerializationFilter
     {
         
         List<SerializationFilter> filters = new ArrayList<>();
-        ListIterator<SerializationFilter> iterator = filters.listIterator();
         
         
         public void register(SerializationFilter filter) 
         { 
             filters.add(filter); 
-            iterator = filters.listIterator(); 
         }
         
         
@@ -147,7 +145,7 @@ public interface SerializationFilter
             }
         }
         
-        protected abstract void put(ByteBuffer buf, Object action)
+        protected abstract void put(ByteBuffer buf, Object object)
                 throws Exception;
         
         
@@ -237,15 +235,15 @@ public interface SerializationFilter
     }
     
     
-    public static class UByte extends Generic
+    public final static class UByte extends Generic
     {
         public UByte(Field field) { super(field); }
         
         @Override
-        protected void put(ByteBuffer buf, Object action)
+        protected void put(ByteBuffer buf, Object object)
                 throws Exception
         { 
-            buf.put((byte)field.getShort(action)); 
+            buf.put((byte)field.getShort(object)); 
         }
         
         @Override
@@ -256,15 +254,15 @@ public interface SerializationFilter
     }
     
     
-    public static class UTF16Char extends Generic
+    public final static class UTF16Char extends Generic
     {
         public UTF16Char(Field field) { super(field); }
         
         @Override
-        protected void put(ByteBuffer buf, Object action)
+        protected void put(ByteBuffer buf, Object object)
                 throws Exception
         { 
-            buf.putChar(field.getChar(action)); 
+            buf.putChar(field.getChar(object)); 
         }
         
         @Override
@@ -275,15 +273,15 @@ public interface SerializationFilter
     }
     
     
-    public static class UShort extends Generic
+    public final static class UShort extends Generic
     {
         public UShort(Field field) { super(field); }
         
         @Override
-        protected void put(ByteBuffer buf, Object action)
+        protected void put(ByteBuffer buf, Object object)
                 throws Exception
         { 
-            buf.putShort((short)field.getInt(action)); 
+            buf.putShort((short)field.getInt(object)); 
         }
         
         @Override
@@ -294,15 +292,15 @@ public interface SerializationFilter
     }
     
     
-    public static class UInt extends Generic
+    public final static class UInt extends Generic
     {
         public UInt(Field field) { super(field); }
         
         @Override
-        protected void put(ByteBuffer buf, Object action)
+        protected void put(ByteBuffer buf, Object object)
                 throws Exception
         { 
-            buf.putInt((int)field.getLong(action)); 
+            buf.putInt((int)field.getLong(object)); 
         }
         
         @Override
@@ -313,15 +311,15 @@ public interface SerializationFilter
     }
     
     
-    public static class Float extends Generic
+    public final static class Float extends Generic
     {
         public Float(Field field) { super(field); }
         
         @Override
-        protected void put(ByteBuffer buf, Object action)
+        protected void put(ByteBuffer buf, Object object)
                 throws Exception
         { 
-            buf.putFloat(field.getFloat(action)); 
+            buf.putFloat(field.getFloat(object)); 
         }
         
         @Override
@@ -332,15 +330,15 @@ public interface SerializationFilter
     }
     
     
-    public static class Vec2 extends Generic
+    public final static class Vec2 extends Generic
     {
         public Vec2(Field field) { super(field); }
         
         @Override
-        protected void put(ByteBuffer buf, Object action)
+        protected void put(ByteBuffer buf, Object object)
                 throws Exception
         { 
-            Vector2 vec = (Vector2)field.get(action);
+            Vector2 vec = (Vector2)field.get(object);
             buf.putFloat(vec.getX());
             buf.putFloat(vec.getY());
         }
@@ -353,15 +351,15 @@ public interface SerializationFilter
     }
     
     
-    public static class Vec3 extends Generic
+    public final static class Vec3 extends Generic
     {
         public Vec3(Field field) { super(field); }
         
         @Override
-        protected void put(ByteBuffer buf, Object action)
+        protected void put(ByteBuffer buf, Object object)
                 throws Exception
         { 
-            Vector3 vec = (Vector3)field.get(action);
+            Vector3 vec = (Vector3)field.get(object);
             buf.putFloat(vec.getX());
             buf.putFloat(vec.getY());
             buf.putFloat(vec.getZ());
@@ -375,7 +373,7 @@ public interface SerializationFilter
     }
     
     
-    public static class Nested extends Generic
+    public final static class Nested extends Generic
     {
         private final Class<?> nestedClass;
         private final SerializationFilter innerFilter;
@@ -388,10 +386,10 @@ public interface SerializationFilter
         }
         
         @Override
-        protected void put(ByteBuffer buf, Object action)
+        protected void put(ByteBuffer buf, Object object)
                 throws Exception
         { 
-            innerFilter.serialize(buf, field.get(action));
+            innerFilter.serialize(buf, field.get(object));
         }
         
         @Override
@@ -410,15 +408,15 @@ public interface SerializationFilter
     }
 
     
-    public static class UTF16String extends Generic
+    public final static class UTF16String extends Generic
     {
         public UTF16String(Field field) { super(field); }
         
         @Override
-        protected void put(ByteBuffer buf, Object action)
+        protected void put(ByteBuffer buf, Object object)
                 throws Exception
         { 
-            String txt = (String)field.get(action);
+            String txt = (String)field.get(object);
             
             // put the size of the string (UTF16 char count)
             buf.putShort((short)txt.length());
@@ -449,15 +447,15 @@ public interface SerializationFilter
     }
     
     
-    public static class UByteArray extends Array
+    public final static class UByteArray extends Array
     {
         public UByteArray(Field field) { super(field); }
         
         @Override
-        protected void put(ByteBuffer buf, Object action)
+        protected void put(ByteBuffer buf, Object object)
                 throws Exception
         {
-            short[] sa = (short[])field.get(action);
+            short[] sa = (short[])field.get(object);
             
             // put the byte-count
             setLength(buf, sa.length);
@@ -488,15 +486,15 @@ public interface SerializationFilter
     }
     
     
-    public static class UShortArray extends Array
+    public final static class UShortArray extends Array
     {
         public UShortArray(Field field) { super(field); }
         
         @Override
-        protected void put(ByteBuffer buf, Object action)
+        protected void put(ByteBuffer buf, Object object)
                 throws Exception
         {
-            int[] ia = (int[])field.get(action);
+            int[] ia = (int[])field.get(object);
             
             // put the ushort-count
             setLength(buf, ia.length);
@@ -531,15 +529,15 @@ public interface SerializationFilter
     }
     
     
-    public static class UIntArray extends Array
+    public final static class UIntArray extends Array
     {
         public UIntArray(Field field) { super(field); }
         
         @Override
-        protected void put(ByteBuffer buf, Object action)
+        protected void put(ByteBuffer buf, Object object)
                 throws Exception
         {
-            long[] la = (long[])field.get(action);
+            long[] la = (long[])field.get(object);
             
             // put the ushort-count
             setLength(buf, la.length);
@@ -574,15 +572,15 @@ public interface SerializationFilter
     }
 
     
-    public static class FloatArray extends Array
+    public final static class FloatArray extends Array
     {
         public FloatArray(Field field) { super(field); }
         
         @Override
-        protected void put(ByteBuffer buf, Object action)
+        protected void put(ByteBuffer buf, Object object)
                 throws Exception
         {
-            float[] fa = (float[])field.get(action);
+            float[] fa = (float[])field.get(object);
             
             // put the ushort-count
             setLength(buf, fa.length);
@@ -617,7 +615,7 @@ public interface SerializationFilter
     }
     
     
-    public static class NestedArray extends Array
+    public final static class NestedArray extends Array
     {
         private final Class<?> nestedClass;
         private final SerializationFilter innerFilter;
@@ -630,18 +628,18 @@ public interface SerializationFilter
         }
         
         @Override
-        protected void put(ByteBuffer buf, Object action)
+        protected void put(ByteBuffer buf, Object object)
                 throws Exception
         { 
-            Object[] oa = (Object[])field.get(action);
+            Object[] oa = (Object[])field.get(object);
             
             // put the byte-count
             setLength(buf, oa.length);
            
             // then put the array itself
-            for (Object object : oa) 
+            for (Object o : oa) 
             {
-                innerFilter.serialize(buf, object);
+                innerFilter.serialize(buf, o);
             }             
         }
         
