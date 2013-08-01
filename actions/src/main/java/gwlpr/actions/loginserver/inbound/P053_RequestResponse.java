@@ -2,7 +2,6 @@
 package gwlpr.actions.loginserver.inbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.loginserver.LoginServerActionFactory;
 
 
 /**
@@ -15,13 +14,13 @@ public final class P053_RequestResponse
 
     public long loginCount;
 
-    static {
-        LoginServerActionFactory.registerInbound(P053_RequestResponse.class);
-    }
-
     @Override
     public short getHeader() {
         return  53;
+    }
+
+    public long getLoginCount() {
+        return loginCount;
     }
 
 }

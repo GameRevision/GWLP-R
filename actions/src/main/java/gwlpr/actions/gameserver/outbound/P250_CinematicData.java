@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 
 
@@ -17,13 +16,13 @@ public final class P250_CinematicData
     @IsArray(constant = false, size = 1024, prefixLength = 2)
     public byte[] data;
 
-    static {
-        GameServerActionFactory.registerOutbound(P250_CinematicData.class);
-    }
-
     @Override
     public short getHeader() {
         return  250;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
     }
 
 }

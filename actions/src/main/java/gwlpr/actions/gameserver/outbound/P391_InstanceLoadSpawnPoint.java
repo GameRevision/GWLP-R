@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.Vector2;
 
 
@@ -20,13 +19,29 @@ public final class P391_InstanceLoadSpawnPoint
     public short unknown1;
     public short isCinematic;
 
-    static {
-        GameServerActionFactory.registerOutbound(P391_InstanceLoadSpawnPoint.class);
-    }
-
     @Override
     public short getHeader() {
         return  391;
+    }
+
+    public void setMapFile(long mapFile) {
+        this.mapFile = mapFile;
+    }
+
+    public void setPosition(Vector2 position) {
+        this.position = position;
+    }
+
+    public void setPlane(int plane) {
+        this.plane = plane;
+    }
+
+    public void setUnknown1(short unknown1) {
+        this.unknown1 = unknown1;
+    }
+
+    public void setIsCinematic(short isCinematic) {
+        this.isCinematic = isCinematic;
     }
 
 }

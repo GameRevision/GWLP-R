@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P241_ReportPlayer
     public String characterName;
     public short isPvP;
 
-    static {
-        GameServerActionFactory.registerOutbound(P241_ReportPlayer.class);
-    }
-
     @Override
     public short getHeader() {
         return  241;
+    }
+
+    public void setCharacterName(String characterName) {
+        this.characterName = characterName;
+    }
+
+    public void setIsPvP(short isPvP) {
+        this.isPvP = isPvP;
     }
 
 }

@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -15,13 +14,13 @@ public final class P224_UpdateMaxBalthFaction
 
     public long maxFaction;
 
-    static {
-        GameServerActionFactory.registerOutbound(P224_UpdateMaxBalthFaction.class);
-    }
-
     @Override
     public short getHeader() {
         return  224;
+    }
+
+    public void setMaxFaction(long maxFaction) {
+        this.maxFaction = maxFaction;
     }
 
 }

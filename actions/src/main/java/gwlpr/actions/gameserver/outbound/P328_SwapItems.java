@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -17,13 +16,21 @@ public final class P328_SwapItems
     public long itemLocalID1;
     public long itemLocalID2;
 
-    static {
-        GameServerActionFactory.registerOutbound(P328_SwapItems.class);
-    }
-
     @Override
     public short getHeader() {
         return  328;
+    }
+
+    public void setItemStreamID(int itemStreamID) {
+        this.itemStreamID = itemStreamID;
+    }
+
+    public void setItemLocalID1(long itemLocalID1) {
+        this.itemLocalID1 = itemLocalID1;
+    }
+
+    public void setItemLocalID2(long itemLocalID2) {
+        this.itemLocalID2 = itemLocalID2;
     }
 
 }

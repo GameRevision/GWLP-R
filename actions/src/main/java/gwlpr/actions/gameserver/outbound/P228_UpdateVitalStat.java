@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P228_UpdateVitalStat
     public long agentID;
     public long stats;
 
-    static {
-        GameServerActionFactory.registerOutbound(P228_UpdateVitalStat.class);
-    }
-
     @Override
     public short getHeader() {
         return  228;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
+    }
+
+    public void setStats(long stats) {
+        this.stats = stats;
     }
 
 }

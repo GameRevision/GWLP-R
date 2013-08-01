@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -15,13 +14,13 @@ public final class P258_ObjectDialogSender
 
     public long agentID;
 
-    static {
-        GameServerActionFactory.registerOutbound(P258_ObjectDialogSender.class);
-    }
-
     @Override
     public short getHeader() {
         return  258;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
     }
 
 }

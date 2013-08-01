@@ -2,7 +2,6 @@
 package gwlpr.actions.loginserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.loginserver.LoginServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P003_StreamTerminator
     public long loginCount;
     public long errorCode;
 
-    static {
-        LoginServerActionFactory.registerOutbound(P003_StreamTerminator.class);
-    }
-
     @Override
     public short getHeader() {
         return  3;
+    }
+
+    public void setLoginCount(long loginCount) {
+        this.loginCount = loginCount;
+    }
+
+    public void setErrorCode(long errorCode) {
+        this.errorCode = errorCode;
     }
 
 }

@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P160_AgentSpectate
     public long agentID;
     public short target;
 
-    static {
-        GameServerActionFactory.registerOutbound(P160_AgentSpectate.class);
-    }
-
     @Override
     public short getHeader() {
         return  160;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
+    }
+
+    public void setTarget(short target) {
+        this.target = target;
     }
 
 }

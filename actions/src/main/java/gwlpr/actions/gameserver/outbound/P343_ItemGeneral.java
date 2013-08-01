@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 import gwlpr.actions.utils.NestedMarker;
 
@@ -31,13 +30,61 @@ public final class P343_ItemGeneral
     @IsArray(constant = false, size = 64, prefixLength = 2)
     public P343_ItemGeneral.NestedItemStats[] itemStats;
 
-    static {
-        GameServerActionFactory.registerOutbound(P343_ItemGeneral.class);
-    }
-
     @Override
     public short getHeader() {
         return  343;
+    }
+
+    public void setItemLocalID(long itemLocalID) {
+        this.itemLocalID = itemLocalID;
+    }
+
+    public void setFileID(long fileID) {
+        this.fileID = fileID;
+    }
+
+    public void setItemType(short itemType) {
+        this.itemType = itemType;
+    }
+
+    public void setUnknown1(short unknown1) {
+        this.unknown1 = unknown1;
+    }
+
+    public void setDyeColor(int dyeColor) {
+        this.dyeColor = dyeColor;
+    }
+
+    public void setMaterials(int materials) {
+        this.materials = materials;
+    }
+
+    public void setUnknown2(short unknown2) {
+        this.unknown2 = unknown2;
+    }
+
+    public void setItemFlags(long itemFlags) {
+        this.itemFlags = itemFlags;
+    }
+
+    public void setMerchantPrice(long merchantPrice) {
+        this.merchantPrice = merchantPrice;
+    }
+
+    public void setItemID(long itemID) {
+        this.itemID = itemID;
+    }
+
+    public void setQuantity(long quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setItemStats(P343_ItemGeneral.NestedItemStats[] itemStats) {
+        this.itemStats = itemStats;
     }
 
     public final static class NestedItemStats
@@ -45,6 +92,10 @@ public final class P343_ItemGeneral
     {
 
         public long stat;
+
+        public void setStat(long stat) {
+            this.stat = stat;
+        }
 
     }
 

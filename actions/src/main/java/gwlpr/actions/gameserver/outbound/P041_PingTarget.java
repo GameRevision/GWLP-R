@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P041_PingTarget
     public int partyMember;
     public long targetAgent;
 
-    static {
-        GameServerActionFactory.registerOutbound(P041_PingTarget.class);
-    }
-
     @Override
     public short getHeader() {
         return  41;
+    }
+
+    public void setPartyMember(int partyMember) {
+        this.partyMember = partyMember;
+    }
+
+    public void setTargetAgent(long targetAgent) {
+        this.targetAgent = targetAgent;
     }
 
 }

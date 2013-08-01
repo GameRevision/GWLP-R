@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 import gwlpr.actions.utils.NestedMarker;
 
@@ -21,13 +20,17 @@ public final class P212_WindowSkills
     @IsArray(constant = false, size = 16, prefixLength = 2)
     public P212_WindowSkills.NestedSkillIDs[] skillIDs;
 
-    static {
-        GameServerActionFactory.registerOutbound(P212_WindowSkills.class);
-    }
-
     @Override
     public short getHeader() {
         return  212;
+    }
+
+    public void setUnlocked(short unlocked) {
+        this.unlocked = unlocked;
+    }
+
+    public void setSkillIDs(P212_WindowSkills.NestedSkillIDs[] skillIDs) {
+        this.skillIDs = skillIDs;
     }
 
     public final static class NestedSkillIDs
@@ -35,6 +38,10 @@ public final class P212_WindowSkills
     {
 
         public long unknown1;
+
+        public void setUnknown1(long unknown1) {
+            this.unknown1 = unknown1;
+        }
 
     }
 

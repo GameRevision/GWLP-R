@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -17,13 +16,21 @@ public final class P175_AddMissionObjective
     public long type;
     public String objective;
 
-    static {
-        GameServerActionFactory.registerOutbound(P175_AddMissionObjective.class);
-    }
-
     @Override
     public short getHeader() {
         return  175;
+    }
+
+    public void setSection(long section) {
+        this.section = section;
+    }
+
+    public void setType(long type) {
+        this.type = type;
+    }
+
+    public void setObjective(String objective) {
+        this.objective = objective;
     }
 
 }

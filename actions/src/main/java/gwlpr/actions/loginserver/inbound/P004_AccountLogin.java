@@ -2,7 +2,6 @@
 package gwlpr.actions.loginserver.inbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.loginserver.LoginServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 
 
@@ -22,13 +21,33 @@ public final class P004_AccountLogin
     public String unknown2;
     public String characterName;
 
-    static {
-        LoginServerActionFactory.registerInbound(P004_AccountLogin.class);
-    }
-
     @Override
     public short getHeader() {
         return  4;
+    }
+
+    public long getLoginCount() {
+        return loginCount;
+    }
+
+    public long getUnknown1() {
+        return unknown1;
+    }
+
+    public byte[] getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getUnknown2() {
+        return unknown2;
+    }
+
+    public String getCharacterName() {
+        return characterName;
     }
 
 }

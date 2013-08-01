@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P185_OpenCollectorWindow
     public short windowType;
     public String text;
 
-    static {
-        GameServerActionFactory.registerOutbound(P185_OpenCollectorWindow.class);
-    }
-
     @Override
     public short getHeader() {
         return  185;
+    }
+
+    public void setWindowType(short windowType) {
+        this.windowType = windowType;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
 }

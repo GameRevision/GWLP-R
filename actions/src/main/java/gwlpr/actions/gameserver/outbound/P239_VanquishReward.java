@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -17,13 +16,21 @@ public final class P239_VanquishReward
     public long experienceEarned;
     public long goldEarned;
 
-    static {
-        GameServerActionFactory.registerOutbound(P239_VanquishReward.class);
-    }
-
     @Override
     public short getHeader() {
         return  239;
+    }
+
+    public void setMapID(int mapID) {
+        this.mapID = mapID;
+    }
+
+    public void setExperienceEarned(long experienceEarned) {
+        this.experienceEarned = experienceEarned;
+    }
+
+    public void setGoldEarned(long goldEarned) {
+        this.goldEarned = goldEarned;
     }
 
 }

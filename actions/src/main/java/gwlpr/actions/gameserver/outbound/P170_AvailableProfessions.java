@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P170_AvailableProfessions
     public long agentID;
     public long professions;
 
-    static {
-        GameServerActionFactory.registerOutbound(P170_AvailableProfessions.class);
-    }
-
     @Override
     public short getHeader() {
         return  170;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
+    }
+
+    public void setProfessions(long professions) {
+        this.professions = professions;
     }
 
 }

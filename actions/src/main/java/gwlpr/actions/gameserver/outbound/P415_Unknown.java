@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -26,13 +25,57 @@ public final class P415_Unknown
     public String unknown11;
     public String unknown12;
 
-    static {
-        GameServerActionFactory.registerOutbound(P415_Unknown.class);
-    }
-
     @Override
     public short getHeader() {
         return  415;
+    }
+
+    public void setUnknown1(int unknown1) {
+        this.unknown1 = unknown1;
+    }
+
+    public void setUnknown2(short unknown2) {
+        this.unknown2 = unknown2;
+    }
+
+    public void setUnknown3(short unknown3) {
+        this.unknown3 = unknown3;
+    }
+
+    public void setUnknown4(short unknown4) {
+        this.unknown4 = unknown4;
+    }
+
+    public void setUnknown5(short unknown5) {
+        this.unknown5 = unknown5;
+    }
+
+    public void setUnknown6(short unknown6) {
+        this.unknown6 = unknown6;
+    }
+
+    public void setUnknown7(int unknown7) {
+        this.unknown7 = unknown7;
+    }
+
+    public void setUnknown8(short unknown8) {
+        this.unknown8 = unknown8;
+    }
+
+    public void setUnknown9(long unknown9) {
+        this.unknown9 = unknown9;
+    }
+
+    public void setUnknown10(long unknown10) {
+        this.unknown10 = unknown10;
+    }
+
+    public void setUnknown11(String unknown11) {
+        this.unknown11 = unknown11;
+    }
+
+    public void setUnknown12(String unknown12) {
+        this.unknown12 = unknown12;
     }
 
 }

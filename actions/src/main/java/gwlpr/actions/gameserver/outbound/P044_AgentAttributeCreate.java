@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -17,13 +16,21 @@ public final class P044_AgentAttributeCreate
     public short freePts;
     public short maxPts;
 
-    static {
-        GameServerActionFactory.registerOutbound(P044_AgentAttributeCreate.class);
-    }
-
     @Override
     public short getHeader() {
         return  44;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
+    }
+
+    public void setFreePts(short freePts) {
+        this.freePts = freePts;
+    }
+
+    public void setMaxPts(short maxPts) {
+        this.maxPts = maxPts;
     }
 
 }

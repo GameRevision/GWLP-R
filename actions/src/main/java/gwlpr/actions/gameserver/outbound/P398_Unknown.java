@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 import gwlpr.actions.utils.NestedMarker;
 
@@ -24,13 +23,37 @@ public final class P398_Unknown
     @IsArray(constant = false, size = 2, prefixLength = 2)
     public P398_Unknown.NestedUnknown7 [] unknown7;
 
-    static {
-        GameServerActionFactory.registerOutbound(P398_Unknown.class);
-    }
-
     @Override
     public short getHeader() {
         return  398;
+    }
+
+    public void setUnknown1(long unknown1) {
+        this.unknown1 = unknown1;
+    }
+
+    public void setUnknown2(int unknown2) {
+        this.unknown2 = unknown2;
+    }
+
+    public void setUnknown3(int unknown3) {
+        this.unknown3 = unknown3;
+    }
+
+    public void setUnknown4(short unknown4) {
+        this.unknown4 = unknown4;
+    }
+
+    public void setUnknown5(short unknown5) {
+        this.unknown5 = unknown5;
+    }
+
+    public void setUnknown6(short unknown6) {
+        this.unknown6 = unknown6;
+    }
+
+    public void setUnknown7(P398_Unknown.NestedUnknown7 [] unknown7) {
+        this.unknown7 = unknown7;
     }
 
     public final static class NestedUnknown7
@@ -47,6 +70,46 @@ public final class P398_Unknown
         public int unknown8;
         public short unknown9;
         public String unknown10;
+
+        public void setUnknown1(short unknown1) {
+            this.unknown1 = unknown1;
+        }
+
+        public void setUnknown2(short unknown2) {
+            this.unknown2 = unknown2;
+        }
+
+        public void setUnknown3(short unknown3) {
+            this.unknown3 = unknown3;
+        }
+
+        public void setUnknown4(short unknown4) {
+            this.unknown4 = unknown4;
+        }
+
+        public void setUnknown5(short unknown5) {
+            this.unknown5 = unknown5;
+        }
+
+        public void setUnknown6(short unknown6) {
+            this.unknown6 = unknown6;
+        }
+
+        public void setUnknown7(short unknown7) {
+            this.unknown7 = unknown7;
+        }
+
+        public void setUnknown8(int unknown8) {
+            this.unknown8 = unknown8;
+        }
+
+        public void setUnknown9(short unknown9) {
+            this.unknown9 = unknown9;
+        }
+
+        public void setUnknown10(String unknown10) {
+            this.unknown10 = unknown10;
+        }
 
     }
 

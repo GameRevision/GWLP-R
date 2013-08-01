@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -15,13 +14,13 @@ public final class P040_MessageOfTheDay
 
     public String text;
 
-    static {
-        GameServerActionFactory.registerOutbound(P040_MessageOfTheDay.class);
-    }
-
     @Override
     public short getHeader() {
         return  40;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
 }

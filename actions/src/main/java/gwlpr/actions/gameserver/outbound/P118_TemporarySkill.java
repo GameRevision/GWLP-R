@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P118_TemporarySkill
     public long agentID;
     public int skillID;
 
-    static {
-        GameServerActionFactory.registerOutbound(P118_TemporarySkill.class);
-    }
-
     @Override
     public short getHeader() {
         return  118;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
+    }
+
+    public void setSkillID(int skillID) {
+        this.skillID = skillID;
     }
 
 }

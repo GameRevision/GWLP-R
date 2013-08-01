@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -15,13 +14,13 @@ public final class P213_WindowSkillsEnd
 
     public short windowType;
 
-    static {
-        GameServerActionFactory.registerOutbound(P213_WindowSkillsEnd.class);
-    }
-
     @Override
     public short getHeader() {
         return  213;
+    }
+
+    public void setWindowType(short windowType) {
+        this.windowType = windowType;
     }
 
 }

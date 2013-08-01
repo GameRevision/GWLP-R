@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -15,13 +14,13 @@ public final class P106_HeroDisable
 
     public int heroID;
 
-    static {
-        GameServerActionFactory.registerOutbound(P106_HeroDisable.class);
-    }
-
     @Override
     public short getHeader() {
         return  106;
+    }
+
+    public void setHeroID(int heroID) {
+        this.heroID = heroID;
     }
 
 }

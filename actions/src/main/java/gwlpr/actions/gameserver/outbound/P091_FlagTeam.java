@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.Vector2;
 
 
@@ -17,13 +16,17 @@ public final class P091_FlagTeam
     public Vector2 position;
     public int plane;
 
-    static {
-        GameServerActionFactory.registerOutbound(P091_FlagTeam.class);
-    }
-
     @Override
     public short getHeader() {
         return  91;
+    }
+
+    public void setPosition(Vector2 position) {
+        this.position = position;
+    }
+
+    public void setPlane(int plane) {
+        this.plane = plane;
     }
 
 }

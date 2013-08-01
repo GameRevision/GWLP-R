@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.Vector2;
 
 
@@ -21,13 +20,33 @@ public final class P149_PlayEffect
     public short unknown1;
     public short unknown2;
 
-    static {
-        GameServerActionFactory.registerOutbound(P149_PlayEffect.class);
-    }
-
     @Override
     public short getHeader() {
         return  149;
+    }
+
+    public void setPosition(Vector2 position) {
+        this.position = position;
+    }
+
+    public void setPlane(int plane) {
+        this.plane = plane;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
+    }
+
+    public void setEffectID(int effectID) {
+        this.effectID = effectID;
+    }
+
+    public void setUnknown1(short unknown1) {
+        this.unknown1 = unknown1;
+    }
+
+    public void setUnknown2(short unknown2) {
+        this.unknown2 = unknown2;
     }
 
 }

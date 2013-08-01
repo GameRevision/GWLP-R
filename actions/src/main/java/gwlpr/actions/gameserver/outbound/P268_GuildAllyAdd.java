@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 
 
@@ -23,13 +22,25 @@ public final class P268_GuildAllyAdd
     public short type;
     public long joinDate;
 
-    static {
-        GameServerActionFactory.registerOutbound(P268_GuildAllyAdd.class);
-    }
-
     @Override
     public short getHeader() {
         return  268;
+    }
+
+    public void setLocalID(int localID) {
+        this.localID = localID;
+    }
+
+    public void setGuildHallData(byte[] guildHallData) {
+        this.guildHallData = guildHallData;
+    }
+
+    public void setType(short type) {
+        this.type = type;
+    }
+
+    public void setJoinDate(long joinDate) {
+        this.joinDate = joinDate;
     }
 
 }

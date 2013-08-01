@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.inbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -15,13 +14,13 @@ public final class P124_Unknown
 
     public short unknown1;
 
-    static {
-        GameServerActionFactory.registerInbound(P124_Unknown.class);
-    }
-
     @Override
     public short getHeader() {
         return  124;
+    }
+
+    public short getUnknown1() {
+        return unknown1;
     }
 
 }

@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -20,13 +19,33 @@ public final class P166_PetCreate
     public long modelFile;
     public long mode;
 
-    static {
-        GameServerActionFactory.registerOutbound(P166_PetCreate.class);
-    }
-
     @Override
     public short getHeader() {
         return  166;
+    }
+
+    public void setPet(long pet) {
+        this.pet = pet;
+    }
+
+    public void setOwner(long owner) {
+        this.owner = owner;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setNPCFile(long nPCFile) {
+        this.nPCFile = nPCFile;
+    }
+
+    public void setModelFile(long modelFile) {
+        this.modelFile = modelFile;
+    }
+
+    public void setMode(long mode) {
+        this.mode = mode;
     }
 
 }

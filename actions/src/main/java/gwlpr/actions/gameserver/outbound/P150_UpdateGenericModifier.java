@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -17,13 +16,21 @@ public final class P150_UpdateGenericModifier
     public long agentID;
     public long value;
 
-    static {
-        GameServerActionFactory.registerOutbound(P150_UpdateGenericModifier.class);
-    }
-
     @Override
     public short getHeader() {
         return  150;
+    }
+
+    public void setValueID(long valueID) {
+        this.valueID = valueID;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
+    }
+
+    public void setValue(long value) {
+        this.value = value;
     }
 
 }

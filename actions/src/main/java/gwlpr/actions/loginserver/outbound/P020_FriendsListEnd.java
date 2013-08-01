@@ -2,7 +2,6 @@
 package gwlpr.actions.loginserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.loginserver.LoginServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P020_FriendsListEnd
     public long loginCount;
     public long unknown1;
 
-    static {
-        LoginServerActionFactory.registerOutbound(P020_FriendsListEnd.class);
-    }
-
     @Override
     public short getHeader() {
         return  20;
+    }
+
+    public void setLoginCount(long loginCount) {
+        this.loginCount = loginCount;
+    }
+
+    public void setUnknown1(long unknown1) {
+        this.unknown1 = unknown1;
     }
 
 }

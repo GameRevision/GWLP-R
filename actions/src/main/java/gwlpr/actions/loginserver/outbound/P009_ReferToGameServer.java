@@ -2,7 +2,6 @@
 package gwlpr.actions.loginserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.loginserver.LoginServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 
 
@@ -21,13 +20,29 @@ public final class P009_ReferToGameServer
     public byte[] serverConnectionInfo;
     public long securityKey2;
 
-    static {
-        LoginServerActionFactory.registerOutbound(P009_ReferToGameServer.class);
-    }
-
     @Override
     public short getHeader() {
         return  9;
+    }
+
+    public void setLoginCount(long loginCount) {
+        this.loginCount = loginCount;
+    }
+
+    public void setSecurityKey1(long securityKey1) {
+        this.securityKey1 = securityKey1;
+    }
+
+    public void setGameMapID(long gameMapID) {
+        this.gameMapID = gameMapID;
+    }
+
+    public void setServerConnectionInfo(byte[] serverConnectionInfo) {
+        this.serverConnectionInfo = serverConnectionInfo;
+    }
+
+    public void setSecurityKey2(long securityKey2) {
+        this.securityKey2 = securityKey2;
     }
 
 }

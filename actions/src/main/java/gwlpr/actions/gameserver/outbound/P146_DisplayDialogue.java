@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -18,13 +17,25 @@ public final class P146_DisplayDialogue
     public short type;
     public String text;
 
-    static {
-        GameServerActionFactory.registerOutbound(P146_DisplayDialogue.class);
-    }
-
     @Override
     public short getHeader() {
         return  146;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setType(short type) {
+        this.type = type;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
 }

@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -20,13 +19,33 @@ public final class P395_InstanceLoadDistrictInfo
     public short language;
     public short isObserver;
 
-    static {
-        GameServerActionFactory.registerOutbound(P395_InstanceLoadDistrictInfo.class);
-    }
-
     @Override
     public short getHeader() {
         return  395;
+    }
+
+    public void setCharAgent(long charAgent) {
+        this.charAgent = charAgent;
+    }
+
+    public void setMapID(int mapID) {
+        this.mapID = mapID;
+    }
+
+    public void setIsExplorable(short isExplorable) {
+        this.isExplorable = isExplorable;
+    }
+
+    public void setDistrictAndRegion(long districtAndRegion) {
+        this.districtAndRegion = districtAndRegion;
+    }
+
+    public void setLanguage(short language) {
+        this.language = language;
+    }
+
+    public void setIsObserver(short isObserver) {
+        this.isObserver = isObserver;
     }
 
 }

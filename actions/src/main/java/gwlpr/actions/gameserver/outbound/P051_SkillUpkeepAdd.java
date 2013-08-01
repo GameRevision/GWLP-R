@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -19,13 +18,29 @@ public final class P051_SkillUpkeepAdd
     public long unknown1;
     public long buffID;
 
-    static {
-        GameServerActionFactory.registerOutbound(P051_SkillUpkeepAdd.class);
-    }
-
     @Override
     public short getHeader() {
         return  51;
+    }
+
+    public void setCaster(long caster) {
+        this.caster = caster;
+    }
+
+    public void setTarget(long target) {
+        this.target = target;
+    }
+
+    public void setSkillID(int skillID) {
+        this.skillID = skillID;
+    }
+
+    public void setUnknown1(long unknown1) {
+        this.unknown1 = unknown1;
+    }
+
+    public void setBuffID(long buffID) {
+        this.buffID = buffID;
     }
 
 }

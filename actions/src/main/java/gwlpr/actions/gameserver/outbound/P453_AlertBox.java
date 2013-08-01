@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -15,13 +14,13 @@ public final class P453_AlertBox
 
     public String text;
 
-    static {
-        GameServerActionFactory.registerOutbound(P453_AlertBox.class);
-    }
-
     @Override
     public short getHeader() {
         return  453;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
 }

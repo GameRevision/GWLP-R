@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -15,13 +14,13 @@ public final class P257_ObjectDialogBody
 
     public String body;
 
-    static {
-        GameServerActionFactory.registerOutbound(P257_ObjectDialogBody.class);
-    }
-
     @Override
     public short getHeader() {
         return  257;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
     }
 
 }

@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.inbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -18,13 +17,25 @@ public final class P084_ReplaceSkill
     public long skillID;
     public long unknown;
 
-    static {
-        GameServerActionFactory.registerInbound(P084_ReplaceSkill.class);
-    }
-
     @Override
     public short getHeader() {
         return  84;
+    }
+
+    public long getAgentID() {
+        return agentID;
+    }
+
+    public long getSkillSlot() {
+        return skillSlot;
+    }
+
+    public long getSkillID() {
+        return skillID;
+    }
+
+    public long getUnknown() {
+        return unknown;
     }
 
 }

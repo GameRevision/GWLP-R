@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -17,13 +16,21 @@ public final class P466_PartySearchType
     public short type;
     public short hardMode;
 
-    static {
-        GameServerActionFactory.registerOutbound(P466_PartySearchType.class);
-    }
-
     @Override
     public short getHeader() {
         return  466;
+    }
+
+    public void setLocalID(int localID) {
+        this.localID = localID;
+    }
+
+    public void setType(short type) {
+        this.type = type;
+    }
+
+    public void setHardMode(short hardMode) {
+        this.hardMode = hardMode;
     }
 
 }

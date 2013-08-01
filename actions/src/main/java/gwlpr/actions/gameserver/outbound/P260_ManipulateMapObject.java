@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -17,13 +16,21 @@ public final class P260_ManipulateMapObject
     public short action;
     public long frequency;
 
-    static {
-        GameServerActionFactory.registerOutbound(P260_ManipulateMapObject.class);
-    }
-
     @Override
     public short getHeader() {
         return  260;
+    }
+
+    public void setObjectID(int objectID) {
+        this.objectID = objectID;
+    }
+
+    public void setAction(short action) {
+        this.action = action;
+    }
+
+    public void setFrequency(long frequency) {
+        this.frequency = frequency;
     }
 
 }

@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -18,13 +17,25 @@ public final class P256_ObjectDialogButton
     public long buttonID;
     public int skillID;
 
-    static {
-        GameServerActionFactory.registerOutbound(P256_ObjectDialogButton.class);
-    }
-
     @Override
     public short getHeader() {
         return  256;
+    }
+
+    public void setIcon(short icon) {
+        this.icon = icon;
+    }
+
+    public void setCaption(String caption) {
+        this.caption = caption;
+    }
+
+    public void setButtonID(long buttonID) {
+        this.buttonID = buttonID;
+    }
+
+    public void setSkillID(int skillID) {
+        this.skillID = skillID;
     }
 
 }

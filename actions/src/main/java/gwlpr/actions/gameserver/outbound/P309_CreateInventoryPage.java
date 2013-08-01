@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -20,13 +19,33 @@ public final class P309_CreateInventoryPage
     public short slots;
     public long associatedItem;
 
-    static {
-        GameServerActionFactory.registerOutbound(P309_CreateInventoryPage.class);
-    }
-
     @Override
     public short getHeader() {
         return  309;
+    }
+
+    public void setItemStreamID(int itemStreamID) {
+        this.itemStreamID = itemStreamID;
+    }
+
+    public void setType(short type) {
+        this.type = type;
+    }
+
+    public void setStorage(short storage) {
+        this.storage = storage;
+    }
+
+    public void setPageID(int pageID) {
+        this.pageID = pageID;
+    }
+
+    public void setSlots(short slots) {
+        this.slots = slots;
+    }
+
+    public void setAssociatedItem(long associatedItem) {
+        this.associatedItem = associatedItem;
     }
 
 }

@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.inbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.Vector2;
 
 
@@ -19,13 +18,25 @@ public final class P054_Unknown
     public Vector2 unknown3;
     public long unknown4;
 
-    static {
-        GameServerActionFactory.registerInbound(P054_Unknown.class);
-    }
-
     @Override
     public short getHeader() {
         return  54;
+    }
+
+    public Vector2 getUnknown1() {
+        return unknown1;
+    }
+
+    public long getUnknown2() {
+        return unknown2;
+    }
+
+    public Vector2 getUnknown3() {
+        return unknown3;
+    }
+
+    public long getUnknown4() {
+        return unknown4;
     }
 
 }

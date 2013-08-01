@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.inbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 
 
@@ -19,13 +18,21 @@ public final class P184_Unknown
     public byte[] unknown2;
     public short unknown3;
 
-    static {
-        GameServerActionFactory.registerInbound(P184_Unknown.class);
-    }
-
     @Override
     public short getHeader() {
         return  184;
+    }
+
+    public long getUnknown1() {
+        return unknown1;
+    }
+
+    public byte[] getUnknown2() {
+        return unknown2;
+    }
+
+    public short getUnknown3() {
+        return unknown3;
     }
 
 }

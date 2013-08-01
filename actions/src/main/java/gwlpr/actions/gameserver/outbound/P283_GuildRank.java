@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P283_GuildRank
     public int localID;
     public long rank;
 
-    static {
-        GameServerActionFactory.registerOutbound(P283_GuildRank.class);
-    }
-
     @Override
     public short getHeader() {
         return  283;
+    }
+
+    public void setLocalID(int localID) {
+        this.localID = localID;
+    }
+
+    public void setRank(long rank) {
+        this.rank = rank;
     }
 
 }

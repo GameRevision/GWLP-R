@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -15,13 +14,13 @@ public final class P022_DestroyAgent
 
     public long agentID;
 
-    static {
-        GameServerActionFactory.registerOutbound(P022_DestroyAgent.class);
-    }
-
     @Override
     public short getHeader() {
         return  22;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
     }
 
 }

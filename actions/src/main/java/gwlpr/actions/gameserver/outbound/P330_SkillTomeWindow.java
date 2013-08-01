@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -17,13 +16,21 @@ public final class P330_SkillTomeWindow
     public short profession;
     public short isElite;
 
-    static {
-        GameServerActionFactory.registerOutbound(P330_SkillTomeWindow.class);
-    }
-
     @Override
     public short getHeader() {
         return  330;
+    }
+
+    public void setItemLocalID(long itemLocalID) {
+        this.itemLocalID = itemLocalID;
+    }
+
+    public void setProfession(short profession) {
+        this.profession = profession;
+    }
+
+    public void setIsElite(short isElite) {
+        this.isElite = isElite;
     }
 
 }

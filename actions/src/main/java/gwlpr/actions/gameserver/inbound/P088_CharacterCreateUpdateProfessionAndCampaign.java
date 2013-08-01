@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.inbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P088_CharacterCreateUpdateProfessionAndCampaign
     public short campaign;
     public short profession;
 
-    static {
-        GameServerActionFactory.registerInbound(P088_CharacterCreateUpdateProfessionAndCampaign.class);
-    }
-
     @Override
     public short getHeader() {
         return  88;
+    }
+
+    public short getCampaign() {
+        return campaign;
+    }
+
+    public short getProfession() {
+        return profession;
     }
 
 }

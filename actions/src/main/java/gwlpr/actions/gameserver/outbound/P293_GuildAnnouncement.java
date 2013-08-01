@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P293_GuildAnnouncement
     public String announcement;
     public String characterName;
 
-    static {
-        GameServerActionFactory.registerOutbound(P293_GuildAnnouncement.class);
-    }
-
     @Override
     public short getHeader() {
         return  293;
+    }
+
+    public void setAnnouncement(String announcement) {
+        this.announcement = announcement;
+    }
+
+    public void setCharacterName(String characterName) {
+        this.characterName = characterName;
     }
 
 }

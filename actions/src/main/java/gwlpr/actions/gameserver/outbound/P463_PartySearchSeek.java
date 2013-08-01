@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -15,13 +14,13 @@ public final class P463_PartySearchSeek
 
     public int seeking;
 
-    static {
-        GameServerActionFactory.registerOutbound(P463_PartySearchSeek.class);
-    }
-
     @Override
     public short getHeader() {
         return  463;
+    }
+
+    public void setSeeking(int seeking) {
+        this.seeking = seeking;
     }
 
 }

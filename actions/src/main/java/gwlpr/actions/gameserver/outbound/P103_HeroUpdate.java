@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -24,13 +23,41 @@ public final class P103_HeroUpdate
     public short unknown1;
     public short isDisabled;
 
-    static {
-        GameServerActionFactory.registerOutbound(P103_HeroUpdate.class);
-    }
-
     @Override
     public short getHeader() {
         return  103;
+    }
+
+    public void setHeroID(int heroID) {
+        this.heroID = heroID;
+    }
+
+    public void setLevel(short level) {
+        this.level = level;
+    }
+
+    public void setPrimaryProf(short primaryProf) {
+        this.primaryProf = primaryProf;
+    }
+
+    public void setSecondaryProf(short secondaryProf) {
+        this.secondaryProf = secondaryProf;
+    }
+
+    public void setNPCFile(long nPCFile) {
+        this.nPCFile = nPCFile;
+    }
+
+    public void setModelFile(long modelFile) {
+        this.modelFile = modelFile;
+    }
+
+    public void setUnknown1(short unknown1) {
+        this.unknown1 = unknown1;
+    }
+
+    public void setIsDisabled(short isDisabled) {
+        this.isDisabled = isDisabled;
     }
 
 }

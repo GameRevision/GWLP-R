@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 import gwlpr.actions.utils.NestedMarker;
 
@@ -19,13 +18,17 @@ public final class P075_NPCModel
     @IsArray(constant = false, size = 8, prefixLength = 2)
     public P075_NPCModel.NestedModelFile[] modelFile;
 
-    static {
-        GameServerActionFactory.registerOutbound(P075_NPCModel.class);
-    }
-
     @Override
     public short getHeader() {
         return  75;
+    }
+
+    public void setLocalID(long localID) {
+        this.localID = localID;
+    }
+
+    public void setModelFile(P075_NPCModel.NestedModelFile[] modelFile) {
+        this.modelFile = modelFile;
     }
 
     public final static class NestedModelFile
@@ -33,6 +36,10 @@ public final class P075_NPCModel
     {
 
         public long unknown1;
+
+        public void setUnknown1(long unknown1) {
+            this.unknown1 = unknown1;
+        }
 
     }
 

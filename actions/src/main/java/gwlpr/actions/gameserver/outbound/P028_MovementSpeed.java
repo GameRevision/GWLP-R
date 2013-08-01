@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P028_MovementSpeed
     public long agent;
     public float speed;
 
-    static {
-        GameServerActionFactory.registerOutbound(P028_MovementSpeed.class);
-    }
-
     @Override
     public short getHeader() {
         return  28;
+    }
+
+    public void setAgent(long agent) {
+        this.agent = agent;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
 
 }

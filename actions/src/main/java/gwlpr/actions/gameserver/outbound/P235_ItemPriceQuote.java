@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P235_ItemPriceQuote
     public long itemLocalID;
     public long price;
 
-    static {
-        GameServerActionFactory.registerOutbound(P235_ItemPriceQuote.class);
-    }
-
     @Override
     public short getHeader() {
         return  235;
+    }
+
+    public void setItemLocalID(long itemLocalID) {
+        this.itemLocalID = itemLocalID;
+    }
+
+    public void setPrice(long price) {
+        this.price = price;
     }
 
 }

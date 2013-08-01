@@ -2,7 +2,6 @@
 package gwlpr.actions.loginserver.inbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.loginserver.LoginServerActionFactory;
 
 
 /**
@@ -20,13 +19,33 @@ public final class P041_CharacterPlayInfo
     public long unknown3;
     public long unknown4;
 
-    static {
-        LoginServerActionFactory.registerInbound(P041_CharacterPlayInfo.class);
-    }
-
     @Override
     public short getHeader() {
         return  41;
+    }
+
+    public long getLoginCount() {
+        return loginCount;
+    }
+
+    public long getUnknown1() {
+        return unknown1;
+    }
+
+    public long getGameMapId() {
+        return gameMapId;
+    }
+
+    public long getUnknown2() {
+        return unknown2;
+    }
+
+    public long getUnknown3() {
+        return unknown3;
+    }
+
+    public long getUnknown4() {
+        return unknown4;
     }
 
 }

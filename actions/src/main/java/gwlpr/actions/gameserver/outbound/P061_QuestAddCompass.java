@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.Vector2;
 
 
@@ -24,13 +23,45 @@ public final class P061_QuestAddCompass
     public String givenBy;
     public int mapID;
 
-    static {
-        GameServerActionFactory.registerOutbound(P061_QuestAddCompass.class);
-    }
-
     @Override
     public short getHeader() {
         return  61;
+    }
+
+    public void setID(long iD) {
+        this.iD = iD;
+    }
+
+    public void setPosition(Vector2 position) {
+        this.position = position;
+    }
+
+    public void setUnknown1(int unknown1) {
+        this.unknown1 = unknown1;
+    }
+
+    public void setUnknown2(int unknown2) {
+        this.unknown2 = unknown2;
+    }
+
+    public void setUnknown3(long unknown3) {
+        this.unknown3 = unknown3;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setGivenBy(String givenBy) {
+        this.givenBy = givenBy;
+    }
+
+    public void setMapID(int mapID) {
+        this.mapID = mapID;
     }
 
 }

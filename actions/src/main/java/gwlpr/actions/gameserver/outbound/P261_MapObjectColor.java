@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P261_MapObjectColor
     public int objectID;
     public short color;
 
-    static {
-        GameServerActionFactory.registerOutbound(P261_MapObjectColor.class);
-    }
-
     @Override
     public short getHeader() {
         return  261;
+    }
+
+    public void setObjectID(int objectID) {
+        this.objectID = objectID;
+    }
+
+    public void setColor(short color) {
+        this.color = color;
     }
 
 }

@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -20,13 +19,29 @@ public final class P253_ObjectGeneral
     public short scale;
     public String name;
 
-    static {
-        GameServerActionFactory.registerOutbound(P253_ObjectGeneral.class);
-    }
-
     @Override
     public short getHeader() {
         return  253;
+    }
+
+    public void setLocalID(long localID) {
+        this.localID = localID;
+    }
+
+    public void setModelFile(long modelFile) {
+        this.modelFile = modelFile;
+    }
+
+    public void setFlag(long flag) {
+        this.flag = flag;
+    }
+
+    public void setScale(short scale) {
+        this.scale = scale;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

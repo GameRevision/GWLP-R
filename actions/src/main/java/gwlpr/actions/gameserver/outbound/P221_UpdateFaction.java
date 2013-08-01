@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -29,13 +28,69 @@ public final class P221_UpdateFaction
     public long skillFree;
     public long skillTotal;
 
-    static {
-        GameServerActionFactory.registerOutbound(P221_UpdateFaction.class);
-    }
-
     @Override
     public short getHeader() {
         return  221;
+    }
+
+    public void setExperience(long experience) {
+        this.experience = experience;
+    }
+
+    public void setKurzickFree(long kurzickFree) {
+        this.kurzickFree = kurzickFree;
+    }
+
+    public void setKurzickTotal(long kurzickTotal) {
+        this.kurzickTotal = kurzickTotal;
+    }
+
+    public void setLuxonFree(long luxonFree) {
+        this.luxonFree = luxonFree;
+    }
+
+    public void setLuxonTotal(long luxonTotal) {
+        this.luxonTotal = luxonTotal;
+    }
+
+    public void setImperialFree(long imperialFree) {
+        this.imperialFree = imperialFree;
+    }
+
+    public void setImperialTotal(long imperialTotal) {
+        this.imperialTotal = imperialTotal;
+    }
+
+    public void setUnknown1(long unknown1) {
+        this.unknown1 = unknown1;
+    }
+
+    public void setUnknown2(long unknown2) {
+        this.unknown2 = unknown2;
+    }
+
+    public void setLevel(long level) {
+        this.level = level;
+    }
+
+    public void setMorale(long morale) {
+        this.morale = morale;
+    }
+
+    public void setBalthFree(long balthFree) {
+        this.balthFree = balthFree;
+    }
+
+    public void setBalthTotal(long balthTotal) {
+        this.balthTotal = balthTotal;
+    }
+
+    public void setSkillFree(long skillFree) {
+        this.skillFree = skillFree;
+    }
+
+    public void setSkillTotal(long skillTotal) {
+        this.skillTotal = skillTotal;
     }
 
 }

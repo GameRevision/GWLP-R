@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P419_PartyDisplay
     public int partyId;
     public short isInviteEnabled;
 
-    static {
-        GameServerActionFactory.registerOutbound(P419_PartyDisplay.class);
-    }
-
     @Override
     public short getHeader() {
         return  419;
+    }
+
+    public void setPartyId(int partyId) {
+        this.partyId = partyId;
+    }
+
+    public void setIsInviteEnabled(short isInviteEnabled) {
+        this.isInviteEnabled = isInviteEnabled;
     }
 
 }

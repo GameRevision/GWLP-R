@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -17,13 +16,21 @@ public final class P066_QuestTapestry
     public long goldEarned;
     public long skillPointsEarned;
 
-    static {
-        GameServerActionFactory.registerOutbound(P066_QuestTapestry.class);
-    }
-
     @Override
     public short getHeader() {
         return  66;
+    }
+
+    public void setExperienceEarned(long experienceEarned) {
+        this.experienceEarned = experienceEarned;
+    }
+
+    public void setGoldEarned(long goldEarned) {
+        this.goldEarned = goldEarned;
+    }
+
+    public void setSkillPointsEarned(long skillPointsEarned) {
+        this.skillPointsEarned = skillPointsEarned;
     }
 
 }

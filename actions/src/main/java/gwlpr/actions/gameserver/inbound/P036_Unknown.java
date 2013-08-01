@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.inbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 import gwlpr.actions.utils.NestedMarker;
 
@@ -19,13 +18,17 @@ public final class P036_Unknown
     @IsArray(constant = false, size = 16, prefixLength = 2)
     public P036_Unknown.NestedUnknown2 [] unknown2;
 
-    static {
-        GameServerActionFactory.registerInbound(P036_Unknown.class);
-    }
-
     @Override
     public short getHeader() {
         return  36;
+    }
+
+    public long getUnknown1() {
+        return unknown1;
+    }
+
+    public P036_Unknown.NestedUnknown2 [] getUnknown2() {
+        return unknown2;
     }
 
     public final static class NestedUnknown2
@@ -33,6 +36,10 @@ public final class P036_Unknown
     {
 
         public long unknown1;
+
+        public long getUnknown1() {
+            return unknown1;
+        }
 
     }
 

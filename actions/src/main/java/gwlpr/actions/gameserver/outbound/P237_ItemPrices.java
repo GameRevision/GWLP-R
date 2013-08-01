@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 import gwlpr.actions.utils.NestedMarker;
 
@@ -18,13 +17,13 @@ public final class P237_ItemPrices
     @IsArray(constant = false, size = 16, prefixLength = 2)
     public P237_ItemPrices.NestedPrices[] prices;
 
-    static {
-        GameServerActionFactory.registerOutbound(P237_ItemPrices.class);
-    }
-
     @Override
     public short getHeader() {
         return  237;
+    }
+
+    public void setPrices(P237_ItemPrices.NestedPrices[] prices) {
+        this.prices = prices;
     }
 
     public final static class NestedPrices
@@ -32,6 +31,10 @@ public final class P237_ItemPrices
     {
 
         public long unknown1;
+
+        public void setUnknown1(long unknown1) {
+            this.unknown1 = unknown1;
+        }
 
     }
 

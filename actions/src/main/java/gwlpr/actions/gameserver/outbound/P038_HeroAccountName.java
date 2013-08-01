@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -15,13 +14,13 @@ public final class P038_HeroAccountName
 
     public String accountName;
 
-    static {
-        GameServerActionFactory.registerOutbound(P038_HeroAccountName.class);
-    }
-
     @Override
     public short getHeader() {
         return  38;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
 }

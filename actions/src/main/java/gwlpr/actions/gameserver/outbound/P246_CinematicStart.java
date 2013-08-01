@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -15,13 +14,13 @@ public final class P246_CinematicStart
 
     public short start;
 
-    static {
-        GameServerActionFactory.registerOutbound(P246_CinematicStart.class);
-    }
-
     @Override
     public short getHeader() {
         return  246;
+    }
+
+    public void setStart(short start) {
+        this.start = start;
     }
 
 }

@@ -4,11 +4,14 @@
 
 package gwlpr.actions.loginserver;
 
-import gwlpr.actions.AbstractGWActionFilter;
+import gwlpr.actions.AbstractGWActionFactory;
 import gwlpr.actions.GWAction;
 import gwlpr.actions.GWActionSerializationRegistry;
+import static gwlpr.actions.gameserver.GameServerActionFactory.registerInbound;
+import static gwlpr.actions.gameserver.GameServerActionFactory.registerOutbound;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,12 +21,26 @@ import org.slf4j.LoggerFactory;
  * 
  * @author _rusty
  */
-public class LoginServerActionFactory extends AbstractGWActionFilter
+public class LoginServerActionFactory extends AbstractGWActionFactory
 {
     
     private final static Logger LOGGER = LoggerFactory.getLogger(LoginServerActionFactory.class);
     private final static Map<Integer, Class<? extends GWAction>> ACTIONS = new ConcurrentHashMap<>();
             
+    
+    static 
+    {
+        for (Class<? extends GWAction> clazz : new Reflections("gwlpr.actions.loginserver.inbound").getSubTypesOf(GWAction.class)) 
+        {
+           registerInbound(clazz);
+        }
+        
+        for (Class<? extends GWAction> clazz : new Reflections("gwlpr.actions.loginserver.outbound").getSubTypesOf(GWAction.class)) 
+        {
+           registerOutbound(clazz);
+        }
+    }
+    
     
     /**
      * Register an inbound action.

@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -15,13 +14,13 @@ public final class P167_PetDestroy
 
     public long pet;
 
-    static {
-        GameServerActionFactory.registerOutbound(P167_PetDestroy.class);
-    }
-
     @Override
     public short getHeader() {
         return  167;
+    }
+
+    public void setPet(long pet) {
+        this.pet = pet;
     }
 
 }

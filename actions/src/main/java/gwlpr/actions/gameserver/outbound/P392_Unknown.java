@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 
 
@@ -17,13 +16,13 @@ public final class P392_Unknown
     @IsArray(constant = false, size = 1024, prefixLength = 2)
     public byte[] unknown1;
 
-    static {
-        GameServerActionFactory.registerOutbound(P392_Unknown.class);
-    }
-
     @Override
     public short getHeader() {
         return  392;
+    }
+
+    public void setUnknown1(byte[] unknown1) {
+        this.unknown1 = unknown1;
     }
 
 }

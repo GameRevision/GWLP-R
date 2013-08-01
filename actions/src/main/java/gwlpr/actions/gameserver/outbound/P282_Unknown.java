@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 
 
@@ -18,13 +17,17 @@ public final class P282_Unknown
     public byte[] unknown1;
     public short unknown2;
 
-    static {
-        GameServerActionFactory.registerOutbound(P282_Unknown.class);
-    }
-
     @Override
     public short getHeader() {
         return  282;
+    }
+
+    public void setUnknown1(byte[] unknown1) {
+        this.unknown1 = unknown1;
+    }
+
+    public void setUnknown2(short unknown2) {
+        this.unknown2 = unknown2;
     }
 
 }

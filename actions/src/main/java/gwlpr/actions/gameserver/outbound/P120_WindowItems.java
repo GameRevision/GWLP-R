@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 import gwlpr.actions.utils.NestedMarker;
 
@@ -20,13 +19,13 @@ public final class P120_WindowItems
     @IsArray(constant = false, size = 16, prefixLength = 2)
     public P120_WindowItems.NestedItemLocalIDs[] itemLocalIDs;
 
-    static {
-        GameServerActionFactory.registerOutbound(P120_WindowItems.class);
-    }
-
     @Override
     public short getHeader() {
         return  120;
+    }
+
+    public void setItemLocalIDs(P120_WindowItems.NestedItemLocalIDs[] itemLocalIDs) {
+        this.itemLocalIDs = itemLocalIDs;
     }
 
     public final static class NestedItemLocalIDs
@@ -34,6 +33,10 @@ public final class P120_WindowItems
     {
 
         public long unknown1;
+
+        public void setUnknown1(long unknown1) {
+            this.unknown1 = unknown1;
+        }
 
     }
 

@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -15,13 +14,13 @@ public final class P094_RequestFile
 
     public long file;
 
-    static {
-        GameServerActionFactory.registerOutbound(P094_RequestFile.class);
-    }
-
     @Override
     public short getHeader() {
         return  94;
+    }
+
+    public void setFile(long file) {
+        this.file = file;
     }
 
 }

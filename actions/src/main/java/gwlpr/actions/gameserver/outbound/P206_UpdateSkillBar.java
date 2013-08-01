@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 import gwlpr.actions.utils.NestedMarker;
 
@@ -22,13 +21,25 @@ public final class P206_UpdateSkillBar
     public P206_UpdateSkillBar.NestedSkillBarPvPMask[] skillBarPvPMask;
     public short unknown1;
 
-    static {
-        GameServerActionFactory.registerOutbound(P206_UpdateSkillBar.class);
-    }
-
     @Override
     public short getHeader() {
         return  206;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
+    }
+
+    public void setSkillBar(P206_UpdateSkillBar.NestedSkillBar[] skillBar) {
+        this.skillBar = skillBar;
+    }
+
+    public void setSkillBarPvPMask(P206_UpdateSkillBar.NestedSkillBarPvPMask[] skillBarPvPMask) {
+        this.skillBarPvPMask = skillBarPvPMask;
+    }
+
+    public void setUnknown1(short unknown1) {
+        this.unknown1 = unknown1;
     }
 
     public final static class NestedSkillBar
@@ -37,6 +48,10 @@ public final class P206_UpdateSkillBar
 
         public long unknown1;
 
+        public void setUnknown1(long unknown1) {
+            this.unknown1 = unknown1;
+        }
+
     }
 
     public final static class NestedSkillBarPvPMask
@@ -44,6 +59,10 @@ public final class P206_UpdateSkillBar
     {
 
         public long unknown1;
+
+        public void setUnknown1(long unknown1) {
+            this.unknown1 = unknown1;
+        }
 
     }
 

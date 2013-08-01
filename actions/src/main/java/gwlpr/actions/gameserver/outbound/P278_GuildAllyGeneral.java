@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 
 
@@ -33,13 +32,69 @@ public final class P278_GuildAllyGeneral
     public long allianceFaction;
     public short unknown1;
 
-    static {
-        GameServerActionFactory.registerOutbound(P278_GuildAllyGeneral.class);
-    }
-
     @Override
     public short getHeader() {
         return  278;
+    }
+
+    public void setLocalID(int localID) {
+        this.localID = localID;
+    }
+
+    public void setGuildHallData(byte[] guildHallData) {
+        this.guildHallData = guildHallData;
+    }
+
+    public void setGuildName(String guildName) {
+        this.guildName = guildName;
+    }
+
+    public void setGuildTag(String guildTag) {
+        this.guildTag = guildTag;
+    }
+
+    public void setFeatures(short features) {
+        this.features = features;
+    }
+
+    public void setCapeBackgroundColor(short capeBackgroundColor) {
+        this.capeBackgroundColor = capeBackgroundColor;
+    }
+
+    public void setCapeDetailColor(short capeDetailColor) {
+        this.capeDetailColor = capeDetailColor;
+    }
+
+    public void setCapeEmblemColor(short capeEmblemColor) {
+        this.capeEmblemColor = capeEmblemColor;
+    }
+
+    public void setCapeShape(short capeShape) {
+        this.capeShape = capeShape;
+    }
+
+    public void setCapeDetail(short capeDetail) {
+        this.capeDetail = capeDetail;
+    }
+
+    public void setCapeEmblem(int capeEmblem) {
+        this.capeEmblem = capeEmblem;
+    }
+
+    public void setCapeTrim(short capeTrim) {
+        this.capeTrim = capeTrim;
+    }
+
+    public void setAllegiance(short allegiance) {
+        this.allegiance = allegiance;
+    }
+
+    public void setAllianceFaction(long allianceFaction) {
+        this.allianceFaction = allianceFaction;
+    }
+
+    public void setUnknown1(short unknown1) {
+        this.unknown1 = unknown1;
     }
 
 }

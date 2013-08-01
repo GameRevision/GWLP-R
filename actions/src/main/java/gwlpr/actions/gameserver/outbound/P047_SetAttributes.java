@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 import gwlpr.actions.utils.NestedMarker;
 
@@ -19,13 +18,17 @@ public final class P047_SetAttributes
     @IsArray(constant = false, size = 48, prefixLength = 2)
     public P047_SetAttributes.NestedData[] data;
 
-    static {
-        GameServerActionFactory.registerOutbound(P047_SetAttributes.class);
-    }
-
     @Override
     public short getHeader() {
         return  47;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
+    }
+
+    public void setData(P047_SetAttributes.NestedData[] data) {
+        this.data = data;
     }
 
     public final static class NestedData
@@ -33,6 +36,10 @@ public final class P047_SetAttributes
     {
 
         public long unknown1;
+
+        public void setUnknown1(long unknown1) {
+            this.unknown1 = unknown1;
+        }
 
     }
 

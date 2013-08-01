@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P304_ItemOwner
     public long itemLocalID;
     public String name;
 
-    static {
-        GameServerActionFactory.registerOutbound(P304_ItemOwner.class);
-    }
-
     @Override
     public short getHeader() {
         return  304;
+    }
+
+    public void setItemLocalID(long itemLocalID) {
+        this.itemLocalID = itemLocalID;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

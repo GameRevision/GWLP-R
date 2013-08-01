@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -18,13 +17,25 @@ public final class P102_HeroCreate
     public long itemStreamID;
     public long mode;
 
-    static {
-        GameServerActionFactory.registerOutbound(P102_HeroCreate.class);
-    }
-
     @Override
     public short getHeader() {
         return  102;
+    }
+
+    public void setHeroID(int heroID) {
+        this.heroID = heroID;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
+    }
+
+    public void setItemStreamID(long itemStreamID) {
+        this.itemStreamID = itemStreamID;
+    }
+
+    public void setMode(long mode) {
+        this.mode = mode;
     }
 
 }

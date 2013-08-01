@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -17,13 +16,21 @@ public final class P097_UpdateAgentWeapons
     public long leadhand;
     public long offhand;
 
-    static {
-        GameServerActionFactory.registerOutbound(P097_UpdateAgentWeapons.class);
-    }
-
     @Override
     public short getHeader() {
         return  97;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
+    }
+
+    public void setLeadhand(long leadhand) {
+        this.leadhand = leadhand;
+    }
+
+    public void setOffhand(long offhand) {
+        this.offhand = offhand;
     }
 
 }

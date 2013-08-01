@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -17,13 +16,21 @@ public final class P450_PartyMemberReady
     public int charLocalID;
     public short isReady;
 
-    static {
-        GameServerActionFactory.registerOutbound(P450_PartyMemberReady.class);
-    }
-
     @Override
     public short getHeader() {
         return  450;
+    }
+
+    public void setPartyId(int partyId) {
+        this.partyId = partyId;
+    }
+
+    public void setCharLocalID(int charLocalID) {
+        this.charLocalID = charLocalID;
+    }
+
+    public void setIsReady(short isReady) {
+        this.isReady = isReady;
     }
 
 }

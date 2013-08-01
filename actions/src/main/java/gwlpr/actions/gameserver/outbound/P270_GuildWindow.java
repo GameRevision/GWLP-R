@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 
 
@@ -22,13 +21,21 @@ public final class P270_GuildWindow
     public byte[] guildHallData;
     public short memberType;
 
-    static {
-        GameServerActionFactory.registerOutbound(P270_GuildWindow.class);
-    }
-
     @Override
     public short getHeader() {
         return  270;
+    }
+
+    public void setLocalID(int localID) {
+        this.localID = localID;
+    }
+
+    public void setGuildHallData(byte[] guildHallData) {
+        this.guildHallData = guildHallData;
+    }
+
+    public void setMemberType(short memberType) {
+        this.memberType = memberType;
     }
 
 }

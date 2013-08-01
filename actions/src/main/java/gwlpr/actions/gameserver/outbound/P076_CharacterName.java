@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P076_CharacterName
     public long localID;
     public String name;
 
-    static {
-        GameServerActionFactory.registerOutbound(P076_CharacterName.class);
-    }
-
     @Override
     public short getHeader() {
         return  76;
+    }
+
+    public void setLocalID(long localID) {
+        this.localID = localID;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

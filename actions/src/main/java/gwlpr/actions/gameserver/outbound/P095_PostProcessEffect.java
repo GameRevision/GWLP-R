@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P095_PostProcessEffect
     public short intensity;
     public long tint;
 
-    static {
-        GameServerActionFactory.registerOutbound(P095_PostProcessEffect.class);
-    }
-
     @Override
     public short getHeader() {
         return  95;
+    }
+
+    public void setIntensity(short intensity) {
+        this.intensity = intensity;
+    }
+
+    public void setTint(long tint) {
+        this.tint = tint;
     }
 
 }

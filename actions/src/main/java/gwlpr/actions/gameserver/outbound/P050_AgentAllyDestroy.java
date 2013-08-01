@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -15,13 +14,13 @@ public final class P050_AgentAllyDestroy
 
     public long agent;
 
-    static {
-        GameServerActionFactory.registerOutbound(P050_AgentAllyDestroy.class);
-    }
-
     @Override
     public short getHeader() {
         return  50;
+    }
+
+    public void setAgent(long agent) {
+        this.agent = agent;
     }
 
 }

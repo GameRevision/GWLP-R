@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -17,13 +16,21 @@ public final class P465_PartySearchSize
     public short partySize;
     public short heroes;
 
-    static {
-        GameServerActionFactory.registerOutbound(P465_PartySearchSize.class);
-    }
-
     @Override
     public short getHeader() {
         return  465;
+    }
+
+    public void setLocalID(int localID) {
+        this.localID = localID;
+    }
+
+    public void setPartySize(short partySize) {
+        this.partySize = partySize;
+    }
+
+    public void setHeroes(short heroes) {
+        this.heroes = heroes;
     }
 
 }

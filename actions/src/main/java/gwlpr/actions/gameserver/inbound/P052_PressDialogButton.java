@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.inbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -15,13 +14,13 @@ public final class P052_PressDialogButton
 
     public long buttonID;
 
-    static {
-        GameServerActionFactory.registerInbound(P052_PressDialogButton.class);
-    }
-
     @Override
     public short getHeader() {
         return  52;
+    }
+
+    public long getButtonID() {
+        return buttonID;
     }
 
 }

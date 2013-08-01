@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.Vector2;
 
 
@@ -22,13 +21,37 @@ public final class P129_MissionMapIconAdd
     public long iconHash;
     public String text;
 
-    static {
-        GameServerActionFactory.registerOutbound(P129_MissionMapIconAdd.class);
-    }
-
     @Override
     public short getHeader() {
         return  129;
+    }
+
+    public void setLocalID(long localID) {
+        this.localID = localID;
+    }
+
+    public void setPosition(Vector2 position) {
+        this.position = position;
+    }
+
+    public void setPlane(int plane) {
+        this.plane = plane;
+    }
+
+    public void setColor(short color) {
+        this.color = color;
+    }
+
+    public void setUnknown1(long unknown1) {
+        this.unknown1 = unknown1;
+    }
+
+    public void setIconHash(long iconHash) {
+        this.iconHash = iconHash;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
 }

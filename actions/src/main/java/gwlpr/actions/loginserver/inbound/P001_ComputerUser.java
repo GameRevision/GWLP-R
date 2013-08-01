@@ -2,7 +2,6 @@
 package gwlpr.actions.loginserver.inbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.loginserver.LoginServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P001_ComputerUser
     public String userName;
     public String computerName;
 
-    static {
-        LoginServerActionFactory.registerInbound(P001_ComputerUser.class);
-    }
-
     @Override
     public short getHeader() {
         return  1;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getComputerName() {
+        return computerName;
     }
 
 }

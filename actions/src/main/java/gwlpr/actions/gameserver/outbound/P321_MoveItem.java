@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -18,13 +17,25 @@ public final class P321_MoveItem
     public int pageID;
     public short slot;
 
-    static {
-        GameServerActionFactory.registerOutbound(P321_MoveItem.class);
-    }
-
     @Override
     public short getHeader() {
         return  321;
+    }
+
+    public void setItemStreamID(int itemStreamID) {
+        this.itemStreamID = itemStreamID;
+    }
+
+    public void setItemLocalID(long itemLocalID) {
+        this.itemLocalID = itemLocalID;
+    }
+
+    public void setPageID(int pageID) {
+        this.pageID = pageID;
+    }
+
+    public void setSlot(short slot) {
+        this.slot = slot;
     }
 
 }

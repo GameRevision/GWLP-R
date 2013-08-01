@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 import gwlpr.actions.utils.NestedMarker;
 
@@ -19,13 +18,17 @@ public final class P338_Unknown
     @IsArray(constant = false, size = 7, prefixLength = 2)
     public P338_Unknown.NestedUnknown2 [] unknown2;
 
-    static {
-        GameServerActionFactory.registerOutbound(P338_Unknown.class);
-    }
-
     @Override
     public short getHeader() {
         return  338;
+    }
+
+    public void setUnknown1(int unknown1) {
+        this.unknown1 = unknown1;
+    }
+
+    public void setUnknown2(P338_Unknown.NestedUnknown2 [] unknown2) {
+        this.unknown2 = unknown2;
     }
 
     public final static class NestedUnknown2
@@ -39,6 +42,34 @@ public final class P338_Unknown
         public int unknown5;
         public int unknown6;
         public int unknown7;
+
+        public void setUnknown1(short unknown1) {
+            this.unknown1 = unknown1;
+        }
+
+        public void setUnknown2(int unknown2) {
+            this.unknown2 = unknown2;
+        }
+
+        public void setUnknown3(short unknown3) {
+            this.unknown3 = unknown3;
+        }
+
+        public void setUnknown4(int unknown4) {
+            this.unknown4 = unknown4;
+        }
+
+        public void setUnknown5(int unknown5) {
+            this.unknown5 = unknown5;
+        }
+
+        public void setUnknown6(int unknown6) {
+            this.unknown6 = unknown6;
+        }
+
+        public void setUnknown7(int unknown7) {
+            this.unknown7 = unknown7;
+        }
 
     }
 

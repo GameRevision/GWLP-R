@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P089_DisabledHeroSkills
     public long agentID;
     public short skills;
 
-    static {
-        GameServerActionFactory.registerOutbound(P089_DisabledHeroSkills.class);
-    }
-
     @Override
     public short getHeader() {
         return  89;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
+    }
+
+    public void setSkills(short skills) {
+        this.skills = skills;
     }
 
 }

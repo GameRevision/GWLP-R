@@ -2,7 +2,6 @@
 package gwlpr.actions.loginserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.loginserver.LoginServerActionFactory;
 
 
 /**
@@ -22,13 +21,41 @@ public final class P005_Unknown
     public String unknown7;
     public String unknown8;
 
-    static {
-        LoginServerActionFactory.registerOutbound(P005_Unknown.class);
-    }
-
     @Override
     public short getHeader() {
         return  5;
+    }
+
+    public void setUnknown1(long unknown1) {
+        this.unknown1 = unknown1;
+    }
+
+    public void setUnknown2(String unknown2) {
+        this.unknown2 = unknown2;
+    }
+
+    public void setUnknown3(String unknown3) {
+        this.unknown3 = unknown3;
+    }
+
+    public void setUnknown4(String unknown4) {
+        this.unknown4 = unknown4;
+    }
+
+    public void setUnknown5(String unknown5) {
+        this.unknown5 = unknown5;
+    }
+
+    public void setUnknown6(String unknown6) {
+        this.unknown6 = unknown6;
+    }
+
+    public void setUnknown7(String unknown7) {
+        this.unknown7 = unknown7;
+    }
+
+    public void setUnknown8(String unknown8) {
+        this.unknown8 = unknown8;
     }
 
 }

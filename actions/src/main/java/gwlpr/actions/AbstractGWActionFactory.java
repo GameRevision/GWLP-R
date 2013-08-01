@@ -8,8 +8,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import realityshard.shardlet.Action;
@@ -20,11 +18,12 @@ import realityshard.shardlet.SessionState;
  * Base class for action factories
  * Register your actions with one of the subclasses - they will use these methods
  * to register their actions with the ActionRegisty
+ * 
  * @author _rusty
  */
-public abstract class AbstractGWActionFilter implements SessionState
+public abstract class AbstractGWActionFactory implements SessionState
 {
-    private final static Logger LOGGER = LoggerFactory.getLogger(AbstractGWActionFilter.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(AbstractGWActionFactory.class);
     
     private ByteBuffer lastbuffer = ByteBuffer.allocate(0);
     private boolean hasRemaining;

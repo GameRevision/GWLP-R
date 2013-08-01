@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.inbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P058_ChangeSecondProfession
     public long agentID;
     public short profession;
 
-    static {
-        GameServerActionFactory.registerInbound(P058_ChangeSecondProfession.class);
-    }
-
     @Override
     public short getHeader() {
         return  58;
+    }
+
+    public long getAgentID() {
+        return agentID;
+    }
+
+    public short getProfession() {
+        return profession;
     }
 
 }

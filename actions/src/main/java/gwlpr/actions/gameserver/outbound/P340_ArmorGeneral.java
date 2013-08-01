@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -23,13 +22,45 @@ public final class P340_ArmorGeneral
     public long flags;
     public long unknown3;
 
-    static {
-        GameServerActionFactory.registerOutbound(P340_ArmorGeneral.class);
-    }
-
     @Override
     public short getHeader() {
         return  340;
+    }
+
+    public void setID(long iD) {
+        this.iD = iD;
+    }
+
+    public void setArmorID(long armorID) {
+        this.armorID = armorID;
+    }
+
+    public void setType(short type) {
+        this.type = type;
+    }
+
+    public void setUnknown1(short unknown1) {
+        this.unknown1 = unknown1;
+    }
+
+    public void setDyeColor(int dyeColor) {
+        this.dyeColor = dyeColor;
+    }
+
+    public void setMaterial(int material) {
+        this.material = material;
+    }
+
+    public void setUnknown2(short unknown2) {
+        this.unknown2 = unknown2;
+    }
+
+    public void setFlags(long flags) {
+        this.flags = flags;
+    }
+
+    public void setUnknown3(long unknown3) {
+        this.unknown3 = unknown3;
     }
 
 }

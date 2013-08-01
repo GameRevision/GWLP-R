@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P132_MissionMapIconType
     public long localID;
     public long iconHash;
 
-    static {
-        GameServerActionFactory.registerOutbound(P132_MissionMapIconType.class);
-    }
-
     @Override
     public short getHeader() {
         return  132;
+    }
+
+    public void setLocalID(long localID) {
+        this.localID = localID;
+    }
+
+    public void setIconHash(long iconHash) {
+        this.iconHash = iconHash;
     }
 
 }

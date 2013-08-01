@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -17,13 +16,21 @@ public final class P280_GuildFaction
     public short allegiance;
     public long amount;
 
-    static {
-        GameServerActionFactory.registerOutbound(P280_GuildFaction.class);
-    }
-
     @Override
     public short getHeader() {
         return  280;
+    }
+
+    public void setLocalID(int localID) {
+        this.localID = localID;
+    }
+
+    public void setAllegiance(short allegiance) {
+        this.allegiance = allegiance;
+    }
+
+    public void setAmount(long amount) {
+        this.amount = amount;
     }
 
 }

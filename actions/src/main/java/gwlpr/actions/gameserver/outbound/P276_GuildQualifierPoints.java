@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P276_GuildQualifierPoints
     public int localID;
     public long amount;
 
-    static {
-        GameServerActionFactory.registerOutbound(P276_GuildQualifierPoints.class);
-    }
-
     @Override
     public short getHeader() {
         return  276;
+    }
+
+    public void setLocalID(int localID) {
+        this.localID = localID;
+    }
+
+    public void setAmount(long amount) {
+        this.amount = amount;
     }
 
 }

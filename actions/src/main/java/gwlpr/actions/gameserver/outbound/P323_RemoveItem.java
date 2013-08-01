@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P323_RemoveItem
     public int itemStreamID;
     public long itemLocalID;
 
-    static {
-        GameServerActionFactory.registerOutbound(P323_RemoveItem.class);
-    }
-
     @Override
     public short getHeader() {
         return  323;
+    }
+
+    public void setItemStreamID(int itemStreamID) {
+        this.itemStreamID = itemStreamID;
+    }
+
+    public void setItemLocalID(long itemLocalID) {
+        this.itemLocalID = itemLocalID;
     }
 
 }

@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -18,13 +17,25 @@ public final class P317_WeaponBarItem
     public long leadHand;
     public long offHand;
 
-    static {
-        GameServerActionFactory.registerOutbound(P317_WeaponBarItem.class);
-    }
-
     @Override
     public short getHeader() {
         return  317;
+    }
+
+    public void setItemStreamID(int itemStreamID) {
+        this.itemStreamID = itemStreamID;
+    }
+
+    public void setSlot(short slot) {
+        this.slot = slot;
+    }
+
+    public void setLeadHand(long leadHand) {
+        this.leadHand = leadHand;
+    }
+
+    public void setOffHand(long offHand) {
+        this.offHand = offHand;
     }
 
 }

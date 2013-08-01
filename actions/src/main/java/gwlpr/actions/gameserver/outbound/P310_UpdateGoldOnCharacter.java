@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P310_UpdateGoldOnCharacter
     public int streamID;
     public long gold;
 
-    static {
-        GameServerActionFactory.registerOutbound(P310_UpdateGoldOnCharacter.class);
-    }
-
     @Override
     public short getHeader() {
         return  310;
+    }
+
+    public void setStreamID(int streamID) {
+        this.streamID = streamID;
+    }
+
+    public void setGold(long gold) {
+        this.gold = gold;
     }
 
 }

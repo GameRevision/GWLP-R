@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -27,13 +26,45 @@ public final class P285_GuildPlayer
     public long status;
     public short memberType;
 
-    static {
-        GameServerActionFactory.registerOutbound(P285_GuildPlayer.class);
-    }
-
     @Override
     public short getHeader() {
         return  285;
+    }
+
+    public void setPrimaryName(String primaryName) {
+        this.primaryName = primaryName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public void setInvitedBy(String invitedBy) {
+        this.invitedBy = invitedBy;
+    }
+
+    public void setContextInfo(String contextInfo) {
+        this.contextInfo = contextInfo;
+    }
+
+    public void setUnknown1(long unknown1) {
+        this.unknown1 = unknown1;
+    }
+
+    public void setLastLoggedOn(long lastLoggedOn) {
+        this.lastLoggedOn = lastLoggedOn;
+    }
+
+    public void setJoinDate(long joinDate) {
+        this.joinDate = joinDate;
+    }
+
+    public void setStatus(long status) {
+        this.status = status;
+    }
+
+    public void setMemberType(short memberType) {
+        this.memberType = memberType;
     }
 
 }

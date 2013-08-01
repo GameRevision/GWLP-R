@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -17,13 +16,13 @@ public final class P455_InformationChat
 
     public short text;
 
-    static {
-        GameServerActionFactory.registerOutbound(P455_InformationChat.class);
-    }
-
     @Override
     public short getHeader() {
         return  455;
+    }
+
+    public void setText(short text) {
+        this.text = text;
     }
 
 }

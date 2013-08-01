@@ -2,7 +2,6 @@
 package gwlpr.actions.loginserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.loginserver.LoginServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 
 
@@ -18,13 +17,17 @@ public final class P022_AccountGuiInfo
     @IsArray(constant = false, size = 1024, prefixLength = 2)
     public byte[] settings;
 
-    static {
-        LoginServerActionFactory.registerOutbound(P022_AccountGuiInfo.class);
-    }
-
     @Override
     public short getHeader() {
         return  22;
+    }
+
+    public void setLoginCount(long loginCount) {
+        this.loginCount = loginCount;
+    }
+
+    public void setSettings(byte[] settings) {
+        this.settings = settings;
     }
 
 }

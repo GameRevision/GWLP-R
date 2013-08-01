@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P449_PartyMemberRemove
     public int partyId;
     public int charLocalID;
 
-    static {
-        GameServerActionFactory.registerOutbound(P449_PartyMemberRemove.class);
-    }
-
     @Override
     public short getHeader() {
         return  449;
+    }
+
+    public void setPartyId(int partyId) {
+        this.partyId = partyId;
+    }
+
+    public void setCharLocalID(int charLocalID) {
+        this.charLocalID = charLocalID;
     }
 
 }

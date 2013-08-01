@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -17,13 +16,21 @@ public final class P154_UpdatePublicProfessions
     public short primaryProf;
     public short secondaryProf;
 
-    static {
-        GameServerActionFactory.registerOutbound(P154_UpdatePublicProfessions.class);
-    }
-
     @Override
     public short getHeader() {
         return  154;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
+    }
+
+    public void setPrimaryProf(short primaryProf) {
+        this.primaryProf = primaryProf;
+    }
+
+    public void setSecondaryProf(short secondaryProf) {
+        this.secondaryProf = secondaryProf;
     }
 
 }

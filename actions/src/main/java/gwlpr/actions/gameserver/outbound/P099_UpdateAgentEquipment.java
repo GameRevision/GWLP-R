@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -17,13 +16,21 @@ public final class P099_UpdateAgentEquipment
     public long slot;
     public long item;
 
-    static {
-        GameServerActionFactory.registerOutbound(P099_UpdateAgentEquipment.class);
-    }
-
     @Override
     public short getHeader() {
         return  99;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
+    }
+
+    public void setSlot(long slot) {
+        this.slot = slot;
+    }
+
+    public void setItem(long item) {
+        this.item = item;
     }
 
 }

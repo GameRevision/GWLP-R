@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P142_AgentScale
     public long agentID;
     public long scale;
 
-    static {
-        GameServerActionFactory.registerOutbound(P142_AgentScale.class);
-    }
-
     @Override
     public short getHeader() {
         return  142;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
+    }
+
+    public void setScale(long scale) {
+        this.scale = scale;
     }
 
 }

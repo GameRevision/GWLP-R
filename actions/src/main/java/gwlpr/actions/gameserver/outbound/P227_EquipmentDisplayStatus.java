@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P227_EquipmentDisplayStatus
     public long displayPart;
     public long displayStatus;
 
-    static {
-        GameServerActionFactory.registerOutbound(P227_EquipmentDisplayStatus.class);
-    }
-
     @Override
     public short getHeader() {
         return  227;
+    }
+
+    public void setDisplayPart(long displayPart) {
+        this.displayPart = displayPart;
+    }
+
+    public void setDisplayStatus(long displayStatus) {
+        this.displayStatus = displayStatus;
     }
 
 }

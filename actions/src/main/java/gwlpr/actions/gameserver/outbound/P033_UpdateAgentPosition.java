@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.Vector2;
 
 
@@ -18,13 +17,21 @@ public final class P033_UpdateAgentPosition
     public Vector2 position;
     public int plane;
 
-    static {
-        GameServerActionFactory.registerOutbound(P033_UpdateAgentPosition.class);
-    }
-
     @Override
     public short getHeader() {
         return  33;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
+    }
+
+    public void setPosition(Vector2 position) {
+        this.position = position;
+    }
+
+    public void setPlane(int plane) {
+        this.plane = plane;
     }
 
 }

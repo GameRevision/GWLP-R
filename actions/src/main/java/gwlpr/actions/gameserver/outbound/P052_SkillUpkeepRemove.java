@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P052_SkillUpkeepRemove
     public long caster;
     public long buffID;
 
-    static {
-        GameServerActionFactory.registerOutbound(P052_SkillUpkeepRemove.class);
-    }
-
     @Override
     public short getHeader() {
         return  52;
+    }
+
+    public void setCaster(long caster) {
+        this.caster = caster;
+    }
+
+    public void setBuffID(long buffID) {
+        this.buffID = buffID;
     }
 
 }

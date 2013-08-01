@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.utils.IsArray;
 
 
@@ -26,13 +25,37 @@ public final class P281_GuildInvite
     public long minutes;
     public short type;
 
-    static {
-        GameServerActionFactory.registerOutbound(P281_GuildInvite.class);
-    }
-
     @Override
     public short getHeader() {
         return  281;
+    }
+
+    public void setGuildHallData(byte[] guildHallData) {
+        this.guildHallData = guildHallData;
+    }
+
+    public void setGuildName(String guildName) {
+        this.guildName = guildName;
+    }
+
+    public void setGuildTag(String guildTag) {
+        this.guildTag = guildTag;
+    }
+
+    public void setInvitedBy(String invitedBy) {
+        this.invitedBy = invitedBy;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
+
+    public void setMinutes(long minutes) {
+        this.minutes = minutes;
+    }
+
+    public void setType(short type) {
+        this.type = type;
     }
 
 }

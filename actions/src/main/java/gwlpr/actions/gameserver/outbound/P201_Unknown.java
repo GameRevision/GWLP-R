@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -13,10 +12,6 @@ public final class P201_Unknown
     extends GWAction
 {
 
-
-    static {
-        GameServerActionFactory.registerOutbound(P201_Unknown.class);
-    }
 
     @Override
     public short getHeader() {

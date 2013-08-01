@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P135_AgentMinions
     public long agent;
     public long amount;
 
-    static {
-        GameServerActionFactory.registerOutbound(P135_AgentMinions.class);
-    }
-
     @Override
     public short getHeader() {
         return  135;
+    }
+
+    public void setAgent(long agent) {
+        this.agent = agent;
+    }
+
+    public void setAmount(long amount) {
+        this.amount = amount;
     }
 
 }

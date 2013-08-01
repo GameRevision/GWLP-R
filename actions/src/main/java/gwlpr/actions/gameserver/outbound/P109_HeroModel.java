@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P109_HeroModel
     public int heroID;
     public long modelFile;
 
-    static {
-        GameServerActionFactory.registerOutbound(P109_HeroModel.class);
-    }
-
     @Override
     public short getHeader() {
         return  109;
+    }
+
+    public void setHeroID(int heroID) {
+        this.heroID = heroID;
+    }
+
+    public void setModelFile(long modelFile) {
+        this.modelFile = modelFile;
     }
 
 }

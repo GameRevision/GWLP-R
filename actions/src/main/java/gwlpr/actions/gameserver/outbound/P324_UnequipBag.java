@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P324_UnequipBag
     public int itemStreamID;
     public int pageID;
 
-    static {
-        GameServerActionFactory.registerOutbound(P324_UnequipBag.class);
-    }
-
     @Override
     public short getHeader() {
         return  324;
+    }
+
+    public void setItemStreamID(int itemStreamID) {
+        this.itemStreamID = itemStreamID;
+    }
+
+    public void setPageID(int pageID) {
+        this.pageID = pageID;
     }
 
 }

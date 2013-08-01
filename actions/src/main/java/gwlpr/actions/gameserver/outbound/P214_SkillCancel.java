@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -17,13 +16,21 @@ public final class P214_SkillCancel
     public int skillID;
     public long skillInstance;
 
-    static {
-        GameServerActionFactory.registerOutbound(P214_SkillCancel.class);
-    }
-
     @Override
     public short getHeader() {
         return  214;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
+    }
+
+    public void setSkillID(int skillID) {
+        this.skillID = skillID;
+    }
+
+    public void setSkillInstance(long skillInstance) {
+        this.skillInstance = skillInstance;
     }
 
 }

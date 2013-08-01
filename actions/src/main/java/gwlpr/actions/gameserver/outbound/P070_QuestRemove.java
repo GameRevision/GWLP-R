@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -15,13 +14,13 @@ public final class P070_QuestRemove
 
     public long iD;
 
-    static {
-        GameServerActionFactory.registerOutbound(P070_QuestRemove.class);
-    }
-
     @Override
     public short getHeader() {
         return  70;
+    }
+
+    public void setID(long iD) {
+        this.iD = iD;
     }
 
 }

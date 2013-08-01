@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -18,13 +17,25 @@ public final class P329_MoveBagIntoStorage
     public int pageID;
     public short slot;
 
-    static {
-        GameServerActionFactory.registerOutbound(P329_MoveBagIntoStorage.class);
-    }
-
     @Override
     public short getHeader() {
         return  329;
+    }
+
+    public void setItemStreamID(int itemStreamID) {
+        this.itemStreamID = itemStreamID;
+    }
+
+    public void setBagLocalID(long bagLocalID) {
+        this.bagLocalID = bagLocalID;
+    }
+
+    public void setPageID(int pageID) {
+        this.pageID = pageID;
+    }
+
+    public void setSlot(short slot) {
+        this.slot = slot;
     }
 
 }

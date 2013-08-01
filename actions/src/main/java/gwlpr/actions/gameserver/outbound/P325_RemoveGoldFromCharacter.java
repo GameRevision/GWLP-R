@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P325_RemoveGoldFromCharacter
     public int itemStreamID;
     public long amount;
 
-    static {
-        GameServerActionFactory.registerOutbound(P325_RemoveGoldFromCharacter.class);
-    }
-
     @Override
     public short getHeader() {
         return  325;
+    }
+
+    public void setItemStreamID(int itemStreamID) {
+        this.itemStreamID = itemStreamID;
+    }
+
+    public void setAmount(long amount) {
+        this.amount = amount;
     }
 
 }

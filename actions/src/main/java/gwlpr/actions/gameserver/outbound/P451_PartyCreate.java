@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -15,13 +14,13 @@ public final class P451_PartyCreate
 
     public int partyId;
 
-    static {
-        GameServerActionFactory.registerOutbound(P451_PartyCreate.class);
-    }
-
     @Override
     public short getHeader() {
         return  451;
+    }
+
+    public void setPartyId(int partyId) {
+        this.partyId = partyId;
     }
 
 }

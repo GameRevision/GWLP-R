@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -17,13 +16,21 @@ public final class P119_OpenDataWindow
     public short windowType;
     public long data;
 
-    static {
-        GameServerActionFactory.registerOutbound(P119_OpenDataWindow.class);
-    }
-
     @Override
     public short getHeader() {
         return  119;
+    }
+
+    public void setAgent(long agent) {
+        this.agent = agent;
+    }
+
+    public void setWindowType(short windowType) {
+        this.windowType = windowType;
+    }
+
+    public void setData(long data) {
+        this.data = data;
     }
 
 }

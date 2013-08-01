@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -17,13 +16,21 @@ public final class P080_AgentAttackStatus
     public long target;
     public long status;
 
-    static {
-        GameServerActionFactory.registerOutbound(P080_AgentAttackStatus.class);
-    }
-
     @Override
     public short getHeader() {
         return  80;
+    }
+
+    public void setAttacker(long attacker) {
+        this.attacker = attacker;
+    }
+
+    public void setTarget(long target) {
+        this.target = target;
+    }
+
+    public void setStatus(long status) {
+        this.status = status;
     }
 
 }

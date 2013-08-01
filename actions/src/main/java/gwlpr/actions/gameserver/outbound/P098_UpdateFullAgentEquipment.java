@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -24,13 +23,49 @@ public final class P098_UpdateFullAgentEquipment
     public long costume;
     public long costumeHead;
 
-    static {
-        GameServerActionFactory.registerOutbound(P098_UpdateFullAgentEquipment.class);
-    }
-
     @Override
     public short getHeader() {
         return  98;
+    }
+
+    public void setAgentID(long agentID) {
+        this.agentID = agentID;
+    }
+
+    public void setLeadhand(long leadhand) {
+        this.leadhand = leadhand;
+    }
+
+    public void setOffhand(long offhand) {
+        this.offhand = offhand;
+    }
+
+    public void setChest(long chest) {
+        this.chest = chest;
+    }
+
+    public void setFeet(long feet) {
+        this.feet = feet;
+    }
+
+    public void setLegs(long legs) {
+        this.legs = legs;
+    }
+
+    public void setArms(long arms) {
+        this.arms = arms;
+    }
+
+    public void setHead(long head) {
+        this.head = head;
+    }
+
+    public void setCostume(long costume) {
+        this.costume = costume;
+    }
+
+    public void setCostumeHead(long costumeHead) {
+        this.costumeHead = costumeHead;
     }
 
 }

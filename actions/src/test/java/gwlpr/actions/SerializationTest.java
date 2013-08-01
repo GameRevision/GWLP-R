@@ -4,6 +4,7 @@
 
 package gwlpr.actions;
 
+import gwlpr.actions.gameserver.GameServerActionFactory;
 import gwlpr.actions.gameserver.outbound.P343_ItemGeneral;
 import gwlpr.actions.loginserver.LoginServerActionFactory;
 import java.nio.ByteBuffer;
@@ -23,18 +24,9 @@ import org.slf4j.LoggerFactory;
  */
 public class SerializationTest 
 {
+    
     static final Logger LOGGER = LoggerFactory.getLogger(SerializationTest.class);
     
-    @Test
-    public void hasPacketTest() throws ClassNotFoundException
-    {
-        for (Class<?> clazz : new Reflections("gwlpr.actions.gameserver").getSubTypesOf(GWAction.class)) 
-        {
-           Class.forName(clazz.getName());
-        }
-        
-        assert GWActionSerializationRegistry.getFilter(P343_ItemGeneral.class) != null;
-    }
     
     @Test
     public void test()

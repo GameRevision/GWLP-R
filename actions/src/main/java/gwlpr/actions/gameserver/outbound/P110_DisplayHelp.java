@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -19,13 +18,29 @@ public final class P110_DisplayHelp
     public long imageFile;
     public long unknown1;
 
-    static {
-        GameServerActionFactory.registerOutbound(P110_DisplayHelp.class);
-    }
-
     @Override
     public short getHeader() {
         return  110;
+    }
+
+    public void setLocalID(long localID) {
+        this.localID = localID;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+    public void setImageFile(long imageFile) {
+        this.imageFile = imageFile;
+    }
+
+    public void setUnknown1(long unknown1) {
+        this.unknown1 = unknown1;
     }
 
 }

@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -16,13 +15,17 @@ public final class P318_UpdateActiveWeaponset
     public int streamID;
     public short slot;
 
-    static {
-        GameServerActionFactory.registerOutbound(P318_UpdateActiveWeaponset.class);
-    }
-
     @Override
     public short getHeader() {
         return  318;
+    }
+
+    public void setStreamID(int streamID) {
+        this.streamID = streamID;
+    }
+
+    public void setSlot(short slot) {
+        this.slot = slot;
     }
 
 }

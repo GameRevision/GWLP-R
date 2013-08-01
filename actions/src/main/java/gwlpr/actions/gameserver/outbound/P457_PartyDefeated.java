@@ -2,7 +2,6 @@
 package gwlpr.actions.gameserver.outbound;
 
 import gwlpr.actions.GWAction;
-import gwlpr.actions.gameserver.GameServerActionFactory;
 
 
 /**
@@ -13,10 +12,6 @@ public final class P457_PartyDefeated
     extends GWAction
 {
 
-
-    static {
-        GameServerActionFactory.registerOutbound(P457_PartyDefeated.class);
-    }
 
     @Override
     public short getHeader() {
