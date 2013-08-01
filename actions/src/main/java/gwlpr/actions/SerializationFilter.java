@@ -4,16 +4,21 @@
 
 package gwlpr.actions;
 
+import gwlpr.actions.utils.ASCIIString;
 import gwlpr.actions.utils.IsArray;
+import gwlpr.actions.utils.NestedMarker;
 import gwlpr.actions.utils.UnsignedUtil;
+import gwlpr.actions.utils.VarInt;
 import gwlpr.actions.utils.Vector2;
 import gwlpr.actions.utils.Vector3;
+import gwlpr.actions.utils.Vector4;
+import gwlpr.actions.utils.WorldPosition;
 import java.lang.reflect.Field;
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -254,25 +259,6 @@ public interface SerializationFilter
     }
     
     
-    public final static class UTF16Char extends Generic
-    {
-        public UTF16Char(Field field) { super(field); }
-        
-        @Override
-        protected void put(ByteBuffer buf, Object object)
-                throws Exception
-        { 
-            buf.putChar(field.getChar(object)); 
-        }
-        
-        @Override
-        protected Object get(ByteBuffer buf)
-        {
-            return buf.remaining() >= 2 ? new String(new byte[] {buf.get(), buf.get()}, CHARSET).charAt(0): null;
-        }
-    }
-    
-    
     public final static class UShort extends Generic
     {
         public UShort(Field field) { super(field); }
@@ -307,6 +293,26 @@ public interface SerializationFilter
         protected Object get(ByteBuffer buf)
         {
             return buf.remaining() >= 4 ? UnsignedUtil.unsignInt(buf.getInt()) : null;
+        }
+    }
+    
+    
+    public final static class ULong extends Generic
+    {
+        public ULong(Field field) { super(field); }
+        
+        @Override
+        protected void put(ByteBuffer buf, Object object)
+                throws Exception
+        { 
+            BigInteger i = (BigInteger) field.get(object);
+            buf.putLong(i.longValue()); 
+        }
+        
+        @Override
+        protected Object get(ByteBuffer buf)
+        {
+            return buf.remaining() >= 8 ? UnsignedUtil.unsignLong(buf.getLong()) : null;
         }
     }
     
@@ -373,44 +379,143 @@ public interface SerializationFilter
     }
     
     
-    public final static class Nested extends Generic
+    public final static class Vec4 extends Generic
     {
-        private final Class<?> nestedClass;
-        private final SerializationFilter innerFilter;
-        
-        public Nested(Field field, Class<?> nestedClass, SerializationFilter innerFilter) 
-        { 
-            super(field); 
-            this.nestedClass = nestedClass;
-            this.innerFilter = innerFilter;
-        }
+        public Vec4(Field field) { super(field); }
         
         @Override
         protected void put(ByteBuffer buf, Object object)
                 throws Exception
         { 
-            innerFilter.serialize(buf, field.get(object));
+            Vector4 vec = (Vector4)field.get(object);
+            buf.putFloat(vec.getX());
+            buf.putFloat(vec.getY());
+            buf.putFloat(vec.getZ());
+            buf.putFloat(vec.getA());
         }
         
         @Override
         protected Object get(ByteBuffer buf)
-                throws Exception
         {
-            Object result = nestedClass.newInstance();
-                
-            if (!innerFilter.deserialize(buf, result)) 
-            { 
-                return null; 
-            }
+            return buf.remaining() >= 16 ? new Vector4(buf.getFloat(), buf.getFloat(), buf.getFloat(), buf.getFloat()) : null;
+        }
+    }
+    
+    
+    public final static class DW3 extends Generic
+    {
+        public DW3(Field field) { super(field); }
+        
+        @Override
+        protected void put(ByteBuffer buf, Object object)
+                throws Exception
+        { 
+            WorldPosition wp = (WorldPosition)field.get(object);
+            buf.putFloat(wp.getX());
+            buf.putFloat(wp.getY());
+            buf.putFloat(wp.getZ());
+            buf.putInt((int)wp.getW());
+        }
+        
+        @Override
+        protected Object get(ByteBuffer buf)
+        {
+            return buf.remaining() >= 16 ? new WorldPosition(buf.getFloat(), buf.getFloat(), buf.getFloat(), UnsignedUtil.unsignInt(buf.getInt())) : null;
+        }
+    }
+    
+    
+    public final static class VInt extends Generic
+    {
+        public VInt(Field field) { super(field); }
+        
+        @Override
+        protected void put(ByteBuffer buf, Object object)
+                throws Exception
+        { 
+            int value = ((VarInt)field.get(object)).get();
             
-            return result;
+            // Taken from GW2Emu.
+            boolean first = true;
+
+            while (first || value > 0)
+            {
+                first = false;
+                byte lower7bits = (byte)(value & 0x7f);
+                value >>= 7;
+
+                if (value > 0)
+                {
+                    lower7bits |= 128;
+                }
+
+                buf.put(lower7bits);
+            }
+        }
+        
+        @Override
+        protected Object get(ByteBuffer buf)
+        {
+            // Taken from GW2Emu.
+            boolean more = true;
+            int result = 0;
+            int shift = 0;
+
+            while (more)
+            {
+                // failcheck
+                if (buf.remaining() < 1) { return null; }
+                
+                byte lower7bits = buf.get();
+                more = (lower7bits & 128) != 0;
+                result |= (lower7bits & 0x7f) << shift;
+                shift += 7;
+            }
+
+            return new VarInt(result);
+        }
+    }
+    
+    
+    public final static class ASCII extends Generic
+    {
+        public ASCII(Field field) { super(field); }
+        
+        @Override
+        protected void put(ByteBuffer buf, Object object)
+                throws Exception
+        { 
+            ASCIIString txt = (ASCIIString)field.get(object);
+            
+            // put the size of the string (UTF16 char count)
+            buf.putShort((short)txt.length());
+            
+            // then put the string itself
+            buf.put(txt.getBytes());
+        }
+        
+        @Override
+        protected Object get(ByteBuffer buf)
+        {
+            // do we have a string length indicator?
+            if (buf.remaining() < 2) { return null; }
+            
+            int length = UnsignedUtil.unsignShort(buf.getShort());
+            
+            // do we have the trailing data? (length)
+            if (buf.remaining() < length) { return null; }
+            
+            byte[] result = new byte[length];
+            buf.get(result);
+
+            return new ASCIIString(result);
         }
     }
 
     
-    public final static class UTF16String extends Generic
+    public final static class UTF16 extends Generic
     {
-        public UTF16String(Field field) { super(field); }
+        public UTF16(Field field) { super(field); }
         
         @Override
         protected void put(ByteBuffer buf, Object object)
@@ -447,15 +552,15 @@ public interface SerializationFilter
     }
     
     
-    public final static class UByteArray extends Array
+    public final static class ByteArray extends Array
     {
-        public UByteArray(Field field) { super(field); }
+        public ByteArray(Field field) { super(field); }
         
         @Override
         protected void put(ByteBuffer buf, Object object)
                 throws Exception
         {
-            short[] sa = (short[])field.get(object);
+            byte[] sa = (byte[])field.get(object);
             
             // put the byte-count
             setLength(buf, sa.length);
@@ -463,7 +568,7 @@ public interface SerializationFilter
             // then put the array itself
             for (int i = 0; i < sa.length; i++) 
             {
-                buf.put((byte)sa[i]);
+                buf.put(sa[i]);
             }
         }
         
@@ -481,146 +586,95 @@ public interface SerializationFilter
             byte[] result = new byte[length];
             buf.get(result);
             
-            return UnsignedUtil.unsignByteArray(result);
-        }
-    }
-    
-    
-    public final static class UShortArray extends Array
-    {
-        public UShortArray(Field field) { super(field); }
-        
-        @Override
-        protected void put(ByteBuffer buf, Object object)
-                throws Exception
-        {
-            int[] ia = (int[])field.get(object);
-            
-            // put the ushort-count
-            setLength(buf, ia.length);
-           
-            // then put the array itself
-            for (int i = 0; i < ia.length; i++) 
-            {
-                buf.putShort((short)ia[i]);
-            }
-        }
-        
-        @Override
-        protected Object get(ByteBuffer buf)
-        {
-            int length = getLength(buf);
-            
-            // failcheck (length could not be determined)
-            if (length == -1) { return null; }
-            
-            // do we have the trailing data? (length * bytes-of-a-short)
-            if (buf.remaining() < length * 2) { return null; }
-            
-            short[] result = new short[length];
-            
-            for (int i = 0; i < result.length; i++) 
-            {
-                result[i] = buf.getShort();
-            }
-            
-            return UnsignedUtil.unsignShortArray(result);
-        }
-    }
-    
-    
-    public final static class UIntArray extends Array
-    {
-        public UIntArray(Field field) { super(field); }
-        
-        @Override
-        protected void put(ByteBuffer buf, Object object)
-                throws Exception
-        {
-            long[] la = (long[])field.get(object);
-            
-            // put the ushort-count
-            setLength(buf, la.length);
-           
-            // then put the array itself
-            for (int i = 0; i < la.length; i++) 
-            {
-                buf.putInt((int)la[i]);
-            }
-        }
-        
-        @Override
-        protected Object get(ByteBuffer buf)
-        {
-            int length = getLength(buf);
-            
-            // failcheck (length could not be determined)
-            if (length == -1) { return null; }
-            
-            // do we have the trailing data? (length * bytes-of-an-int)
-            if (buf.remaining() < length * 4) { return null; }
-            
-            int[] result = new int[length];
-            
-            for (int i = 0; i < result.length; i++) 
-            {
-                result[i] = buf.getInt();
-            }
-            
-            return UnsignedUtil.unsignIntArray(result);
-        }
-    }
-
-    
-    public final static class FloatArray extends Array
-    {
-        public FloatArray(Field field) { super(field); }
-        
-        @Override
-        protected void put(ByteBuffer buf, Object object)
-                throws Exception
-        {
-            float[] fa = (float[])field.get(object);
-            
-            // put the ushort-count
-            setLength(buf, fa.length);
-           
-            // then put the array itself
-            for (int i = 0; i < fa.length; i++) 
-            {
-                buf.putFloat(fa[i]);
-            }
-        }
-        
-        @Override
-        protected Object get(ByteBuffer buf)
-        {
-            int length = getLength(buf);
-            
-            // failcheck (length could not be determined)
-            if (length == -1) { return null; }
-            
-            // do we have the trailing data? (length * bytes-of-a-float)
-            if (buf.remaining() < length * 4) { return null; }
-            
-            float[] result = new float[length];
-            
-            for (int i = 0; i < result.length; i++) 
-            {
-                result[i] = buf.getFloat();
-            }
-            
             return result;
         }
     }
     
     
-    public final static class NestedArray extends Array
+    public final static class Nested implements SerializationFilter
     {
+        private final Field field;
         private final Class<?> nestedClass;
         private final SerializationFilter innerFilter;
         
-        public NestedArray(Field field, Class<?> nestedClass, SerializationFilter innerFilter) 
+        
+        public Nested(Field field, Class<?> nestedClass, SerializationFilter innerFilter) 
+        { 
+            field.setAccessible(true); 
+            this.field = field;
+            this.nestedClass = nestedClass;
+            this.innerFilter = innerFilter;
+        }
+        
+        
+        @Override
+        public void serialize(ByteBuffer buf, Object object) 
+        {
+            try 
+            { 
+                Object nested = field.get(object);
+            
+                // put the byte indicating whether this is null or not
+                buf.put(nested != null ? (byte) 1 : (byte) 0);
+
+                if (nested != null)
+                {
+                    innerFilter.serialize(buf, field.get(object));
+                }
+            } 
+            catch (Exception ex) 
+            {
+                LOGGER.error("Could not serialize.", ex);
+            }
+        }
+        
+        
+        @Override
+        public boolean deserialize(ByteBuffer buf, Object object) 
+        {
+            // save buf pos if we fail to deserialize something
+            int pos = buf.position();
+            
+            try 
+            { 
+                Object value = nestedClass.newInstance();
+            
+                if (buf.remaining() < 1) { return false; }
+
+                // read the byte indicating whether this is null or not
+                boolean isPresent = buf.get() == 1;
+                
+                // failcheck
+                if (!isPresent)
+                {
+                    field.set(object, null);
+                    return true;
+                }
+
+                if (!innerFilter.deserialize(buf, value)) 
+                { 
+                    buf.position(pos);
+                    return false; 
+                }
+                
+                field.set(object, value); 
+            } 
+            catch (Exception ex) 
+            {
+                LOGGER.error("Could not deserialize.", ex); return false; 
+            }
+            
+            return true;
+        }       
+    }
+    
+    
+    public final static class NestedArray<T extends NestedMarker> extends Array
+    {
+        private final Class<T> nestedClass;
+        private final SerializationFilter innerFilter;
+        
+        public NestedArray(Field field, Class<T> nestedClass, SerializationFilter innerFilter) 
         { 
             super(field); 
             this.nestedClass = nestedClass;
@@ -652,16 +706,19 @@ public interface SerializationFilter
             // failcheck (length could not be determined)
             if (length == -1) { return null; }
             
-            Object[] result = new Object[length];
+            // TODO can this be avoided?
+            T[] result = (T[]) java.lang.reflect.Array.newInstance(nestedClass, length);
             
             for (int i = 0; i < length; i++) 
             {
-                Object nested = nestedClass.newInstance();
+                T nested = nestedClass.newInstance();
                 
                 if (!innerFilter.deserialize(buf, nested)) 
                 { 
                     return null; 
                 }
+                
+                result[i] = nested;
             }
             
             return result;

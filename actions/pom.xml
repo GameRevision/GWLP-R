@@ -15,4 +15,14 @@
     <name>${project.artifactId}</name>
     <description>The action-framework of the GW protocol. This encapsulates the definitions for packet serialization.</description>
 
+
+    <dependencies>
+        <!-- Reflections API -->
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.9-RC1</version>
+        </dependency>
+    </dependencies>
+
 </project>

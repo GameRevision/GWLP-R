@@ -4,18 +4,20 @@
 
 package gwlpr.actions;
 
+import gwlpr.actions.gameserver.outbound.P343_ItemGeneral;
+import gwlpr.actions.loginserver.LoginServerActionFactory;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
+import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 /**
- * Code taken from iDemmel (with permission).
+ * Code test for the serialization stuff.
+ * This is no TDD, so dont complain about the shitty test ;)
  * 
- * TODO: test nested
+ * Hint: for loop used for profiling.
  * 
  * @author _rusty
  */
@@ -24,56 +26,40 @@ public class SerializationTest
     static final Logger LOGGER = LoggerFactory.getLogger(SerializationTest.class);
     
     @Test
+    public void hasPacketTest() throws ClassNotFoundException
+    {
+        for (Class<?> clazz : new Reflections("gwlpr.actions.gameserver").getSubTypesOf(GWAction.class)) 
+        {
+           Class.forName(clazz.getName());
+        }
+        
+        assert GWActionSerializationRegistry.getFilter(P343_ItemGeneral.class) != null;
+    }
+    
+    @Test
     public void test()
     {
-        // create a new serializer
-        SerializationFilter packetSerializer = SerializationFilterFactory.produceSerializer(P008_TestPacket.class);
-
-        // create a new empty TestIncomingPacket
-        P008_TestPacket testIncomingPacket = new P008_TestPacket();
-        testIncomingPacket.setUnsignedInteger1(1);
-        testIncomingPacket.setUnsignedInteger2(2);
-        testIncomingPacket.setUnsignedShort1(3);
-        testIncomingPacket.setConstantUnsignedByteArray1(new short[]{20});
-        testIncomingPacket.setConstantUnsignedByteArray2(new short[]{21, 22});
-        testIncomingPacket.setConstantUnsignedByteArray3(new short[]{23, 24, 25});
-        testIncomingPacket.setString1("toto");
-        testIncomingPacket.setUnsignedShort2(4);
-        testIncomingPacket.setConstantUnsignedByteArray4(new short[]{26, 27, 28, 29});
-        testIncomingPacket.setUnsignedInteger3(5);
-        testIncomingPacket.setVariableUnsignedByteArray1(new short[]{30, 31, 32, 33, 34});
-        testIncomingPacket.setUnsignedByte1((short) 6);
-        testIncomingPacket.setUnsignedInteger4(7);
-        testIncomingPacket.setString2("titi");
-
-        // build the buffer that should have the same data
-        byte[] bytes = new byte[] {8, 0, 1, 0, 0, 0, 2, 0, 0, 0, 3, 0, 20, 21, 22, 23, 24, 25, 4, 0, 116, 0, 111, 0, 116, 0, 111, 0, 4, 0, 26, 27, 28, 29, 5, 0, 0, 0, 5, 0, 30, 31, 32, 33, 34, 6, 7, 0, 0, 0, 4, 0, 116, 0, 105, 0, 116, 0, 105, 0};
-
-        ByteBuffer requiredBuffer = ByteBuffer.wrap(bytes);
-        requiredBuffer.order(ByteOrder.LITTLE_ENDIAN);
+        // fake register our test packet as inbound login server packet...
+        // this should be done statically in the packet
+        LoginServerActionFactory.registerInbound(P008_TestPacket.class);
         
-        // build the buffer that will contain all the generated output data
-        ByteBuffer outputBuffer = ByteBuffer.allocate(70);
-        outputBuffer.order(ByteOrder.LITTLE_ENDIAN);
+        LoginServerActionFactory factory = new LoginServerActionFactory();
         
-        // serialize the given packet
-        // but put the header before doing so...
-        outputBuffer.putShort((short)8);
-        packetSerializer.serialize(outputBuffer, testIncomingPacket);
+        // enable this for profiling
+//        for (int i = 0; i < 1000000; i++) 
+//        {
+            // create a new empty TestIncomingPacket
+            P008_TestPacket outgoing = P008_TestPacket.getMockUp();
 
-        // compare the buffers
-        outputBuffer.flip();
-        
-        while (requiredBuffer.hasRemaining() || outputBuffer.hasRemaining()) 
-        {
-            assert requiredBuffer.hasRemaining();
-            assert outputBuffer.hasRemaining();
+            // serialize it
+            ByteBuffer buffer = factory.doOutFilter(outgoing);
+            buffer.flip();
+
+            // deserialize it (dont forget the header!)
+            P008_TestPacket incoming = (P008_TestPacket) factory.doInFilter(buffer).get(0);
             
-            byte r = requiredBuffer.get();
-            byte o = outputBuffer.get();
-            
-            LOGGER.info(String.format("Required: %d \tFound: %d", r, o));
-            assertEquals(r, o);
-        }
+            // compare them (disable this when profiling)
+            P008_TestPacket.assertCompare(outgoing, incoming);
+//        }        
     }
 }

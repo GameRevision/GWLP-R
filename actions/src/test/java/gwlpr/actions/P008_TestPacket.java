@@ -4,9 +4,19 @@
 
 package gwlpr.actions;
 
+import gwlpr.actions.utils.ASCIIString;
 import gwlpr.actions.utils.IsArray;
+import gwlpr.actions.utils.NestedMarker;
+import gwlpr.actions.utils.VarInt;
+import gwlpr.actions.utils.Vector2;
+import gwlpr.actions.utils.Vector3;
+import gwlpr.actions.utils.Vector4;
+import gwlpr.actions.utils.WorldPosition;
+import java.math.BigInteger;
 import org.junit.Ignore;
-import realityshard.shardlet.utils.GenericAction;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 
 /**
@@ -15,137 +25,139 @@ import realityshard.shardlet.utils.GenericAction;
  * @author _rusty
  */
 @Ignore
-public class P008_TestPacket extends GenericAction 
+public class P008_TestPacket
+    extends GWAction
 {
-    private long unsignedInteger1;
-    private long unsignedInteger2;
-    private int unsignedShort1;
-    @IsArray(constant=true, size=1, prefixLength=2)
-    private short[] constantUnsignedByteArray1;
-    @IsArray(constant=true, size=2, prefixLength=2)
-    private short[] constantUnsignedByteArray2;
-    @IsArray(constant=true, size=3, prefixLength=2)
-    private short[] constantUnsignedByteArray3;
-    private String string1;
-    private int unsignedShort2;
-    @IsArray(constant=true, size=4, prefixLength=2)
-    private short[] constantUnsignedByteArray4;
-    private long unsignedInteger3;
-    @IsArray(constant=false, size=5, prefixLength=2)
-    private short[] variableUnsignedByteArray1;
-    private short unsignedByte1;
-    private long unsignedInteger4;
-    private String string2;
-
-    public short[] getConstantUnsignedByteArray1() {
-        return constantUnsignedByteArray1;
+    public short uByte;
+    public int uShort;
+    public long uInt;
+    public BigInteger uLong;
+    public float single;
+    public Vector2 vec2;
+    public Vector3 vec3;
+    public Vector4 vec4;
+    public WorldPosition dw3;
+    public VarInt vint;
+    public ASCIIString ascii;
+    public String utf16;
+    
+    @IsArray(constant=true, size=2, prefixLength=-1)
+    public byte[] constBuf;
+    
+    @IsArray(constant=false, size=-1, prefixLength=1)
+    public byte[] varBufPre1;
+    @IsArray(constant=false, size=-1, prefixLength=2)
+    public byte[] varBufPre2;
+    
+    public Nested nestedNull;
+    public Nested nestedNotNull;
+    
+    @IsArray(constant=true, size=2, prefixLength=-1)
+    public Nested[] constNestAr;
+    
+    @IsArray(constant=false, size=-1, prefixLength=1)
+    public Nested[] varNestArPre1;
+    @IsArray(constant=false, size=-1, prefixLength=2)
+    public Nested[] varNestArPre2;
+    
+    
+    @Override
+    public short getHeader()
+    {
+        return 8;
     }
+    
 
-    public void setConstantUnsignedByteArray1(short[] constantUnsignedByteArray1) {
-        this.constantUnsignedByteArray1 = constantUnsignedByteArray1;
+    public final static class Nested implements NestedMarker
+    {
+        public short uByte;
+        public NestedNested nested;
+
+        
+        public final static class NestedNested implements NestedMarker
+        {
+            public short uByte;
+        }
     }
-
-    public short[] getConstantUnsignedByteArray2() {
-        return constantUnsignedByteArray2;
+    
+    
+    public static P008_TestPacket getMockUp()
+    {
+        Nested.NestedNested nn = new Nested.NestedNested();
+        nn.uByte = 200;
+        
+        Nested n = new Nested();
+        n.uByte = 100;
+        n.nested = nn;
+        
+        P008_TestPacket p = new P008_TestPacket();
+        p.uByte = 1;
+        p.uShort = 2;
+        p.uInt = 3;
+        p.uLong = new BigInteger("4");
+        p.single = 5.0F;
+        p.vec2 = new Vector2(6.0F, 7.0F);
+        p.vec3 = new Vector3(8.0F, 9.0F, 10.0F);
+        p.vec4 = new Vector4(11.0F, 12.0F, 13.0F, 14.0F);
+        p.dw3 = new WorldPosition(15.0F, 16.0F, 17.0F, 18);
+        p.vint = new VarInt(19);
+        p.ascii = new ASCIIString("20");
+        p.utf16 = "21";
+        p.constBuf = new byte[] {(byte)22, (byte)23};
+        p.varBufPre1 = new byte[] {(byte)24, (byte)25, (byte)26};
+        p.varBufPre2 = new byte[] {(byte)27, (byte)28, (byte)29, (byte)30};
+        p.nestedNull = null;
+        p.nestedNotNull = n;
+        p.constNestAr = new Nested[] {n, n};
+        p.varNestArPre1 = new Nested[] {n, n, n};
+        p.varNestArPre2 = new Nested[] {n, n, n, n};
+        
+        return p;
     }
-
-    public void setConstantUnsignedByteArray2(short[] constantUnsignedByteArray2) {
-        this.constantUnsignedByteArray2 = constantUnsignedByteArray2;
-    }
-
-    public short[] getConstantUnsignedByteArray3() {
-        return constantUnsignedByteArray3;
-    }
-
-    public void setConstantUnsignedByteArray3(short[] constantUnsignedByteArray3) {
-        this.constantUnsignedByteArray3 = constantUnsignedByteArray3;
-    }
-
-    public short[] getConstantUnsignedByteArray4() {
-        return constantUnsignedByteArray4;
-    }
-
-    public void setConstantUnsignedByteArray4(short[] constantUnsignedByteArray4) {
-        this.constantUnsignedByteArray4 = constantUnsignedByteArray4;
-    }
-
-    public long getUnsignedInteger4() {
-        return unsignedInteger4;
-    }
-
-    public void setUnsignedInteger4(long unsignedInteger4) {
-        this.unsignedInteger4 = unsignedInteger4;
-    }
-
-    public String getString1() {
-        return string1;
-    }
-
-    public void setString1(String string1) {
-        this.string1 = string1;
-    }
-
-    public String getString2() {
-        return string2;
-    }
-
-    public void setString2(String string2) {
-        this.string2 = string2;
-    }
-
-    public short getUnsignedByte1() {
-        return unsignedByte1;
-    }
-
-    public void setUnsignedByte1(short unsignedByte1) {
-        this.unsignedByte1 = unsignedByte1;
-    }
-
-    public long getUnsignedInteger1() {
-        return unsignedInteger1;
-    }
-
-    public void setUnsignedInteger1(long unsignedInteger1) {
-        this.unsignedInteger1 = unsignedInteger1;
-    }
-
-    public long getUnsignedInteger2() {
-        return unsignedInteger2;
-    }
-
-    public void setUnsignedInteger2(long unsignedInteger2) {
-        this.unsignedInteger2 = unsignedInteger2;
-    }
-
-    public long getUnsignedInteger3() {
-        return unsignedInteger3;
-    }
-
-    public void setUnsignedInteger3(long unsignedInteger3) {
-        this.unsignedInteger3 = unsignedInteger3;
-    }
-
-    public int getUnsignedShort1() {
-        return unsignedShort1;
-    }
-
-    public void setUnsignedShort1(int unsignedShort1) {
-        this.unsignedShort1 = unsignedShort1;
-    }
-
-    public int getUnsignedShort2() {
-        return unsignedShort2;
-    }
-
-    public void setUnsignedShort2(int unsignedShort2) {
-        this.unsignedShort2 = unsignedShort2;
-    }
-
-    public short[] getVariableUnsignedByteArray1() {
-        return variableUnsignedByteArray1;
-    }
-
-    public void setVariableUnsignedByteArray1(short[] variableUnsignedByteArray1) {
-        this.variableUnsignedByteArray1 = variableUnsignedByteArray1;
+    
+    
+    public static void assertCompare(P008_TestPacket p1, P008_TestPacket p2)
+    {
+        assertEquals(p1.uByte, p2.uByte);
+        assertEquals(p1.uShort, p2.uShort);
+        assertEquals(p1.uInt, p2.uInt);
+        assertEquals(p1.uLong, p2.uLong);
+        assert (p1.single == p2.single);
+        assert (p1.vec2.getX()== p2.vec2.getX()) && (p1.vec2.getY() == p2.vec2.getY());
+        assert (p1.vec3.getX() == p2.vec3.getX()) && (p1.vec3.getY()== p2.vec3.getY()) && (p1.vec3.getZ() == p2.vec3.getZ());
+        assert (p1.vec4.getX() == p2.vec4.getX()) && (p1.vec4.getY()== p2.vec4.getY()) && (p1.vec4.getZ() == p2.vec4.getZ()) &&(p1.vec4.getA() == p2.vec4.getA());
+        assert (p1.dw3.getX() == p2.dw3.getX()) && (p1.dw3.getY()== p2.dw3.getY()) && (p1.dw3.getZ() == p2.dw3.getZ()) &&(p1.dw3.getW() == p2.dw3.getW());
+        assertEquals(p1.vint.get(), p2.vint.get());
+        assertEquals(p1.ascii.toString(), p2.ascii.toString());
+        assertEquals(p1.utf16, p2.utf16);
+        assertThat(p1.constBuf, equalTo(p2.constBuf));
+        assertThat(p1.varBufPre1, equalTo(p2.varBufPre1));
+        assertThat(p1.varBufPre2, equalTo(p2.varBufPre2));
+        assertEquals(p1.nestedNull, p2.nestedNull);
+        
+        assertEquals(p1.nestedNotNull.uByte, p2.nestedNotNull.uByte);
+        assertEquals(p1.nestedNotNull.nested.uByte, p2.nestedNotNull.nested.uByte);
+                
+        for (int i = 0; i < 2; i++) 
+        {
+            assertEquals(p1.constNestAr[i].uByte, p2.constNestAr[i].uByte);
+            assertEquals(p1.constNestAr[i].nested.uByte, p2.constNestAr[i].nested.uByte);
+        }
+        
+        assertEquals(p1.varNestArPre1.length, p2.varNestArPre1.length);
+        
+        for (int i = 0; i < p1.varNestArPre1.length; i++) 
+        {
+            assertEquals(p1.varNestArPre1[i].uByte, p2.varNestArPre1[i].uByte);
+            assertEquals(p1.varNestArPre1[i].nested.uByte, p2.varNestArPre1[i].nested.uByte);
+        }
+        
+        assertEquals(p1.varNestArPre2.length, p2.varNestArPre2.length);
+        
+        for (int i = 0; i < p1.varNestArPre2.length; i++) 
+        {
+            assertEquals(p1.varNestArPre2[i].uByte, p2.varNestArPre2[i].uByte);
+            assertEquals(p1.varNestArPre2[i].nested.uByte, p2.varNestArPre2[i].nested.uByte);
+        }
     }
 }

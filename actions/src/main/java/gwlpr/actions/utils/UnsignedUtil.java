@@ -4,6 +4,9 @@
 
 package gwlpr.actions.utils;
 
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
+
 
 /**
  * Helps by unsigning given values.
@@ -50,58 +53,15 @@ public final class UnsignedUtil
     
     
     /**
-     * Unsign a given byte array.
+     * Unsign a given long.
      * 
-     * @param       ba
-     * @return      The short-array, but unsigned.
+     * @param       l
+     * @return      The big-integer value, but unsigned.
      */
-    public static short[] unsignByteArray(byte[] ba)
+    public static BigInteger unsignLong(long l)
     {
-        short[] result = new short[ba.length];
-        
-        for (int i = 0; i < ba.length; i++) 
-        {
-            result[i] = unsignByte(ba[i]);  
-        }
-        
-        return result;
-    }
-    
-    
-    /**
-     * Unsign a given short array.
-     * 
-     * @param       sa
-     * @return      The int-array, but unsigned.
-     */
-    public static int[] unsignShortArray(short[] sa)
-    {
-        int[] result = new int[sa.length];
-        
-        for (int i = 0; i < sa.length; i++) 
-        {
-            result[i] = unsignShort(sa[i]);  
-        }
-        
-        return result;
-    }
-    
-    
-    /**
-     * Unsign a given int array.
-     * 
-     * @param       ia
-     * @return      The long-array, but unsigned.
-     */
-    public static long[] unsignIntArray(int[] ia)
-    {
-        long[] result = new long[ia.length];
-        
-        for (int i = 0; i < ia.length; i++) 
-        {
-            result[i] = unsignInt(ia[i]);  
-        }
-        
-        return result;
+        ByteBuffer buffer = ByteBuffer.allocate(8);
+        buffer.putLong(l);
+        return new BigInteger(1, buffer.array());
     }
 }
