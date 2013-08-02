@@ -15,10 +15,11 @@ import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import realityshard.shardlet.SessionState;
 
 
 /**
- * This protocol filter can be used to log specific packets
+ * This state can be used to log specific packets
  * 
  * This either operates with a black- or whitelist, see
  * LoggingFilter.OperationMethod. The list can be given by adding
@@ -30,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author _rusty
  */
-public class LoggingFilter implements ProtocolFilter
+public class LoggingState implements SessionState
 {
  
     /**
@@ -43,20 +44,19 @@ public class LoggingFilter implements ProtocolFilter
         BlackList
     }
     
-    private final static Logger LOGGER = LoggerFactory.getLogger(LoggingFilter.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(LoggingState.class);
     private OperationMethod opMethod;
     private Collection<Integer> headers;
 
     
     /**
-     * Init this filter.
+     * Constructor.
      * 
      * @param       initParams              This should contain two params:
      *                                      "OperationMethod" - "WhiteList" or "BlackList"
      *                                      "HeaderList" - "header1 header2 header3" (and so on)
      */
-    @Override
-    public void init(Map<String, String> initParams) 
+    public void LoggingState(Map<String, String> initParams) 
     {
         headers = new HashSet<>();
         

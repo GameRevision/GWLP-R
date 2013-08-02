@@ -11,7 +11,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import realityshard.shardlet.Action;
-import realityshard.shardlet.SessionState;
+import realityshard.shardlet.utils.AdvancedSessionState.*;
 
 
 /**
@@ -21,7 +21,9 @@ import realityshard.shardlet.SessionState;
  * 
  * @author _rusty
  */
-public abstract class AbstractGWActionFactory implements SessionState
+public abstract class AbstractGWActionFactory implements
+        Inbound,
+        Outbound
 {
     private final static Logger LOGGER = LoggerFactory.getLogger(AbstractGWActionFactory.class);
     
@@ -36,7 +38,7 @@ public abstract class AbstractGWActionFactory implements SessionState
      * @return      The deserialized actions
      */
     @Override
-    public List<Action> doInFilter(ByteBuffer buffer) 
+    public List<Action> process(ByteBuffer buffer) 
     {
         ByteBuffer buf = buffer;
         
@@ -112,7 +114,7 @@ public abstract class AbstractGWActionFactory implements SessionState
 
     
     @Override
-    public ByteBuffer doOutFilter(Action action) 
+    public ByteBuffer process(Action action) 
     {
         ByteBuffer result = ByteBuffer.allocate(1024);
         result.order(ByteOrder.LITTLE_ENDIAN);
@@ -143,4 +145,30 @@ public abstract class AbstractGWActionFactory implements SessionState
      * Template method.
      */
     protected abstract Class<? extends GWAction> getByHeader(int header);
+
+    
+    @Override
+    public ByteBuffer preProcess(ByteBuffer buffer) 
+    {
+        return buffer;
+    }
+
+    @Override
+    public Action postProcess(Action action) 
+    {
+        return action;
+    }
+
+    @Override
+    public Action preProcess(Action action) 
+    {
+        
+    }
+
+    @Override
+    public ByteBuffer postProcess(ByteBuffer buffer) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 }
