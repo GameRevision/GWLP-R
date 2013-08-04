@@ -2,7 +2,7 @@
 package gwlpr.protocol.gameserver.outbound;
 
 import java.util.Arrays;
-import gwlpr.protocol.serialization.GWAction;
+import gwlpr.protocol.serialization.GWMessage;
 import gwlpr.protocol.util.IsArray;
 
 
@@ -13,7 +13,7 @@ import gwlpr.protocol.util.IsArray;
  * 
  */
 public final class P279_GuildGeneral
-    extends GWAction
+    extends GWMessage
 {
 
     private int localID;

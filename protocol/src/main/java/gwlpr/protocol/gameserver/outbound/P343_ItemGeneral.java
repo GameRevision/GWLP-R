@@ -2,7 +2,7 @@
 package gwlpr.protocol.gameserver.outbound;
 
 import java.util.Arrays;
-import gwlpr.protocol.serialization.GWAction;
+import gwlpr.protocol.serialization.GWMessage;
 import gwlpr.protocol.util.IsArray;
 import gwlpr.protocol.util.NestedMarker;
 
@@ -13,7 +13,7 @@ import gwlpr.protocol.util.NestedMarker;
  * 
  */
 public final class P343_ItemGeneral
-    extends GWAction
+    extends GWMessage
 {
 
     private long itemLocalID;

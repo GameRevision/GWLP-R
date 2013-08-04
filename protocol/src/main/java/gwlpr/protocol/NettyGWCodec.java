@@ -4,8 +4,8 @@
 
 package gwlpr.protocol;
 
-import gwlpr.protocol.serialization.GWAction;
-import gwlpr.protocol.serialization.GWActionSerializationRegistry;
+import gwlpr.protocol.serialization.GWMessage;
+import gwlpr.protocol.serialization.GWMessageSerializationRegistry;
 import gwlpr.protocol.serialization.NettySerializationFilter;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -14,17 +14,17 @@ import java.nio.ByteOrder;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import realityshard.shardlet.Action;
+import realityshard.container.network.Message;
 
 
 /**
- * Base class for action factories
- * Register your actions with one of the subclasses - they will use these methods
- * to register their actions with the ActionRegisty
+ * Base class for message factories
+ * Register your messages with one of the subclasses - they will use these methods
+ * to register their messages with the MessageRegisty
  * 
  * @author _rusty
  */
-public abstract class NettyGWCodec extends ByteToMessageCodec<GWAction>
+public abstract class NettyGWCodec extends ByteToMessageCodec<GWMessage>
 {
     private final static Logger LOGGER = LoggerFactory.getLogger(NettyGWCodec.class);
 
@@ -40,72 +40,72 @@ public abstract class NettyGWCodec extends ByteToMessageCodec<GWAction>
             // get the header failsafe
             int header = buf.readableBytes() >= 2 ? buf.readShort() : -1;
             
-            // try get the action class
-            Class<? extends GWAction> actionClazz = getByHeader(header);
+            // try get the message class
+            Class<? extends GWMessage> messageClazz = getByHeader(header);
             
             // try retrieve the serialization filter
-            NettySerializationFilter filter = GWActionSerializationRegistry.getFilter(actionClazz);
+            NettySerializationFilter filter = GWMessageSerializationRegistry.getFilter(messageClazz);
             
-            if ((header == -1) || actionClazz == null || filter == null)
+            if ((header == -1) || messageClazz == null || filter == null)
             {
                 buf.resetReaderIndex();
                 return;
             }
             
-            // try create the action
-            Action action;
+            // try create the message
+            Message message;
             try 
             {
-                action = actionClazz.newInstance();
+                message = messageClazz.newInstance();
             } 
             catch (InstantiationException | IllegalAccessException ex) 
             {
-                LOGGER.error("Could not create an instance of an action.", ex);
+                LOGGER.error("Could not create an instance of an message.", ex);
                 
                 buf.resetReaderIndex();
                 return;
             }
             
-            // try serialize the action
-            if (!filter.deserialize(buf, action))
+            // try serialize the message
+            if (!filter.deserialize(buf, message))
             {
                 buf.resetReaderIndex();
                 return;
             }
             
-            // finally add the action
-            result.add(action);
+            // finally add the message
+            result.add(message);
         }
     }
 
 
     @Override
-    public void encode(ChannelHandlerContext ctx, GWAction action, ByteBuf result) 
+    public void encode(ChannelHandlerContext ctx, GWMessage message, ByteBuf result) 
     {
         result.order(ByteOrder.LITTLE_ENDIAN);
         
-        GWAction gwact = action;
+        GWMessage gwact = message;
         int header = gwact.getHeader();
 
         // try retrieve the serialization filter
-        NettySerializationFilter filter = GWActionSerializationRegistry.getFilter(gwact.getClass());
+        NettySerializationFilter filter = GWMessageSerializationRegistry.getFilter(gwact.getClass());
         
         if (filter == null) 
         { 
-            LOGGER.error("Could not find a filter for given action.");
+            LOGGER.error("Could not find a filter for given message.");
             return; 
         }
         
         // write the header
         result.writeShort(header);
 
-        // serialize the action
-        filter.serialize(result, action);
+        // serialize the message
+        filter.serialize(result, message);
     }
     
     
     /**
      * Template method.
      */
-    protected abstract Class<? extends GWAction> getByHeader(int header);
+    protected abstract Class<? extends GWMessage> getByHeader(int header);
 }

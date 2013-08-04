@@ -1,7 +1,7 @@
 
 package gwlpr.protocol.loginserver.inbound;
 
-import gwlpr.protocol.serialization.GWAction;
+import gwlpr.protocol.serialization.GWMessage;
 
 
 /**
@@ -9,7 +9,7 @@ import gwlpr.protocol.serialization.GWAction;
  * 
  */
 public final class P014_Unknown
-    extends GWAction
+    extends GWMessage
 {
 
     private long unknown1;

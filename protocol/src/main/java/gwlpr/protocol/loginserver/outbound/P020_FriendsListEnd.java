@@ -1,7 +1,7 @@
 
 package gwlpr.protocol.loginserver.outbound;
 
-import gwlpr.protocol.serialization.GWAction;
+import gwlpr.protocol.serialization.GWMessage;
 
 
 /**
@@ -9,7 +9,7 @@ import gwlpr.protocol.serialization.GWAction;
  * 
  */
 public final class P020_FriendsListEnd
-    extends GWAction
+    extends GWMessage
 {
 
     private long loginCount;

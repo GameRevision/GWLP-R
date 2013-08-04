@@ -5,8 +5,8 @@
 package gwlpr.protocol.gameserver;
 
 import gwlpr.protocol.NettyGWCodec;
-import gwlpr.protocol.serialization.GWAction;
-import gwlpr.protocol.serialization.GWActionSerializationRegistry;
+import gwlpr.protocol.serialization.GWMessage;
+import gwlpr.protocol.serialization.GWMessageSerializationRegistry;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.reflections.Reflections;
@@ -23,17 +23,17 @@ public class GameServerCodec extends NettyGWCodec
 {
     
     private final static Logger LOGGER = LoggerFactory.getLogger(gwlpr.protocol.loginserver.LoginServerCodec.class);
-    private final static Map<Integer, Class<? extends GWAction>> ACTIONS = new ConcurrentHashMap<>();
+    private final static Map<Integer, Class<? extends GWMessage>> MESSAGES = new ConcurrentHashMap<>();
             
     
     static 
     {
-        for (Class<? extends GWAction> clazz : new Reflections("gwlpr.protocol.gameserver.inbound").getSubTypesOf(GWAction.class)) 
+        for (Class<? extends GWMessage> clazz : new Reflections("gwlpr.protocol.gameserver.inbound").getSubTypesOf(GWMessage.class)) 
         {
            registerInbound(clazz);
         }
         
-        for (Class<? extends GWAction> clazz : new Reflections("gwlpr.protocol.gameserver.outbound").getSubTypesOf(GWAction.class)) 
+        for (Class<? extends GWMessage> clazz : new Reflections("gwlpr.protocol.gameserver.outbound").getSubTypesOf(GWMessage.class)) 
         {
            registerOutbound(clazz);
         }
@@ -41,40 +41,40 @@ public class GameServerCodec extends NettyGWCodec
     
     
     /**
-     * Register an inbound action.
+     * Register an inbound message.
      * 
-     * @param action 
+     * @param message 
      */
-    public static void registerInbound(Class<? extends GWAction> action)
+    public static void registerInbound(Class<? extends GWMessage> message)
     {
         try 
         {
-            ACTIONS.put((int)action.newInstance().getHeader(), action);
+            MESSAGES.put((int)message.newInstance().getHeader(), message);
         } 
         catch (InstantiationException | IllegalAccessException ex) 
         {
-            LOGGER.error("Couldnt register an action: Couldnt create an instance of it.", ex);
+            LOGGER.error("Couldnt register an message: Couldnt create an instance of it.", ex);
             return;
         }
         
-        GWActionSerializationRegistry.register(action);
+        GWMessageSerializationRegistry.register(message);
     }
     
     
     /**
-     * Register an outbound action.
+     * Register an outbound message.
      * 
-     * @param action 
+     * @param message 
      */
-    public static void registerOutbound(Class<? extends GWAction> action)
+    public static void registerOutbound(Class<? extends GWMessage> message)
     {
-        GWActionSerializationRegistry.register(action);
+        GWMessageSerializationRegistry.register(message);
     }
     
     
     @Override
-    protected Class<? extends GWAction> getByHeader(int header) 
+    protected Class<? extends GWMessage> getByHeader(int header) 
     {
-        return ACTIONS.get(header);
+        return MESSAGES.get(header);
     }
 }

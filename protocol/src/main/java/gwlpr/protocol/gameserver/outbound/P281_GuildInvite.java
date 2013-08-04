@@ -2,7 +2,7 @@
 package gwlpr.protocol.gameserver.outbound;
 
 import java.util.Arrays;
-import gwlpr.protocol.serialization.GWAction;
+import gwlpr.protocol.serialization.GWMessage;
 import gwlpr.protocol.util.IsArray;
 
 
@@ -14,7 +14,7 @@ import gwlpr.protocol.util.IsArray;
  * 
  */
 public final class P281_GuildInvite
-    extends GWAction
+    extends GWMessage
 {
 
     @IsArray(constant = true, size = 16, prefixLength = -1)

@@ -2,7 +2,7 @@
 package gwlpr.protocol.gameserver.outbound;
 
 import java.util.Arrays;
-import gwlpr.protocol.serialization.GWAction;
+import gwlpr.protocol.serialization.GWMessage;
 import gwlpr.protocol.util.IsArray;
 
 
@@ -11,7 +11,7 @@ import gwlpr.protocol.util.IsArray;
  * 
  */
 public final class P250_CinematicData
-    extends GWAction
+    extends GWMessage
 {
 
     @IsArray(constant = false, size = 1024, prefixLength = 2)

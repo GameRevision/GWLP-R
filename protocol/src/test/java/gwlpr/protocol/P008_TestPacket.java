@@ -4,7 +4,7 @@
 
 package gwlpr.protocol;
 
-import gwlpr.protocol.serialization.GWAction;
+import gwlpr.protocol.serialization.GWMessage;
 import gwlpr.protocol.util.IsASCII;
 import gwlpr.protocol.util.IsArray;
 import gwlpr.protocol.util.IsInt64;
@@ -27,7 +27,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
  */
 @Ignore
 public class P008_TestPacket
-    extends GWAction
+    extends GWMessage
 {
     public short uByte;
     public int uShort;

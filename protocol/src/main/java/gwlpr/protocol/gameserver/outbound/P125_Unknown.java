@@ -1,7 +1,7 @@
 
 package gwlpr.protocol.gameserver.outbound;
 
-import gwlpr.protocol.serialization.GWAction;
+import gwlpr.protocol.serialization.GWMessage;
 import gwlpr.protocol.util.Vector2;
 import gwlpr.protocol.util.Vector3;
 
@@ -11,7 +11,7 @@ import gwlpr.protocol.util.Vector3;
  * 
  */
 public final class P125_Unknown
-    extends GWAction
+    extends GWMessage
 {
 
     private short unknown1;

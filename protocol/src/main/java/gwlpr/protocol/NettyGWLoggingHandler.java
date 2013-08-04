@@ -4,7 +4,7 @@
 
 package gwlpr.protocol;
 
-import gwlpr.protocol.serialization.GWAction;
+import gwlpr.protocol.serialization.GWMessage;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.logging.LoggingHandler;
@@ -59,7 +59,7 @@ public class NettyGWLoggingHandler extends LoggingHandler
         
         Dir dir = eventName.equals("read") ? Dir.In : Dir.Out;
         
-        logIt(dir, (GWAction) msg);
+        logIt(dir, (GWMessage) msg);
         
         return null;
     }
@@ -90,9 +90,9 @@ public class NettyGWLoggingHandler extends LoggingHandler
      * Helper method.
      * Log a byte buffer, depending on our White/BlackList settings
      */
-    public void logIt(Dir dir, GWAction action)
+    public void logIt(Dir dir, GWMessage message)
     {
-        int header = action.getHeader();
+        int header = message.getHeader();
         
         if (opMethod == OperationMethod.BlackList)
         {
@@ -109,7 +109,7 @@ public class NettyGWLoggingHandler extends LoggingHandler
         
         String prefix = dir == Dir.In ? "C to S" : "S to C";
         
-        LOGGER.debug(String.format("%s: %s", prefix, action.toString()));
+        LOGGER.debug(String.format("%s: %s", prefix, message.toString()));
     }
 }
 

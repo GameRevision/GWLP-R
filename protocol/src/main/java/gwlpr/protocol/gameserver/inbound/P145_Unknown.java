@@ -1,7 +1,7 @@
 
 package gwlpr.protocol.gameserver.inbound;
 
-import gwlpr.protocol.serialization.GWAction;
+import gwlpr.protocol.serialization.GWMessage;
 
 
 /**
@@ -9,7 +9,7 @@ import gwlpr.protocol.serialization.GWAction;
  * 
  */
 public final class P145_Unknown
-    extends GWAction
+    extends GWMessage
 {
 
 

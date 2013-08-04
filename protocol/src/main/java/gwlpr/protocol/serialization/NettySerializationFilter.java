@@ -12,7 +12,6 @@ import gwlpr.protocol.util.Vector4;
 import gwlpr.protocol.util.WorldPosition;
 import io.netty.buffer.ByteBuf;
 import java.lang.reflect.Field;
-import java.nio.ByteOrder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;

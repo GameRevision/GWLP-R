@@ -18,44 +18,44 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
- * Creates a serializer chain for given generic action.
+ * Creates a serializer chain for given message.
  * 
  * @author _rusty
  */
-public final class GWActionSerializationRegistry
+public final class GWMessageSerializationRegistry
 {
 
-    private final static Map<Class<? extends GWAction>, NettySerializationFilter> ACTIONS = new ConcurrentHashMap<>();
+    private final static Map<Class<? extends GWMessage>, NettySerializationFilter> MESSAGES = new ConcurrentHashMap<>();
     
     
     /**
-     * Register an action with this action factory.
-     * Should be used once per action, ideally static.
+     * Register an message with this message factory.
+     * Should be used once per message, ideally static.
      * 
-     * @param       <T>                     Type of the action it serializes
+     * @param       <T>                     Type of the message it serializes
      * @param       clazz                   The actual class.
      */
-    public static <T extends GWAction> void register(Class<T> clazz)
+    public static <T extends GWMessage> void register(Class<T> clazz)
     {
-        ACTIONS.put(clazz, produceSerializer(clazz));
+        MESSAGES.put(clazz, produceSerializer(clazz));
     }
     
     
     /**
-     * Returns the serialization filter for a given action type.
+     * Returns the serialization filter for a given message type.
      * 
-     * @param       action                  The action class
+     * @param       message                  The message class
      * @return      The filter that can be used to de/serialize that class, or null
      *              if none was found in the registry
      */
-    public static NettySerializationFilter getFilter(Class<? extends GWAction> action)
+    public static NettySerializationFilter getFilter(Class<? extends GWMessage> message)
     {
-        return ACTIONS.get(action);
+        return MESSAGES.get(message);
     }
     
     
     /**
-     * Creates a new serializer chain. Should be used once per action, ideally static.
+     * Creates a new serializer chain. Should be used once per message, ideally static.
      */
     private static NettySerializationFilter produceSerializer(Class<?> clazz)
     {

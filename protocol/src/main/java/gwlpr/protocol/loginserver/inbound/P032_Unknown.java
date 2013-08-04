@@ -2,7 +2,7 @@
 package gwlpr.protocol.loginserver.inbound;
 
 import java.util.Arrays;
-import gwlpr.protocol.serialization.GWAction;
+import gwlpr.protocol.serialization.GWMessage;
 import gwlpr.protocol.util.IsArray;
 
 
@@ -11,7 +11,7 @@ import gwlpr.protocol.util.IsArray;
  * 
  */
 public final class P032_Unknown
-    extends GWAction
+    extends GWMessage
 {
 
     private long unknown1;

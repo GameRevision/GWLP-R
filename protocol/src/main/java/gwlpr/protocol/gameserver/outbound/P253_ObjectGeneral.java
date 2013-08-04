@@ -1,7 +1,7 @@
 
 package gwlpr.protocol.gameserver.outbound;
 
-import gwlpr.protocol.serialization.GWAction;
+import gwlpr.protocol.serialization.GWMessage;
 
 
 /**
@@ -10,7 +10,7 @@ import gwlpr.protocol.serialization.GWAction;
  * 
  */
 public final class P253_ObjectGeneral
-    extends GWAction
+    extends GWMessage
 {
 
     private long localID;
