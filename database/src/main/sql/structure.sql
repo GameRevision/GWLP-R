@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.29, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.5.32, for Linux (x86_64)
 --
 -- Host: localhost    Database: gwlpr
 -- ------------------------------------------------------
--- Server version	5.5.29
+-- Server version	5.5.32
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -19,7 +19,6 @@
 -- Table structure for table `accounts`
 --
 
-DROP TABLE IF EXISTS `accounts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `accounts` (
@@ -29,7 +28,8 @@ CREATE TABLE `accounts` (
   `GUI` blob NOT NULL,
   `MaterialStorage` int(4) DEFAULT NULL,
   `GoldStorage` int(4) NOT NULL,
-  PRIMARY KEY (`ID`),
+  PRIMARY KEY (`EMail`),
+  UNIQUE KEY `ID` (`ID`),
   KEY `AccountsMaterialStorage` (`MaterialStorage`),
   CONSTRAINT `AccountsMaterialStorage` FOREIGN KEY (`MaterialStorage`) REFERENCES `inventories` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
@@ -39,7 +39,6 @@ CREATE TABLE `accounts` (
 -- Table structure for table `attributepoints`
 --
 
-DROP TABLE IF EXISTS `attributepoints`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `attributepoints` (
@@ -57,7 +56,6 @@ CREATE TABLE `attributepoints` (
 -- Table structure for table `attributes`
 --
 
-DROP TABLE IF EXISTS `attributes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `attributes` (
@@ -74,7 +72,6 @@ CREATE TABLE `attributes` (
 -- Table structure for table `characters`
 --
 
-DROP TABLE IF EXISTS `characters`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `characters` (
@@ -130,21 +127,20 @@ CREATE TABLE `characters` (
   CONSTRAINT `CharactersLevel` FOREIGN KEY (`Level`) REFERENCES `levels` (`Level`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `CharactersPrimaryProfession` FOREIGN KEY (`PrimaryProfession`) REFERENCES `professions` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `CharactersSecondaryProfession` FOREIGN KEY (`SecondaryProfession`) REFERENCES `professions` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `commands`
 --
 
-DROP TABLE IF EXISTS `commands`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `commands` (
   `ID` int(4) NOT NULL AUTO_INCREMENT,
   `Name` varchar(20) NOT NULL,
-  PRIMARY KEY (`ID`,`Name`),
-  KEY `ID` (`ID`)
+  PRIMARY KEY (`Name`),
+  UNIQUE KEY `ID` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -152,7 +148,6 @@ CREATE TABLE `commands` (
 -- Table structure for table `factions`
 --
 
-DROP TABLE IF EXISTS `factions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `factions` (
@@ -166,7 +161,6 @@ CREATE TABLE `factions` (
 -- Table structure for table `factionstats`
 --
 
-DROP TABLE IF EXISTS `factionstats`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `factionstats` (
@@ -186,7 +180,6 @@ CREATE TABLE `factionstats` (
 -- Table structure for table `grouppermissions`
 --
 
-DROP TABLE IF EXISTS `grouppermissions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `grouppermissions` (
@@ -203,7 +196,6 @@ CREATE TABLE `grouppermissions` (
 -- Table structure for table `groups`
 --
 
-DROP TABLE IF EXISTS `groups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `groups` (
@@ -219,7 +211,6 @@ CREATE TABLE `groups` (
 -- Table structure for table `hstring`
 --
 
-DROP TABLE IF EXISTS `hstring`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `hstring` (
@@ -237,7 +228,6 @@ CREATE TABLE `hstring` (
 -- Table structure for table `inventories`
 --
 
-DROP TABLE IF EXISTS `inventories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `inventories` (
@@ -251,7 +241,6 @@ CREATE TABLE `inventories` (
 -- Table structure for table `itembases`
 --
 
-DROP TABLE IF EXISTS `itembases`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `itembases` (
@@ -267,7 +256,6 @@ CREATE TABLE `itembases` (
 -- Table structure for table `items`
 --
 
-DROP TABLE IF EXISTS `items`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `items` (
@@ -289,7 +277,6 @@ CREATE TABLE `items` (
 -- Table structure for table `itemstats`
 --
 
-DROP TABLE IF EXISTS `itemstats`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `itemstats` (
@@ -307,7 +294,6 @@ CREATE TABLE `itemstats` (
 -- Table structure for table `levels`
 --
 
-DROP TABLE IF EXISTS `levels`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `levels` (
@@ -321,7 +307,6 @@ CREATE TABLE `levels` (
 -- Table structure for table `maps`
 --
 
-DROP TABLE IF EXISTS `maps`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `maps` (
@@ -331,14 +316,13 @@ CREATE TABLE `maps` (
   `Name` varchar(30) NOT NULL,
   `PvP` tinyint(1) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=729 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `npcs`
 --
 
-DROP TABLE IF EXISTS `npcs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `npcs` (
@@ -357,7 +341,6 @@ CREATE TABLE `npcs` (
 -- Table structure for table `professionaccess`
 --
 
-DROP TABLE IF EXISTS `professionaccess`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `professionaccess` (
@@ -374,7 +357,6 @@ CREATE TABLE `professionaccess` (
 -- Table structure for table `professions`
 --
 
-DROP TABLE IF EXISTS `professions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `professions` (
@@ -388,7 +370,6 @@ CREATE TABLE `professions` (
 -- Table structure for table `skillaccess`
 --
 
-DROP TABLE IF EXISTS `skillaccess`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `skillaccess` (
@@ -405,7 +386,6 @@ CREATE TABLE `skillaccess` (
 -- Table structure for table `skills`
 --
 
-DROP TABLE IF EXISTS `skills`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `skills` (
@@ -422,7 +402,6 @@ CREATE TABLE `skills` (
 -- Table structure for table `skillsequipped`
 --
 
-DROP TABLE IF EXISTS `skillsequipped`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `skillsequipped` (
@@ -440,7 +419,6 @@ CREATE TABLE `skillsequipped` (
 -- Table structure for table `spawnpoints`
 --
 
-DROP TABLE IF EXISTS `spawnpoints`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `spawnpoints` (
@@ -453,14 +431,13 @@ CREATE TABLE `spawnpoints` (
   PRIMARY KEY (`ID`,`MapID`),
   KEY `SpawnPointsMapID` (`MapID`),
   CONSTRAINT `SpawnPointsMapID` FOREIGN KEY (`MapID`) REFERENCES `maps` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=423 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `storagetabs`
 --
 
-DROP TABLE IF EXISTS `storagetabs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `storagetabs` (
@@ -478,7 +455,6 @@ CREATE TABLE `storagetabs` (
 -- Table structure for table `storeditems`
 --
 
-DROP TABLE IF EXISTS `storeditems`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `storeditems` (
@@ -496,7 +472,6 @@ CREATE TABLE `storeditems` (
 -- Table structure for table `weapons`
 --
 
-DROP TABLE IF EXISTS `weapons`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `weapons` (
@@ -515,7 +490,6 @@ CREATE TABLE `weapons` (
 -- Table structure for table `weaponsets`
 --
 
-DROP TABLE IF EXISTS `weaponsets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `weaponsets` (
@@ -539,4 +513,4 @@ CREATE TABLE `weaponsets` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-02-08 14:15:45
+-- Dump completed on 2013-08-04 18:26:49

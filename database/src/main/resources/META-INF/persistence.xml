@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="com.gamerevision.gwlpr_database_jar_0.2.1PU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>gwlpr.database.entities.Profession</class>
+    <class>gwlpr.database.entities.Weaponset</class>
+    <class>gwlpr.database.entities.Itembase</class>
+    <class>gwlpr.database.entities.Storagetab</class>
+    <class>gwlpr.database.entities.EquippedSkill</class>
+    <class>gwlpr.database.entities.Skill</class>
+    <class>gwlpr.database.entities.Weapon</class>
+    <class>gwlpr.database.entities.Character</class>
+    <class>gwlpr.database.entities.Map</class>
+    <class>gwlpr.database.entities.Account</class>
+    <class>gwlpr.database.entities.Npc</class>
+    <class>gwlpr.database.entities.Attribute</class>
+    <class>gwlpr.database.entities.Item</class>
+    <class>gwlpr.database.entities.Level</class>
+    <class>gwlpr.database.entities.Storeditem</class>
+    <class>gwlpr.database.entities.Inventory</class>
+    <class>gwlpr.database.entities.Command</class>
+    <class>gwlpr.database.entities.Factionstat</class>
+    <class>gwlpr.database.entities.Hstring</class>
+    <class>gwlpr.database.entities.UserGroup</class>
+    <class>gwlpr.database.entities.Faction</class>
+    <class>gwlpr.database.entities.Attributepoint</class>
+    <class>gwlpr.database.entities.Itemstat</class>
+    <class>gwlpr.database.entities.Spawnpoint</class>
+    <class>gwlpr.database.entities.Commands</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/gwlpr?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.password" value=""/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+    </properties>
+  </persistence-unit>
+</persistence>

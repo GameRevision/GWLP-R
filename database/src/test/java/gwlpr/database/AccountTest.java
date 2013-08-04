@@ -4,9 +4,10 @@
 
 package gwlpr.database;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
+import gwlpr.database.entities.Account;
+import gwlpr.database.jpa.AccountJpaController;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import org.junit.Test;
 
 
@@ -19,28 +20,10 @@ public class AccountTest
     @Test
     public void Test()
     {
-        List<Integer> l = new ArrayList<>();
-        
-        l.add(1);
-        l.add(2);
-        l.add(3);
-        l.add(4);
-        
-        ListIterator<Integer> it = l.listIterator();
-        
-        assert it.hasNext();
-        assert !it.hasPrevious();
-        
-        assert 1 == it.next();
-        
-        assert it.hasNext();
-        assert it.hasPrevious();
-        
-        it.next();
-        assert 3 == it.next();
-        assert 3 == it.previous();
-        assert 3 == it.next();
-        
-        
+         EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.gamerevision.gwlpr_database_jar_0.2.1PU");
+         
+         Account a = new AccountJpaController(emf).findAccount("root@gwlp.ps");
+         
+         assert a.getId() == 1;
     }
 }

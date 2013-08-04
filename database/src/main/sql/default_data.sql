@@ -23,13 +23,13 @@ DROP TABLE IF EXISTS `accounts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `accounts` (
-  `ID` int(4) NOT NULL AUTO_INCREMENT,
+  `ID` int(4) NOT NULL UNIQUE AUTO_INCREMENT,
   `EMail` varchar(64) NOT NULL,
   `Password` varchar(20) NOT NULL,
   `GUI` blob NOT NULL,
   `MaterialStorage` int(4) DEFAULT NULL,
   `GoldStorage` int(4) NOT NULL,
-  PRIMARY KEY (`ID`),
+  PRIMARY KEY (`EMail`),
   KEY `AccountsMaterialStorage` (`MaterialStorage`),
   CONSTRAINT `AccountsMaterialStorage` FOREIGN KEY (`MaterialStorage`) REFERENCES `inventories` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
@@ -179,10 +179,9 @@ DROP TABLE IF EXISTS `commands`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `commands` (
-  `ID` int(4) NOT NULL AUTO_INCREMENT,
+  `ID` int(4) NOT NULL UNIQUE AUTO_INCREMENT,
   `Name` varchar(20) NOT NULL,
-  PRIMARY KEY (`ID`,`Name`),
-  KEY `ID` (`ID`)
+  PRIMARY KEY (`Name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
