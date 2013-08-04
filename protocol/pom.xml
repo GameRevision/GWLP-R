@@ -17,11 +17,18 @@
 
 
     <dependencies>
-        <!-- The network actions -->
+        <!-- The network framework -->
         <dependency>
-            <groupId>com.gamerevision.gwlpr</groupId>
-            <artifactId>actions</artifactId>
-            <version>${project.version}</version>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.0.3.Final</version>
+        </dependency>
+        
+        <!-- The Reflections framework -->
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.9-RC1</version>
         </dependency>
     </dependencies>
 
