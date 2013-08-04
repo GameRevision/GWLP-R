@@ -4,10 +4,10 @@
 
 package gwlpr.loginshard.controllers;
 
-import gwlpr.actions.intershardcom.ISC_AcceptClientReplyAction;
-import gwlpr.actions.intershardcom.ISC_AcceptClientRequestAction;
-import gwlpr.actions.intershardcom.ISC_EmptyMapshardNotifyAction;
-import gwlpr.actions.intershardcom.ISC_ShutdownMapshardRequestAction;
+import gwlpr.mapshard.ISC_AcceptClientReplyAction;
+import gwlpr.loginshard.ISC_AcceptClientRequestAction;
+import gwlpr.mapshard.ISC_EmptyMapshardNotifyAction;
+import gwlpr.loginshard.ISC_ShutdownMapshardRequestAction;
 import gwlpr.actions.loginserver.ctos.P041_CharacterPlayInfoAction;
 import gwlpr.loginshard.SessionAttachment;
 import gwlpr.loginshard.views.DispatcherView;

@@ -17,7 +17,6 @@
 
 
     <modules>
-        <module>actions</module>
         <module>protocol</module>
         <module>database</module>
         <module>loginshard</module>

@@ -2,7 +2,7 @@
  * For copyright information see the LICENSE document.
  */
 
-package gwlpr.actions.intershardcom;
+package gwlpr.mapshard;
 
 import realityshard.shardlet.utils.GenericAction;
 

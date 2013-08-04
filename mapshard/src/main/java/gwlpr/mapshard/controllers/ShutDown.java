@@ -4,8 +4,8 @@
 
 package gwlpr.mapshard.controllers;
 
-import gwlpr.actions.intershardcom.ISC_EmptyMapshardNotifyAction;
-import gwlpr.actions.intershardcom.ISC_ShutdownMapshardRequestAction;
+import gwlpr.loginshard.ISC_EmptyMapshardNotifyAction;
+import gwlpr.loginshard.ISC_ShutdownMapshardRequestAction;
 import gwlpr.mapshard.ContextAttachment;
 import gwlpr.mapshard.events.InstantShutDownEvent;
 import gwlpr.mapshard.models.ClientLookupTable;
