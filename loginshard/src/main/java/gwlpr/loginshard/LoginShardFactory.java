@@ -64,6 +64,10 @@ public class LoginShardFactory implements GameAppFactory
         
         // register the controllers
         context.getEventAggregator()
+                // register for container related events
+                .register(new NewClient(context))
+                
+                // register for gw-protocol related events
                 .register(new Login(clientRegistry))
                 .register(new MapDispatch(context, clientRegistry))
                 .register(new StaticReply()); 

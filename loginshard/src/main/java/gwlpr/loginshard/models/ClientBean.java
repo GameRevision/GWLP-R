@@ -21,7 +21,7 @@ public final class ClientBean
     /**
      * Used to access the client-handle attribute of a login session
      */
-    public static final AttributeKey<Handle<ClientBean>> HANDLE_KEY = new io.netty.util.AttributeKey<>(ClientBean.class.getName());
+    public static final AttributeKey<Handle<ClientBean>> HANDLE_KEY = new AttributeKey<>(ClientBean.class.getName());
     
     
     private final Channel channel;
