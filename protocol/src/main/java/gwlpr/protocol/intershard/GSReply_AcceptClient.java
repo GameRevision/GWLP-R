@@ -2,9 +2,9 @@
  * For copyright information see the LICENSE document.
  */
 
-package gwlpr.mapshard;
+package gwlpr.protocol.intershard;
 
-import realityshard.shardlet.utils.GenericAction;
+import realityshard.container.events.Event;
 
 /**
  * Answer of the AcceptSessionRequest from a MapShard to the LoginShard.
@@ -12,7 +12,7 @@ import realityshard.shardlet.utils.GenericAction;
  *
  * @author miracle444
  */
-public final class ISC_AcceptClientReplyAction extends GenericAction
+public final class GSReply_AcceptClient implements Event
 {
 
     private boolean accepted;   // whether the MapShard accepted the session or not
@@ -31,9 +31,8 @@ public final class ISC_AcceptClientReplyAction extends GenericAction
      * @param       mapId 
      * @param       accepted
      */
-    public ISC_AcceptClientReplyAction(String ip, int port, int accountId, int mapId, boolean accepted)
+    public GSReply_AcceptClient(String ip, int port, int accountId, int mapId, boolean accepted)
     {
-        init(null);
         this.accepted = accepted;
         this.port = port;
         this.accountId = accountId;

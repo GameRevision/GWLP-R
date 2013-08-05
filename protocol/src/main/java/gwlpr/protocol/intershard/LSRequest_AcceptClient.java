@@ -2,16 +2,16 @@
  * For copyright information see the LICENSE document.
  */
 
-package gwlpr.loginshard;
+package gwlpr.protocol.intershard;
 
-import realityshard.shardlet.utils.GenericAction;
+import realityshard.container.events.Event;
 
 /**
  * Request from the LoginShard to a MapShard to accept a session.
  *
  * @author miracle444, _rusty
  */
-public final class ISC_AcceptClientRequestAction extends GenericAction
+public final class LSRequest_AcceptClient implements Event
 {
 
     private int key1;
@@ -29,9 +29,8 @@ public final class ISC_AcceptClientRequestAction extends GenericAction
      * @param       accountId               The account ID of the client
      * @param       characterId             The character ID of the client
      */
-    public ISC_AcceptClientRequestAction(int key1, int key2, int accountId, int characterId)
+    public LSRequest_AcceptClient(int key1, int key2, int accountId, int characterId)
     {
-        init(null);
         this.key1 = key1;
         this.key2 = key2;
         this.accountId = accountId;

@@ -2,24 +2,16 @@
  * For copyright information see the LICENSE document.
  */
 
-package gwlpr.loginshard;
+package gwlpr.protocol.intershard;
 
-import realityshard.shardlet.utils.GenericAction;
+import realityshard.container.events.Event;
 
 
 /**
- * This is send to a mapshard, to request its shut down.
+ * This is send to a mapshard, to request its shutdown.
  * 
  * @author _rusty
  */
-public class ISC_ShutdownMapshardRequestAction extends GenericAction
+public class LSRequest_MapshardShutdown implements Event
 {
-    
-    /**
-     * Constructor.
-     */
-    public ISC_ShutdownMapshardRequestAction()
-    {
-        init(null); // no session needed here!
-    }
 }

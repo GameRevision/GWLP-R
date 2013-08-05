@@ -2,9 +2,9 @@
  * For copyright information see the LICENSE document.
  */
 
-package gwlpr.mapshard;
+package gwlpr.protocol.intershard;
 
-import realityshard.shardlet.utils.GenericAction;
+import realityshard.container.events.Event;
 
 
 /**
@@ -13,7 +13,7 @@ import realityshard.shardlet.utils.GenericAction;
  * 
  * @author _rusty
  */
-public class ISC_EmptyMapshardNotifyAction extends GenericAction
+public class GSNotify_WorldEmpty implements Event
 {
     
     private int mapId;
@@ -24,9 +24,8 @@ public class ISC_EmptyMapshardNotifyAction extends GenericAction
      * 
      * @param       mapId                   The db-related map ID of this mapshard. 
      */
-    public ISC_EmptyMapshardNotifyAction(int mapId)
+    public GSNotify_WorldEmpty(int mapId)
     {
-        init(null); // no session needed here!
         this.mapId = mapId;
     }
     
