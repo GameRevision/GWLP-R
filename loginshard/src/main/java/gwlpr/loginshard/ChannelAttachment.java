@@ -4,7 +4,8 @@
 
 package gwlpr.loginshard;
 
-import realityshard.shardlet.Session;
+import io.netty.channel.Channel;
+import io.netty.util.AttributeKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,11 +15,13 @@ import org.slf4j.LoggerFactory;
  * 
  * @author miracle444, _rusty
  */
-public class SessionAttachment
+public final class ChannelAttachment
 {
     
-    private static Logger LOGGER = LoggerFactory.getLogger(SessionAttachment.class);
-    private int loginCount;
+    public static final AttributeKey<ChannelAttachment> KEY = new io.netty.util.AttributeKey<>(ChannelAttachment.class.getName());
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChannelAttachment.class);
+    private long loginCount;
     private int accountId;
     private int characterId;
     
@@ -28,7 +31,7 @@ public class SessionAttachment
      *
      * @param loginCount
      */
-    public void setLoginCount(int loginCount)
+    public void setLoginCount(long loginCount)
     {
         this.loginCount = loginCount;
     }
@@ -39,7 +42,7 @@ public class SessionAttachment
      *
      * @return
      */
-    public int getLoginCount()
+    public long getLoginCount()
     {
         return loginCount;
     }
@@ -90,13 +93,13 @@ public class SessionAttachment
     
     
     /**
-     * Static getter.
-     *
-     * @param session
-     * @return
+     * Convenience method: static getter.
+     * 
+     * @param channel
+     * @return 
      */
-    public static int getLoginCount(Session session)
+    public static long getLoginCount(Channel channel)
     {
-        return ((SessionAttachment) session.getAttachment()).getLoginCount();
+        return channel.attr(KEY).get().getLoginCount();
     }
 }

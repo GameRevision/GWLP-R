@@ -5,11 +5,11 @@
 package gwlpr.loginshard.controllers;
 
 import gwlpr.mapshard.ISC_AcceptClientReplyAction;
-import gwlpr.loginshard.ISC_AcceptClientRequestAction;
+import gwlpr.protocol.intershard.LSRequest_AcceptClient;
 import gwlpr.mapshard.ISC_EmptyMapshardNotifyAction;
-import gwlpr.loginshard.ISC_ShutdownMapshardRequestAction;
+import gwlpr.protocol.intershard.LSRequest_MapshardShutdown;
 import gwlpr.actions.loginserver.ctos.P041_CharacterPlayInfoAction;
-import gwlpr.loginshard.SessionAttachment;
+import gwlpr.loginshard.ChannelAttachment;
 import gwlpr.loginshard.views.DispatcherView;
 import realityshard.shardlet.EventHandler;
 import realityshard.shardlet.RemoteShardletContext;
@@ -69,7 +69,7 @@ public class MapShardManagement extends GenericShardlet
         LOGGER.debug("Got the character play info packet");
         
         Session session = action.getSession();
-        SessionAttachment attach = (SessionAttachment) session.getAttachment();
+        ChannelAttachment attach = (ChannelAttachment) session.getAttachment();
         
         // this process updates the login count
         attach.setLoginCount(action.getLoginCount());
@@ -122,7 +122,7 @@ public class MapShardManagement extends GenericShardlet
         
         waitingClients.put(accId, session);
         
-        mapShard.sendTriggerableAction(new ISC_AcceptClientRequestAction(1, 2, accId, charId));
+        mapShard.sendTriggerableAction(new LSRequest_AcceptClient(1, 2, accId, charId));
 
         // note that our second method will be invoked when the map shard replies.
     }

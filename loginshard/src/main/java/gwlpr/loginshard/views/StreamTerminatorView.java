@@ -4,9 +4,9 @@
 
 package gwlpr.loginshard.views;
 
-import gwlpr.actions.loginserver.stoc.P003_StreamTerminatorAction;
-import gwlpr.loginshard.SessionAttachment;
-import realityshard.shardlet.Session;
+import gwlpr.protocol.loginserver.outbound.P003_StreamTerminator;
+import gwlpr.loginshard.ChannelAttachment;
+import io.netty.channel.Channel;
 
 
 /**
@@ -17,13 +17,13 @@ import realityshard.shardlet.Session;
 public class StreamTerminatorView
 {
 
-    public static void create(Session session, int errorCode)
+    public static void send(Channel channel, int errorCode)
     {
-        P003_StreamTerminatorAction streamTerminator = new P003_StreamTerminatorAction();
-        streamTerminator.init(session);
-        streamTerminator.setLoginCount(SessionAttachment.getLoginCount(session));
+        P003_StreamTerminator streamTerminator = new P003_StreamTerminator();
+        streamTerminator.init(channel);
+        streamTerminator.setLoginCount(ChannelAttachment.getLoginCount(channel));
         streamTerminator.setErrorCode(errorCode);
         
-        session.send(streamTerminator);
+        channel.write(streamTerminator);
     }
 }

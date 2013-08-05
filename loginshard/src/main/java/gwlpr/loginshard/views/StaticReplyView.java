@@ -6,7 +6,7 @@ package gwlpr.loginshard.views;
 
 import gwlpr.actions.loginserver.stoc.P001_ComputerInfoReplyAction;
 import gwlpr.actions.loginserver.stoc.P038_SendResponseAction;
-import gwlpr.loginshard.SessionAttachment;
+import gwlpr.loginshard.ChannelAttachment;
 import realityshard.shardlet.Session;
 import realityshard.shardlet.ShardletContext;
 import org.slf4j.Logger;
@@ -51,7 +51,7 @@ public class StaticReplyView
         
         computerInfoReply.init(session);
         computerInfoReply.setData1(1905605949);
-        computerInfoReply.setLoginCount(SessionAttachment.getLoginCount(session));
+        computerInfoReply.setLoginCount(ChannelAttachment.getLoginCount(session));
         computerInfoReply.setData2(0);
         computerInfoReply.setData3(1);
         
@@ -73,7 +73,7 @@ public class StaticReplyView
         P038_SendResponseAction sendResponse = new P038_SendResponseAction();
         
         sendResponse.init(session);
-        sendResponse.setLoginCount(SessionAttachment.getLoginCount(session));
+        sendResponse.setLoginCount(ChannelAttachment.getLoginCount(session));
         sendResponse.setData1(0);
         
         session.send(sendResponse);

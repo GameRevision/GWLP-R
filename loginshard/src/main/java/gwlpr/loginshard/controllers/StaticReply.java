@@ -6,7 +6,7 @@ package gwlpr.loginshard.controllers;
 
 import gwlpr.actions.loginserver.ctos.P001_ComputerUserAction;
 import gwlpr.actions.loginserver.ctos.P053_RequestResponseAction;
-import gwlpr.loginshard.SessionAttachment;
+import gwlpr.loginshard.ChannelAttachment;
 import gwlpr.loginshard.views.StaticReplyView;
 import realityshard.shardlet.EventHandler;
 import realityshard.shardlet.Session;
@@ -67,7 +67,7 @@ public class StaticReply extends GenericShardlet
         LOGGER.debug("Got the request response packet");
         
         Session session = action.getSession();
-        SessionAttachment attach = (SessionAttachment) session.getAttachment();
+        ChannelAttachment attach = (ChannelAttachment) session.getAttachment();
         
         // note that this actually influences the login count of the session...
         attach.setLoginCount(action.getLoginCount());

@@ -6,7 +6,7 @@ package gwlpr.loginshard.controllers;
 
 import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import com.gamerevision.gwlpr.loginshard.ContextAttachment;
-import gwlpr.loginshard.SessionAttachment;
+import gwlpr.loginshard.ChannelAttachment;
 import realityshard.shardlet.Action;
 import realityshard.shardlet.ClientVerifier;
 import realityshard.shardlet.utils.GenericShardlet;
@@ -50,7 +50,7 @@ public class StartUp extends GenericShardlet
                     return false;
                 }
                 
-                action.getSession().setAttachment(new SessionAttachment());
+                action.getSession().setAttachment(new ChannelAttachment());
 
                 return true;
             }

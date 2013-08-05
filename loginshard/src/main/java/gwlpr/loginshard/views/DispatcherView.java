@@ -4,10 +4,9 @@
 
 package gwlpr.loginshard.views;
 
-import gwlpr.actions.loginserver.stoc.P009_ReferToGameServerAction;
-import gwlpr.loginshard.SessionAttachment;
-import realityshard.shardlet.Session;
-import realityshard.shardlet.ShardletContext;
+import gwlpr.protocol.loginserver.outbound.P009_ReferToGameServer;
+import gwlpr.loginshard.ChannelAttachment;
+import io.netty.channel.Channel;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
@@ -25,37 +24,24 @@ public class DispatcherView
 {
     
     private static Logger LOGGER = LoggerFactory.getLogger(DispatcherView.class);
-    private final ShardletContext shardletContext;
-
-    
-    /**
-     * Constrcutor.
-     * 
-     * @param       shardletContext 
-     */
-    public DispatcherView(ShardletContext shardletContext)
-    {
-        this.shardletContext = shardletContext;
-    }
 
     
     /**
      * This method is used to refer the client (session) to a game server.
-     * TODO: BUG: IP and Port are STATIC!
      * 
-     * @param       session
+     * @param       channel
      * @param       ip 
      * @param       port 
      * @param       key1
      * @param       key2
      * @param       mapId 
      */
-    public void referToGameServer(Session session, String ip, int port, int key1, int key2, int mapId)
+    public static void referToGameServer(Channel channel, String ip, int port, int key1, int key2, int mapId)
     {
-        P009_ReferToGameServerAction referToGameServer = new P009_ReferToGameServerAction();
+        P009_ReferToGameServer referToGameServer = new P009_ReferToGameServer();
         
-        referToGameServer.init(session);
-        referToGameServer.setLoginCount(((SessionAttachment) session.getAttachment()).getLoginCount());
+        referToGameServer.init(channel);
+        referToGameServer.setLoginCount(channel.attr(ChannelAttachment.KEY).get().getLoginCount());
         referToGameServer.setSecurityKey1(key1);
         referToGameServer.setGameMapID(mapId);
         
@@ -75,6 +61,6 @@ public class DispatcherView
         referToGameServer.setServerConnectionInfo(buf.array());
         referToGameServer.setSecurityKey2(key2);
         
-        session.send(referToGameServer);
+        channel.write(referToGameServer);
     }
 }
