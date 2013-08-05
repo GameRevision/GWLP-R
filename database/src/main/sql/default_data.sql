@@ -119,22 +119,22 @@ CREATE TABLE `characters` (
   `SecondaryProfession` int(4) DEFAULT NULL,
   `ActiveWeaponset` int(4) DEFAULT NULL,
   `Equipment` int(4) DEFAULT NULL,
-  `ShowHelm` tinyint(1) DEFAULT NULL,
-  `ShowCape` tinyint(1) DEFAULT NULL,
-  `ShowCostumeHead` tinyint(1) DEFAULT NULL,
-  `ShowCostumeBody` tinyint(1) DEFAULT NULL,
+  `ShowHelm` smallint(1) DEFAULT NULL,
+  `ShowCape` smallint(1) DEFAULT NULL,
+  `ShowCostumeHead` smallint(1) DEFAULT NULL,
+  `ShowCostumeBody` smallint(1) DEFAULT NULL,
   `Backpack` int(4) DEFAULT NULL,
   `Beltpouch` int(4) DEFAULT NULL,
   `Bag1` int(4) DEFAULT NULL,
   `Bag2` int(4) DEFAULT NULL,
   `EquipmentPack` int(4) DEFAULT NULL,
-  `Campaign` tinyint(1) DEFAULT NULL,
-  `Face` tinyint(1) DEFAULT NULL,
-  `Haircolor` tinyint(1) DEFAULT NULL,
-  `Hairstyle` tinyint(1) DEFAULT NULL,
-  `Height` tinyint(1) DEFAULT NULL,
-  `Sex` tinyint(1) DEFAULT NULL,
-  `Skin` tinyint(1) DEFAULT NULL,
+  `Campaign` smallint(1) DEFAULT NULL,
+  `Face` smallint(1) DEFAULT NULL,
+  `Haircolor` smallint(1) DEFAULT NULL,
+  `Hairstyle` smallint(1) DEFAULT NULL,
+  `Height` smallint(1) DEFAULT NULL,
+  `Sex` smallint(1) DEFAULT NULL,
+  `Skin` smallint(1) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `CharactersAccountID` (`AccountID`),
   KEY `CharactersBackpack` (`Backpack`),
@@ -306,7 +306,7 @@ DROP TABLE IF EXISTS `hstring`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `hstring` (
   `StringID` smallint(2) NOT NULL,
-  `BlockID` tinyint(1) NOT NULL,
+  `BlockID` smallint(1) NOT NULL,
   `EncryptedString` blob NOT NULL,
   `EncryptedLength` int(4) NOT NULL,
   `Displacement` int(4) NOT NULL,
@@ -358,7 +358,7 @@ CREATE TABLE `itembases` (
   `ID` int(4) NOT NULL AUTO_INCREMENT,
   `FileID` int(4) NOT NULL,
   `Name` varchar(30) NOT NULL,
-  `Type` tinyint(1) NOT NULL,
+  `Type` smallint(1) NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -465,7 +465,7 @@ CREATE TABLE `maps` (
   `GameID` int(4) NOT NULL,
   `Hash` int(4) NOT NULL,
   `Name` varchar(30) NOT NULL,
-  `PvP` tinyint(1) NOT NULL,
+  `PvP` smallint(1) NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=729 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -554,7 +554,7 @@ CREATE TABLE `professions` (
 
 LOCK TABLES `professions` WRITE;
 /*!40000 ALTER TABLE `professions` DISABLE KEYS */;
-INSERT INTO `professions` VALUES (1,'Warrior'),(2,'Ranger'),(3,'');
+INSERT INTO `professions` VALUES (1,'Warrior'),(2,'Ranger'),(3,'Monk'),(4,'Necromancer'),(5,'Mesmer'),(6,'Elementalist'),(7,'Assassin'),(8,'Ritualist'),(9,'Paragon'),(10,'Dervish');
 /*!40000 ALTER TABLE `professions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -758,7 +758,7 @@ DROP TABLE IF EXISTS `weaponsets`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `weaponsets` (
   `CharacterID` int(4) NOT NULL,
-  `Number` tinyint(1) NOT NULL,
+  `Number` smallint(1) NOT NULL,
   `Weapons` int(4) NOT NULL,
   PRIMARY KEY (`Number`,`CharacterID`),
   KEY `WeaponsetsCharacterID` (`CharacterID`),

@@ -54,6 +54,28 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Character.findBySkin", query = "SELECT c FROM Character c WHERE c.skin = :skin")})
 public class Character implements Serializable 
 {
+    @Column(name = "ShowHelm")
+    private Short showHelm;
+    @Column(name = "ShowCape")
+    private Short showCape;
+    @Column(name = "ShowCostumeHead")
+    private Short showCostumeHead;
+    @Column(name = "ShowCostumeBody")
+    private Short showCostumeBody;
+    @Column(name = "Campaign")
+    private Short campaign;
+    @Column(name = "Face")
+    private Short face;
+    @Column(name = "Haircolor")
+    private Short haircolor;
+    @Column(name = "Hairstyle")
+    private Short hairstyle;
+    @Column(name = "Height")
+    private Short height;
+    @Column(name = "Sex")
+    private Short sex;
+    @Column(name = "Skin")
+    private Short skin;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,28 +95,6 @@ public class Character implements Serializable
     private Integer experience;
     @Column(name = "ActiveWeaponset")
     private Integer activeWeaponset;
-    @Column(name = "ShowHelm")
-    private Boolean showHelm;
-    @Column(name = "ShowCape")
-    private Boolean showCape;
-    @Column(name = "ShowCostumeHead")
-    private Boolean showCostumeHead;
-    @Column(name = "ShowCostumeBody")
-    private Boolean showCostumeBody;
-    @Column(name = "Campaign")
-    private Boolean campaign;
-    @Column(name = "Face")
-    private Boolean face;
-    @Column(name = "Haircolor")
-    private Boolean haircolor;
-    @Column(name = "Hairstyle")
-    private Boolean hairstyle;
-    @Column(name = "Height")
-    private Boolean height;
-    @Column(name = "Sex")
-    private Boolean sex;
-    @Column(name = "Skin")
-    private Boolean skin;
     @JoinTable(name = "skillaccess", joinColumns = {
         @JoinColumn(name = "CharacterID", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "SkillID", referencedColumnName = "ID")})
@@ -213,94 +213,6 @@ public class Character implements Serializable
 
     public void setActiveWeaponset(Integer activeWeaponset) {
         this.activeWeaponset = activeWeaponset;
-    }
-
-    public Boolean getShowHelm() {
-        return showHelm;
-    }
-
-    public void setShowHelm(Boolean showHelm) {
-        this.showHelm = showHelm;
-    }
-
-    public Boolean getShowCape() {
-        return showCape;
-    }
-
-    public void setShowCape(Boolean showCape) {
-        this.showCape = showCape;
-    }
-
-    public Boolean getShowCostumeHead() {
-        return showCostumeHead;
-    }
-
-    public void setShowCostumeHead(Boolean showCostumeHead) {
-        this.showCostumeHead = showCostumeHead;
-    }
-
-    public Boolean getShowCostumeBody() {
-        return showCostumeBody;
-    }
-
-    public void setShowCostumeBody(Boolean showCostumeBody) {
-        this.showCostumeBody = showCostumeBody;
-    }
-
-    public Boolean getCampaign() {
-        return campaign;
-    }
-
-    public void setCampaign(Boolean campaign) {
-        this.campaign = campaign;
-    }
-
-    public Boolean getFace() {
-        return face;
-    }
-
-    public void setFace(Boolean face) {
-        this.face = face;
-    }
-
-    public Boolean getHaircolor() {
-        return haircolor;
-    }
-
-    public void setHaircolor(Boolean haircolor) {
-        this.haircolor = haircolor;
-    }
-
-    public Boolean getHairstyle() {
-        return hairstyle;
-    }
-
-    public void setHairstyle(Boolean hairstyle) {
-        this.hairstyle = hairstyle;
-    }
-
-    public Boolean getHeight() {
-        return height;
-    }
-
-    public void setHeight(Boolean height) {
-        this.height = height;
-    }
-
-    public Boolean getSex() {
-        return sex;
-    }
-
-    public void setSex(Boolean sex) {
-        this.sex = sex;
-    }
-
-    public Boolean getSkin() {
-        return skin;
-    }
-
-    public void setSkin(Boolean skin) {
-        this.skin = skin;
     }
 
     @XmlTransient
@@ -468,6 +380,94 @@ public class Character implements Serializable
     @Override
     public String toString() {
         return "gwlpr.database.entities.gen.Character[ id=" + id + " ]";
+    }
+
+    public Short getShowHelm() {
+        return showHelm;
+    }
+
+    public void setShowHelm(Short showHelm) {
+        this.showHelm = showHelm;
+    }
+
+    public Short getShowCape() {
+        return showCape;
+    }
+
+    public void setShowCape(Short showCape) {
+        this.showCape = showCape;
+    }
+
+    public Short getShowCostumeHead() {
+        return showCostumeHead;
+    }
+
+    public void setShowCostumeHead(Short showCostumeHead) {
+        this.showCostumeHead = showCostumeHead;
+    }
+
+    public Short getShowCostumeBody() {
+        return showCostumeBody;
+    }
+
+    public void setShowCostumeBody(Short showCostumeBody) {
+        this.showCostumeBody = showCostumeBody;
+    }
+
+    public Short getCampaign() {
+        return campaign;
+    }
+
+    public void setCampaign(Short campaign) {
+        this.campaign = campaign;
+    }
+
+    public Short getFace() {
+        return face;
+    }
+
+    public void setFace(Short face) {
+        this.face = face;
+    }
+
+    public Short getHaircolor() {
+        return haircolor;
+    }
+
+    public void setHaircolor(Short haircolor) {
+        this.haircolor = haircolor;
+    }
+
+    public Short getHairstyle() {
+        return hairstyle;
+    }
+
+    public void setHairstyle(Short hairstyle) {
+        this.hairstyle = hairstyle;
+    }
+
+    public Short getHeight() {
+        return height;
+    }
+
+    public void setHeight(Short height) {
+        this.height = height;
+    }
+
+    public Short getSex() {
+        return sex;
+    }
+
+    public void setSex(Short sex) {
+        this.sex = sex;
+    }
+
+    public Short getSkin() {
+        return skin;
+    }
+
+    public void setSkin(Short skin) {
+        this.skin = skin;
     }
 
 }

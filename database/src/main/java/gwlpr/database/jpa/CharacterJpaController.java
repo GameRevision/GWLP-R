@@ -4,6 +4,7 @@
 
 package gwlpr.database.jpa;
 
+import gwlpr.database.EntityManagerFactoryProvider;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -27,6 +28,7 @@ import gwlpr.database.jpa.exceptions.NonexistentEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 
 
 /**
@@ -35,10 +37,16 @@ import javax.persistence.EntityManagerFactory;
  */
 public class CharacterJpaController implements Serializable 
 {
-
-    public CharacterJpaController(EntityManagerFactory emf) {
+    private static final CharacterJpaController SINGLETON = new CharacterJpaController(EntityManagerFactoryProvider.get());
+    
+    public static CharacterJpaController get() {
+        return SINGLETON;
+    }
+    
+    private CharacterJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
+    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
@@ -734,6 +742,17 @@ public class CharacterJpaController implements Serializable
         EntityManager em = getEntityManager();
         try {
             return em.find(Character.class, id);
+        } finally {
+            em.close();
+        }
+    }
+    
+    public Character findByName(String name) {
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Character> query = getEntityManager().createNamedQuery("Character.findByName", Character.class);
+            query.setParameter("name", name);
+            return query.getSingleResult();
         } finally {
             em.close();
         }

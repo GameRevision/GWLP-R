@@ -36,6 +36,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Itembase.findByType", query = "SELECT i FROM Itembase i WHERE i.type = :type")})
 public class Itembase implements Serializable 
 {
+    @Basic(optional = false)
+    @Column(name = "Type")
+    private short type;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,9 +51,6 @@ public class Itembase implements Serializable
     @Basic(optional = false)
     @Column(name = "Name")
     private String name;
-    @Basic(optional = false)
-    @Column(name = "Type")
-    private boolean type;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "baseID")
     private Collection<Item> itemCollection;
 
@@ -92,14 +92,6 @@ public class Itembase implements Serializable
         this.name = name;
     }
 
-    public boolean getType() {
-        return type;
-    }
-
-    public void setType(boolean type) {
-        this.type = type;
-    }
-
     @XmlTransient
     public Collection<Item> getItemCollection() {
         return itemCollection;
@@ -132,6 +124,14 @@ public class Itembase implements Serializable
     @Override
     public String toString() {
         return "gwlpr.database.entities.gen.Itembase[ id=" + id + " ]";
+    }
+
+    public short getType() {
+        return type;
+    }
+
+    public void setType(short type) {
+        this.type = type;
     }
 
 }

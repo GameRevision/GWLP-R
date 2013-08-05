@@ -4,6 +4,7 @@
 
 package gwlpr.database.jpa;
 
+import gwlpr.database.EntityManagerFactoryProvider;
 import gwlpr.database.entities.Attribute;
 import java.io.Serializable;
 import javax.persistence.Query;
@@ -29,10 +30,16 @@ import javax.persistence.EntityManagerFactory;
  */
 public class AttributeJpaController implements Serializable 
 {
-
-    public AttributeJpaController(EntityManagerFactory emf) {
+    private static final AttributeJpaController SINGLETON = new AttributeJpaController(EntityManagerFactoryProvider.get());
+    
+    public static AttributeJpaController get() {
+        return SINGLETON;
+    }
+    
+    private AttributeJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
+    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {

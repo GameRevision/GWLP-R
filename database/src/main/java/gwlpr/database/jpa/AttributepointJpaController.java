@@ -4,6 +4,7 @@
 
 package gwlpr.database.jpa;
 
+import gwlpr.database.EntityManagerFactoryProvider;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -26,10 +27,16 @@ import javax.persistence.EntityManagerFactory;
  */
 public class AttributepointJpaController implements Serializable 
 {
-
-    public AttributepointJpaController(EntityManagerFactory emf) {
+    private static final AttributepointJpaController SINGLETON = new AttributepointJpaController(EntityManagerFactoryProvider.get());
+    
+    public static AttributepointJpaController get() {
+        return SINGLETON;
+    }
+    
+    private AttributepointJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
+    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {

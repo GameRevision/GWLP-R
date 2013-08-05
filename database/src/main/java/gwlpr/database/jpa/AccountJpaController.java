@@ -4,6 +4,7 @@
 
 package gwlpr.database.jpa;
 
+import gwlpr.database.EntityManagerFactoryProvider;
 import gwlpr.database.entities.Account;
 import java.io.Serializable;
 import javax.persistence.Query;
@@ -22,6 +23,7 @@ import gwlpr.database.jpa.exceptions.PreexistingEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 
 
 /**
@@ -31,10 +33,17 @@ import javax.persistence.EntityManagerFactory;
 public class AccountJpaController implements Serializable 
 {
 
-    public AccountJpaController(EntityManagerFactory emf) {
+    private static final AccountJpaController SINGLETON = new AccountJpaController(EntityManagerFactoryProvider.get());
+    
+    public static AccountJpaController get() {
+        return SINGLETON;
+    }
+    
+    private EntityManagerFactory emf = null;
+    
+    private AccountJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
@@ -327,6 +336,17 @@ public class AccountJpaController implements Serializable
         EntityManager em = getEntityManager();
         try {
             return em.find(Account.class, id);
+        } finally {
+            em.close();
+        }
+    }
+    
+    public Account findAccount(int id) {
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Account> query = getEntityManager().createNamedQuery("Account.findById", Account.class);
+            query.setParameter("id", id);
+            return query.getSingleResult();
         } finally {
             em.close();
         }

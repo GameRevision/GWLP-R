@@ -37,6 +37,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Map.findByPvP", query = "SELECT m FROM Map m WHERE m.pvP = :pvP")})
 public class Map implements Serializable 
 {
+    @Basic(optional = false)
+    @Column(name = "PvP")
+    private short pvP;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,9 +55,6 @@ public class Map implements Serializable
     @Basic(optional = false)
     @Column(name = "Name")
     private String name;
-    @Basic(optional = false)
-    @Column(name = "PvP")
-    private boolean pvP;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "map")
     private Collection<Spawnpoint> spawnpointCollection;
     @OneToMany(mappedBy = "lastOutpost")
@@ -107,14 +107,6 @@ public class Map implements Serializable
         this.name = name;
     }
 
-    public boolean getPvP() {
-        return pvP;
-    }
-
-    public void setPvP(boolean pvP) {
-        this.pvP = pvP;
-    }
-
     @XmlTransient
     public Collection<Spawnpoint> getSpawnpointCollection() {
         return spawnpointCollection;
@@ -156,6 +148,14 @@ public class Map implements Serializable
     @Override
     public String toString() {
         return "gwlpr.database.entities.gen.Map[ id=" + id + " ]";
+    }
+
+    public short getPvP() {
+        return pvP;
+    }
+
+    public void setPvP(short pvP) {
+        this.pvP = pvP;
     }
 
 }
