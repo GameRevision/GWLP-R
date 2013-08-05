@@ -7,7 +7,7 @@ package gwlpr.protocol.handshake;
 import gwlpr.protocol.serialization.GWMessageSerializationRegistry;
 import static gwlpr.protocol.serialization.GWMessageSerializationRegistry.register;
 import gwlpr.protocol.serialization.NettySerializationFilter;
-import gwlpr.protocol.util.EncryptionUtils;
+import realityshard.container.util.EncryptionUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;

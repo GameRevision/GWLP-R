@@ -4,80 +4,56 @@
 
 package gwlpr.protocol.intershard;
 
+import gwlpr.database.entities.Account;
+import gwlpr.database.entities.Character;
+import java.util.UUID;
 import realityshard.container.events.Event;
 
 /**
  * Request from the LoginShard to a MapShard to accept a session.
+ * 
+ * Note that the keys defined here are randomly chosen integer values.
+ * They will be different for each client.
  *
  * @author miracle444, _rusty
  */
 public final class LSRequest_AcceptClient implements Event
 {
 
-    private int key1;
-    private int key2;
-    private final int accountId;
-    private int characterId;
+    private final UUID clientUid;
+    private final Account account;
+    private final Character character;
     
     
     /**
      * Constructor.
      * 
-     * @param       key1                    The first security key (the client will
-     *                                      use that to connect with the map shard)
-     * @param       key2                    The second security key
-     * @param       accountId               The account ID of the client
-     * @param       characterId             The character ID of the client
+     * @param       clientUid 
+     * @param       account                 The account DAO of the client
+     * @param       character               The character DAO of the client
      */
-    public LSRequest_AcceptClient(int key1, int key2, int accountId, int characterId)
+    public LSRequest_AcceptClient(UUID clientUid, Account account, Character character)
     {
-        this.key1 = key1;
-        this.key2 = key2;
-        this.accountId = accountId;
-        this.characterId = characterId;
+        this.clientUid = clientUid;
+        this.account = account;
+        this.character = character;
     }
 
     
-    /**
-     * Getter.
-     * 
-     * @return 
-     */
-    public int getKey1() 
+    public UUID getClientUid() 
     {
-        return key1;
+        return clientUid;
     }
     
     
-    /**
-     * Getter.
-     * 
-     * @return 
-     */
-    public int getKey2() 
+    public Account getAccount() 
     {
-        return key2;
-    }
-
-    
-    /**
-     * Getter.
-     * 
-     * @return 
-     */
-    public int getAccountId() 
-    {
-        return accountId;
+        return account;
     }
       
     
-    /**
-     * Getter.
-     * 
-     * @return 
-     */
-    public int getCharacterId() 
+    public Character getCharacter() 
     {
-        return characterId;
+        return character;
     }
 }

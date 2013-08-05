@@ -7,18 +7,17 @@ package gwlpr.protocol.intershard;
 import java.util.UUID;
 import realityshard.container.events.Event;
 
+
 /**
- * Answer of the AcceptSessionRequest from a MapShard to the LoginShard.
- * This determines whether the map shard wants to accept the client or not.
+ * Notify the login shard that a client has successfully established a connection.
  *
  * @author miracle444, _rusty
  */
-public final class GSReply_AcceptClient implements Event
+public final class GSNotify_ClientConnected implements Event
 {
     
     private final UUID serverUid;
     private final UUID clientUid;
-    private final boolean accepted;
     
     
     /**
@@ -26,13 +25,11 @@ public final class GSReply_AcceptClient implements Event
      * 
      * @param       serverUid 
      * @param       clientUid
-     * @param       accepted  
      */
-    public GSReply_AcceptClient(UUID serverUid, UUID clientUid, boolean accepted)
+    public GSNotify_ClientConnected(UUID serverUid, UUID clientUid)
     {
         this.serverUid = serverUid;
         this.clientUid = clientUid;
-        this.accepted = accepted;
     }
 
     
@@ -45,11 +42,5 @@ public final class GSReply_AcceptClient implements Event
     public UUID getClientUid() 
     {
         return clientUid;
-    }
-    
-
-    public boolean isAccepted() 
-    {
-        return accepted;
     }
 }
