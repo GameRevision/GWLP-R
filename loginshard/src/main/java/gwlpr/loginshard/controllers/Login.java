@@ -4,10 +4,9 @@
 
 package gwlpr.loginshard.controllers;
 
-import gwlpr.database.entities.Character;
-import gwlpr.database.jpa.CharacterJpaController;
-import gwlpr.loginshard.ChannelAttachment;
+import gwlpr.loginshard.models.ClientBean;
 import gwlpr.loginshard.models.LoginModel;
+import gwlpr.loginshard.models.enums.ErrorCode;
 import gwlpr.loginshard.views.LoginView;
 import gwlpr.loginshard.views.StreamTerminatorView;
 import gwlpr.protocol.loginserver.inbound.P004_AccountLogin;
@@ -17,17 +16,32 @@ import java.nio.charset.Charset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import realityshard.container.events.Event;
+import realityshard.container.util.HandleRegistry;
 
 
 /**
- * This shardlet handles the login process.
+ * This controller handles the login process.
  * 
  * @author miracle444, _rusty
  */
 public class Login
 {
+    
     private static Logger LOGGER = LoggerFactory.getLogger(Login.class);
     private static final Charset CHARSET_UTF16 = Charset.forName("utf-16le");
+    
+    private final HandleRegistry<ClientBean> clientHandleRegistry;
+    
+    
+    /**
+     * Constructor.
+     * 
+     * @param       clientHandleRegistry 
+     */
+    public Login(HandleRegistry<ClientBean> clientHandleRegistry)
+    {
+        this.clientHandleRegistry = clientHandleRegistry;
+    }
     
     
     /**
@@ -40,12 +54,8 @@ public class Login
     {
         LOGGER.debug("A new client wants to log in");
         
-        // get the session attachment for that session
+        // get the channel attachment for that channel
         Channel channel = action.getChannel();
-        ChannelAttachment attach = channel.attr(ChannelAttachment.KEY).get();
-        
-        // set the login counter
-        attach.setLoginCount(action.getLoginCount());
         
         // get the login credentials
         String email = action.getEmail();
@@ -67,11 +77,12 @@ public class Login
         }
         
         LOGGER.info("Client successfully logged in. [email {} ]", email);
-
-        // update the attachment with the data (because we now know 
-        // that it is correct)
-        attach.setAccountId(model.getAccId());        
-        attach.setCharacterId(model.getCharId());
+        
+        // create the client's bean
+        ClientBean client = new ClientBean(channel, action.getLoginCount(), model.getAccount(), model.getChara());
+        
+        // register it
+        ClientBean.set(channel, clientHandleRegistry.produce(client));
 
         // send all login specific packets as a reply
         LoginView.sendLoginInfo(channel, model.getAccount());
@@ -90,23 +101,27 @@ public class Login
         
         // get the session attachment for that session
         Channel channel = action.getChannel();
-        ChannelAttachment attach = channel.attr(ChannelAttachment.KEY).get();
+        ClientBean client = ClientBean.get(channel);
+        
+        // failcheck
+        if (client == null) { channel.close(); return; }
         
         // set login counter
-        attach.setLoginCount(action.getLoginCount());
+        client.setLoginCount(action.getLoginCount());
         
         // check the submitted information
-        LoginModel model = new LoginModel(attach.getAccountId(), action.getCharacterName());
+        LoginModel model = new LoginModel(client.getAccount(), action.getCharacterName());
         
         if (!model.hasChar())
         {
-            LOGGER.info("Manipulation detected: Trying to acces a character that is not connected to this account.");
+            LOGGER.info("Manipulation detected: Trying to access a character that is not connected to this account.");
             channel.close();
+            return;
         }
         
-        attach.setCharacterId(model.getCharId());
+        client.setCharacter(model.getChara());
         
-        LoginView.sendFriendInfo(channel, 0);
+        LoginView.sendFriendInfo(channel, ErrorCode.None);
     }
     
 }

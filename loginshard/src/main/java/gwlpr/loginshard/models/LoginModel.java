@@ -7,6 +7,7 @@ package gwlpr.loginshard.models;
 import gwlpr.database.entities.Account;
 import gwlpr.database.entities.Character;
 import gwlpr.database.jpa.AccountJpaController;
+import gwlpr.loginshard.models.enums.ErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +24,7 @@ public class LoginModel
     
     private Account account;
     private Character chara;
-    private int errorCode = 0;
+    private ErrorCode errorCode = ErrorCode.None;
     
     
     /**
@@ -46,9 +47,9 @@ public class LoginModel
     /**
      * Constructor.
      */
-    public LoginModel(int accId,  String charName)
+    public LoginModel(Account account, String charName)
     {
-        account = AccountJpaController.get().findAccount(accId);
+        this.account = account;
         chara = null;
         
         for (Character character : account.getCharacterCollection()) 
@@ -70,22 +71,21 @@ public class LoginModel
         if (account == null)
         {
             // there is no account with this eMail
-            errorCode = 227;
+            errorCode = ErrorCode.LoginFail;
             return false;
         }
         
         if (false && !password.startsWith(account.getPassword()))
         {
             // password doesnt match
-            errorCode = 227; 
-        
+            errorCode = ErrorCode.LoginFail;
             return false;
         }
         
         if (chara == null)
         {
             // there is no such character
-            errorCode = 227;
+            errorCode = ErrorCode.LoginFail;
             return false;
         }
         
@@ -107,27 +107,22 @@ public class LoginModel
     /**
      * Getter.
      * 
-     * Returns the latest error code.
+     * @return     The latest error code. (ErrorCode.None if no error)
      */
-    public int getErrorCode()
+    public ErrorCode getErrorCode()
     {
         return errorCode;
     }
-
     
-    public int getAccId() 
-    {
-        return account.getId();
-    }
-
-    
-    public int getCharId() 
-    {
-        return chara.getId();
-    }
 
     public Account getAccount() 
     {
         return account;
+    }
+
+    
+    public Character getChara() 
+    {
+        return chara;
     }
 }

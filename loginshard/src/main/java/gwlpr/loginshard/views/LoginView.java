@@ -6,7 +6,8 @@ package gwlpr.loginshard.views;
 
 import gwlpr.database.entities.Account;
 import gwlpr.database.entities.Character;
-import gwlpr.loginshard.ChannelAttachment;
+import gwlpr.loginshard.models.ClientBean;
+import gwlpr.loginshard.models.enums.ErrorCode;
 import gwlpr.protocol.loginserver.outbound.P007_CharacterInfo;
 import gwlpr.protocol.loginserver.outbound.P017_AccountPermissions;
 import gwlpr.protocol.loginserver.outbound.P020_FriendsListEnd;
@@ -41,7 +42,7 @@ public class LoginView
             
             characterInfo.init(channel);
             
-            characterInfo.setLoginCount(ChannelAttachment.getLoginCount(channel));
+            characterInfo.setLoginCount(ClientBean.get(channel).getLoginCount());
             characterInfo.setUnknown1(new byte[16]);
             characterInfo.setUnknown2(0);
             characterInfo.setCharacterName(character.getName());                
@@ -82,21 +83,21 @@ public class LoginView
         
         P022_AccountGuiInfo accountGuiSettings = new P022_AccountGuiInfo();
         accountGuiSettings.init(channel);
-        accountGuiSettings.setLoginCount(ChannelAttachment.getLoginCount(channel));
+        accountGuiSettings.setLoginCount(ClientBean.get(channel).getLoginCount());
         channel.write(accountGuiSettings);
         
         // next step:
-        sendFriendInfo(channel, 0);
+        sendFriendInfo(channel, ErrorCode.None);
     }
     
     
-    public static void sendFriendInfo(Channel channel, int errorNumber)
+    public static void sendFriendInfo(Channel channel, ErrorCode errorNumber)
     {
         LOGGER.debug("Sending friend list end");
         
         P020_FriendsListEnd friendListEnd = new P020_FriendsListEnd();
         friendListEnd.init(channel);
-        friendListEnd.setLoginCount(ChannelAttachment.getLoginCount(channel));
+        friendListEnd.setLoginCount(ClientBean.get(channel).getLoginCount());
         friendListEnd.setUnknown1(1);
         channel.write(friendListEnd);
 
@@ -105,7 +106,7 @@ public class LoginView
         
         P017_AccountPermissions accountPermissions = new P017_AccountPermissions();
         accountPermissions.init(channel);
-        accountPermissions.setLoginCount(channel.attr(ChannelAttachment.KEY).get().getLoginCount());
+        accountPermissions.setLoginCount(ClientBean.get(channel).getLoginCount());
         accountPermissions.setTerritory(2);
         accountPermissions.setTerritoryChanges(4);
         accountPermissions.setUnknown1(new byte[] { 0x3F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 });

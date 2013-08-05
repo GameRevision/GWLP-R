@@ -4,6 +4,7 @@
 
 package gwlpr.loginshard;
 
+import gwlpr.loginshard.models.ClientBean;
 import gwlpr.loginshard.controllers.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -11,6 +12,7 @@ import java.util.Map;
 import realityshard.container.gameapp.GameAppContext;
 import realityshard.container.gameapp.GameAppFactory;
 import realityshard.container.gameapp.GameAppManager;
+import realityshard.container.util.HandleRegistry;
 
 
 /**
@@ -39,7 +41,7 @@ public class LoginShardFactory implements GameAppFactory
     public Channel getServerChannel(ServerBootstrap bootstrap) throws InterruptedException 
     {
         // set the attributes for new channels
-        bootstrap.attr(ChannelAttachment.KEY, new ChannelAttachment());
+        bootstrap.attr(ClientBean.HANDLE_KEY, null);
         
         // create the pipeline-factory
         bootstrap.handler(new LoginShardChannelInitializer());
@@ -57,11 +59,13 @@ public class LoginShardFactory implements GameAppFactory
         
         // TODO: create db stuff
         
+        // create a new client-handle registry, so we can identify our clients...
+        HandleRegistry<ClientBean> clientRegistry = new HandleRegistry<>();
+        
         // register the controllers
         context.getEventAggregator()
-                .register(new StartUp())
-                .register(new Login())
-                .register(new MapShardManagement())
+                .register(new Login(clientRegistry))
+                .register(new MapDispatch(context, clientRegistry))
                 .register(new StaticReply()); 
         
         return context;

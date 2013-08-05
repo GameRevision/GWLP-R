@@ -4,11 +4,9 @@
 
 package gwlpr.loginshard.views;
 
-import gwlpr.actions.loginserver.stoc.P001_ComputerInfoReplyAction;
-import gwlpr.actions.loginserver.stoc.P038_SendResponseAction;
-import gwlpr.loginshard.ChannelAttachment;
-import realityshard.shardlet.Session;
-import realityshard.shardlet.ShardletContext;
+import gwlpr.protocol.loginserver.outbound.P001_ComputerInfoReply;
+import gwlpr.loginshard.models.ClientBean;
+import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,63 +21,26 @@ public class StaticReplyView
 {
     
     private static Logger LOGGER = LoggerFactory.getLogger(StaticReplyView.class);
-    private final ShardletContext shardletContext;
-
     
-    /**
-     * Constructor. 
-     * 
-     * @param       shardletContext 
-     */
-    public StaticReplyView(ShardletContext shardletContext)
-    {
-        this.shardletContext = shardletContext;
-    }
-
     
     /**
      * Static computer user stuff...
      * 
-     * @param       session 
+     * @param       channel 
      */
-    public void computerInfoReply(Session session)
+    public static void computerInfoReply(Channel channel)
     {
         LOGGER.debug("Sending computer info reply");
         
         // assmble action
-        P001_ComputerInfoReplyAction computerInfoReply = new P001_ComputerInfoReplyAction();
+        P001_ComputerInfoReply computerInfoReply = new P001_ComputerInfoReply();
         
-        computerInfoReply.init(session);
-        computerInfoReply.setData1(1905605949);
-        computerInfoReply.setLoginCount(ChannelAttachment.getLoginCount(session));
-        computerInfoReply.setData2(0);
-        computerInfoReply.setData3(1);
+        computerInfoReply.init(channel);
+        computerInfoReply.setUnknown1(1905605949); // TODO: wtf is that? the client's UID (hashed)?
+        computerInfoReply.setLoginCount(ClientBean.get(channel).getLoginCount());
+        computerInfoReply.setUnknown2(0);
+        computerInfoReply.setUnknown3(1);
         
-        session.send(computerInfoReply);
-    }
-    
-    
-    /**
-     * RequestResponse/SendResponse crap.
-     * This time, the GW protocol has really failed...
-     * 
-     * @param       session
-     * @param       errorNumber 
-     */
-    public void sendResponse(Session session, int errorNumber)
-    {
-        LOGGER.debug("Sending send-response");
-        
-        P038_SendResponseAction sendResponse = new P038_SendResponseAction();
-        
-        sendResponse.init(session);
-        sendResponse.setLoginCount(ChannelAttachment.getLoginCount(session));
-        sendResponse.setData1(0);
-        
-        session.send(sendResponse);
-        
-        LOGGER.debug("Sending stream terminator");
-        
-        StreamTerminatorView.create(session, errorNumber);
+        channel.write(computerInfoReply);
     }
 }
