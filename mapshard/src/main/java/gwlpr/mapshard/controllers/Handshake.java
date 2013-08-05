@@ -5,7 +5,7 @@
 package gwlpr.mapshard.controllers;
 
 import gwlpr.actions.gameserver.ctos.P16896_ClientSeedAction;
-import gwlpr.mapshard.ISC_AcceptClientReplyAction;
+import gwlpr.protocol.intershard.ISC_AcceptClientReplyAction;
 import gwlpr.loginshard.ISC_AcceptClientRequestAction;
 import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import gwlpr.mapshard.ContextAttachment;
