@@ -4,6 +4,7 @@
 
 package gwlpr.database.jpa;
 
+import gwlpr.database.EntityManagerFactoryProvider;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -19,6 +20,7 @@ import gwlpr.database.jpa.exceptions.NonexistentEntityException;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 
 
 /**
@@ -28,6 +30,12 @@ import javax.persistence.EntityManagerFactory;
 public class MapJpaController implements Serializable 
 {
 
+    private static final MapJpaController SINGLETON = new MapJpaController(EntityManagerFactoryProvider.get());
+    
+    public static MapJpaController get() {
+        return SINGLETON;
+    }
+    
     public MapJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
@@ -234,6 +242,17 @@ public class MapJpaController implements Serializable
         EntityManager em = getEntityManager();
         try {
             return em.find(Map.class, id);
+        } finally {
+            em.close();
+        }
+    }
+    
+    public Map findByGameId(int gameId) {
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Map> query = getEntityManager().createNamedQuery("Map.findByGameID", Map.class);
+            query.setParameter("gameID", gameId);
+            return query.getSingleResult();
         } finally {
             em.close();
         }

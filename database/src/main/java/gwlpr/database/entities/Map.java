@@ -67,7 +67,7 @@ public class Map implements Serializable
         this.id = id;
     }
 
-    public Map(Integer id, int gameID, int hash, String name, boolean pvP) {
+    public Map(Integer id, int gameID, int hash, String name, short pvP) {
         this.id = id;
         this.gameID = gameID;
         this.hash = hash;

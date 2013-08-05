@@ -61,7 +61,7 @@ public class Itembase implements Serializable
         this.id = id;
     }
 
-    public Itembase(Integer id, int fileID, String name, boolean type) {
+    public Itembase(Integer id, int fileID, String name, short type) {
         this.id = id;
         this.fileID = fileID;
         this.name = name;
