@@ -95,7 +95,7 @@ public class Storeditem implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.Storeditem[ storeditemPK=" + storeditemPK + " ]";
+        return "gwlpr.database.entities.Storeditem[ storeditemPK=" + storeditemPK + " ]";
     }
 
 }

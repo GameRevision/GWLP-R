@@ -26,12 +26,14 @@ CREATE TABLE `accounts` (
   `ID` int(4) NOT NULL UNIQUE AUTO_INCREMENT,
   `EMail` varchar(64) NOT NULL,
   `Password` varchar(20) NOT NULL,
+  `UserGroup` int(4) DEFAULT NULL,
   `GUI` blob NOT NULL,
   `MaterialStorage` int(4) DEFAULT NULL,
   `GoldStorage` int(4) NOT NULL,
   PRIMARY KEY (`EMail`),
   KEY `AccountsMaterialStorage` (`MaterialStorage`),
-  CONSTRAINT `AccountsMaterialStorage` FOREIGN KEY (`MaterialStorage`) REFERENCES `inventories` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `AccountsMaterialStorage` FOREIGN KEY (`MaterialStorage`) REFERENCES `inventories` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `AccountsGroup` FOREIGN KEY (`UserGroup`) REFERENCES `usergroups` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -41,7 +43,7 @@ CREATE TABLE `accounts` (
 
 LOCK TABLES `accounts` WRITE;
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
-INSERT INTO `accounts` VALUES (1,'root@gwlp.ps','root','',NULL,0),(2,'test@gwlp.ps','test','',NULL,0);
+INSERT INTO `accounts` VALUES (1,'root@gwlp.ps','root',NULL,'',NULL,0),(2,'test@gwlp.ps','test',NULL,'',NULL,0);
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -191,6 +193,7 @@ CREATE TABLE `commands` (
 
 LOCK TABLES `commands` WRITE;
 /*!40000 ALTER TABLE `commands` DISABLE KEYS */;
+INSERT INTO `commands` VALUES (1,'help'),(2,'test');
 /*!40000 ALTER TABLE `commands` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -259,7 +262,7 @@ CREATE TABLE `grouppermissions` (
   PRIMARY KEY (`GroupID`,`CommandID`),
   KEY `GroupPermissionsCommandID` (`CommandID`),
   CONSTRAINT `GroupPermissionsCommandID` FOREIGN KEY (`CommandID`) REFERENCES `commands` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `GroupPermissionsGroupID` FOREIGN KEY (`GroupID`) REFERENCES `groups` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `GroupPermissionsGroupID` FOREIGN KEY (`GroupID`) REFERENCES `usergroups` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -269,32 +272,34 @@ CREATE TABLE `grouppermissions` (
 
 LOCK TABLES `grouppermissions` WRITE;
 /*!40000 ALTER TABLE `grouppermissions` DISABLE KEYS */;
+INSERT INTO `grouppermissions` VALUES (1,1),(2,1),(2,2);
 /*!40000 ALTER TABLE `grouppermissions` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `groups`
+-- Table structure for table `usergroups`
 --
 
-DROP TABLE IF EXISTS `groups`;
+DROP TABLE IF EXISTS `usergroups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `groups` (
+CREATE TABLE `usergroups` (
   `ID` int(4) NOT NULL AUTO_INCREMENT,
   `Name` varchar(20) NOT NULL,
-  `Prefix` varchar(4) NOT NULL,
-  `ChatColor` int(4) NOT NULL,
+  `Prefix` varchar(4) DEFAULT NULL,
+  `ChatColor` int(4) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `groups`
+-- Dumping data for table `usergroups`
 --
 
-LOCK TABLES `groups` WRITE;
-/*!40000 ALTER TABLE `groups` DISABLE KEYS */;
-/*!40000 ALTER TABLE `groups` ENABLE KEYS */;
+LOCK TABLES `usergroups` WRITE;
+/*!40000 ALTER TABLE `usergroups` DISABLE KEYS */;
+INSERT INTO `usergroups` VALUES (1,'Player',NULL,NULL),(2,'GameMaster','GM',4);
+/*!40000 ALTER TABLE `usergroups` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -25,18 +26,16 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author _rusty
  */
 @Entity 
-@Table(name = "groups")
+@Table(name = "usergroups")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "UserGroup.findAll", query = "SELECT u FROM UserGroup u"),
-    @NamedQuery(name = "UserGroup.findById", query = "SELECT u FROM UserGroup u WHERE u.id = :id"),
-    @NamedQuery(name = "UserGroup.findByName", query = "SELECT u FROM UserGroup u WHERE u.name = :name"),
-    @NamedQuery(name = "UserGroup.findByPrefix", query = "SELECT u FROM UserGroup u WHERE u.prefix = :prefix"),
-    @NamedQuery(name = "UserGroup.findByChatColor", query = "SELECT u FROM UserGroup u WHERE u.chatColor = :chatColor")})
-public class UserGroup implements Serializable 
+    @NamedQuery(name = "Usergroup.findAll", query = "SELECT u FROM Usergroup u"),
+    @NamedQuery(name = "Usergroup.findById", query = "SELECT u FROM Usergroup u WHERE u.id = :id"),
+    @NamedQuery(name = "Usergroup.findByName", query = "SELECT u FROM Usergroup u WHERE u.name = :name"),
+    @NamedQuery(name = "Usergroup.findByPrefix", query = "SELECT u FROM Usergroup u WHERE u.prefix = :prefix"),
+    @NamedQuery(name = "Usergroup.findByChatColor", query = "SELECT u FROM Usergroup u WHERE u.chatColor = :chatColor")})
+public class Usergroup implements Serializable 
 {
-    @ManyToMany(mappedBy = "userGroupCollection")
-    private Collection<Command> commandsCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,27 +45,25 @@ public class UserGroup implements Serializable
     @Basic(optional = false)
     @Column(name = "Name")
     private String name;
-    @Basic(optional = false)
     @Column(name = "Prefix")
     private String prefix;
-    @Basic(optional = false)
     @Column(name = "ChatColor")
-    private int chatColor;
-    @ManyToMany(mappedBy = "userGroupCollection")
+    private Integer chatColor;
+    @ManyToMany(mappedBy = "usergroupCollection")
     private Collection<Command> commandCollection;
+    @OneToMany(mappedBy = "userGroup")
+    private Collection<Account> accountCollection;
 
-    public UserGroup() {
+    public Usergroup() {
     }
 
-    public UserGroup(Integer id) {
+    public Usergroup(Integer id) {
         this.id = id;
     }
 
-    public UserGroup(Integer id, String name, String prefix, int chatColor) {
+    public Usergroup(Integer id, String name) {
         this.id = id;
         this.name = name;
-        this.prefix = prefix;
-        this.chatColor = chatColor;
     }
 
     public Integer getId() {
@@ -93,11 +90,11 @@ public class UserGroup implements Serializable
         this.prefix = prefix;
     }
 
-    public int getChatColor() {
+    public Integer getChatColor() {
         return chatColor;
     }
 
-    public void setChatColor(int chatColor) {
+    public void setChatColor(Integer chatColor) {
         this.chatColor = chatColor;
     }
 
@@ -110,6 +107,15 @@ public class UserGroup implements Serializable
         this.commandCollection = commandCollection;
     }
 
+    @XmlTransient
+    public Collection<Account> getAccountCollection() {
+        return accountCollection;
+    }
+
+    public void setAccountCollection(Collection<Account> accountCollection) {
+        this.accountCollection = accountCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -120,10 +126,10 @@ public class UserGroup implements Serializable
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof UserGroup)) {
+        if (!(object instanceof Usergroup)) {
             return false;
         }
-        UserGroup other = (UserGroup) object;
+        Usergroup other = (Usergroup) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -132,16 +138,7 @@ public class UserGroup implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.UserGroup[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Command> getCommandsCollection() {
-        return commandsCollection;
-    }
-
-    public void setCommandsCollection(Collection<Command> commandsCollection) {
-        this.commandsCollection = commandsCollection;
+        return "gwlpr.database.entities.Usergroup[ id=" + id + " ]";
     }
 
 }

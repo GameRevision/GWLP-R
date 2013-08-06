@@ -188,7 +188,7 @@ public class Item implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.Item[ id=" + id + " ]";
+        return "gwlpr.database.entities.Item[ id=" + id + " ]";
     }
 
 }

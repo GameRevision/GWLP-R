@@ -74,7 +74,7 @@ public class StoragetabPK implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.StoragetabPK[ accountID=" + accountID + ", number=" + number + " ]";
+        return "gwlpr.database.entities.StoragetabPK[ accountID=" + accountID + ", number=" + number + " ]";
     }
 
 }

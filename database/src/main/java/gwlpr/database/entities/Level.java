@@ -104,7 +104,7 @@ public class Level implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.Level[ level=" + level + " ]";
+        return "gwlpr.database.entities.Level[ level=" + level + " ]";
     }
 
 }

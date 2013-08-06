@@ -140,7 +140,7 @@ public class Factionstat implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.Factionstat[ factionstatPK=" + factionstatPK + " ]";
+        return "gwlpr.database.entities.Factionstat[ factionstatPK=" + factionstatPK + " ]";
     }
 
 }

@@ -90,7 +90,7 @@ public class EquippedSkillPK implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.EquippedSkillPK[ characterID=" + characterID + ", skillID=" + skillID + ", slot=" + slot + " ]";
+        return "gwlpr.database.entities.EquippedSkillPK[ characterID=" + characterID + ", skillID=" + skillID + ", slot=" + slot + " ]";
     }
 
 }

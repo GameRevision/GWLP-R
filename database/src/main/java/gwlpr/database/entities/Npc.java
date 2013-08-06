@@ -129,7 +129,7 @@ public class Npc implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.Npc[ id=" + id + " ]";
+        return "gwlpr.database.entities.Npc[ id=" + id + " ]";
     }
 
 }

@@ -193,7 +193,7 @@ public class Inventory implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.Inventory[ id=" + id + " ]";
+        return "gwlpr.database.entities.Inventory[ id=" + id + " ]";
     }
 
 }

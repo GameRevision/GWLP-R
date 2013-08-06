@@ -45,7 +45,7 @@ public class Command implements Serializable
         @JoinColumn(name = "CommandID", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "GroupID", referencedColumnName = "ID")})
     @ManyToMany
-    private Collection<UserGroup> userGroupCollection;
+    private Collection<Usergroup> usergroupCollection;
 
     public Command() {
     }
@@ -76,12 +76,12 @@ public class Command implements Serializable
     }
 
     @XmlTransient
-    public Collection<UserGroup> getUserGroupCollection() {
-        return userGroupCollection;
+    public Collection<Usergroup> getUsergroupCollection() {
+        return usergroupCollection;
     }
 
-    public void setUserGroupCollection(Collection<UserGroup> userGroupCollection) {
-        this.userGroupCollection = userGroupCollection;
+    public void setUsergroupCollection(Collection<Usergroup> usergroupCollection) {
+        this.usergroupCollection = usergroupCollection;
     }
 
     @Override

@@ -11,6 +11,7 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import gwlpr.database.entities.Usergroup;
 import gwlpr.database.entities.Inventory;
 import gwlpr.database.entities.Storagetab;
 import java.util.ArrayList;
@@ -32,18 +33,16 @@ import javax.persistence.TypedQuery;
  */
 public class AccountJpaController implements Serializable 
 {
-
     private static final AccountJpaController SINGLETON = new AccountJpaController(EntityManagerFactoryProvider.get());
     
     public static AccountJpaController get() {
         return SINGLETON;
     }
     
-    private EntityManagerFactory emf = null;
-    
-    private AccountJpaController(EntityManagerFactory emf) {
+    public AccountJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
+    private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
@@ -63,6 +62,11 @@ public class AccountJpaController implements Serializable
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Usergroup userGroup = account.getUserGroup();
+            if (userGroup != null) {
+                userGroup = em.getReference(userGroup.getClass(), userGroup.getId());
+                account.setUserGroup(userGroup);
+            }
             Inventory materialStorage = account.getMaterialStorage();
             if (materialStorage != null) {
                 materialStorage = em.getReference(materialStorage.getClass(), materialStorage.getId());
@@ -87,6 +91,10 @@ public class AccountJpaController implements Serializable
             }
             account.setCharacterCollection(attachedCharacterCollection);
             em.persist(account);
+            if (userGroup != null) {
+                userGroup.getAccountCollection().add(account);
+                userGroup = em.merge(userGroup);
+            }
             if (materialStorage != null) {
                 materialStorage.getAccountCollection().add(account);
                 materialStorage = em.merge(materialStorage);
@@ -137,6 +145,8 @@ public class AccountJpaController implements Serializable
             em = getEntityManager();
             em.getTransaction().begin();
             Account persistentAccount = em.find(Account.class, account.getEMail());
+            Usergroup userGroupOld = persistentAccount.getUserGroup();
+            Usergroup userGroupNew = account.getUserGroup();
             Inventory materialStorageOld = persistentAccount.getMaterialStorage();
             Inventory materialStorageNew = account.getMaterialStorage();
             Collection<Storagetab> storagetabCollectionOld = persistentAccount.getStoragetabCollection();
@@ -173,6 +183,10 @@ public class AccountJpaController implements Serializable
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
+            if (userGroupNew != null) {
+                userGroupNew = em.getReference(userGroupNew.getClass(), userGroupNew.getId());
+                account.setUserGroup(userGroupNew);
+            }
             if (materialStorageNew != null) {
                 materialStorageNew = em.getReference(materialStorageNew.getClass(), materialStorageNew.getId());
                 account.setMaterialStorage(materialStorageNew);
@@ -199,6 +213,14 @@ public class AccountJpaController implements Serializable
             characterCollectionNew = attachedCharacterCollectionNew;
             account.setCharacterCollection(characterCollectionNew);
             account = em.merge(account);
+            if (userGroupOld != null && !userGroupOld.equals(userGroupNew)) {
+                userGroupOld.getAccountCollection().remove(account);
+                userGroupOld = em.merge(userGroupOld);
+            }
+            if (userGroupNew != null && !userGroupNew.equals(userGroupOld)) {
+                userGroupNew.getAccountCollection().add(account);
+                userGroupNew = em.merge(userGroupNew);
+            }
             if (materialStorageOld != null && !materialStorageOld.equals(materialStorageNew)) {
                 materialStorageOld.getAccountCollection().remove(account);
                 materialStorageOld = em.merge(materialStorageOld);
@@ -294,6 +316,11 @@ public class AccountJpaController implements Serializable
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
+            Usergroup userGroup = account.getUserGroup();
+            if (userGroup != null) {
+                userGroup.getAccountCollection().remove(account);
+                userGroup = em.merge(userGroup);
+            }
             Inventory materialStorage = account.getMaterialStorage();
             if (materialStorage != null) {
                 materialStorage.getAccountCollection().remove(account);
@@ -341,7 +368,7 @@ public class AccountJpaController implements Serializable
         }
     }
     
-    public Account findAccount(int id) {
+    public Account findById(int id) {
         EntityManager em = getEntityManager();
         try {
             TypedQuery<Account> query = getEntityManager().createNamedQuery("Account.findById", Account.class);

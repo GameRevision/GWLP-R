@@ -74,7 +74,7 @@ public class StoreditemPK implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.StoreditemPK[ inventoryID=" + inventoryID + ", slot=" + slot + " ]";
+        return "gwlpr.database.entities.StoreditemPK[ inventoryID=" + inventoryID + ", slot=" + slot + " ]";
     }
 
 }

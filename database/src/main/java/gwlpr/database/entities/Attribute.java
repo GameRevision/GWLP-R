@@ -126,7 +126,7 @@ public class Attribute implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.Attribute[ id=" + id + " ]";
+        return "gwlpr.database.entities.Attribute[ id=" + id + " ]";
     }
 
 }

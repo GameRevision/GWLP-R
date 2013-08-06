@@ -32,13 +32,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Hstring.findByCompressingValue", query = "SELECT h FROM Hstring h WHERE h.compressingValue = :compressingValue")})
 public class Hstring implements Serializable 
 {
+    private static final long serialVersionUID = 1L;
+    @EmbeddedId
+    protected HstringPK hstringPK;
     @Basic(optional = false)
     @Lob
     @Column(name = "EncryptedString")
     private byte[] encryptedString;
-    private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected HstringPK hstringPK;
     @Basic(optional = false)
     @Column(name = "EncryptedLength")
     private int encryptedLength;
@@ -64,7 +64,7 @@ public class Hstring implements Serializable
         this.compressingValue = compressingValue;
     }
 
-    public Hstring(short stringID, boolean blockID) {
+    public Hstring(short stringID, short blockID) {
         this.hstringPK = new HstringPK(stringID, blockID);
     }
 
@@ -74,6 +74,14 @@ public class Hstring implements Serializable
 
     public void setHstringPK(HstringPK hstringPK) {
         this.hstringPK = hstringPK;
+    }
+
+    public byte[] getEncryptedString() {
+        return encryptedString;
+    }
+
+    public void setEncryptedString(byte[] encryptedString) {
+        this.encryptedString = encryptedString;
     }
 
     public int getEncryptedLength() {
@@ -122,15 +130,7 @@ public class Hstring implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.Hstring[ hstringPK=" + hstringPK + " ]";
-    }
-
-    public byte[] getEncryptedString() {
-        return encryptedString;
-    }
-
-    public void setEncryptedString(byte[] encryptedString) {
-        this.encryptedString = encryptedString;
+        return "gwlpr.database.entities.Hstring[ hstringPK=" + hstringPK + " ]";
     }
 
 }

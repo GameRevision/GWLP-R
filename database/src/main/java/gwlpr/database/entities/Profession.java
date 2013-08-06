@@ -139,7 +139,7 @@ public class Profession implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.Profession[ id=" + id + " ]";
+        return "gwlpr.database.entities.Profession[ id=" + id + " ]";
     }
 
 }

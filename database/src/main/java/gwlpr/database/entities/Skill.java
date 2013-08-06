@@ -130,7 +130,7 @@ public class Skill implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.Skill[ id=" + id + " ]";
+        return "gwlpr.database.entities.Skill[ id=" + id + " ]";
     }
 
 }

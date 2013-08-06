@@ -116,7 +116,7 @@ public class Itemstat implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.Itemstat[ itemstatPK=" + itemstatPK + " ]";
+        return "gwlpr.database.entities.Itemstat[ itemstatPK=" + itemstatPK + " ]";
     }
 
 }

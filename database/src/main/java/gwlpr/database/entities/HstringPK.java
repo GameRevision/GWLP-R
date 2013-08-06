@@ -22,12 +22,12 @@ public class HstringPK implements Serializable
     private short stringID;
     @Basic(optional = false)
     @Column(name = "BlockID")
-    private boolean blockID;
+    private short blockID;
 
     public HstringPK() {
     }
 
-    public HstringPK(short stringID, boolean blockID) {
+    public HstringPK(short stringID, short blockID) {
         this.stringID = stringID;
         this.blockID = blockID;
     }
@@ -40,11 +40,11 @@ public class HstringPK implements Serializable
         this.stringID = stringID;
     }
 
-    public boolean getBlockID() {
+    public short getBlockID() {
         return blockID;
     }
 
-    public void setBlockID(boolean blockID) {
+    public void setBlockID(short blockID) {
         this.blockID = blockID;
     }
 
@@ -52,7 +52,7 @@ public class HstringPK implements Serializable
     public int hashCode() {
         int hash = 0;
         hash += (int) stringID;
-        hash += (blockID ? 1 : 0);
+        hash += (int) blockID;
         return hash;
     }
 
@@ -74,7 +74,7 @@ public class HstringPK implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.HstringPK[ stringID=" + stringID + ", blockID=" + blockID + " ]";
+        return "gwlpr.database.entities.HstringPK[ stringID=" + stringID + ", blockID=" + blockID + " ]";
     }
 
 }

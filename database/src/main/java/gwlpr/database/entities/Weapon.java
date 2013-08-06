@@ -123,7 +123,7 @@ public class Weapon implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.Weapon[ id=" + id + " ]";
+        return "gwlpr.database.entities.Weapon[ id=" + id + " ]";
     }
 
 }

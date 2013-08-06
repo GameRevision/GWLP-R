@@ -105,7 +105,7 @@ public class Faction implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.Faction[ id=" + id + " ]";
+        return "gwlpr.database.entities.Faction[ id=" + id + " ]";
     }
 
 }

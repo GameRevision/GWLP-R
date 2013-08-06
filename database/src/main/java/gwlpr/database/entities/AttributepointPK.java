@@ -74,7 +74,7 @@ public class AttributepointPK implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.AttributepointPK[ characterID=" + characterID + ", attributeID=" + attributeID + " ]";
+        return "gwlpr.database.entities.AttributepointPK[ characterID=" + characterID + ", attributeID=" + attributeID + " ]";
     }
 
 }

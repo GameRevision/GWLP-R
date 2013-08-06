@@ -22,12 +22,12 @@ public class WeaponsetPK implements Serializable
     private int characterID;
     @Basic(optional = false)
     @Column(name = "Number")
-    private boolean number;
+    private short number;
 
     public WeaponsetPK() {
     }
 
-    public WeaponsetPK(int characterID, boolean number) {
+    public WeaponsetPK(int characterID, short number) {
         this.characterID = characterID;
         this.number = number;
     }
@@ -40,11 +40,11 @@ public class WeaponsetPK implements Serializable
         this.characterID = characterID;
     }
 
-    public boolean getNumber() {
+    public short getNumber() {
         return number;
     }
 
-    public void setNumber(boolean number) {
+    public void setNumber(short number) {
         this.number = number;
     }
 
@@ -52,7 +52,7 @@ public class WeaponsetPK implements Serializable
     public int hashCode() {
         int hash = 0;
         hash += (int) characterID;
-        hash += (number ? 1 : 0);
+        hash += (int) number;
         return hash;
     }
 
@@ -74,7 +74,7 @@ public class WeaponsetPK implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.WeaponsetPK[ characterID=" + characterID + ", number=" + number + " ]";
+        return "gwlpr.database.entities.WeaponsetPK[ characterID=" + characterID + ", number=" + number + " ]";
     }
 
 }

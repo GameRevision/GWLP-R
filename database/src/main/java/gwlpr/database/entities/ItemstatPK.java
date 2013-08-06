@@ -74,7 +74,7 @@ public class ItemstatPK implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.ItemstatPK[ itemID=" + itemID + ", statID=" + statID + " ]";
+        return "gwlpr.database.entities.ItemstatPK[ itemID=" + itemID + ", statID=" + statID + " ]";
     }
 
 }

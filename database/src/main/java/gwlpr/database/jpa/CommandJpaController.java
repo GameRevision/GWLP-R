@@ -10,7 +10,7 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import gwlpr.database.entities.UserGroup;
+import gwlpr.database.entities.Usergroup;
 import gwlpr.database.jpa.exceptions.NonexistentEntityException;
 import gwlpr.database.jpa.exceptions.PreexistingEntityException;
 import java.util.ArrayList;
@@ -37,23 +37,23 @@ public class CommandJpaController implements Serializable
     }
 
     public void create(Command command) throws PreexistingEntityException, Exception {
-        if (command.getUserGroupCollection() == null) {
-            command.setUserGroupCollection(new ArrayList<UserGroup>());
+        if (command.getUsergroupCollection() == null) {
+            command.setUsergroupCollection(new ArrayList<Usergroup>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Collection<UserGroup> attachedUserGroupCollection = new ArrayList<UserGroup>();
-            for (UserGroup userGroupCollectionUserGroupToAttach : command.getUserGroupCollection()) {
-                userGroupCollectionUserGroupToAttach = em.getReference(userGroupCollectionUserGroupToAttach.getClass(), userGroupCollectionUserGroupToAttach.getId());
-                attachedUserGroupCollection.add(userGroupCollectionUserGroupToAttach);
+            Collection<Usergroup> attachedUsergroupCollection = new ArrayList<Usergroup>();
+            for (Usergroup usergroupCollectionUsergroupToAttach : command.getUsergroupCollection()) {
+                usergroupCollectionUsergroupToAttach = em.getReference(usergroupCollectionUsergroupToAttach.getClass(), usergroupCollectionUsergroupToAttach.getId());
+                attachedUsergroupCollection.add(usergroupCollectionUsergroupToAttach);
             }
-            command.setUserGroupCollection(attachedUserGroupCollection);
+            command.setUsergroupCollection(attachedUsergroupCollection);
             em.persist(command);
-            for (UserGroup userGroupCollectionUserGroup : command.getUserGroupCollection()) {
-                userGroupCollectionUserGroup.getCommandCollection().add(command);
-                userGroupCollectionUserGroup = em.merge(userGroupCollectionUserGroup);
+            for (Usergroup usergroupCollectionUsergroup : command.getUsergroupCollection()) {
+                usergroupCollectionUsergroup.getCommandCollection().add(command);
+                usergroupCollectionUsergroup = em.merge(usergroupCollectionUsergroup);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -74,26 +74,26 @@ public class CommandJpaController implements Serializable
             em = getEntityManager();
             em.getTransaction().begin();
             Command persistentCommand = em.find(Command.class, command.getName());
-            Collection<UserGroup> userGroupCollectionOld = persistentCommand.getUserGroupCollection();
-            Collection<UserGroup> userGroupCollectionNew = command.getUserGroupCollection();
-            Collection<UserGroup> attachedUserGroupCollectionNew = new ArrayList<UserGroup>();
-            for (UserGroup userGroupCollectionNewUserGroupToAttach : userGroupCollectionNew) {
-                userGroupCollectionNewUserGroupToAttach = em.getReference(userGroupCollectionNewUserGroupToAttach.getClass(), userGroupCollectionNewUserGroupToAttach.getId());
-                attachedUserGroupCollectionNew.add(userGroupCollectionNewUserGroupToAttach);
+            Collection<Usergroup> usergroupCollectionOld = persistentCommand.getUsergroupCollection();
+            Collection<Usergroup> usergroupCollectionNew = command.getUsergroupCollection();
+            Collection<Usergroup> attachedUsergroupCollectionNew = new ArrayList<Usergroup>();
+            for (Usergroup usergroupCollectionNewUsergroupToAttach : usergroupCollectionNew) {
+                usergroupCollectionNewUsergroupToAttach = em.getReference(usergroupCollectionNewUsergroupToAttach.getClass(), usergroupCollectionNewUsergroupToAttach.getId());
+                attachedUsergroupCollectionNew.add(usergroupCollectionNewUsergroupToAttach);
             }
-            userGroupCollectionNew = attachedUserGroupCollectionNew;
-            command.setUserGroupCollection(userGroupCollectionNew);
+            usergroupCollectionNew = attachedUsergroupCollectionNew;
+            command.setUsergroupCollection(usergroupCollectionNew);
             command = em.merge(command);
-            for (UserGroup userGroupCollectionOldUserGroup : userGroupCollectionOld) {
-                if (!userGroupCollectionNew.contains(userGroupCollectionOldUserGroup)) {
-                    userGroupCollectionOldUserGroup.getCommandCollection().remove(command);
-                    userGroupCollectionOldUserGroup = em.merge(userGroupCollectionOldUserGroup);
+            for (Usergroup usergroupCollectionOldUsergroup : usergroupCollectionOld) {
+                if (!usergroupCollectionNew.contains(usergroupCollectionOldUsergroup)) {
+                    usergroupCollectionOldUsergroup.getCommandCollection().remove(command);
+                    usergroupCollectionOldUsergroup = em.merge(usergroupCollectionOldUsergroup);
                 }
             }
-            for (UserGroup userGroupCollectionNewUserGroup : userGroupCollectionNew) {
-                if (!userGroupCollectionOld.contains(userGroupCollectionNewUserGroup)) {
-                    userGroupCollectionNewUserGroup.getCommandCollection().add(command);
-                    userGroupCollectionNewUserGroup = em.merge(userGroupCollectionNewUserGroup);
+            for (Usergroup usergroupCollectionNewUsergroup : usergroupCollectionNew) {
+                if (!usergroupCollectionOld.contains(usergroupCollectionNewUsergroup)) {
+                    usergroupCollectionNewUsergroup.getCommandCollection().add(command);
+                    usergroupCollectionNewUsergroup = em.merge(usergroupCollectionNewUsergroup);
                 }
             }
             em.getTransaction().commit();
@@ -125,10 +125,10 @@ public class CommandJpaController implements Serializable
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The command with id " + id + " no longer exists.", enfe);
             }
-            Collection<UserGroup> userGroupCollection = command.getUserGroupCollection();
-            for (UserGroup userGroupCollectionUserGroup : userGroupCollection) {
-                userGroupCollectionUserGroup.getCommandCollection().remove(command);
-                userGroupCollectionUserGroup = em.merge(userGroupCollectionUserGroup);
+            Collection<Usergroup> usergroupCollection = command.getUsergroupCollection();
+            for (Usergroup usergroupCollectionUsergroup : usergroupCollection) {
+                usergroupCollectionUsergroup.getCommandCollection().remove(command);
+                usergroupCollectionUsergroup = em.merge(usergroupCollectionUsergroup);
             }
             em.remove(command);
             em.getTransaction().commit();

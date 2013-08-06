@@ -54,6 +54,25 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Character.findBySkin", query = "SELECT c FROM Character c WHERE c.skin = :skin")})
 public class Character implements Serializable 
 {
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "ID")
+    private Integer id;
+    @Basic(optional = false)
+    @Column(name = "Name")
+    private String name;
+    @Column(name = "Gold")
+    private Integer gold;
+    @Column(name = "SkillPoints")
+    private Integer skillPoints;
+    @Column(name = "SkillPointsTotal")
+    private Integer skillPointsTotal;
+    @Column(name = "Experience")
+    private Integer experience;
+    @Column(name = "ActiveWeaponset")
+    private Integer activeWeaponset;
     @Column(name = "ShowHelm")
     private Short showHelm;
     @Column(name = "ShowCape")
@@ -76,25 +95,6 @@ public class Character implements Serializable
     private Short sex;
     @Column(name = "Skin")
     private Short skin;
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "ID")
-    private Integer id;
-    @Basic(optional = false)
-    @Column(name = "Name")
-    private String name;
-    @Column(name = "Gold")
-    private Integer gold;
-    @Column(name = "SkillPoints")
-    private Integer skillPoints;
-    @Column(name = "SkillPointsTotal")
-    private Integer skillPointsTotal;
-    @Column(name = "Experience")
-    private Integer experience;
-    @Column(name = "ActiveWeaponset")
-    private Integer activeWeaponset;
     @JoinTable(name = "skillaccess", joinColumns = {
         @JoinColumn(name = "CharacterID", referencedColumnName = "ID")}, inverseJoinColumns = {
         @JoinColumn(name = "SkillID", referencedColumnName = "ID")})
@@ -111,6 +111,8 @@ public class Character implements Serializable
     private Collection<Weaponset> weaponsetCollection;
     @OneToMany(mappedBy = "customizedFor")
     private Collection<Item> itemCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "character")
+    private Collection<Attributepoint> attributepointCollection;
     @JoinColumn(name = "SecondaryProfession", referencedColumnName = "ID")
     @ManyToOne
     private Profession secondaryProfession;
@@ -144,8 +146,6 @@ public class Character implements Serializable
     @JoinColumn(name = "AccountID", referencedColumnName = "ID")
     @ManyToOne(optional = false)
     private Account accountID;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "character")
-    private Collection<Attributepoint> attributepointCollection;
 
     public Character() {
     }
@@ -215,6 +215,94 @@ public class Character implements Serializable
         this.activeWeaponset = activeWeaponset;
     }
 
+    public Short getShowHelm() {
+        return showHelm;
+    }
+
+    public void setShowHelm(Short showHelm) {
+        this.showHelm = showHelm;
+    }
+
+    public Short getShowCape() {
+        return showCape;
+    }
+
+    public void setShowCape(Short showCape) {
+        this.showCape = showCape;
+    }
+
+    public Short getShowCostumeHead() {
+        return showCostumeHead;
+    }
+
+    public void setShowCostumeHead(Short showCostumeHead) {
+        this.showCostumeHead = showCostumeHead;
+    }
+
+    public Short getShowCostumeBody() {
+        return showCostumeBody;
+    }
+
+    public void setShowCostumeBody(Short showCostumeBody) {
+        this.showCostumeBody = showCostumeBody;
+    }
+
+    public Short getCampaign() {
+        return campaign;
+    }
+
+    public void setCampaign(Short campaign) {
+        this.campaign = campaign;
+    }
+
+    public Short getFace() {
+        return face;
+    }
+
+    public void setFace(Short face) {
+        this.face = face;
+    }
+
+    public Short getHaircolor() {
+        return haircolor;
+    }
+
+    public void setHaircolor(Short haircolor) {
+        this.haircolor = haircolor;
+    }
+
+    public Short getHairstyle() {
+        return hairstyle;
+    }
+
+    public void setHairstyle(Short hairstyle) {
+        this.hairstyle = hairstyle;
+    }
+
+    public Short getHeight() {
+        return height;
+    }
+
+    public void setHeight(Short height) {
+        this.height = height;
+    }
+
+    public Short getSex() {
+        return sex;
+    }
+
+    public void setSex(Short sex) {
+        this.sex = sex;
+    }
+
+    public Short getSkin() {
+        return skin;
+    }
+
+    public void setSkin(Short skin) {
+        this.skin = skin;
+    }
+
     @XmlTransient
     public Collection<Skill> getSkillCollection() {
         return skillCollection;
@@ -258,6 +346,15 @@ public class Character implements Serializable
 
     public void setItemCollection(Collection<Item> itemCollection) {
         this.itemCollection = itemCollection;
+    }
+
+    @XmlTransient
+    public Collection<Attributepoint> getAttributepointCollection() {
+        return attributepointCollection;
+    }
+
+    public void setAttributepointCollection(Collection<Attributepoint> attributepointCollection) {
+        this.attributepointCollection = attributepointCollection;
     }
 
     public Profession getSecondaryProfession() {
@@ -348,15 +445,6 @@ public class Character implements Serializable
         this.accountID = accountID;
     }
 
-    @XmlTransient
-    public Collection<Attributepoint> getAttributepointCollection() {
-        return attributepointCollection;
-    }
-
-    public void setAttributepointCollection(Collection<Attributepoint> attributepointCollection) {
-        this.attributepointCollection = attributepointCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -379,95 +467,7 @@ public class Character implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.Character[ id=" + id + " ]";
-    }
-
-    public Short getShowHelm() {
-        return showHelm;
-    }
-
-    public void setShowHelm(Short showHelm) {
-        this.showHelm = showHelm;
-    }
-
-    public Short getShowCape() {
-        return showCape;
-    }
-
-    public void setShowCape(Short showCape) {
-        this.showCape = showCape;
-    }
-
-    public Short getShowCostumeHead() {
-        return showCostumeHead;
-    }
-
-    public void setShowCostumeHead(Short showCostumeHead) {
-        this.showCostumeHead = showCostumeHead;
-    }
-
-    public Short getShowCostumeBody() {
-        return showCostumeBody;
-    }
-
-    public void setShowCostumeBody(Short showCostumeBody) {
-        this.showCostumeBody = showCostumeBody;
-    }
-
-    public Short getCampaign() {
-        return campaign;
-    }
-
-    public void setCampaign(Short campaign) {
-        this.campaign = campaign;
-    }
-
-    public Short getFace() {
-        return face;
-    }
-
-    public void setFace(Short face) {
-        this.face = face;
-    }
-
-    public Short getHaircolor() {
-        return haircolor;
-    }
-
-    public void setHaircolor(Short haircolor) {
-        this.haircolor = haircolor;
-    }
-
-    public Short getHairstyle() {
-        return hairstyle;
-    }
-
-    public void setHairstyle(Short hairstyle) {
-        this.hairstyle = hairstyle;
-    }
-
-    public Short getHeight() {
-        return height;
-    }
-
-    public void setHeight(Short height) {
-        this.height = height;
-    }
-
-    public Short getSex() {
-        return sex;
-    }
-
-    public void setSex(Short sex) {
-        this.sex = sex;
-    }
-
-    public Short getSkin() {
-        return skin;
-    }
-
-    public void setSkin(Short skin) {
-        this.skin = skin;
+        return "gwlpr.database.entities.Character[ id=" + id + " ]";
     }
 
 }

@@ -27,6 +27,7 @@
     <class>gwlpr.database.entities.Itemstat</class>
     <class>gwlpr.database.entities.Spawnpoint</class>
     <class>gwlpr.database.entities.Commands</class>
+    <class>gwlpr.database.entities.Usergroup</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/gwlpr?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.password" value=""/>

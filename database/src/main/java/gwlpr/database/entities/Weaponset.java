@@ -45,7 +45,7 @@ public class Weaponset implements Serializable
         this.weaponsetPK = weaponsetPK;
     }
 
-    public Weaponset(int characterID, boolean number) {
+    public Weaponset(int characterID, short number) {
         this.weaponsetPK = new WeaponsetPK(characterID, number);
     }
 
@@ -95,7 +95,7 @@ public class Weaponset implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.Weaponset[ weaponsetPK=" + weaponsetPK + " ]";
+        return "gwlpr.database.entities.Weaponset[ weaponsetPK=" + weaponsetPK + " ]";
     }
 
 }

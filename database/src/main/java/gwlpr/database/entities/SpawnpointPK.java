@@ -74,7 +74,7 @@ public class SpawnpointPK implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.SpawnpointPK[ id=" + id + ", mapID=" + mapID + " ]";
+        return "gwlpr.database.entities.SpawnpointPK[ id=" + id + ", mapID=" + mapID + " ]";
     }
 
 }

@@ -142,7 +142,7 @@ public class Spawnpoint implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.Spawnpoint[ spawnpointPK=" + spawnpointPK + " ]";
+        return "gwlpr.database.entities.Spawnpoint[ spawnpointPK=" + spawnpointPK + " ]";
     }
 
 }

@@ -74,7 +74,7 @@ public class FactionstatPK implements Serializable
 
     @Override
     public String toString() {
-        return "gwlpr.database.entities.gen.FactionstatPK[ accountID=" + accountID + ", type=" + type + " ]";
+        return "gwlpr.database.entities.FactionstatPK[ accountID=" + accountID + ", type=" + type + " ]";
     }
 
 }
