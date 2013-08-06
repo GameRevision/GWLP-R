@@ -9,7 +9,7 @@ import gwlpr.protocol.intershard.ISC_AcceptClientReplyAction;
 import gwlpr.loginshard.ISC_AcceptClientRequestAction;
 import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import gwlpr.mapshard.ContextAttachment;
-import gwlpr.mapshard.SessionAttachment;
+import gwlpr.mapshard.models.ClientBean;
 import gwlpr.mapshard.entitysystem.Entity;
 import gwlpr.mapshard.models.ClientLookupTable;
 import gwlpr.mapshard.models.MapClientVerifier;
@@ -134,7 +134,7 @@ public class Handshake extends GenericShardlet
         
         // get the session for this client
         Session session = action.getSession();
-        SessionAttachment attach = ((SessionAttachment) session.getAttachment());
+        ClientBean attach = ((ClientBean) session.getAttachment());
         
         // send the usual handshake stuff
         HandshakeView.serverSeed(session);

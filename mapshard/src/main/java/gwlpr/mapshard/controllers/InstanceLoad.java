@@ -22,7 +22,7 @@ import gwlpr.actions.gameserver.ctos.P137_UnknownAction;
 import gwlpr.actions.gameserver.ctos.P138_UnknownAction;
 import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import gwlpr.mapshard.ContextAttachment;
-import gwlpr.mapshard.SessionAttachment;
+import gwlpr.mapshard.models.ClientBean;
 import gwlpr.mapshard.entitysystem.Entity;
 import gwlpr.mapshard.models.ClientLookupTable;
 import gwlpr.mapshard.views.UpdateAttribPtsView;
@@ -158,7 +158,7 @@ public class InstanceLoad extends GenericShardlet
     {
         LOGGER.debug("Got the instance load request spawn point packet");
         Session session = action.getSession();
-        SessionAttachment attachment = (SessionAttachment) session.getAttachment();
+        ClientBean attachment = (ClientBean) session.getAttachment();
 
         // fetch the players postion (this was already initialized by the handshake controller,
         // when it instructed some other class to create the entity
@@ -183,7 +183,7 @@ public class InstanceLoad extends GenericShardlet
     {
         LOGGER.debug("Got the instance load request player data packet");
         Session session = action.getSession();
-        SessionAttachment attachment = (SessionAttachment) session.getAttachment();
+        ClientBean attachment = (ClientBean) session.getAttachment();
 
         // fetch the player entity..
         Entity et = attachment.getEntity();

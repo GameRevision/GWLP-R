@@ -4,12 +4,12 @@
 
 package gwlpr.mapshard.views;
 
-import gwlpr.actions.gameserver.stoc.P081_UnknownAction;
-import gwlpr.actions.gameserver.stoc.P082_UnknownAction;
-import gwlpr.actions.gameserver.stoc.P085_UnknownAction;
+import gwlpr.protocol.gameserver.outbound.P081_ChatMessage;
+import gwlpr.protocol.gameserver.outbound.P082_NoChatMessageOwner;
+import gwlpr.protocol.gameserver.outbound.P085_ChatMessageOwner;
 import gwlpr.mapshard.models.GWString;
 import gwlpr.mapshard.models.enums.ChatColor;
-import realityshard.shardlet.Session;
+import io.netty.channel.Channel;
 
 
 /**
@@ -23,35 +23,35 @@ public class ChatMessageView
     /**
      * Send all the packets necessary to display one chat message.
      *
-     * @param session
+     * @param channel
      */
-    public static void sendMessage(Session session, int ownerLocalID, ChatColor color, String message)
+    public static void sendMessage(Channel channel, int ownerLocalID, ChatColor color, String message)
     {
         // first construct the message
-        P081_UnknownAction sendMessage = new P081_UnknownAction();
-        sendMessage.init(session);
-        sendMessage.setUnknown1(GWString.formatChat(message).toCharArray());
+        P081_ChatMessage sendMessage = new P081_ChatMessage();
+        sendMessage.init(channel);
+        sendMessage.setFormattedMessage(GWString.formatChat(message));
 
-        session.send(sendMessage);
+        channel.write(sendMessage);
 
         // then tell the client about the owner/sender
         if (ownerLocalID == 0)
         {
-            P082_UnknownAction noOwner = new P082_UnknownAction();
-            noOwner.init(session);
-            noOwner.setUnknown1((short) 0);
-            noOwner.setUnknown2((byte) color.ordinal());//ChatColor.DarkOrange_DarkOrange.ordinal());
+            P082_NoChatMessageOwner noOwner = new P082_NoChatMessageOwner();
+            noOwner.init(channel);
+            noOwner.setOwner((short) 0);
+            noOwner.setChatColor((byte) color.ordinal());//ChatColor.DarkOrange_DarkOrange.ordinal());
 
-            session.send(noOwner);
+            channel.write(noOwner);
         }
         else
         {
-            P085_UnknownAction messageOwner = new P085_UnknownAction();
-            messageOwner.init(session);
-            messageOwner.setUnknown1((short) ownerLocalID);
-            messageOwner.setUnknown2((byte) color.ordinal());
+            P085_ChatMessageOwner messageOwner = new P085_ChatMessageOwner();
+            messageOwner.init(channel);
+            messageOwner.setOwner((short) ownerLocalID);
+            messageOwner.setChatColor((byte) color.ordinal());
 
-            session.send(messageOwner);
+            channel.write(messageOwner);
         }
     }
 }

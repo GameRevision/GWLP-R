@@ -11,15 +11,16 @@ import gwlpr.mapshard.entitysystem.Components.*;
 import gwlpr.mapshard.events.RotateEvent;
 import gwlpr.mapshard.events.MoveEvent;
 import gwlpr.mapshard.events.StopMovingEvent;
+import gwlpr.mapshard.models.ClientBean;
 import gwlpr.mapshard.models.ClientLookupTable;
 import gwlpr.mapshard.models.GWVector;
 import gwlpr.mapshard.models.enums.MovementState;
 import gwlpr.mapshard.models.enums.MovementType;
 import gwlpr.mapshard.views.EntityMovementView;
-import realityshard.shardlet.EventAggregator;
-import realityshard.shardlet.EventHandler;
-import realityshard.shardlet.Session;
 import java.util.Collection;
+import realityshard.container.events.EventAggregator;
+import realityshard.container.util.Handle;
+import realityshard.container.util.HandleRegistry;
 
 
 /**
@@ -38,7 +39,7 @@ public class MovementSystem extends GenericSystem
     private final static int UPDATEINTERVAL = -1; // use standard server tick interval
 
     private final EntityManager entityManager;
-    private final ClientLookupTable lookupTable;
+    private final HandleRegistry<ClientBean> clientRegistry;
 
 
     /**
@@ -46,17 +47,17 @@ public class MovementSystem extends GenericSystem
      *
      * @param       aggregator
      * @param       entityManager
-     * @param       lookupTable
+     * @param       clientRegistry
      */
     public MovementSystem(
             EventAggregator aggregator, 
             EntityManager entityManager, 
-            ClientLookupTable lookupTable)
+            HandleRegistry<ClientBean> clientRegistry)
     {
         super(aggregator, UPDATEINTERVAL);
 
         this.entityManager = entityManager;
-        this.lookupTable = lookupTable;
+        this.clientRegistry = clientRegistry;
     }
 
 
@@ -96,9 +97,9 @@ public class MovementSystem extends GenericSystem
             pos.position = pos.position.add(dir.mul(move.speed * (0.001F * timeDelta))); 
             
             // inform the clients
-            for (Session session : lookupTable.getAllSessions())
+            for (Handle<ClientBean> client : clientRegistry.getAllHandles())
             {
-                EntityMovementView.sendUpdateMovement(session, entity);
+                EntityMovementView.sendUpdateMovement(client.get().getChannel(), entity);
             }
         }
     }
@@ -125,7 +126,7 @@ public class MovementSystem extends GenericSystem
 //        move.moveState = MovementState.Moving;
 
         // inform the clients
-        for (Session session : lookupTable.getAllSessions())
+        for (Session session : clientRegistry.getAllSessions())
         {
             EntityMovementView.sendChangeDirection(session, et);
             
@@ -161,7 +162,7 @@ public class MovementSystem extends GenericSystem
         move.moveState = MovementState.NotMoving;
 
         // inform the clients
-        for (Session session : lookupTable.getAllSessions())
+        for (Session session : clientRegistry.getAllSessions())
         {
             EntityMovementView.sendRotateAgent(session, et);
             
@@ -188,7 +189,7 @@ public class MovementSystem extends GenericSystem
         dir.direction = rot.getNewDirection().getUnit();
 
         // inform the clients
-        for (Session session : lookupTable.getAllSessions())
+        for (Session session : clientRegistry.getAllSessions())
         {
             EntityMovementView.sendRotateAgent(session, et);
         }

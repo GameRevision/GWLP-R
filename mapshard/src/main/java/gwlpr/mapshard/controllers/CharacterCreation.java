@@ -10,7 +10,7 @@ import gwlpr.actions.gameserver.ctos.P132_UnknownAction;
 import com.gamerevision.gwlpr.database.CharacterEntity;
 import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
 import gwlpr.mapshard.ContextAttachment;
-import gwlpr.mapshard.SessionAttachment;
+import gwlpr.mapshard.models.ClientBean;
 import gwlpr.mapshard.views.CharacterCreationView;
 import gwlpr.mapshard.views.UpdateAttribPtsView;
 import gwlpr.mapshard.views.UpdateGenericValueView;

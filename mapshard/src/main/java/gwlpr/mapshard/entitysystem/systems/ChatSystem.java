@@ -7,12 +7,13 @@ package gwlpr.mapshard.entitysystem.systems;
 import gwlpr.mapshard.entitysystem.GenericSystem;
 import gwlpr.mapshard.entitysystem.Components.*;
 import gwlpr.mapshard.events.ChatMessageEvent;
-import gwlpr.mapshard.models.ClientLookupTable;
+import gwlpr.mapshard.models.ClientBean;
 import gwlpr.mapshard.models.enums.ChatColor;
 import gwlpr.mapshard.views.ChatMessageView;
-import realityshard.shardlet.EventAggregator;
-import realityshard.shardlet.EventHandler;
-import realityshard.shardlet.Session;
+import realityshard.container.events.Event;
+import realityshard.container.events.EventAggregator;
+import realityshard.container.util.Handle;
+import realityshard.container.util.HandleRegistry;
 
 
 /**
@@ -24,19 +25,19 @@ public final class ChatSystem extends GenericSystem
 {
 
     private final static int UPDATEINTERVAL = 0; // update disabled!
-    private final ClientLookupTable clientLookup;
+    private final HandleRegistry<ClientBean> clientRegistry;
 
 
     /**
      * Constructor.
      *
      * @param       aggregator
-     * @param       clientLookup  
+     * @param       clientRegistry  
      */
-    public ChatSystem(EventAggregator aggregator, ClientLookupTable clientLookup)
+    public ChatSystem(EventAggregator aggregator, HandleRegistry<ClientBean> clientRegistry)
     {
         super(aggregator, UPDATEINTERVAL);
-        this.clientLookup = clientLookup;
+        this.clientRegistry = clientRegistry;
     }
 
 
@@ -62,7 +63,7 @@ public final class ChatSystem extends GenericSystem
      *
      * @param msg
      */
-    @EventHandler
+    @Event.Handler
     public void onChatMessage(ChatMessageEvent msg)
     {
         // TODO implement me properly!
@@ -73,10 +74,10 @@ public final class ChatSystem extends GenericSystem
         if (aIDs != null) { ownerLID = aIDs.localID; }
 
         // for now, we'll be sending the message to all people on the server
-        for (Session session : clientLookup.getAllSessions())
+        for (Handle<ClientBean> clientHandle : clientRegistry.getAllHandles())
         {
             ChatMessageView.sendMessage(
-                    session,
+                    clientHandle.get().getChannel(),
                     ownerLID,
                     ChatColor.Yellow_White,
                     msg.getMessage());

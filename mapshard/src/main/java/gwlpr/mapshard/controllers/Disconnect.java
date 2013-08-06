@@ -5,7 +5,7 @@
 package gwlpr.mapshard.controllers;
 
 import gwlpr.mapshard.ContextAttachment;
-import gwlpr.mapshard.SessionAttachment;
+import gwlpr.mapshard.models.ClientBean;
 import gwlpr.mapshard.entitysystem.Entity;
 import gwlpr.mapshard.entitysystem.EntityManager;
 import gwlpr.mapshard.models.ClientLookupTable;
@@ -70,7 +70,7 @@ public class Disconnect extends GenericShardlet
     public void onClientDisconnect(NetworkClientDisconnectedEvent disc)
     {
         Session session = disc.getSession();
-        SessionAttachment attachment = (SessionAttachment) session.getAttachment();
+        ClientBean attachment = (ClientBean) session.getAttachment();
         
         // deactivate heart beat and ping and such
         attachment.setPlayerState(PlayerState.Playing);

@@ -8,7 +8,7 @@ import gwlpr.actions.gameserver.ctos.P054_UnknownAction;
 import gwlpr.actions.gameserver.ctos.P055_UnknownAction;
 import gwlpr.actions.gameserver.ctos.P057_UnknownAction;
 import gwlpr.actions.gameserver.ctos.P064_UnknownAction;
-import gwlpr.mapshard.SessionAttachment;
+import gwlpr.mapshard.models.ClientBean;
 import gwlpr.mapshard.entitysystem.Entity;
 import gwlpr.mapshard.entitysystem.Components.*;
 import gwlpr.mapshard.events.RotateEvent;
@@ -57,7 +57,7 @@ public class MoveRotateClick extends GenericShardlet
         // TODO verify data like mapData.validPosition(pos):boolean
 
         Session session = keybMove.getSession();
-        SessionAttachment attach = (SessionAttachment) session.getAttachment();
+        ClientBean attach = (ClientBean) session.getAttachment();
         Entity et = attach.getEntity();
         Position pos = et.get(Position.class);
         Movement move = et.get(Movement.class);
@@ -108,7 +108,7 @@ public class MoveRotateClick extends GenericShardlet
     public void onKeyboardStopMoving(P064_UnknownAction stopMove)
     {
         Session session = stopMove.getSession();
-        SessionAttachment attach = (SessionAttachment) session.getAttachment();
+        ClientBean attach = (ClientBean) session.getAttachment();
         Entity et = attach.getEntity();
         Position pos = et.get(Position.class);
         Movement move = et.get(Movement.class);
@@ -146,7 +146,7 @@ public class MoveRotateClick extends GenericShardlet
     public void onKeyboardRotate(P057_UnknownAction keybRot)
     {
         Session session = keybRot.getSession();
-        SessionAttachment attach = (SessionAttachment) session.getAttachment();
+        ClientBean attach = (ClientBean) session.getAttachment();
 
         // extract info
         GWVector direction = GWVector.fromRotation(keybRot.getUnknown1(), 1);
@@ -167,7 +167,7 @@ public class MoveRotateClick extends GenericShardlet
     public void onClickLocation(P055_UnknownAction clickLoc)
     {
         Session session = clickLoc.getSession();
-        SessionAttachment attach = (SessionAttachment) session.getAttachment();
+        ClientBean attach = (ClientBean) session.getAttachment();
 
         // TODO implement me!
         // we can also choose to ignore this, if the pathing stuff is too complex.

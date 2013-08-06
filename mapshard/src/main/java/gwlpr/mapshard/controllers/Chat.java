@@ -5,7 +5,7 @@
 package gwlpr.mapshard.controllers;
 
 import gwlpr.actions.gameserver.ctos.P093_UnknownAction;
-import gwlpr.mapshard.SessionAttachment;
+import gwlpr.mapshard.models.ClientBean;
 import gwlpr.mapshard.events.ChatCommandEvent;
 import gwlpr.mapshard.events.ChatMessageEvent;
 import gwlpr.mapshard.models.enums.ChatChannel;
@@ -45,7 +45,7 @@ public class Chat extends GenericShardlet
     @EventHandler
     public void onChatMessage(P093_UnknownAction chatMsg)
     {
-        SessionAttachment attach = (SessionAttachment) chatMsg.getSession().getAttachment();
+        ClientBean attach = (ClientBean) chatMsg.getSession().getAttachment();
 
         // extract the whole message
         String msg = String.copyValueOf(chatMsg.getUnknown1());

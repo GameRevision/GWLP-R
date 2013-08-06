@@ -4,10 +4,9 @@
 
 package gwlpr.mapshard.entitysystem;
 
-import realityshard.shardlet.Event;
-import realityshard.shardlet.EventAggregator;
-import realityshard.shardlet.EventHandler;
-import realityshard.shardlet.events.HeartBeatEvent;
+import gwlpr.mapshard.events.HeartBeatEvent;
+import realityshard.container.events.Event;
+import realityshard.container.events.EventAggregator;
 
 
 /**
@@ -65,7 +64,7 @@ public abstract class GenericSystem
      * 
      * @param event 
      */
-    @EventHandler
+    @Event.Handler
     public void onHeartBeat(HeartBeatEvent event)
     {
         // check for special interval values:

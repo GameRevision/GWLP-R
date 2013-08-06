@@ -10,21 +10,21 @@ import gwlpr.mapshard.entitysystem.GenericSystem;
 import gwlpr.mapshard.entitysystem.builders.NPCBuilder;
 import gwlpr.mapshard.entitysystem.Components.*;
 import gwlpr.mapshard.events.ChatCommandEvent;
-import gwlpr.mapshard.models.ClientLookupTable;
+import gwlpr.mapshard.models.ClientBean;
 import gwlpr.mapshard.models.GWVector;
 import gwlpr.mapshard.models.IDManager;
 import gwlpr.mapshard.models.Strings;
 import gwlpr.mapshard.models.enums.ChatColor;
 import gwlpr.mapshard.models.enums.Profession;
 import gwlpr.mapshard.views.ChatMessageView;
-import realityshard.shardlet.EventAggregator;
-import realityshard.shardlet.EventHandler;
-import realityshard.shardlet.Session;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import realityshard.container.events.Event;
+import realityshard.container.events.EventAggregator;
+import realityshard.container.util.HandleRegistry;
 
 
 /**
@@ -39,7 +39,7 @@ public final class CommandSystem extends GenericSystem
     
     private final static int UPDATEINTERVAL = 0;
     private final EntityManager entityManager;
-    private final ClientLookupTable clientLookup;
+    private final HandleRegistry<ClientBean> clientRegistry;
 
 
     /**
@@ -47,13 +47,13 @@ public final class CommandSystem extends GenericSystem
      *
      * @param       aggregator
      * @param       entityManager 
-     * @param       clientLookup
+     * @param       clientRegistry
      */
-    public CommandSystem(EventAggregator aggregator, EntityManager entityManager, ClientLookupTable clientLookup)
+    public CommandSystem(EventAggregator aggregator, EntityManager entityManager, HandleRegistry<ClientBean> clientRegistry)
     {
         super(aggregator, UPDATEINTERVAL);
         this.entityManager = entityManager;
-        this.clientLookup = clientLookup;
+        this.clientRegistry = clientRegistry;
     }
 
 
@@ -75,7 +75,7 @@ public final class CommandSystem extends GenericSystem
      *
      * @param chatCmd
      */
-    @EventHandler
+    @Event.Handler
     public void onChatCommand(ChatCommandEvent chatCmd)
     {
         String command = getCommand(chatCmd.getMessage());
@@ -106,17 +106,22 @@ public final class CommandSystem extends GenericSystem
         else if (!senderChatOptions.availableCommands.contains(command))
         {
             // command is not available for the sender
-            Session client = clientLookup.getByEntity(chatCmd.getSender());
+            
+            // try to get the client
+            ClientBean client = clientRegistry.getObj(chatCmd.getSender().getUuid());
+            
+            if (client == null) { return; }
 
             // if the sender was a network client (as opposed to NPCs etc.)
             // we'll tell her that the execution failed:
             String cmdFailed = "The command does not exist or you dont have sufficient permissions to execute it.";
+            
             ChatMessageView.sendMessage(
-                    client,
+                    client.getChannel(),
                     0,
                     ChatColor.DarkOrange_DarkOrange,
                     Strings.CmdNotAvail.text());
-
+            
             return;
         }
 

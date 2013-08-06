@@ -5,7 +5,7 @@
 package gwlpr.mapshard.controllers;
 
 import gwlpr.mapshard.ContextAttachment;
-import gwlpr.mapshard.SessionAttachment;
+import gwlpr.mapshard.models.ClientBean;
 import gwlpr.mapshard.models.ClientLookupTable;
 import gwlpr.mapshard.models.enums.PlayerState;
 import gwlpr.mapshard.views.TimeDeltaView;
@@ -67,7 +67,7 @@ public class HeartBeat extends GenericShardlet
         for (Session session : clientlookup.getAllSessions()) 
         {
             // check if this session should receive a heartbeat packet
-            SessionAttachment attach = (SessionAttachment) session.getAttachment();
+            ClientBean attach = (ClientBean) session.getAttachment();
             if (attach.getPlayerState() != PlayerState.Playing) { continue; }
             
             TimeDeltaView.heartBeat(session, event.getPassedTimeInterval());

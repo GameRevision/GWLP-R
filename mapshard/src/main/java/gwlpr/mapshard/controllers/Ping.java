@@ -7,7 +7,7 @@ package gwlpr.mapshard.controllers;
 import gwlpr.actions.gameserver.ctos.P003_UnknownAction;
 import gwlpr.actions.gameserver.ctos.P005_UnknownAction;
 import gwlpr.mapshard.ContextAttachment;
-import gwlpr.mapshard.SessionAttachment;
+import gwlpr.mapshard.models.ClientBean;
 import gwlpr.mapshard.models.ClientLookupTable;
 import gwlpr.mapshard.models.enums.PlayerState;
 import gwlpr.mapshard.views.TimeDeltaView;
@@ -78,7 +78,7 @@ public class Ping extends GenericShardlet
         for (Session session : clientlookup.getAllSessions()) 
         {
             // check if this session should receive a ping packet
-            SessionAttachment attach = (SessionAttachment) session.getAttachment();
+            ClientBean attach = (ClientBean) session.getAttachment();
             if (attach.getPlayerState() != PlayerState.Playing) { continue; }
             
             TimeDeltaView.pingRequest(session);
@@ -96,7 +96,7 @@ public class Ping extends GenericShardlet
     {
         // update the client's latency
         Session session = pingReply.getSession();
-        SessionAttachment attach = (SessionAttachment) session.getAttachment();
+        ClientBean attach = (ClientBean) session.getAttachment();
         
         int latency = (int) (System.currentTimeMillis() - lastPingTimeStamp);
         attach.setLatency(latency);
@@ -117,7 +117,7 @@ public class Ping extends GenericShardlet
     public void onPingRequest(P005_UnknownAction pingRequest)
     {
         Session session = pingRequest.getSession();
-        SessionAttachment attach = (SessionAttachment) session.getAttachment();
+        ClientBean attach = (ClientBean) session.getAttachment();
         
         TimeDeltaView.pingReply(session, attach.getLatency());
     }

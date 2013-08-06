@@ -5,7 +5,6 @@
 package gwlpr.mapshard.models;
 
 import gwlpr.actions.gameserver.ctos.P1280_VerifyClientAction;
-import gwlpr.mapshard.SessionAttachment;
 import realityshard.shardlet.Action;
 import realityshard.shardlet.ClientVerifier;
 import org.slf4j.Logger;
@@ -84,7 +83,7 @@ public class MapClientVerifier implements ClientVerifier
             thisAction.getKey2() == securityKey2)
         {
             // generate this new client's session's attachment
-            action.getSession().setAttachment(new SessionAttachment(accountId, characterId));
+            action.getSession().setAttachment(new ClientBean(accountId, characterId));
             
             LOGGER.debug("Accepted a new client");
             return true;
