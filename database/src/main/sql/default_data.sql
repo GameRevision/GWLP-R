@@ -495,6 +495,8 @@ DROP TABLE IF EXISTS `npcs`;
 CREATE TABLE `npcs` (
   `ID` int(4) NOT NULL AUTO_INCREMENT,
   `Name` varchar(30) NOT NULL,
+  `HashedName` varchar(30) NOT NULL,
+  `FileID` int(4) NOT NULL,
   `Model` int(4) NOT NULL,
   `Allegiance` int(4) NOT NULL,
   `Weapons` int(4) NOT NULL,

@@ -37,6 +37,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Account.findByGoldStorage", query = "SELECT a FROM Account a WHERE a.goldStorage = :goldStorage")})
 public class Account implements Serializable 
 {
+    @Basic(optional = false)
+    @Lob
+    @Column(name = "GUI")
+    private byte[] gui;
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)
     @Column(name = "ID")
@@ -48,10 +52,6 @@ public class Account implements Serializable
     @Basic(optional = false)
     @Column(name = "Password")
     private String password;
-    @Basic(optional = false)
-    @Lob
-    @Column(name = "GUI")
-    private byte[] gui;
     @Basic(optional = false)
     @Column(name = "GoldStorage")
     private int goldStorage;
@@ -105,14 +105,6 @@ public class Account implements Serializable
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public byte[] getGui() {
-        return gui;
-    }
-
-    public void setGui(byte[] gui) {
-        this.gui = gui;
     }
 
     public int getGoldStorage() {
@@ -189,6 +181,14 @@ public class Account implements Serializable
     @Override
     public String toString() {
         return "gwlpr.database.entities.Account[ eMail=" + eMail + " ]";
+    }
+
+    public byte[] getGui() {
+        return gui;
+    }
+
+    public void setGui(byte[] gui) {
+        this.gui = gui;
     }
 
 }

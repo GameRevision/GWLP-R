@@ -34,6 +34,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Npc.findByAllegiance", query = "SELECT n FROM Npc n WHERE n.allegiance = :allegiance")})
 public class Npc implements Serializable 
 {
+    @Basic(optional = false)
+    @Column(name = "HashedName")
+    private String hashedName;
+    @Basic(optional = false)
+    @Column(name = "FileID")
+    private int fileID;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -130,6 +136,22 @@ public class Npc implements Serializable
     @Override
     public String toString() {
         return "gwlpr.database.entities.Npc[ id=" + id + " ]";
+    }
+
+    public String getHashedName() {
+        return hashedName;
+    }
+
+    public void setHashedName(String hashedName) {
+        this.hashedName = hashedName;
+    }
+
+    public int getFileID() {
+        return fileID;
+    }
+
+    public void setFileID(int fileID) {
+        this.fileID = fileID;
     }
 
 }
