@@ -82,7 +82,7 @@ public class Login
         ClientBean client = new ClientBean(channel, action.getLoginCount(), model.getAccount(), model.getChara());
         
         // register it
-        ClientBean.set(channel, clientHandleRegistry.produce(client));
+        ClientBean.set(channel, clientHandleRegistry.register(client));
 
         // send all login specific packets as a reply
         LoginView.sendLoginInfo(channel, model.getAccount());

@@ -8,6 +8,7 @@ import gwlpr.database.entities.Account;
 import gwlpr.database.entities.Character;
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
+import realityshard.container.gameapp.GameAppContext;
 import realityshard.container.util.Handle;
 
 
@@ -31,7 +32,7 @@ public final class ClientBean
     private Character character;
     
     // the game server id is set if the client is connected to a game server.
-    private Handle<MapShardBean> mapShardHandle;
+    private Handle<GameAppContext> mapShardHandle;
 
     
     public ClientBean(Channel channel, long loginCount, Account acc, Character chara)
@@ -115,13 +116,13 @@ public final class ClientBean
     }
     
     
-    public Handle<MapShardBean> getMapShardHandle() 
+    public Handle<GameAppContext> getMapShardHandle() 
     {
         return mapShardHandle;
     }
 
     
-    public void setMapShardHandle(Handle<MapShardBean> mapShardHandle) 
+    public void setMapShardHandle(Handle<GameAppContext> mapShardHandle) 
     {
         this.mapShardHandle = mapShardHandle;
     }

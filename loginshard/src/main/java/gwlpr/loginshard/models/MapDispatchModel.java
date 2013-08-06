@@ -8,21 +8,22 @@ import gwlpr.database.jpa.MapJpaController;
 import gwlpr.loginshard.models.enums.DistrictLanguage;
 import gwlpr.loginshard.models.enums.DistrictRegion;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import realityshard.container.gameapp.GameAppContext;
 import realityshard.container.gameapp.GameAppManager;
 import realityshard.container.util.Handle;
-import realityshard.container.util.HandleRegistry;
 
 
 /**
  * Stores created mapshard references and manages them.
  * 
- * Hint: Whenever the internal IDs used here are publicized
- * 
  * TODO: If a mapshard is filled with people, create a new instance rather
  * than returning it when requested.
+ * 
+ * TODO: Enhance this to better manage the mapshards
  * 
  * @author _rusty
  */
@@ -31,8 +32,8 @@ public final class MapDispatchModel
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MapDispatchModel.class);
     
-    private final HandleRegistry<MapShardBean> mapShardRegisty = new HandleRegistry<>();
-    private final GameAppContext context;
+    private final Map<Handle<GameAppContext>, MapShardBean> mapShardMetaInfo = new ConcurrentHashMap<>();
+    private final Handle<GameAppContext> context;
     
     
     /**
@@ -41,7 +42,7 @@ public final class MapDispatchModel
      * @param       context                 We need the context to create mapshards
      *                                      or shut them down...
      */
-    public MapDispatchModel(GameAppContext context)
+    public MapDispatchModel(Handle<GameAppContext> context)
     {
         this.context = context;
     }
@@ -54,7 +55,7 @@ public final class MapDispatchModel
      * @param       gameMapId
      * @return      The context's bean, or null if it couldn't be created.
      */
-    public Handle<MapShardBean> getOrCreate(int gameMapId)
+    public Handle<GameAppContext> getOrCreate(int gameMapId)
     {
         return getOrCreate(gameMapId, DistrictRegion.Default, DistrictLanguage.Default);
     }
@@ -69,7 +70,7 @@ public final class MapDispatchModel
      * @param       language
      * @return      The context, or null if it couldn't be created.
      */
-    public Handle<MapShardBean> getOrCreate(int gameMapId, DistrictRegion region, DistrictLanguage language)
+    public Handle<GameAppContext> getOrCreate(int gameMapId, DistrictRegion region, DistrictLanguage language)
     {
         DistrictRegion reg = region;
         DistrictLanguage lan = language;
@@ -80,19 +81,17 @@ public final class MapDispatchModel
             lan = DistrictLanguage.English;
         }
         
-        Handle<MapShardBean> result = null;
+        MapShardBean result = null;
         
         // search for the mapshard...
-        for (Handle<MapShardBean> mapShardHandle : mapShardRegisty.getAllHandles()) 
+        for (MapShardBean mapShard : mapShardMetaInfo.values()) 
         {
-            MapShardBean mapShard = mapShardHandle.get();
-            
             if (   mapShard.getMap().getGameID() == gameMapId
                 && mapShard.getRegion()          == reg
                 && mapShard.getLanguage()        == lan)
             {
                 // found the perfect shard...
-                result = mapShardHandle;
+                result = mapShard;
             }
         }
         
@@ -100,9 +99,12 @@ public final class MapDispatchModel
         if (result == null)
         {
             result = tryCreate(gameMapId, reg, lan, 1);
+            
+            // failcheck
+            if (result == null) { return null; }
         }
         
-        return result;
+        return result.getMapShardContext();
     }
     
     
@@ -110,11 +112,16 @@ public final class MapDispatchModel
      * We've instructed a server to accept a client, and wait for it to reply.
      * 
      * @param       clientHandle
-     * @param       mapShardHandle  
+     * @param       mapShardContext  
      */
-    public void clientWaitingFor(Handle<ClientBean> clientHandle, Handle<MapShardBean> mapShardHandle)
+    public void clientWaitingFor(Handle<ClientBean> clientHandle, Handle<GameAppContext> mapShardContext)
     {
-        mapShardHandle.get().getWaitingClients().add(clientHandle);
+        MapShardBean mapShard = mapShardMetaInfo.get(mapShardContext);
+        
+        if (mapShard != null)
+        {
+                mapShard.getWaitingClients().add(clientHandle);
+        }
     }
     
     
@@ -124,17 +131,22 @@ public final class MapDispatchModel
      * 
      * 
      * @param       clientHandle 
-     * @param       mapShardHandle 
+     * @param       mapShardContext 
      * @param       accepted                True or false, depending on the client has
      *                                      been accepted by the mapshard.
      */
-    public void clientGotAcceptedBy(Handle<ClientBean> clientHandle, Handle<MapShardBean> mapShardHandle, boolean accepted)
+    public void clientGotAcceptedBy(Handle<ClientBean> clientHandle, Handle<GameAppContext> mapShardContext, boolean accepted)
     {
-        mapShardHandle.get().getWaitingClients().remove(clientHandle);
+        MapShardBean mapShard = mapShardMetaInfo.get(mapShardContext);
         
-        if (accepted)
+        if (mapShard != null)
         {
-            mapShardHandle.get().getPendingClients().add(clientHandle);
+            mapShard.getWaitingClients().remove(clientHandle);
+        
+            if (accepted)
+            {
+                mapShard.getPendingClients().add(clientHandle);
+            }
         }
     }
     
@@ -146,19 +158,36 @@ public final class MapDispatchModel
      * 
      * 
      * @param       clientHandle
-     * @param       mapShardHandle  
+     * @param       mapShardContext  
      */
-    public void dispatchDone(Handle<ClientBean> clientHandle, Handle<MapShardBean> mapShardHandle)
+    public void dispatchDone(Handle<ClientBean> clientHandle, Handle<GameAppContext> mapShardContext)
     {
-        mapShardHandle.get().getWaitingClients().remove(clientHandle);
-        mapShardHandle.get().getPendingClients().add(clientHandle);
+        MapShardBean mapShard = mapShardMetaInfo.get(mapShardContext);
+        
+        if (mapShard != null)
+        {
+            mapShard.getWaitingClients().remove(clientHandle);
+            mapShard.getPendingClients().add(clientHandle);
+        }
+    }
+    
+    
+    /**
+     * Getter.
+     * 
+     * @param       mapShardContext
+     * @return      Get the bean attached to this mapshard handle.
+     */ 
+    public MapShardBean getBean(Handle<GameAppContext> mapShardContext)
+    {
+        return mapShardMetaInfo.get(mapShardContext);
     }
     
     
     /**
      * Try to create a new map shard (fails by returning null)
      */
-    private Handle<MapShardBean> tryCreate(int gameMapId, DistrictRegion region, DistrictLanguage language, int instanceNumber) 
+    private MapShardBean tryCreate(int gameMapId, DistrictRegion region, DistrictLanguage language, int instanceNumber) 
     {
         
         gwlpr.database.entities.Map mapEntity = MapJpaController.get().findByGameId(gameMapId);
@@ -167,30 +196,26 @@ public final class MapDispatchModel
         if (mapEntity == null) { return null; }
         
         // try create the game app (with mapid parameter)
-        GameAppManager manager = context.getManager();
+        GameAppManager manager = context.get().getManager();
         
         // failcheck
         if (manager == null || !manager.canCreateGameApp("MapShard")) { return null; }
         
-        // create the bean
-        MapShardBean mapShard = new MapShardBean(mapEntity, instanceNumber, region, language);
-        
-        // register it
-        Handle<MapShardBean> mapShardHandle = mapShardRegisty.produce(mapShard);
-        
         // create the gameapp
         HashMap<String,String> params = new HashMap<>();
         params.put("MapId", String.valueOf(mapEntity.getId()));
-        params.put("UniqueId", String.valueOf(mapShardHandle.getUid().toString()));
         
-        GameAppContext.Remote mapShardContext = manager.createGameApp("MapShard", (GameAppContext.Remote)context, params);
+        Handle<GameAppContext> mapShardContext = manager.createGameApp("MapShard", context, params);
         
         // failcheck
-        if (mapShardContext == null) { mapShardHandle.invalidate(); return null; }
+        if (mapShardContext == null) { return null; }
         
-        // set the context and return it
-        mapShard.setMapShardContext(mapShardContext);
+        // create the bean
+        MapShardBean mapShard = new MapShardBean(mapShardContext, mapEntity, instanceNumber, region, language);
         
-        return mapShardHandle;
+        // register it
+        mapShardMetaInfo.put(mapShardContext, mapShard);
+        
+        return mapShard;
     }
 }

@@ -21,7 +21,7 @@ import realityshard.container.util.Handle;
 public final class MapShardBean 
 {
     
-    private GameAppContext.Remote mapShardContext;
+    private Handle<GameAppContext> mapShardContext;
     
     private final List<Handle<ClientBean>> waitingClients = new CopyOnWriteArrayList<>();
     private final List<Handle<ClientBean>> pendingClients = new CopyOnWriteArrayList<>();
@@ -33,8 +33,9 @@ public final class MapShardBean
     private final DistrictLanguage language;
     
     
-    public MapShardBean(Map mapEntity, int instance, DistrictRegion region, DistrictLanguage language)
+    public MapShardBean(Handle<GameAppContext> mapShardContext, Map mapEntity, int instance, DistrictRegion region, DistrictLanguage language)
     {
+        this.mapShardContext = mapShardContext;
         this.map = mapEntity;
         this.instanceNumber = instance;
         this.region = region;
@@ -42,15 +43,9 @@ public final class MapShardBean
     }
 
     
-    public GameAppContext.Remote getMapShardContext() 
+    public Handle<GameAppContext> getMapShardContext() 
     {
         return mapShardContext;
-    }
-
-    
-    public void setMapShardContext(GameAppContext.Remote mapShardContext) 
-    {
-        this.mapShardContext = mapShardContext;
     }
 
     

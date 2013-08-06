@@ -13,10 +13,9 @@ import realityshard.container.network.GameAppContextKey;
 
 
 /**
- * This handles all the actions of which we don't really process the data.
- * TODO: Check in case of strange errors, check if this is the cause.
+ * Initializes incoming client connections so they are connected to this game app.
  * 
- * @author miracle444, _rusty
+ * @author _rusty
  */
 public class NewClient
 {
@@ -45,7 +44,7 @@ public class NewClient
     @Event.Handler
     public void onNewClient(NetworkClientConnectedEvent event)
     {
-        LOGGER.debug("Got a computer user packet");
+        LOGGER.debug("We got a new client.");
         
         // we take all the clients!
         event.getChannel().attr(GameAppContextKey.KEY).set(context);

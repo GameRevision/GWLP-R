@@ -4,6 +4,7 @@
 
 package gwlpr.loginshard.controllers;
 
+import gwlpr.database.entities.Map;
 import gwlpr.protocol.intershard.LSRequest_AcceptClient;
 import gwlpr.protocol.loginserver.inbound.P041_CharacterPlayInfo;
 import gwlpr.loginshard.models.ClientBean;
@@ -47,9 +48,9 @@ public class MapDispatch
      * @param       context
      * @param       clientHandleRegistry  
      */
-    public MapDispatch(GameAppContext context, HandleRegistry<ClientBean> clientHandleRegistry)
+    public MapDispatch(Handle<GameAppContext> context, HandleRegistry<ClientBean> clientHandleRegistry)
     {
-        this.context = context;
+        this.context = context.get();
         model = new MapDispatchModel(context);
         this.clientHandleRegistry = clientHandleRegistry;
     }
@@ -77,7 +78,7 @@ public class MapDispatch
         client.setLoginCount(action.getLoginCount());
         
         // let the model do the work...
-        Handle<MapShardBean> mapShardHandle = model.getOrCreate((int)action.getGameMapId());
+        Handle<GameAppContext> mapShardHandle = model.getOrCreate((int)action.getGameMapId());
         
         // lets check if we were successfull with the game app creation
         if (mapShardHandle == null)
@@ -95,7 +96,7 @@ public class MapDispatch
         
         LOGGER.debug("Asking a map shard to accept a client.");
         
-        mapShardHandle.get().getMapShardContext().sendRemoteEvent(
+        mapShardHandle.get().trigger(
                 new LSRequest_AcceptClient(
                     clientHandle.getUid(),
                     client.getAccount(), 
@@ -119,40 +120,37 @@ public class MapDispatch
         // failcheck
         if (clientHandle == null) { return; }
 
-        Handle<MapShardBean> mapShardHandle = clientHandle.get().getMapShardHandle();
+        Handle<GameAppContext> mapShardHandle = clientHandle.get().getMapShardHandle();
 
         // failcheck
         if (mapShardHandle == null || !mapShardHandle.getUid().equals(event.getServerUid())) { return; }
         
-        // check if the session has been accepted
-        if (event.isAccepted())
-        {
-            model.clientGotAcceptedBy(clientHandle, mapShardHandle, true);
-            
-            // retrieve socket address for that game server
-            InetSocketAddress address = context.getManager().localAddressFor(mapShardHandle.get().getMapShardContext());
-            
-            // failcheck
-            if (address == null) { return; }
-            
-            LOGGER.debug("The map shard accepted the client.");
-
-            MapDispatchView.referToGameServer(
-                    clientHandle.get().getChannel(), 
-                    address,
-                    event.getServerUid(), 
-                    event.getClientUid(), 
-                    mapShardHandle.get().getMap().getGameID());
-            
-            return;            
-        }
-        
         // this is called when the mapshard didnt accept the client
-        model.clientGotAcceptedBy(clientHandle, mapShardHandle, false);
-
-        LOGGER.warn("The map shard did not accept the session!");
+        model.clientGotAcceptedBy(clientHandle, mapShardHandle, event.isAccepted());
         
-        StreamTerminatorView.send(clientHandle.get().getChannel(), ErrorCode.InternalServerError);
+        // check if the session has been accepted
+        if (!event.isAccepted())
+        {            
+            LOGGER.warn("The map shard did not accept the session!");
+        
+            StreamTerminatorView.send(clientHandle.get().getChannel(), ErrorCode.InternalServerError);
+        }
+            
+        // retrieve socket address for that game server
+        InetSocketAddress address = context.getManager().localAddressFor(mapShardHandle);
+        Map map = model.getBean(mapShardHandle).getMap();
+
+        // failcheck
+        if (address == null || map == null) { return; }
+
+        LOGGER.debug("The map shard accepted the client.");
+
+        MapDispatchView.referToGameServer(
+                clientHandle.get().getChannel(), 
+                address,
+                event.getServerUid(), 
+                event.getClientUid(), 
+                map.getGameID());
     }
     
     
@@ -170,10 +168,10 @@ public class MapDispatch
         // failcheck
         if (clientHandle == null) { return; }
 
-        Handle<MapShardBean> mapShardHandle = clientHandle.get().getMapShardHandle();
+        Handle<GameAppContext> mapShardHandle = clientHandle.get().getMapShardHandle();
 
         // failcheck
-        if (mapShardHandle == null) { return; }
+        if (mapShardHandle == null || !mapShardHandle.getUid().equals(event.getServerUid())) { return; }
         
         model.dispatchDone(clientHandle, mapShardHandle);
     }
