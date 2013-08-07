@@ -4,6 +4,7 @@
 
 package gwlpr.database.jpa;
 
+import gwlpr.database.EntityManagerFactoryProvider;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -27,7 +28,12 @@ import javax.persistence.EntityManagerFactory;
  */
 public class ProfessionJpaController implements Serializable 
 {
-
+    private static final ProfessionJpaController SINGLETON = new ProfessionJpaController(EntityManagerFactoryProvider.get());
+    
+    public static ProfessionJpaController get() {
+        return SINGLETON;
+    }
+    
     public ProfessionJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
