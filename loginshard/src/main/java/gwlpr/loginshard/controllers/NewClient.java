@@ -48,5 +48,6 @@ public class NewClient
         
         // we take all the clients!
         event.getChannel().attr(GameAppContextKey.KEY).set(context);
+        event.getChannel().attr(GameAppContextKey.IS_SET).set(true);
     }
 }

@@ -8,6 +8,8 @@ import gwlpr.protocol.handshake.HandshakeHandler;
 import gwlpr.protocol.loginserver.LoginServerCodec;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
+import realityshard.container.network.ConnectionStateHandler;
+import realityshard.container.network.MessageDemuxDecoder;
 
 
 /**
@@ -23,8 +25,10 @@ public class LoginShardChannelInitializer extends ChannelInitializer<Channel>
     {
         // inbound handlers
         ch.pipeline().addLast(
+                new ConnectionStateHandler(),
                 HandshakeHandler.produceLoginHandshake(),
-                new LoginServerCodec());
+                new LoginServerCodec(),
+                new MessageDemuxDecoder());
     }
     
 }
