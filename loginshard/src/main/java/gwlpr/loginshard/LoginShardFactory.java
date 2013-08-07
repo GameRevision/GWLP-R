@@ -11,7 +11,6 @@ import io.netty.channel.Channel;
 import java.util.Map;
 import realityshard.container.gameapp.GameAppContext;
 import realityshard.container.gameapp.GameAppFactory;
-import realityshard.container.gameapp.GameAppManager;
 import realityshard.container.util.Handle;
 import realityshard.container.util.HandleRegistry;
 
