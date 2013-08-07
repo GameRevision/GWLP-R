@@ -15,7 +15,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ReplayingDecoder;
 import java.security.SecureRandom;
 import java.util.List;
-import realityshard.container.network.NettyRC4Codec;
+import realityshard.container.network.GameAppContextKey;
+import realityshard.container.network.RC4Codec;
 
 
 /**
@@ -34,6 +35,7 @@ public class HandshakeHandler extends ReplayingDecoder<ByteBuf>
      * Expected length of the next packet (this is more or less the header)
      */
     private int expectedLength;
+    private IN1_VerifyClient verifyClient = null;
 
     
     /**
@@ -95,7 +97,11 @@ public class HandshakeHandler extends ReplayingDecoder<ByteBuf>
                 {
                     if (in.readShort() != 1280) { ctx.channel().close().sync(); }
                     
-                    // TODO: automatically assign the client
+                    // deserialize the packet
+                    NettySerializationFilter filter = GWMessageSerializationRegistry.getFilter(IN2_ClientSeed.class);
+                    verifyClient = new IN1_VerifyClient();
+                    filter.deserialize(in, verifyClient);
+                    
                     // to a context based on this data
                     expectedLength = 16896;
                 } 
@@ -122,7 +128,7 @@ public class HandshakeHandler extends ReplayingDecoder<ByteBuf>
                     byte[] xoredRandomBytes = EncryptionUtils.XOR(randomBytes, sharedKeyBytes);
 
                     // we can set the RC4 decoder now...
-                    NettyRC4Codec.Decoder decoder = new NettyRC4Codec.Decoder(rc4Key);
+                    RC4Codec.Decoder decoder = new RC4Codec.Decoder(rc4Key);
                     ctx.pipeline().addFirst(decoder);
 
                     // now send the server seed packet
@@ -139,8 +145,13 @@ public class HandshakeHandler extends ReplayingDecoder<ByteBuf>
                         @Override
                         public void operationComplete(ChannelFuture future) throws Exception 
                         {
-                                NettyRC4Codec.Encoder encoder = new NettyRC4Codec.Encoder(rc4Key);
-                                ctx.pipeline().addFirst(encoder);
+                            // add the rc4 codec
+                            RC4Codec.Encoder encoder = new RC4Codec.Encoder(rc4Key);
+                            ctx.pipeline().addFirst(encoder);
+
+                            // tell the channel's context that handshake has been done
+                            ctx.channel().attr(GameAppContextKey.KEY).get().trigger(
+                                    new HandShakeDoneEvent(verifyClient));
                         }
                     });
                 } 

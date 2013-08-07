@@ -20,11 +20,9 @@ public class IN1_VerifyClient
     private int data1;
     private long data2;
     private long data3;
-    @IsArray(constant = true, size = 4, prefixLength = -1)
-    private byte[] key1;
+    private long key1;
     private long mapId;
-    @IsArray(constant = true, size = 4, prefixLength = -1)
-    private byte[] key2;
+    private long key2;
     @IsArray(constant = true, size = 16, prefixLength = -1)
     private byte[] accountHash;
     @IsArray(constant = true, size = 16, prefixLength = -1)
@@ -49,7 +47,7 @@ public class IN1_VerifyClient
         return data3;
     }
 
-    public byte[] getKey1() {
+    public long getKey1() {
         return key1;
     }
 
@@ -57,7 +55,7 @@ public class IN1_VerifyClient
         return mapId;
     }
 
-    public byte[] getKey2() {
+    public long getKey2() {
         return key2;
     }
 
