@@ -4,6 +4,7 @@
 
 package gwlpr.protocol.intershard;
 
+import java.util.UUID;
 import realityshard.container.events.Event;
 
 
@@ -16,27 +17,22 @@ import realityshard.container.events.Event;
 public class GSNotify_WorldEmpty implements Event
 {
     
-    private int mapId;
+    private final UUID serverUid;
     
     
     /**
      * Constructor.
      * 
-     * @param       mapId                   The db-related map ID of this mapshard. 
+     * @param       serverUid 
      */
-    public GSNotify_WorldEmpty(int mapId)
+    public GSNotify_WorldEmpty(UUID serverUid)
     {
-        this.mapId = mapId;
+        this.serverUid = serverUid;
     }
+
     
-    
-    /**
-     * Getter.
-     * 
-     * @return      The map id of this MapShard.
-     */
-    public int getMapId()
+    public UUID getServerUid() 
     {
-        return this.mapId;
+        return serverUid;
     }
 }

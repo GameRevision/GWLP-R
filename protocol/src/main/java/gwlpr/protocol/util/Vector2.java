@@ -66,6 +66,12 @@ public class Vector2
                 x * mul,
                 y * mul);
     }
+    
+    
+    public float angleTo(Vector2 vec)
+    {
+        return (float)Math.atan2(vec.getY() - y, vec.getX() - x);
+    }
 
 
     public float getLength()
@@ -77,6 +83,14 @@ public class Vector2
     public Vector2 getUnit()
     {
         return this.div(getLength());
+    }
+    
+    
+    public Vector2 applyRotation(float cos, float sin)
+    {
+        return new Vector2(
+                x*cos - y*sin, 
+                x*sin + y*cos);
     }
     
 
