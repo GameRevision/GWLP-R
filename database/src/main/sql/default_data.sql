@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.30, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.5.32, for Linux (x86_64)
 --
 -- Host: localhost    Database: gwlpr
 -- ------------------------------------------------------
--- Server version	5.5.30
+-- Server version	5.5.32
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `accounts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `accounts` (
-  `ID` int(4) NOT NULL UNIQUE AUTO_INCREMENT,
+  `ID` int(4) NOT NULL AUTO_INCREMENT,
   `EMail` varchar(64) NOT NULL,
   `Password` varchar(20) NOT NULL,
   `UserGroup` int(4) DEFAULT NULL,
@@ -31,7 +31,9 @@ CREATE TABLE `accounts` (
   `MaterialStorage` int(4) DEFAULT NULL,
   `GoldStorage` int(4) NOT NULL,
   PRIMARY KEY (`EMail`),
+  UNIQUE KEY `ID` (`ID`),
   KEY `AccountsMaterialStorage` (`MaterialStorage`),
+  KEY `AccountsGroup` (`UserGroup`),
   CONSTRAINT `AccountsMaterialStorage` FOREIGN KEY (`MaterialStorage`) REFERENCES `inventories` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `AccountsGroup` FOREIGN KEY (`UserGroup`) REFERENCES `usergroups` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
@@ -83,7 +85,7 @@ DROP TABLE IF EXISTS `attributes`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `attributes` (
   `ID` int(4) NOT NULL,
-  `Name` varchar(20) NOT NULL,
+  `Name` varchar(32) NOT NULL,
   `Profession` int(4) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `AttributesProfession` (`Profession`),
@@ -97,6 +99,7 @@ CREATE TABLE `attributes` (
 
 LOCK TABLES `attributes` WRITE;
 /*!40000 ALTER TABLE `attributes` DISABLE KEYS */;
+INSERT INTO `attributes` VALUES (0,'Fast Casting (Primary)',5),(1,'Illusion Magic',5),(2,'Domination Magic',5),(3,'Inspiration Magic',5),(4,'Blood Magic',4),(5,'Death Magic',4),(6,'Soul Reaping (Primary)',4),(7,'Curses',4),(8,'Air Magic',6),(9,'Earth Magic',6),(10,'Fire Magic',6),(11,'Water Magic',6),(12,'Energy Storage (Primary)',6),(13,'Healing Prayers',3),(14,'Smiting Prayers',3),(15,'Protection Prayers',3),(16,'Divine Favor (Primary)',3),(17,'Strength (Primary)',1),(18,'Axe Mastery',1),(19,'Hammer Mastery',1),(20,'Swordsmanship',1),(21,'Tactics',1),(22,'Beast Mastery',2),(23,'Expertise (Primary)',2),(24,'Wilderness Survival',2),(25,'Marksmanship',2),(26,'Reserved',5),(27,'Reserved',4),(28,'Reserved',2),(29,'Dagger Mastery',7),(30,'Deadly Arts',7),(31,'Shadow Arts',7),(32,'Communing',8),(33,'Restoration Magic',8),(34,'Channeling Magic',8),(35,'Critical Strikes (Primary)',7),(36,'Spawning Power (Primary)',8),(37,'Spear Mastery',9),(38,'Command',9),(39,'Motivation',9),(40,'Leadership (Primary)',9),(41,'Scythe Mastery',10),(42,'Wind Prayers',10),(43,'Earth Prayers',10),(44,'Mysticism (Primary)',10);
 /*!40000 ALTER TABLE `attributes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -181,10 +184,11 @@ DROP TABLE IF EXISTS `commands`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `commands` (
-  `ID` int(4) NOT NULL UNIQUE AUTO_INCREMENT,
+  `ID` int(4) NOT NULL AUTO_INCREMENT,
   `Name` varchar(20) NOT NULL,
-  PRIMARY KEY (`Name`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`Name`),
+  UNIQUE KEY `ID` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -217,6 +221,7 @@ CREATE TABLE `factions` (
 
 LOCK TABLES `factions` WRITE;
 /*!40000 ALTER TABLE `factions` DISABLE KEYS */;
+INSERT INTO `factions` VALUES (1,'Kurzick'),(2,'Luxon'),(3,'Imperial'),(4,'Balthazar');
 /*!40000 ALTER TABLE `factions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -274,32 +279,6 @@ LOCK TABLES `grouppermissions` WRITE;
 /*!40000 ALTER TABLE `grouppermissions` DISABLE KEYS */;
 INSERT INTO `grouppermissions` VALUES (1,1),(2,1),(2,2);
 /*!40000 ALTER TABLE `grouppermissions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `usergroups`
---
-
-DROP TABLE IF EXISTS `usergroups`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `usergroups` (
-  `ID` int(4) NOT NULL AUTO_INCREMENT,
-  `Name` varchar(20) NOT NULL,
-  `Prefix` varchar(4) DEFAULT NULL,
-  `ChatColor` int(4) DEFAULT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `usergroups`
---
-
-LOCK TABLES `usergroups` WRITE;
-/*!40000 ALTER TABLE `usergroups` DISABLE KEYS */;
-INSERT INTO `usergroups` VALUES (1,'Player',NULL,NULL),(2,'GameMaster','GM',4);
-/*!40000 ALTER TABLE `usergroups` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -552,7 +531,7 @@ CREATE TABLE `professions` (
   `ID` int(4) NOT NULL AUTO_INCREMENT,
   `Name` varchar(20) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -729,6 +708,32 @@ LOCK TABLES `storeditems` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `usergroups`
+--
+
+DROP TABLE IF EXISTS `usergroups`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `usergroups` (
+  `ID` int(4) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(20) NOT NULL,
+  `Prefix` varchar(4) DEFAULT NULL,
+  `ChatColor` int(4) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usergroups`
+--
+
+LOCK TABLES `usergroups` WRITE;
+/*!40000 ALTER TABLE `usergroups` DISABLE KEYS */;
+INSERT INTO `usergroups` VALUES (1,'Player',NULL,NULL),(2,'GameMaster','GM',4);
+/*!40000 ALTER TABLE `usergroups` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `weapons`
 --
 
@@ -793,4 +798,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2013-03-25 15:41:59
+-- Dump completed on 2013-08-07 12:37:43
