@@ -13,7 +13,7 @@ import realityshard.container.events.Event;
  *
  * @author _rusty
  */
-public final class GSNotify_ClientConnected implements Event
+public final class GSNotify_ClientDisconnected implements Event
 {
     
     private final UUID serverUid;
@@ -26,7 +26,7 @@ public final class GSNotify_ClientConnected implements Event
      * @param       serverUid 
      * @param       clientUid
      */
-    public GSNotify_ClientConnected(UUID serverUid, UUID clientUid)
+    public GSNotify_ClientDisconnected(UUID serverUid, UUID clientUid)
     {
         this.serverUid = serverUid;
         this.clientUid = clientUid;
