@@ -5,8 +5,8 @@
 package gwlpr.loginshard.models;
 
 import gwlpr.database.jpa.MapJpaController;
-import gwlpr.loginshard.models.enums.DistrictLanguage;
-import gwlpr.loginshard.models.enums.DistrictRegion;
+import gwlpr.protocol.intershard.utils.DistrictLanguage;
+import gwlpr.protocol.intershard.utils.DistrictRegion;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -203,7 +203,11 @@ public final class MapDispatchModel
         
         // create the gameapp
         HashMap<String,String> params = new HashMap<>();
-        params.put("MapId", String.valueOf(mapEntity.getId()));
+        params.put("MapId",             String.valueOf(mapEntity.getId()));
+        params.put("IsPvP",             String.valueOf(true));
+        params.put("InstanceNumber",    String.valueOf(instanceNumber));
+        params.put("DistrictRegion",    region.toString());
+        params.put("DistrictLanguage",  language.toString());
         
         Handle<GameAppContext> mapShardContext = manager.createGameApp("MapShard", context, params);
         

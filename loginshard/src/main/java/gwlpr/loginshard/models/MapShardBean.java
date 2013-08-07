@@ -5,8 +5,8 @@
 package gwlpr.loginshard.models;
 
 import gwlpr.database.entities.Map;
-import gwlpr.loginshard.models.enums.DistrictLanguage;
-import gwlpr.loginshard.models.enums.DistrictRegion;
+import gwlpr.protocol.intershard.utils.DistrictLanguage;
+import gwlpr.protocol.intershard.utils.DistrictRegion;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import realityshard.container.gameapp.GameAppContext;
