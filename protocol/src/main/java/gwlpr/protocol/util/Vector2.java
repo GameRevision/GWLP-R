@@ -34,6 +34,51 @@ public class Vector2
         return y;
     }
     
+    
+    public Vector2 add(Vector2 vec)
+    {
+        return new Vector2(
+                getX() + vec.getX(),
+                getY() + vec.getY());
+    }
+
+
+    public Vector2 sub(Vector2 vec)
+    {
+        return new Vector2(
+                x - vec.getX(),
+                y - vec.getY());
+    }
+
+
+    public Vector2 div(float div)
+    {
+        if (div == 0) { return null; }
+        return new Vector2(
+                x / div,
+                y / div);
+    }
+
+
+    public Vector2 mul(float mul)
+    {
+        return new Vector2(
+                x * mul,
+                y * mul);
+    }
+
+
+    public float getLength()
+    {
+        return (float) Math.sqrt((x * x) + (y * y));
+    }
+
+
+    public Vector2 getUnit()
+    {
+        return this.div(getLength());
+    }
+    
 
     @Override
     public String toString() 
