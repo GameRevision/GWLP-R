@@ -10,7 +10,7 @@ import gwlpr.mapshard.entitysystem.GenericSystem;
 import gwlpr.mapshard.entitysystem.Components.*;
 import gwlpr.mapshard.events.CanSeeEvent;
 import gwlpr.mapshard.events.LostSightEvent;
-import gwlpr.mapshard.models.GWVector;
+import gwlpr.mapshard.models.WorldPosition;
 import java.util.Collection;
 import realityshard.container.events.EventAggregator;
 
@@ -86,14 +86,14 @@ public final class AgentVisibilitySystem extends GenericSystem
             View thisView = thisEntity.get(View.class);
 
             // get the position for distance calcs later on
-            GWVector thisPostion = thisEntity.get(Position.class).position;
+            WorldPosition thisPostion = thisEntity.get(Position.class).position;
 
             for (Entity otherEntity : entities)
             {
                 if (thisEntity == otherEntity) { continue; }
 
                 // get the position for distance calcs later on
-                GWVector otherPostion = otherEntity.get(Position.class).position;
+                WorldPosition otherPostion = otherEntity.get(Position.class).position;
 
                 boolean canSee = false;
 

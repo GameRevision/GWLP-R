@@ -7,15 +7,12 @@ package gwlpr.mapshard.entitysystem.systems;
 import gwlpr.mapshard.entitysystem.Entity;
 import gwlpr.mapshard.entitysystem.EntityManager;
 import gwlpr.mapshard.entitysystem.GenericSystem;
-import gwlpr.mapshard.entitysystem.builders.NPCBuilder;
 import gwlpr.mapshard.entitysystem.Components.*;
+import gwlpr.mapshard.entitysystem.entityfactories.NPCFactory;
 import gwlpr.mapshard.events.ChatCommandEvent;
 import gwlpr.mapshard.models.ClientBean;
-import gwlpr.mapshard.models.GWVector;
-import gwlpr.mapshard.models.IDManager;
 import gwlpr.mapshard.models.Strings;
 import gwlpr.mapshard.models.enums.ChatColor;
-import gwlpr.mapshard.models.enums.Profession;
 import gwlpr.mapshard.views.ChatMessageView;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -93,15 +90,7 @@ public final class CommandSystem extends GenericSystem
             // TODO remove me when not needed anyore ;)
             Entity ply = chatCmd.getSender();
             
-            Entity npc = NPCBuilder
-                    .createFor(entityManager)
-                    .withAgentData("Blubb", IDManager.reserveAgentID(), 1095)
-                    .withPhysics(ply.get(Position.class).position, new GWVector(1,1,0), 1, 1, 1)
-                    .withVisuals(new byte[0], 1000, true)
-                    .withCharData(Profession.Mesmer, Profession.None, 1, 100)
-                    .withFactionData()
-                    .withNPCData(116228, new int[] { 0x026c4a }, 4, 100, String.copyValueOf(new char[] {0x8102, 0x5299, 0xc20f, 0xb939, 0x0463}))
-                    .build();
+            NPCFactory.mockNpc(ply.get(Position.class).position, entityManager);
         }
         else if (!senderChatOptions.availableCommands.contains(command))
         {

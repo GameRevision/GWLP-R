@@ -5,7 +5,7 @@
 package gwlpr.mapshard.events;
 
 import gwlpr.mapshard.entitysystem.Entity;
-import gwlpr.mapshard.models.GWVector;
+import gwlpr.mapshard.models.WorldPosition;
 import gwlpr.mapshard.models.enums.MovementType;
 import realityshard.shardlet.Event;
 
@@ -19,7 +19,7 @@ import realityshard.shardlet.Event;
 public class MoveEvent implements Event
 {
     private final Entity thisEntity;
-    private final GWVector direction;
+    private final WorldPosition direction;
     private final MovementType type;
 
 
@@ -30,7 +30,7 @@ public class MoveEvent implements Event
      * @param       direction
      * @param       type
      */
-    public MoveEvent(Entity thisEntity, GWVector direction, MovementType type)
+    public MoveEvent(Entity thisEntity, WorldPosition direction, MovementType type)
     {
         this.thisEntity = thisEntity;
         this.direction = direction;
@@ -54,7 +54,7 @@ public class MoveEvent implements Event
      *
      * @return
      */
-    public GWVector getDirection()
+    public WorldPosition getDirection()
     {
         return direction;
     }

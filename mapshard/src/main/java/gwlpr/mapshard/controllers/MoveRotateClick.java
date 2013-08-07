@@ -14,10 +14,11 @@ import gwlpr.mapshard.entitysystem.Components.*;
 import gwlpr.mapshard.events.RotateEvent;
 import gwlpr.mapshard.events.MoveEvent;
 import gwlpr.mapshard.events.StopMovingEvent;
-import gwlpr.mapshard.models.GWVector;
+import gwlpr.mapshard.models.WorldPosition;
 import gwlpr.mapshard.models.enums.MovementState;
 import gwlpr.mapshard.models.enums.MovementType;
 import gwlpr.mapshard.models.enums.StandardValue;
+import gwlpr.protocol.gameserver.inbound.P057_Unknown;
 import realityshard.shardlet.EventHandler;
 import realityshard.shardlet.Session;
 import realityshard.shardlet.utils.GenericShardlet;
@@ -63,11 +64,11 @@ public class MoveRotateClick extends GenericShardlet
         Movement move = et.get(Movement.class);
 
         // extract all the necessary info from the action and convert it
-        GWVector position = GWVector.fromFloatArray(
+        WorldPosition position = WorldPosition.fromFloatArray(
                 keybMove.getUnknown1(),
                 keybMove.getUnknown2());
 
-        GWVector direction = GWVector.fromFloatArray(
+        WorldPosition direction = WorldPosition.fromFloatArray(
                 keybMove.getUnknown3(),
                 0);
 
@@ -114,7 +115,7 @@ public class MoveRotateClick extends GenericShardlet
         Movement move = et.get(Movement.class);
 
         // extract info
-        GWVector position = GWVector.fromFloatArray(
+        WorldPosition position = WorldPosition.fromFloatArray(
                 stopMove.getUnknown1(),
                 stopMove.getUnknown2());
         
@@ -143,13 +144,13 @@ public class MoveRotateClick extends GenericShardlet
      * Player has pressed a keyboard button to move.
      */
     @EventHandler
-    public void onKeyboardRotate(P057_UnknownAction keybRot)
+    public void onKeyboardRotate(P057_Unknown keybRot)
     {
         Session session = keybRot.getSession();
         ClientBean attach = (ClientBean) session.getAttachment();
 
         // extract info
-        GWVector direction = GWVector.fromRotation(keybRot.getUnknown1(), 1);
+        WorldPosition direction = WorldPosition.fromRotation(keybRot.getUnknown1(), 1);
 
         // send internal event
         publishEvent(new RotateEvent(attach.getEntity(), direction));

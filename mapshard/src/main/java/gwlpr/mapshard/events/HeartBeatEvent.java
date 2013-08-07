@@ -5,7 +5,6 @@
 package gwlpr.mapshard.events;
 
 import realityshard.container.events.Event;
-import realityshard.container.events.Event;
 
 
 /**

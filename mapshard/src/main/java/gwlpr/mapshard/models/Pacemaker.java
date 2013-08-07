@@ -4,9 +4,9 @@
 
 package gwlpr.mapshard.models;
 
-import realityshard.container.EventAggregator;
+import realityshard.container.events.EventAggregator;
 import realityshard.container.GlobalExecutor;
-import realityshard.container.events.HeartBeatEvent;
+import gwlpr.mapshard.events.HeartBeatEvent;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;

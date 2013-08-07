@@ -4,14 +4,14 @@
 
 package gwlpr.mapshard.entitysystem;
 
-import gwlpr.mapshard.entitysystem.Component;
-import gwlpr.mapshard.entitysystem.Entity;
-import gwlpr.mapshard.models.GWVector;
+import gwlpr.mapshard.models.WorldPosition;
 import gwlpr.mapshard.models.enums.ChatColor;
 import gwlpr.mapshard.models.enums.MovementType;
 import gwlpr.mapshard.models.enums.MovementState;
 import gwlpr.mapshard.models.enums.Profession;
 import gwlpr.mapshard.models.enums.SpawnType;
+import gwlpr.mapshard.models.enums.StandardValue;
+import gwlpr.protocol.util.Vector2;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -40,21 +40,22 @@ public class Components
     
 
     public static class Position implements Component {
-        public volatile GWVector position; // absolute
+        public volatile WorldPosition position; // absolute
     }
 
 
     public static class Direction implements Component {
-        public volatile GWVector direction = new GWVector(1, 1, 0);
+        public volatile Vector2 direction = new Vector2(1, 1);
+        public volatile float rotation = 0;
         public volatile boolean isRotating = false;
     }
 
 
     public static class Movement implements Component {
-        public volatile GWVector futurePosition = new GWVector(1, 1, 0);
+        public volatile WorldPosition moveAim = new WorldPosition(1, 1, 0);
         public volatile MovementType moveType = MovementType.Stop;
         public volatile MovementState moveState = MovementState.NotMoving;
-        public volatile float speed = 288;
+        public volatile float speed = StandardValue.PlayerSpeed.getVal();
     }
 
 
@@ -65,14 +66,14 @@ public class Components
     }
 
 
-    public static class Appearance implements Component {
+    public static class PlayerAppearance implements Component {
         public volatile byte[] appearanceDump;
     }
 
 
     public static class View implements Component {
         public volatile Collection<Entity> visibleAgents = new HashSet<>();
-        public volatile float viewDistance = 100;
+        public volatile float viewDistance = 1000;
         public volatile boolean isBlind = true; // this will be set to false by the builder or other classes.
     }
 

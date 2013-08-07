@@ -12,12 +12,12 @@ import gwlpr.mapshard.events.RotateEvent;
 import gwlpr.mapshard.events.MoveEvent;
 import gwlpr.mapshard.events.StopMovingEvent;
 import gwlpr.mapshard.models.ClientBean;
-import gwlpr.mapshard.models.ClientLookupTable;
-import gwlpr.mapshard.models.GWVector;
 import gwlpr.mapshard.models.enums.MovementState;
 import gwlpr.mapshard.models.enums.MovementType;
 import gwlpr.mapshard.views.EntityMovementView;
+import gwlpr.protocol.util.Vector2;
 import java.util.Collection;
+import realityshard.container.events.Event;
 import realityshard.container.events.EventAggregator;
 import realityshard.container.util.Handle;
 import realityshard.container.util.HandleRegistry;
@@ -85,7 +85,7 @@ public class MovementSystem extends GenericSystem
             
             // retrieve the components we need
             Position pos = entity.get(Position.class);
-            GWVector dir = entity.get(Direction.class).direction.getUnit();
+            Vector2 dir = entity.get(Direction.class).direction.getUnit();
             Movement move = entity.get(Movement.class);
             
 //            // update the position (we simply assume that the client has now reached its future position)
@@ -111,7 +111,7 @@ public class MovementSystem extends GenericSystem
      *
      * @param moveEvt
      */
-    @EventHandler
+    @Event.Handler
     public void onMove(MoveEvent moveEvt)
     {
         // we need to inform the connected clients and
@@ -126,9 +126,9 @@ public class MovementSystem extends GenericSystem
 //        move.moveState = MovementState.Moving;
 
         // inform the clients
-        for (Session session : clientRegistry.getAllSessions())
+        for (Handle<ClientBean> clientHandle : clientRegistry.getAllHandles())
         {
-            EntityMovementView.sendChangeDirection(session, et);
+            EntityMovementView.sendChangeDirection(clientHandle.get().getChannel(), et);
             
             // anything else will be send on server tick. no need to repeat the
             // calculations here
@@ -144,7 +144,7 @@ public class MovementSystem extends GenericSystem
      *
      * @param stopMove
      */
-    @EventHandler
+    @Event.Handler
     public void onStopMoving(StopMovingEvent stopMove)
     {
         // we need to inform the connected clients and
@@ -157,28 +157,28 @@ public class MovementSystem extends GenericSystem
         // its future position is the position it has already reached!
         // this is necessary because the update movement view will send the future position
         Movement move = et.get(Movement.class);
-        move.futurePosition = et.get(Position.class).position;
+        move.moveAim = et.get(Position.class).position;
         move.moveType = MovementType.Stop;
         move.moveState = MovementState.NotMoving;
 
         // inform the clients
-        for (Session session : clientRegistry.getAllSessions())
+        for (Handle<ClientBean> clientHandle : clientRegistry.getAllHandles())
         {
-            EntityMovementView.sendRotateAgent(session, et);
+            EntityMovementView.sendRotateAgent(clientHandle.get().getChannel(), et);
             
-            EntityMovementView.sendUpdateMovement(session, et);
+            EntityMovementView.sendUpdateMovement(clientHandle.get().getChannel(), et);
         }
     }
 
 
     /**
      * Event handler.
-     * Rotate event, this siganls that an entity changed its direction
+     * Rotate event, this signals that an entity changed its direction
      * while not moving.
      *
      * @param rot
      */
-    @EventHandler
+    @Event.Handler
     public void onRotate(RotateEvent rot)
     {
         // fetch some entity info
@@ -189,9 +189,9 @@ public class MovementSystem extends GenericSystem
         dir.direction = rot.getNewDirection().getUnit();
 
         // inform the clients
-        for (Session session : clientRegistry.getAllSessions())
+        for (Handle<ClientBean> clientHandle : clientRegistry.getAllHandles())
         {
-            EntityMovementView.sendRotateAgent(session, et);
+            EntityMovementView.sendRotateAgent(clientHandle.get().getChannel(), et);
         }
     }
 }

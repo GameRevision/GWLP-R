@@ -28,7 +28,7 @@ public final class ClientBean
     public static final AttributeKey<Handle<ClientBean>> HANDLE_KEY = new AttributeKey<>(ClientBean.class.getName());
     
     
-    private final Channel channel;
+    private Channel channel;
     private final Account account;
     private final Character character;
     
@@ -45,21 +45,34 @@ public final class ClientBean
      * Note that the entity is created separately and is thus not included in the
      * parameters.
      * 
-     * @param       channel                 The netty network channel
      * @param       acc                     The account DAO
      * @param       chara                   The character DAO
      */
-    public ClientBean(Channel channel, Account acc, Character chara)
+    public ClientBean(Account acc, Character chara)
     {
-        this.channel = channel;
         this.account = acc;
         this.character = chara;
+    }
+    
+    
+    public void init(Channel channel)
+    {
+        // simulate 'final'
+        if (channel == null)
+        {
+            this.channel = channel;
+        }
     }
 
     
     public Channel getChannel() 
     {
-        return channel;
+        if (channel != null)
+        {
+            return channel;
+        }
+        
+        throw new IllegalStateException();
     }
 
     

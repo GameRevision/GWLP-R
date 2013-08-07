@@ -4,12 +4,13 @@
 
 package gwlpr.mapshard.views;
 
-import gwlpr.actions.gameserver.stoc.P141_UnknownAction;
-import gwlpr.actions.gameserver.stoc.P378_UnknownAction;
-import gwlpr.actions.gameserver.stoc.P379_CharacterCreateHeadAction;
-import gwlpr.actions.gameserver.stoc.P380_CharacterCreateAcknowledgeAction;
-import gwlpr.actions.gameserver.stoc.P381_UnknownAction;
-import com.gamerevision.gwlpr.database.CharacterEntity;
+import gwlpr.protocol.gameserver.stoc.P141_UnknownAction;
+import gwlpr.protocol.gameserver.stoc.P378_UnknownAction;
+import gwlpr.protocol.gameserver.outbound.P379_CharacterCreateHead;
+import gwlpr.protocol.gameserver.outbound.P380_CharacterCreateAcknowledge;
+import gwlpr.protocol.gameserver.stoc.P381_UnknownAction;
+import gwlpr.database.entities.Character;
+import io.netty.channel.Channel;
 import realityshard.shardlet.Session;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -26,12 +27,12 @@ public class CharacterCreationView
     /**
      * Step 1.
      */
-    public static void charCreateHead(Session session)
+    public static void charCreateHead(Channel channel)
     {
-        P379_CharacterCreateHeadAction startCharacterCreation = new P379_CharacterCreateHeadAction();
-        startCharacterCreation.init(session);
+        P379_CharacterCreateHead startCharacterCreation = new P379_CharacterCreateHead();
+        startCharacterCreation.init(channel);
         
-        session.send(startCharacterCreation);
+        channel.write(startCharacterCreation);
     }
 
     

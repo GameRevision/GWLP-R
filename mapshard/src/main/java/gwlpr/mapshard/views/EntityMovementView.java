@@ -5,15 +5,16 @@
 
 package gwlpr.mapshard.views;
 
-import gwlpr.actions.gameserver.stoc.P026_UnknownAction;
-import gwlpr.actions.gameserver.stoc.P030_UnknownAction;
-import gwlpr.actions.gameserver.stoc.P032_UnknownAction;
-import gwlpr.actions.gameserver.stoc.P035_UnknownAction;
+import gwlpr.protocol.gameserver.outbound.P026_AgentMoveDirection;
+import gwlpr.protocol.gameserver.outbound.P030_AgentMoveToPoint;
+import gwlpr.protocol.gameserver.outbound.P032_SpeedModifier;
+import gwlpr.protocol.gameserver.outbound.P035_AgentRotate;
 import gwlpr.mapshard.entitysystem.Entity;
 import gwlpr.mapshard.entitysystem.Components.*;
-import gwlpr.mapshard.models.GWVector;
+import gwlpr.mapshard.models.WorldPosition;
 import gwlpr.mapshard.models.enums.MovementType;
-import realityshard.shardlet.Session;
+import gwlpr.protocol.util.Vector2;
+import io.netty.channel.Channel;
 
 
 /**
@@ -27,21 +28,21 @@ public class EntityMovementView
     /**
      * This is send when an entity changes direction or starts moving.
      */
-    public static void sendChangeDirection(Session session, Entity entity)
+    public static void sendChangeDirection(Channel channel, Entity entity)
     {
         // retrieve the entity related data we need...
         int agentID = entity.get(AgentIdentifiers.class).agentID;
-        GWVector dir = entity.get(Direction.class).direction;
+        Vector2 dir = entity.get(Direction.class).direction;
         MovementType movT = entity.get(Movement.class).moveType;
         
-        // constrcut the message
-        P026_UnknownAction moveDir = new P026_UnknownAction();
-        moveDir.init(session);
-        moveDir.setUnknown1(agentID);
-        moveDir.setUnknown2(dir.toFloatArray());
-        moveDir.setUnknown3(movT.getVal());
+        // construct the message
+        P026_AgentMoveDirection moveDir = new P026_AgentMoveDirection();
+        moveDir.init(channel);
+        moveDir.setAgentID(agentID);
+        moveDir.setDirection(dir);
+        moveDir.setMovementType(movT.getVal());
 
-        session.send(moveDir);
+        channel.write(moveDir);
     }
 
 
@@ -49,33 +50,34 @@ public class EntityMovementView
      * This is send when we generally update an agents position, because
      * it moved (but didnt change direction)
      */
-    public static void sendUpdateMovement(Session session, Entity entity)
+    public static void sendUpdateMovement(Channel channel, Entity entity)
     {
         // retrieve the entity related data we need...
         int agentID = entity.get(AgentIdentifiers.class).agentID;
         Movement move = entity.get(Movement.class);
-        GWVector moveTo = move.futurePosition;
+        WorldPosition curPos = entity.get(Position.class).position;
+        WorldPosition moveTo = move.moveAim;
         MovementType movT = move.moveType;
         
         // send the messages
-        P032_UnknownAction speedMod = new P032_UnknownAction();
-        speedMod.init(session);
-        speedMod.setUnknown1(agentID);
-        speedMod.setUnknown2(movT.getSpeedModifier());
-        speedMod.setUnknown3(movT.getVal());
+        P032_SpeedModifier speedMod = new P032_SpeedModifier();
+        speedMod.init(channel);
+        speedMod.setAgentID(agentID);
+        speedMod.setModifier(movT.getSpeedModifier());
+        speedMod.setMovementType(movT.getVal());
 
-        session.send(speedMod);
+        channel.write(speedMod);
 
         // TODO check me: this is probably the place that the player would reach within
         // the next time step.
-        P030_UnknownAction moveToPoint = new P030_UnknownAction();
-        moveToPoint.init(session);
-        moveToPoint.setUnknown1(agentID);
-        moveToPoint.setUnknown2(moveTo.toFloatArray());
-        moveToPoint.setUnknown3(moveTo.getZPlane());
-        moveToPoint.setUnknown4((short)0);
+        P030_AgentMoveToPoint moveToPoint = new P030_AgentMoveToPoint();
+        moveToPoint.init(channel);
+        moveToPoint.setAgentID(agentID);
+        moveToPoint.setMoveAim(moveTo);
+        moveToPoint.setCurrentPlane(curPos.getZPlane());
+        moveToPoint.setNextPlane(moveTo.getZPlane());
 
-        session.send(moveToPoint);
+        channel.write(moveToPoint);
     }
 
 
@@ -84,18 +86,18 @@ public class EntityMovementView
      * (The rotation is the direction actually, there might be differences but who cares
      * though this could be a possible BUG)
      */
-    public static void sendRotateAgent(Session session, Entity entity)
+    public static void sendRotateAgent(Channel channel, Entity entity)
     {
         // retrieve the entity related data we need...
         int agentID = entity.get(AgentIdentifiers.class).agentID;
-        GWVector dir = entity.get(Direction.class).direction;
+        float rotDiff = entity.get(Direction.class).rotation;
         
-        P035_UnknownAction rot = new P035_UnknownAction();
-        rot.init(session);
-        rot.setUnknown1(agentID);
-        rot.setUnknown2(dir.toRotation());
-        rot.setUnknown3(0x40060A92);
+        P035_AgentRotate rot = new P035_AgentRotate();
+        rot.init(channel);
+        rot.setAgent(agentID);
+        rot.setRotation1(Float.floatToRawIntBits((float)Math.cos(rotDiff)));
+        rot.setRotation2(Float.floatToRawIntBits((float)Math.sin(rotDiff)));//0x40060A92);
 
-        session.send(rot);
+        channel.write(rot);
     }
 }

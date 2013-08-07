@@ -6,13 +6,12 @@ package gwlpr.mapshard.entitysystem.systems;
 
 import gwlpr.mapshard.entitysystem.GenericSystem;
 import gwlpr.mapshard.events.SchedulingEvent;
-import realityshard.shardlet.Event;
-import realityshard.shardlet.EventAggregator;
-import realityshard.shardlet.EventHandler;
-import realityshard.shardlet.GlobalExecutor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import realityshard.container.GlobalExecutor;
+import realityshard.container.events.Event;
+import realityshard.container.events.EventAggregator;
 
 
 /**
@@ -89,7 +88,7 @@ public class SchedulingSystem extends GenericSystem
      *
      * @param event
      */
-    @EventHandler
+    @Event.Handler
     public void onScheduling(final SchedulingEvent event)
     {
         switch (event.byMethod())

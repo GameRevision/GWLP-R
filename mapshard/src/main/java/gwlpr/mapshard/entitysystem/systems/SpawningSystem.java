@@ -9,11 +9,11 @@ import gwlpr.mapshard.entitysystem.GenericSystem;
 import gwlpr.mapshard.entitysystem.Components.*;
 import gwlpr.mapshard.events.CanSeeEvent;
 import gwlpr.mapshard.events.LostSightEvent;
-import gwlpr.mapshard.models.ClientLookupTable;
+import gwlpr.mapshard.models.ClientBean;
 import gwlpr.mapshard.views.EntitySpawningView;
-import realityshard.shardlet.EventAggregator;
-import realityshard.shardlet.EventHandler;
-import realityshard.shardlet.Session;
+import realityshard.container.events.Event;
+import realityshard.container.events.EventAggregator;
+import realityshard.container.util.HandleRegistry;
 
 
 /**
@@ -31,19 +31,19 @@ public class SpawningSystem extends GenericSystem
 {
 
     private final static int UPDATEINTERVAL = 0; // doesnt need to be updated
-    private final ClientLookupTable clientLookup;
+    private final HandleRegistry<ClientBean> clientRegistry;
 
 
     /**
      * Constructor.
      *
      * @param       aggregator
-     * @param       clientLookup
+     * @param       clientRegistry
      */
-    public SpawningSystem(EventAggregator aggregator, ClientLookupTable clientLookup)
+    public SpawningSystem(EventAggregator aggregator, HandleRegistry<ClientBean> clientRegistry)
     {
         super(aggregator, UPDATEINTERVAL);
-        this.clientLookup = clientLookup;
+        this.clientRegistry = clientRegistry;
     }
 
 
@@ -64,16 +64,16 @@ public class SpawningSystem extends GenericSystem
      *
      * @param canSee
      */
-    @EventHandler
+    @Event.Handler
     public void onEntityCanSeeOther(CanSeeEvent canSee)
     {
         // check if this entity is a network client
-        Session session = clientLookup.getByEntity(canSee.getThisEntity());
-        if (session == null) { return; }
+        ClientBean client = clientRegistry.getObj(canSee.getThisEntity().getUuid());
+        if (client == null) { return; }
 
         Entity et = canSee.getOtherEntity();
 
-        EntitySpawningView.spawnAgent(session, et);
+        EntitySpawningView.spawnAgent(client.getChannel(), et);
     }
 
 
@@ -84,16 +84,16 @@ public class SpawningSystem extends GenericSystem
      *
      * @param lostSight
      */
-    @EventHandler
+    @Event.Handler
     public void onEntityLostSight(LostSightEvent lostSight)
     {
         // check if this entity is a network client
-        Session session = clientLookup.getByEntity(lostSight.getThisEntity());
-        if (session == null) { return; }
+        ClientBean client = clientRegistry.getObj(lostSight.getThisEntity().getUuid());
+        if (client == null) { return; }
 
         Entity et = lostSight.getOtherEntity();
 
         // send the despawn packets
-        EntitySpawningView.despawnAgent(session, et);
+        EntitySpawningView.despawnAgent(client.getChannel(), et);
     }
 }

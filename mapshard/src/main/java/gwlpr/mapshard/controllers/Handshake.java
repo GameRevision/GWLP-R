@@ -17,7 +17,7 @@ import gwlpr.mapshard.views.CharacterCreationView;
 import gwlpr.mapshard.views.HandshakeView;
 import gwlpr.mapshard.entitysystem.EntityManager;
 import gwlpr.mapshard.entitysystem.Components.*;
-import gwlpr.mapshard.models.LoadCharacter;
+import gwlpr.mapshard.entitysystem.entityfactories.CharacterFactory;
 import gwlpr.mapshard.models.MapData;
 import realityshard.shardlet.ClientVerifier;
 import realityshard.shardlet.EventHandler;
@@ -152,7 +152,7 @@ public class Handshake extends GenericShardlet
         // to create a new entity.
         
         // remember: better have no business logic in the controllers!
-        LoadCharacter loader = new LoadCharacter(db, attach.getCharacterId(), mapData.getRandomSpawn());
+        CharacterFactory loader = new CharacterFactory(db, attach.getCharacterId(), mapData.getRandomSpawn());
         
         Entity player = loader.createPlayerEntityFor(entityManager);
         

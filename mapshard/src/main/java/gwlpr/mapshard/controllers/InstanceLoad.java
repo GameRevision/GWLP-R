@@ -30,7 +30,7 @@ import gwlpr.mapshard.views.UpdateGenericValueView;
 import gwlpr.mapshard.views.UpdatePrivateProfessionsView;
 import gwlpr.mapshard.entitysystem.EntityManager;
 import gwlpr.mapshard.entitysystem.Components.*;
-import gwlpr.mapshard.models.GWVector;
+import gwlpr.mapshard.models.WorldPosition;
 import gwlpr.mapshard.models.MapData;
 import gwlpr.mapshard.models.enums.GenericValue;
 import gwlpr.mapshard.models.enums.PlayerState;
@@ -163,7 +163,7 @@ public class InstanceLoad extends GenericShardlet
         // fetch the players postion (this was already initialized by the handshake controller,
         // when it instructed some other class to create the entity
         Entity et = attachment.getEntity();
-        GWVector pos = et.get(Position.class).position;
+        WorldPosition pos = et.get(Position.class).position;
 
 
         P391_InstanceLoadSpawnPointAction instanceLoadSpawnPoint = new P391_InstanceLoadSpawnPointAction();
@@ -191,8 +191,8 @@ public class InstanceLoad extends GenericShardlet
         String name = et.get(Name.class).name;
         int agentID = et.get(AgentIdentifiers.class).agentID;
         int localID = et.get(AgentIdentifiers.class).localID;
-        byte[] appear = et.get(Appearance.class).appearanceDump;
-        GWVector pos = et.get(Position.class).position;
+        byte[] appear = et.get(PlayerAppearance.class).appearanceDump;
+        WorldPosition pos = et.get(Position.class).position;
         float rotation = et.get(Direction.class).direction.toRotation();
         float speed = et.get(Movement.class).speed;
 

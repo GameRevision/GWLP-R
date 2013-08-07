@@ -16,6 +16,7 @@ package gwlpr.mapshard.models.enums;
  */
 public enum PlayerState 
 {
+    HandShaking,
     LoadingInstance,
     Playing
 }

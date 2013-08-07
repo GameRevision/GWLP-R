@@ -5,7 +5,7 @@
 package gwlpr.mapshard.events;
 
 import gwlpr.mapshard.entitysystem.Entity;
-import gwlpr.mapshard.models.GWVector;
+import gwlpr.mapshard.models.WorldPosition;
 import realityshard.shardlet.Event;
 
 
@@ -18,7 +18,7 @@ public class RotateEvent implements Event
 {
 
     private final Entity thisEntity;
-    private final GWVector newDirection;
+    private final WorldPosition newDirection;
 
 
     /**
@@ -26,7 +26,7 @@ public class RotateEvent implements Event
      *
      * @param       thisEntity
      */
-    public RotateEvent(Entity thisEntity, GWVector newDirection)
+    public RotateEvent(Entity thisEntity, WorldPosition newDirection)
     {
         this.thisEntity = thisEntity;
         this.newDirection = newDirection;
@@ -49,7 +49,7 @@ public class RotateEvent implements Event
      *  
      * @return
      */
-    public GWVector getNewDirection()
+    public WorldPosition getNewDirection()
     {
         return newDirection;
     }

@@ -15,7 +15,7 @@ import gwlpr.mapshard.entitysystem.systems.CommandSystem;
 import gwlpr.mapshard.entitysystem.systems.MovementSystem;
 import gwlpr.mapshard.entitysystem.systems.SchedulingSystem;
 import gwlpr.mapshard.entitysystem.systems.SpawningSystem;
-import gwlpr.mapshard.models.GWVector;
+import gwlpr.mapshard.models.WorldPosition;
 import gwlpr.mapshard.models.MapData;
 import realityshard.shardlet.EventAggregator;
 import realityshard.shardlet.RemoteShardletContext;
@@ -103,11 +103,11 @@ public class StartUp extends GenericShardlet
     private MapData loadMapData(DatabaseConnectionProvider db, int dbMapID)
     {
         MapEntity dbMap = MapEntity.getByDbId(db, dbMapID);
-        Collection<GWVector> convertedSpawns = new ArrayList<>();
+        Collection<WorldPosition> convertedSpawns = new ArrayList<>();
 
         for (MapEntity.DBSpawn dbSpawn : dbMap.getSpawns()) 
         {
-            convertedSpawns.add(new GWVector(dbSpawn.posX, dbSpawn.posY, dbSpawn.planeZ));
+            convertedSpawns.add(new WorldPosition(dbSpawn.posX, dbSpawn.posY, dbSpawn.planeZ));
         }
 
         return new MapData(dbMap.getId(), dbMap.getGameId(), dbMap.getHash(), convertedSpawns);
