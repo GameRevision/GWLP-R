@@ -5,7 +5,7 @@
 package gwlpr.host;
 
 import gwlpr.loginshard.controllers.Login;
-import gwlpr.loginshard.controllers.MapShardManagement;
+import gwlpr.loginshard.controllers.MapDispatch;
 import gwlpr.mapshard.controllers.CharacterCreation;
 import gwlpr.mapshard.controllers.Chat;
 import gwlpr.mapshard.controllers.Disconnect;
@@ -119,7 +119,7 @@ public class DevelopmentEnvironment implements Environment
             new gwlpr.loginshard.controllers.Handshake(),
             dummy)
         .addShardlet(new Login(),               dummy)
-        .addShardlet(new MapShardManagement(),  dummy)
+        .addShardlet(new MapDispatch(),  dummy)
         .addShardlet(
             new gwlpr.loginshard.controllers.StaticReply(),
             dummy);
