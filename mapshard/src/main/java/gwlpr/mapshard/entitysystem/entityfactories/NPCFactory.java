@@ -86,7 +86,7 @@ public class NPCFactory
         charData.secondary = Profession.None;
         charData.level = 1;
         
-        FactionData faction = new FactionData();
+        SpawnData faction = new SpawnData();
         faction.spawnType = SpawnType.NPC;
         faction.factionColor = 0x20;
         

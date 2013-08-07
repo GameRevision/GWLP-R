@@ -11,13 +11,11 @@ import io.netty.channel.Channel;
 import gwlpr.database.entities.Map;
 import gwlpr.mapshard.controllers.CharacterCreation;
 import gwlpr.mapshard.controllers.Chat;
-import gwlpr.mapshard.controllers.Disconnect;
-import gwlpr.mapshard.controllers.Handshake;
-import gwlpr.mapshard.controllers.HeartBeat;
+import gwlpr.mapshard.controllers.ClientDisconnect;
+import gwlpr.mapshard.controllers.LatencyAndSynchonization;
 import gwlpr.mapshard.controllers.InstanceLoad;
 import gwlpr.mapshard.controllers.MoveRotateClick;
-import gwlpr.mapshard.controllers.NewClient;
-import gwlpr.mapshard.controllers.Ping;
+import gwlpr.mapshard.controllers.ClientConnect;
 import gwlpr.mapshard.controllers.ShutDown;
 import gwlpr.mapshard.entitysystem.EntityManager;
 import gwlpr.mapshard.entitysystem.systems.AgentVisibilitySystem;
@@ -26,6 +24,10 @@ import gwlpr.mapshard.entitysystem.systems.CommandSystem;
 import gwlpr.mapshard.entitysystem.systems.MovementSystem;
 import gwlpr.mapshard.entitysystem.systems.SchedulingSystem;
 import gwlpr.mapshard.entitysystem.systems.SpawningSystem;
+import gwlpr.mapshard.models.HandleRegistryNotificationDecorator;
+import gwlpr.mapshard.models.WorldBean;
+import gwlpr.protocol.intershard.utils.DistrictLanguage;
+import gwlpr.protocol.intershard.utils.DistrictRegion;
 import realityshard.container.events.EventAggregator;
 import realityshard.container.gameapp.GameAppContext;
 import realityshard.container.gameapp.GameAppFactory;
@@ -77,43 +79,45 @@ public class MapShardFactory implements GameAppFactory
 
         // TODO: create db stuff
         
-        // parse the parameters
-        Map mapEntity = MapJpaController.get().findMap(Integer.parseInt(additionalParams.get("MapId")));
+        // parse the parameters for the worldbean
+        Map                 mapEntity   = MapJpaController.get().findMap(Integer.parseInt(  additionalParams.get("MapId")));
+        boolean             isPvP       = Boolean.parseBoolean(                             additionalParams.get("IsPvP"));
+        int                 instanceNum = Integer.parseInt(                                 additionalParams.get("InstanceNumber"));
+        DistrictRegion      region      = DistrictRegion.valueOf(                           additionalParams.get("DistrictRegion"));
+        DistrictLanguage    language    = DistrictLanguage.valueOf(                         additionalParams.get("DistrictLanguage"));
         
         // failcheck
         if (mapEntity == null) { return false; }
         
-        // create all the objects needed by controllers and systems
-        HandleRegistry<ClientBean> clientRegistry = new HandleRegistry<>();
-//      GameAppContext.Remote loginShard;
-        EntityManager es = new EntityManager();
-//      MapData mapData;
+        WorldBean world = new WorldBean(mapEntity, instanceNum, region, language, isPvP);
         
-        EventAggregator agg = thisContext.get().getEventAggregator();
+        // create all the objects needed by controllers and systems
+        EventAggregator eventAgg = thisContext.get().getEventAggregator();
+        HandleRegistry<ClientBean> clientRegistry = new HandleRegistryNotificationDecorator<>(eventAgg);
+        EntityManager entityManager = new EntityManager();
         
         // register the controllers
         thisContext.get().getEventAggregator()
                 // register for container related events
-                .register(new NewClient(thisContext, parentContext, clientRegistry, (mapEntity.getId() == 0)))
+                .register(new ClientConnect(thisContext, parentContext, clientRegistry, world, entityManager))
+                .register(new ClientDisconnect(thisContext, parentContext, entityManager))
+                .register(new ShutDown(thisContext, parentContext))
                 
                 // register for gw-protocol related events
-                .register(new Handshake())
-                .register(new HeartBeat())
+                .register(new LatencyAndSynchonization(clientRegistry))
                 .register(new CharacterCreation())
-                .register(new Chat())
-                .register(new Disconnect())
-                .register(new InstanceLoad())
-                .register(new MoveRotateClick())
-                .register(new Ping())
-                .register(new ShutDown())
+                .register(new Chat(eventAgg))
+                .register(new InstanceLoad(world, entityManager))
+                .register(new MoveRotateClick(eventAgg))
+                
         
         // register the CE systems
-                .register(new AgentVisibilitySystem(agg, es))
-                .register(new ChatSystem(agg, clientRegistry))
-                .register(new CommandSystem(agg, es, clientRegistry))
-                .register(new MovementSystem(agg, es, clientRegistry))
-                .register(new SchedulingSystem(agg))
-                .register(new SpawningSystem(agg, clientRegistry));
+                .register(new AgentVisibilitySystem(eventAgg, entityManager))
+                .register(new ChatSystem(eventAgg, clientRegistry))
+                .register(new CommandSystem(eventAgg, entityManager, clientRegistry))
+                .register(new MovementSystem(eventAgg, entityManager, clientRegistry))
+                .register(new SchedulingSystem(eventAgg))
+                .register(new SpawningSystem(eventAgg, clientRegistry));
         
         return true;
     }

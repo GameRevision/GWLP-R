@@ -6,7 +6,7 @@ package gwlpr.mapshard.events;
 
 import gwlpr.mapshard.entitysystem.Entity;
 import gwlpr.mapshard.models.enums.ChatChannel;
-import realityshard.shardlet.Event;
+import realityshard.container.events.Event;
 
 
 /**

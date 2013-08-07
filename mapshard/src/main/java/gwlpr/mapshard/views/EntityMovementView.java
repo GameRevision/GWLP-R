@@ -86,17 +86,16 @@ public class EntityMovementView
      * (The rotation is the direction actually, there might be differences but who cares
      * though this could be a possible BUG)
      */
-    public static void sendRotateAgent(Channel channel, Entity entity)
+    public static void sendRotateAgent(Channel channel, Entity entity, float cos, float sin)
     {
         // retrieve the entity related data we need...
         int agentID = entity.get(AgentIdentifiers.class).agentID;
-        float rotDiff = entity.get(Direction.class).rotation;
         
         P035_AgentRotate rot = new P035_AgentRotate();
         rot.init(channel);
         rot.setAgent(agentID);
-        rot.setRotation1(Float.floatToRawIntBits((float)Math.cos(rotDiff)));
-        rot.setRotation2(Float.floatToRawIntBits((float)Math.sin(rotDiff)));//0x40060A92);
+        rot.setRotation1(Float.floatToRawIntBits(cos));
+        rot.setRotation2(Float.floatToRawIntBits(sin));//0x40060A92);
 
         channel.write(rot);
     }

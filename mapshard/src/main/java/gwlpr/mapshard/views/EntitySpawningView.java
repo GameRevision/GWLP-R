@@ -47,7 +47,7 @@ public class EntitySpawningView
         Vector2 dir = direction.direction;
         float rotation = direction.rotation;
         Movement move = entity.get(Movement.class);
-        FactionData faction = entity.get(FactionData.class);
+        SpawnData faction = entity.get(SpawnData.class);
         
         if (faction.spawnType == SpawnType.Player)
         {

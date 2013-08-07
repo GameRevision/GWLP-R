@@ -4,20 +4,20 @@
 
 package gwlpr.mapshard.controllers;
 
-import gwlpr.database.entities.Map;
 import gwlpr.database.entities.Spawnpoint;
 import gwlpr.mapshard.entitysystem.Components;
 import gwlpr.mapshard.entitysystem.Entity;
 import gwlpr.mapshard.entitysystem.EntityManager;
 import gwlpr.mapshard.entitysystem.entityfactories.CharacterFactory;
 import gwlpr.mapshard.models.ClientBean;
+import gwlpr.mapshard.models.WorldBean;
 import gwlpr.mapshard.models.WorldPosition;
 import gwlpr.mapshard.models.enums.PlayerState;
 import gwlpr.mapshard.views.CharacterCreationView;
-import gwlpr.mapshard.views.HandshakeView;
+import gwlpr.mapshard.views.InstanceLoadView;
 import gwlpr.protocol.handshake.HandShakeDoneEvent;
 import gwlpr.protocol.handshake.IN1_VerifyClient;
-import gwlpr.protocol.handshake.IN2_ClientSeed;
+import gwlpr.protocol.intershard.GSNotify_ClientConnected;
 import gwlpr.protocol.intershard.GSReply_AcceptClient;
 import gwlpr.protocol.intershard.LSRequest_AcceptClient;
 import io.netty.channel.Channel;
@@ -27,7 +27,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import realityshard.container.events.Event;
-import realityshard.container.events.NetworkClientConnectedEvent;
 import realityshard.container.gameapp.GameAppContext;
 import realityshard.container.network.GameAppContextKey;
 import realityshard.container.util.Handle;
@@ -41,10 +40,10 @@ import realityshard.container.util.HandleRegistry;
  * 
  * @author _rusty
  */
-public class NewClient
+public class ClientConnect
 {
     
-    private static Logger LOGGER = LoggerFactory.getLogger(NewClient.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(ClientConnect.class);
     
     private final java.util.Map<UUID, ClientBean> uninitializedClients = new ConcurrentHashMap<>();
     
@@ -52,9 +51,8 @@ public class NewClient
     private final Handle<GameAppContext> loginShard;
     private final HandleRegistry<ClientBean> clientRegistry;
     
-    private final Map mapEntity;
+    private final WorldBean world;
     private final EntityManager entityManager;
-    private final boolean isCharCreate;
     
     
     /**
@@ -63,25 +61,22 @@ public class NewClient
      * @param       context                 This context
      * @param       loginShard              The parent context, i.e. the login shard.
      * @param       clientRegistry
-     * @param       mapEntity               The map DAO
+     * @param world 
      * @param       entityManager 
-     * @param       isCharCreate            True if this shard is used for char creation.
      */
-    public NewClient(
+    public ClientConnect(
             Handle<GameAppContext> context, 
             Handle<GameAppContext> loginShard, 
             HandleRegistry<ClientBean> clientRegistry,
-            Map mapEntity,
-            EntityManager entityManager, 
-            boolean isCharCreate)
+            WorldBean world,
+            EntityManager entityManager)
     {
         this.context = context;
         this.loginShard = loginShard;
         this.clientRegistry = clientRegistry;
         
-        this.mapEntity = mapEntity;
+        this.world = world;
         this.entityManager = entityManager;
-        this.isCharCreate = isCharCreate;
     }
     
     
@@ -144,52 +139,25 @@ public class NewClient
         // initialize the client bean first
         ClientBean client = uninitializedClients.remove(clientUid);
         client.init(action.getChannel());
-        client.setPlayerState(PlayerState.LoadingInstance);
         
-        // register it
-        Handle<ClientBean> clientHandle = clientRegistry.registerExisting(client, clientUid);
+        PlayerState state = world.isCharCreate() ? PlayerState.CreatingCharacter : PlayerState.LoadingInstance;
+        client.setPlayerState(state);
         
         // sign the client
         Channel channel = action.getChannel();
         channel.attr(GameAppContextKey.KEY).set(context.get());
         channel.attr(GameAppContextKey.IS_SET).set(true);
+        
+        // register it
+        // this will trigger an event from the client registry notification decorator,
+        // instructing other controllers to deal with this newly registered client
+        Handle<ClientBean> clientHandle = clientRegistry.registerExisting(client, clientUid);
         channel.attr(ClientBean.HANDLE_KEY).set(clientHandle);
         
-        
-        // check if this is a character creation mapshard
-        if (isCharCreate)
-        {
-            LOGGER.debug("Starting character creation");
-            CharacterCreationView.charCreateHead(channel);
-            return;
-        }
-        
-        // pick a random spawnpoint
-        Iterator<Spawnpoint> it = mapEntity.getSpawnpointCollection().iterator();
-        for (int i = 0; i < ((int)Math.random()*mapEntity.getSpawnpointCollection().size() -1); i++) {
-            it.next();
-        }
-        Spawnpoint spawn = it.next();
-        int radius = spawn.getRadius();
-        
-        // pick a random position in a certain radius
-        float t = (float)(2 * Math.PI * Math.random());
-        float r = (float)(radius * -1 + (Math.random() * radius));
-        WorldPosition pos = new WorldPosition(
-                (float)(spawn.getX() + (r * Math.cos(t))), 
-                (float)(spawn.getY() + (r * Math.sin(t))), 
-                spawn.getPlane());
-        
-        // create a new entity of this
-        Entity player = CharacterFactory.createCharacter(clientUid, client.getCharacter(), pos, entityManager);
-
-        client.setEntity(player);
-        client.setAgentIDs(player.get(Components.AgentIdentifiers.class));
-        
-        // using the attachment now looks a bit ugly,
-        // because we use the components here directly
-        // (this should not happen with other components!)
-        HandshakeView.charName(session, client.name);
-        HandshakeView.districtInfo(session, attach.getAgentIDs().localID, mapData.getMapID());
+        // also inform the login shard
+            loginShard.get().trigger(
+                    new GSNotify_ClientConnected(
+                        context.getUid(), 
+                        clientUid));       
     }
 }

@@ -156,15 +156,23 @@ public class MovementSystem extends GenericSystem
         // note that as the entity is not moving anymore, 
         // its future position is the position it has already reached!
         // this is necessary because the update movement view will send the future position
+        
+        Position pos = et.get(Position.class);
+        Direction dir = et.get(Direction.class);
         Movement move = et.get(Movement.class);
-        move.moveAim = et.get(Position.class).position;
+        
+        Vector2 direction1 = pos.position.vecWithEndpoint(move.moveAim);
+        
+        float angle = direction1.angleTo(dir.direction);
+        
+        move.moveAim = pos.position;
         move.moveType = MovementType.Stop;
         move.moveState = MovementState.NotMoving;
 
         // inform the clients
         for (Handle<ClientBean> clientHandle : clientRegistry.getAllHandles())
         {
-            EntityMovementView.sendRotateAgent(clientHandle.get().getChannel(), et);
+            EntityMovementView.sendRotateAgent(clientHandle.get().getChannel(), et, (float)Math.cos(angle), (float)Math.sin(angle));
             
             EntityMovementView.sendUpdateMovement(clientHandle.get().getChannel(), et);
         }
@@ -186,12 +194,12 @@ public class MovementSystem extends GenericSystem
         
         // and update the direction
         Direction dir = et.get(Direction.class);
-        dir.direction = rot.getNewDirection().getUnit();
+        dir.direction = dir.direction.applyRotation(rot.getCos(), rot.getSin());
 
         // inform the clients
         for (Handle<ClientBean> clientHandle : clientRegistry.getAllHandles())
         {
-            EntityMovementView.sendRotateAgent(clientHandle.get().getChannel(), et);
+            EntityMovementView.sendRotateAgent(clientHandle.get().getChannel(), et, rot.getCos(), rot.getSin());
         }
     }
 }

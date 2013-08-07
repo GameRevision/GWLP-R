@@ -4,14 +4,15 @@
 
 package gwlpr.mapshard.views;
 
-import gwlpr.protocol.gameserver.stoc.P141_UnknownAction;
-import gwlpr.protocol.gameserver.stoc.P378_UnknownAction;
+
+import gwlpr.database.entities.Character;
+import gwlpr.mapshard.models.enums.ErrorCode;
+import gwlpr.protocol.gameserver.outbound.P141_Unknown;
 import gwlpr.protocol.gameserver.outbound.P379_CharacterCreateHead;
 import gwlpr.protocol.gameserver.outbound.P380_CharacterCreateAcknowledge;
-import gwlpr.protocol.gameserver.stoc.P381_UnknownAction;
-import gwlpr.database.entities.Character;
+import gwlpr.protocol.gameserver.outbound.P378_Unknown;
+import gwlpr.protocol.gameserver.outbound.P381_CharacterCreateError;
 import io.netty.channel.Channel;
-import realityshard.shardlet.Session;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -39,50 +40,51 @@ public class CharacterCreationView
     /**
      * Step 2.
      */
-    public static void charCreateAck(Session session)
+    public static void charCreateAck(Channel channel)
     {
-        P380_CharacterCreateAcknowledgeAction createCharacterAck = new P380_CharacterCreateAcknowledgeAction();
-        createCharacterAck.init(session);
+        P380_CharacterCreateAcknowledge createCharacterAck = new P380_CharacterCreateAcknowledge();
+        createCharacterAck.init(channel);
         
-        session.send(createCharacterAck);
+        channel.write(createCharacterAck);
     }
     
     
     /**
      * Step 3.
      */
-    public static void unkownStep1(Session session)
+    public static void unkownStep1(Channel channel)
     {
-        P141_UnknownAction dAction = new P141_UnknownAction();
-        dAction.init(session);
+        P141_Unknown dAction = new P141_Unknown();
+        dAction.init(channel);
         dAction.setUnknown1((short) 248);
         
-        session.send(dAction);
+        channel.write(dAction);
     }
     
     
     /**
      * Step 3.1. Abort due to false name...
      */
-    public static void abort(Session session)
+    public static void error(Channel channel, ErrorCode errorCode)
     {
-        P381_UnknownAction mAction = new P381_UnknownAction();
-        mAction.init(session);
-        mAction.setUnknown1(29);
+        P381_CharacterCreateError mAction = new P381_CharacterCreateError();
+        mAction.init(channel);
+        mAction.setErroCode(errorCode.get());
         
-        session.send(mAction);
+        channel.write(mAction);
     }
     
     
     /**
      * Step 4. (final step)
+     * TODO fix this and reverse the packet more!
      */
-    public static void charCreateFinish(Session session, CharacterEntity chara)
+    public static void charCreateFinish(Channel channel, Character chara)
     {
-        P378_UnknownAction sAction = new P378_UnknownAction();
-        sAction.init(session);
+        P378_Unknown sAction = new P378_Unknown();
+        sAction.init(channel);
         sAction.setUnknown1(new byte[16]);
-        sAction.setUnknown2(chara.getName().toCharArray());
+        sAction.setUnknown2(chara.getName());
         sAction.setUnknown3((short) 81);
         
         ByteBuffer buffer = ByteBuffer.allocate(100).order(ByteOrder.LITTLE_ENDIAN);
@@ -90,22 +92,24 @@ public class CharacterCreationView
         buffer.putShort((short) 248);
         buffer.put(new byte[] {0x33, 0x36, 0x31, 0x30});
         
-        buffer.put((byte) ((chara.getSkin() << 5) | (chara.getHeight() << 1) | chara.getSex()));
-        buffer.put((byte) ((chara.getFace() << 7) | (chara.getSkin() >> 3)));
-        buffer.put((byte) ((chara.getPrimary() << 4) | (chara.getFace() >> 1)));
-        buffer.put((byte) ((chara.getCampaign() << 6) | chara.getHairstyle()));
+        buffer.put((byte) ((chara.getSkin().byteValue() << 5) | (chara.getHeight().byteValue() << 1) | chara.getSex().byteValue()));
+        buffer.put((byte) ((chara.getFace().byteValue() << 7) | (chara.getSkin().byteValue() >> 3)));
+        buffer.put((byte) ((chara.getPrimaryProfession().getId().byteValue() << 4) | (chara.getFace().byteValue() >> 1)));
+        buffer.put((byte) ((chara.getCampaign().byteValue() << 6) | chara.getHairstyle().byteValue()));
         
         buffer.put(new byte[16]);
 
-        byte level = 0; // TODO: replace this dummy variable
-        buffer.put((byte) ((level << 4) | chara.getCampaign()));                                                   
+        byte level = chara.getLevel().getLevel().byteValue();
+        buffer.put((byte) ((level << 4) | chara.getCampaign().byteValue()));                                                   
         
         buffer.put(new byte[] {-1, -0x23, -0x23, 0, -0x23, -0x23, -0x23, -0x23});
+        
         byte[] a = new byte[buffer.position()];
         buffer.position(0);
         buffer.get(a);
+        
         sAction.setUnknown4(a);
 
-        session.send(sAction);
+        channel.write(sAction);
     }
 }

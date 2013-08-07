@@ -4,10 +4,10 @@
 
 package gwlpr.mapshard.controllers;
 
-import gwlpr.actions.gameserver.ctos.P054_UnknownAction;
-import gwlpr.actions.gameserver.ctos.P055_UnknownAction;
-import gwlpr.actions.gameserver.ctos.P057_UnknownAction;
-import gwlpr.actions.gameserver.ctos.P064_UnknownAction;
+import gwlpr.protocol.gameserver.inbound.P054_MovementUpdate;
+import gwlpr.protocol.gameserver.inbound.P055_GotoPostion;
+import gwlpr.protocol.gameserver.inbound.P057_RotateAgent;
+import gwlpr.protocol.gameserver.inbound.P064_MovementStop;
 import gwlpr.mapshard.models.ClientBean;
 import gwlpr.mapshard.entitysystem.Entity;
 import gwlpr.mapshard.entitysystem.Components.*;
@@ -17,74 +17,71 @@ import gwlpr.mapshard.events.StopMovingEvent;
 import gwlpr.mapshard.models.WorldPosition;
 import gwlpr.mapshard.models.enums.MovementState;
 import gwlpr.mapshard.models.enums.MovementType;
-import gwlpr.mapshard.models.enums.StandardValue;
-import gwlpr.protocol.gameserver.inbound.P057_Unknown;
-import realityshard.shardlet.EventHandler;
-import realityshard.shardlet.Session;
-import realityshard.shardlet.utils.GenericShardlet;
+import gwlpr.protocol.util.Vector2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import realityshard.container.events.Event;
+import realityshard.container.events.EventAggregator;
 
 
 /**
- * This shardlet manages incoming movement updates.
+ * This manages incoming movement updates.
  * This also includes rotation and go-to-location
  *
  * @author _rusty
  */
-public class MoveRotateClick extends GenericShardlet
+public class MoveRotateClick
 {
 
     private static Logger LOGGER = LoggerFactory.getLogger(MoveRotateClick.class);
-
-
+    
+    private final EventAggregator aggregator;
+    
+    
     /**
-     * Init this shardlet.
+     * Constructor.
+     * 
+     * @param aggregator
      */
-    @Override
-    protected void init()
+    public MoveRotateClick(EventAggregator aggregator)
     {
-        LOGGER.info("MapShard: init Movement controller");
+        this.aggregator = aggregator;
     }
-
+    
 
     /**
      * Event handler.
      * Player has pressed a keyboard button to move.
+     * 
+     * @param       action 
      */
-    @EventHandler
-    public void onKeyboardMove(P054_UnknownAction keybMove)
+    @Event.Handler
+    public void onKeyboardMove(P054_MovementUpdate action)
     {
         // TODO verify data like mapData.validPosition(pos):boolean
 
-        Session session = keybMove.getSession();
-        ClientBean attach = (ClientBean) session.getAttachment();
-        Entity et = attach.getEntity();
+        ClientBean client = ClientBean.get(action.getChannel());
+        
+        Entity et = client.getEntity();
         Position pos = et.get(Position.class);
+        Direction dir = et.get(Direction.class);
         Movement move = et.get(Movement.class);
 
-        // extract all the necessary info from the action and convert it
-        WorldPosition position = WorldPosition.fromFloatArray(
-                keybMove.getUnknown1(),
-                keybMove.getUnknown2());
+        // extract info
+        WorldPosition position = new WorldPosition(
+                action.getPositionVector(),
+                (int) action.getPositionPlane());
 
-        WorldPosition direction = WorldPosition.fromFloatArray(
-                keybMove.getUnknown3(),
-                0);
+        Vector2 direction = action.getMoveDirection();
 
-        MovementType moveType = MovementType.fromInt(keybMove.getUnknown4());
+        MovementType moveType = MovementType.fromInt((int)action.getMovementType());
         
-        // TODO: check of this position calculation is correct...
-        // check if the client has a reasonable position (is near our calculated future position)
-        // in that case, update the position of the internal client representation
-        float dist = position.getDistanceTo(move.futurePosition);
+        // this should not be done directly:
+        pos.position = position;
+        dir.direction = direction;
         
-        // TODO DEBUG
-        if (true || dist <= StandardValue.RangeAdjacent.getVal())
-        {
-            pos.position = position;
-            //move.futurePosition = position;
-        }
+        // TODO check if the client is still in sync!
+        // else do nothing but send a position update packet
         
         // TODO DEBUG
         move.moveState = MovementState.MoveChangeDir;
@@ -92,7 +89,7 @@ public class MoveRotateClick extends GenericShardlet
 
         // produce an internal event. this might seem unnecessary, but another
         // module will handle the actual movement. this is just a front controller
-        publishEvent(new MoveEvent(et, direction, moveType));
+        aggregator.triggerEvent(new MoveEvent(et, direction, moveType));
 
         // we could also set/update the entities position here...
         // but we need to be sure it is valid (inside the map and no teleport)
@@ -103,57 +100,52 @@ public class MoveRotateClick extends GenericShardlet
      * Event handler.
      * Player has stopped moving around.
      *
-     * @param stopMove
+     * @param   action
      */
-    @EventHandler
-    public void onKeyboardStopMoving(P064_UnknownAction stopMove)
+    @Event.Handler
+    public void onKeyboardStopMoving(P064_MovementStop action)
     {
-        Session session = stopMove.getSession();
-        ClientBean attach = (ClientBean) session.getAttachment();
-        Entity et = attach.getEntity();
+        ClientBean client = ClientBean.get(action.getChannel());
+        
+        Entity et = client.getEntity();
         Position pos = et.get(Position.class);
         Movement move = et.get(Movement.class);
 
         // extract info
-        WorldPosition position = WorldPosition.fromFloatArray(
-                stopMove.getUnknown1(),
-                stopMove.getUnknown2());
+        WorldPosition position = new WorldPosition(
+                action.getPositionVector(),
+                (int) action.getPositionPlane());
         
-        // TODO: check of this position calculation is correct...
-        // check if the client has a reasonable position (is near our calculated future position)
-        // in that case, update the position of the internal client representation
-        float dist = position.getDistanceTo(move.futurePosition);
+        // this should not be done directly:
+        pos.position = position;
         
-        // TODO DEBUG
-        if (true || dist <= StandardValue.RangeAdjacent.getVal())
-        {
-            // set the position directly, as the char will not be moving anymore anyway
-            pos.position = position;
-        }
+        // TODO check if the client is still in sync!
+        // else do nothing but send a position update packet
         
         // also update the movement state, it can be done right now with no harm
         move.moveState = MovementState.NotMoving;
 
         // the internal event:
-        publishEvent(new StopMovingEvent(attach.getEntity()));
+        aggregator.triggerEvent(new StopMovingEvent(client.getEntity()));
     }
 
 
     /**
      * Event handler.
      * Player has pressed a keyboard button to move.
+     * 
+     * @param       action 
      */
-    @EventHandler
-    public void onKeyboardRotate(P057_Unknown keybRot)
+    @Event.Handler
+    public void onKeyboardRotate(P057_RotateAgent action)
     {
-        Session session = keybRot.getSession();
-        ClientBean attach = (ClientBean) session.getAttachment();
-
-        // extract info
-        WorldPosition direction = WorldPosition.fromRotation(keybRot.getUnknown1(), 1);
+        ClientBean client = ClientBean.get(action.getChannel());
+        
+        float rot1 = Float.intBitsToFloat((int)action.getRotation1());
+        float rot2 = Float.intBitsToFloat((int)action.getRotation2());
 
         // send internal event
-        publishEvent(new RotateEvent(attach.getEntity(), direction));
+        aggregator.triggerEvent(new RotateEvent(client.getEntity(), rot1, rot2));
     }
 
 
@@ -162,13 +154,12 @@ public class MoveRotateClick extends GenericShardlet
      * Player has clicked somewhere and we need to do the pathing...
      * (Or not, depending on the availability of any pathing system)
      *
-     * @param clickLoc
+     * @param       action
      */
-    @EventHandler
-    public void onClickLocation(P055_UnknownAction clickLoc)
+    @Event.Handler
+    public void onClickLocation(P055_GotoPostion action)
     {
-        Session session = clickLoc.getSession();
-        ClientBean attach = (ClientBean) session.getAttachment();
+        ClientBean client = ClientBean.get(action.getChannel());
 
         // TODO implement me!
         // we can also choose to ignore this, if the pathing stuff is too complex.

@@ -4,108 +4,66 @@
 
 package gwlpr.mapshard.controllers;
 
-import gwlpr.loginshard.ISC_EmptyMapshardNotifyAction;
-import gwlpr.loginshard.ISC_ShutdownMapshardRequestAction;
-import gwlpr.mapshard.ContextAttachment;
-import gwlpr.mapshard.events.InstantShutDownEvent;
-import gwlpr.mapshard.models.ClientLookupTable;
-import realityshard.shardlet.EventHandler;
-import realityshard.shardlet.events.GameAppCreatedEvent;
-import realityshard.shardlet.events.HeartBeatEvent;
-import realityshard.shardlet.utils.GenericShardlet;
+import gwlpr.mapshard.models.HandleRegistryNotificationDecorator;
+import gwlpr.protocol.intershard.GSNotify_WorldEmpty;
+import realityshard.container.events.Event;
+import realityshard.container.events.GameAppUnloadedEvent;
+import realityshard.container.gameapp.GameAppContext;
+import realityshard.container.util.Handle;
 
 
 /**
  * This controller handles the mapshard shutdown.
  * We have to listen for different events that might force us to shut down:
  * 
- * - no more clients:           ask the login shard if we can shut down,
- *                              and do so when requested
- * - internal shutdown events:  some other shardlet wants this game app to terminate.
- * - container shutdown:        the whole container is being shut down (nothing to do)
+ * - no more clients:           notify the login server of our emptiness :P
+ * - unload:                    the game app is being forced to shutdown. we may need
+ *                              to save data or something....
  * 
  * @author _rusty
  */
-public class ShutDown extends GenericShardlet
+public class ShutDown
 {
-    
-    private int mapId;
-    private ClientLookupTable clientlookup;
-    
-    private boolean notifySend = false;
-    
 
-    /**
-     * Nothing to do here.
-     */
-    @Override
-    protected void init() {}
-
+    private final Handle<GameAppContext> context;
+    private final Handle<GameAppContext> loginShard;
+    
     
     /**
-     * Executes startup features, like storing database references etc.
-     * 
-     * @param       event 
+     * Constructor.
+     *  
+     * @param       context
+     * @param       loginShard
      */
-    @EventHandler
-    public void onStartUp(GameAppCreatedEvent event)
+    public ShutDown(Handle<GameAppContext> context, Handle<GameAppContext> loginShard)
     {
-        ContextAttachment attach = ((ContextAttachment) getShardletContext().getAttachment());
-        
-        clientlookup = attach.getClientLookup();
-        mapId = attach.getMapData().getMapID();
+        this.context = context;
+        this.loginShard = loginShard;
     }
     
     
     /**
-     * Test if we do have no connected clients anymore
-     * (on every server tick - is this the best way to do it?)
+     * Event handler. Gets invoked when the client registry reports of being empty
      * 
      * @param       event 
      */
-    @EventHandler
-    public void onHearBeat(HeartBeatEvent event)
-    {
-        // failcheck (reset notify if necessary)
-        if (!clientlookup.isEmpty()) { notifySend = false; return; }
-        
-        // did we already send a notify?
-        if (notifySend) { return; }
-        
+    @Event.Handler
+    public void onClientRegistryEmpty(HandleRegistryNotificationDecorator.Empty event)
+    {       
         // inform the parent login shard
-        getShardletContext().getParentContext().sendTriggerableAction(new ISC_EmptyMapshardNotifyAction(mapId));
-        
-        notifySend = true;
+        loginShard.get().trigger(
+                new GSNotify_WorldEmpty(context.getUid()));
     }
     
     
     /**
-     * Another game app wants us to shut down.
-     * (This is a possible reply to the ISC_EmptyMapshardNotifyAction)
+     * Event handler.
      * 
-     * TODO: BUG: (security) can this be abused by a malicious client?
-     * 
-     * @param action 
+     * @param       event 
      */
-    @EventHandler
-    public void onRequestShutDown(ISC_ShutdownMapshardRequestAction action)
+    @Event.Handler
+    public void onUnload(GameAppUnloadedEvent event)
     {
-        // we will shut down, no matter what we did before
-        // this is requested, so no time is wasted on triggering last-minute events
-        getShardletContext().unload();
-    }
-    
-    
-    /**
-     * Another module of the game app triggered this event,
-     * we will do a simple shut down with no data saving.
-     * (just as above)
-     * 
-     * @param event 
-     */
-    @EventHandler
-    public void onInstantShutDown(InstantShutDownEvent event)
-    {
-        getShardletContext().unload();
+        // TODO: do we need to do anything? saving the data or what?
     }
 }

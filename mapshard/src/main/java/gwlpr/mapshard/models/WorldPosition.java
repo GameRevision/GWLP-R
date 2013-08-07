@@ -89,6 +89,14 @@ public final class WorldPosition extends Vector2 implements Cloneable
     {
         return this.div(getLength());
     }
+    
+    
+    public Vector2 vecWithEndpoint(WorldPosition pos)
+    {
+        return new Vector2(
+                pos.getX() - getX(),
+                pos.getY() - getY());
+    }
 
 
     public float getDistanceTo(WorldPosition pos)
@@ -97,36 +105,6 @@ public final class WorldPosition extends Vector2 implements Cloneable
     }
 
 
-    /**
-     * Turn this gw vector into a rotation value (radian measure?)
-     * 
-     * TODO fix this rotation stuff
-     * 
-     * @return
-     */
-    public float toRotation()
-    {
-        return (float) Math.atan2(getY(), getX());
-    }
-
-
-    /**
-     * Convert a rotation and r (polar coord) to a GWVector.
-     * No Z plane given, cause rotation usually doesnt have a plane.
-     *
-     * @param       rotation                The rotation in radian measure.
-     * @param       r                       Distance from coord zero.
-     * @return      A new GWVector.
-     */
-    public static WorldPosition fromRotation(float rotation, float r)
-    {
-        float x = (float) (r * Math.cos(rotation));
-        float y = (float) (r * Math.sin(rotation));
-
-        return new WorldPosition(x, y, 0);
-    }
-    
-    
     public short getZPlane() 
     { 
         return (short) zPlane; 

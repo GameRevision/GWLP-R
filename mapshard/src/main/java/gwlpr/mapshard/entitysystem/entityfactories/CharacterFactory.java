@@ -103,11 +103,15 @@ public class CharacterFactory
         charData.primary = Profession.values()[dBChar.getPrimaryProfession().getId()];
         charData.secondary = Profession.values()[dBChar.getSecondaryProfession().getId()];
         charData.level = dBChar.getLevel().getLevel();
+        // TODO: load the attribute stuff here
         
-        FactionData faction = new FactionData();
+        SpawnData spawnData = new SpawnData();
+        
+        FactionData factionData = new FactionData();
+        // TODO: load the faction stuff here
         
         // build the entity
-        result.addAll(name, agentIDs, position, direction, move, bBox, chat, appearance, view, visibility, charData, faction);
+        result.addAll(name, agentIDs, position, direction, move, bBox, chat, appearance, view, visibility, charData, spawnData, factionData);
         
         return result;
     }

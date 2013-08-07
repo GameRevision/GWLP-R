@@ -12,6 +12,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import java.util.ArrayList;
 import java.util.Collection;
+import realityshard.container.network.ConnectionStateHandler;
 import realityshard.container.network.MessageDemuxDecoder;
 
 
@@ -32,6 +33,7 @@ public class MapShardChannelInitializer  extends ChannelInitializer<Channel>
         
         // inbound handlers
         ch.pipeline().addLast(
+                new ConnectionStateHandler(),
                 HandshakeHandler.produceGameHandshake(),
                 new GameServerCodec(),
                 new MessageDemuxDecoder(),

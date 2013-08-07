@@ -6,7 +6,7 @@ package gwlpr.mapshard.events;
 
 import gwlpr.mapshard.entitysystem.Entity;
 import gwlpr.mapshard.models.WorldPosition;
-import realityshard.shardlet.Event;
+import realityshard.container.events.Event;
 
 
 /**
@@ -18,7 +18,8 @@ public class RotateEvent implements Event
 {
 
     private final Entity thisEntity;
-    private final WorldPosition newDirection;
+    private final float cos;
+    private final float sin;
 
 
     /**
@@ -26,31 +27,28 @@ public class RotateEvent implements Event
      *
      * @param       thisEntity
      */
-    public RotateEvent(Entity thisEntity, WorldPosition newDirection)
+    public RotateEvent(Entity thisEntity, float cos, float sin)
     {
         this.thisEntity = thisEntity;
-        this.newDirection = newDirection;
+        this.cos = cos;
+        this.sin = sin;
     }
 
 
-    /**
-     * Getter.
-     *
-     * @return
-     */
     public Entity getThisEntity()
     {
         return thisEntity;
     }
 
-
-    /**
-     * Getter.
-     *  
-     * @return
-     */
-    public WorldPosition getNewDirection()
+    
+    public float getCos() 
     {
-        return newDirection;
+        return cos;
     }
+
+    
+    public float getSin() 
+    {
+        return sin;
+    }    
 }

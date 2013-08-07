@@ -55,6 +55,30 @@ public final class ClientBean
     }
     
     
+    /**
+     * Convenience method. Use with a game channel only!
+     * 
+     * @param       channel
+     * @return      The bean attached to it, or null.
+     */
+    public static ClientBean get(Channel channel)
+    {
+        return getHandle(channel).get();
+    }
+    
+    
+    /**
+     * Convenience method. Use with a game channel only!
+     * 
+     * @param       channel
+     * @return      The clientbean handle, or null.
+     */
+    public static Handle<ClientBean> getHandle(Channel channel)
+    {
+        return channel.attr(ClientBean.HANDLE_KEY).get();
+    }
+    
+    
     public void init(Channel channel)
     {
         // simulate 'final'

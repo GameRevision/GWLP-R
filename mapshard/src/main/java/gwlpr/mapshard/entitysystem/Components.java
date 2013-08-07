@@ -5,16 +5,22 @@
 package gwlpr.mapshard.entitysystem;
 
 import gwlpr.mapshard.models.WorldPosition;
+import gwlpr.mapshard.models.enums.Attribute;
 import gwlpr.mapshard.models.enums.ChatColor;
+import gwlpr.mapshard.models.enums.Faction;
 import gwlpr.mapshard.models.enums.MovementType;
 import gwlpr.mapshard.models.enums.MovementState;
 import gwlpr.mapshard.models.enums.Profession;
 import gwlpr.mapshard.models.enums.SpawnType;
 import gwlpr.mapshard.models.enums.StandardValue;
 import gwlpr.protocol.util.Vector2;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -102,7 +108,7 @@ public class Components
     }
     
     
-    public static class FactionData implements Component {
+    public static class SpawnData implements Component {
         public volatile SpawnType spawnType = SpawnType.Player;
         public volatile byte factionColor = 0x30; // TODO: enum pls. and find the colors. //npc=0x20, some other player=0x30
     }
@@ -113,5 +119,21 @@ public class Components
         public volatile Profession secondary = Profession.None;
         public volatile int level = 1;
         public volatile int morale = 100;
+        public volatile int experience = 0;
+        public volatile int attributeFreePts = 0;
+        public volatile int attributeMaxPts = 0;
+        public volatile Map<Attribute, Integer> attributePtsSpentOn = new HashMap<>();
+    }
+    
+    
+    public static class FactionData implements Component {
+        public Map<Faction, Integer[]> factionPoints = new HashMap<>();
+    }
+    
+    
+    public static class Skills implements Component {
+        public volatile List<Short> availableSkills = new ArrayList<>();
+        public volatile List<Integer> skillbar = new ArrayList<>();
+        public volatile List<Integer> pvpmask = new ArrayList<>();
     }
 }
