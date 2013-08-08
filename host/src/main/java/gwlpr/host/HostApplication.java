@@ -11,7 +11,6 @@ import java.util.List;
 import realityshard.container.ContainerFacade;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.logging.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import realityshard.container.GlobalExecutor;
@@ -69,7 +68,8 @@ public final class HostApplication
         } 
         catch (Exception ex) 
         {
-            logger.error("Container failed to start up.");
+            logger.error("Container failed to start up.", ex);
+            System.exit(0);
             return;
         }
         
