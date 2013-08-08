@@ -22,7 +22,7 @@ public class OUT_ServerSeed
 
     @Override
     public short getHeader() {
-        return 5633;
+        return 5632;
     }
 
     public void setEncryptedRC4Key(byte[] encryptedRC4Key) {
