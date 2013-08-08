@@ -29,11 +29,11 @@ public class LoginShardChannelInitializer extends ChannelInitializer<Channel>
     {
         // inbound handlers
         ch.pipeline().addLast(
+                new LoggingHandler(),
                 new ConnectionStateHandler(),
                 HandshakeHandler.produceLoginHandshake(),
                 new LoginServerCodec(),
-                new MessageDemuxDecoder(),
-                new LoggingHandler());
+                new MessageDemuxDecoder());
     }
     
 }
