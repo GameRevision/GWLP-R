@@ -32,7 +32,7 @@ public class ChatMessageView
         sendMessage.init(channel);
         sendMessage.setFormattedMessage(GWString.formatChat(message));
 
-        channel.write(sendMessage);
+        channel.writeAndFlush(sendMessage);
 
         // then tell the client about the owner/sender
         if (ownerLocalID == 0)
@@ -42,7 +42,7 @@ public class ChatMessageView
             noOwner.setOwner((short) 0);
             noOwner.setChatColor((byte) color.ordinal());//ChatColor.DarkOrange_DarkOrange.ordinal());
 
-            channel.write(noOwner);
+            channel.writeAndFlush(noOwner);
         }
         else
         {
@@ -51,7 +51,7 @@ public class ChatMessageView
             messageOwner.setOwner((short) ownerLocalID);
             messageOwner.setChatColor((byte) color.ordinal());
 
-            channel.write(messageOwner);
+            channel.writeAndFlush(messageOwner);
         }
     }
 }

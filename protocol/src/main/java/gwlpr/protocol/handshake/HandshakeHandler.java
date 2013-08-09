@@ -29,6 +29,8 @@ import realityshard.container.network.RC4Codec;
  * This is full of magic numbers, but the actual classes cant be stuffed with the
  * shit, as they need to be serializable!
  * 
+ * TODO: refactor me ;)
+ * 
  * @author _rusty
  */
 public class HandshakeHandler extends ByteToMessageDecoder
@@ -41,6 +43,8 @@ public class HandshakeHandler extends ByteToMessageDecoder
      */
     private int expectedLength;
     private IN1_VerifyClient verifyClient = null;
+    
+    private final EncryptionOptions encrypted;
 
     
     /**
@@ -60,27 +64,28 @@ public class HandshakeHandler extends ByteToMessageDecoder
      * 
      * @param       expectedLength          Length of first expected packet
      */
-    private HandshakeHandler(int expectedLength)
+    private HandshakeHandler(int expectedLength, EncryptionOptions encrypted)
     {
         this.expectedLength = expectedLength;
+        this.encrypted = encrypted;
     }
     
     
     /**
      * Factory method.
      */
-    public static HandshakeHandler produceLoginHandshake()
+    public static HandshakeHandler produceLoginHandshake(EncryptionOptions encrypted)
     {
-        return new HandshakeHandler(new IN1_ClientVersion().getHeader());
+        return new HandshakeHandler(new IN1_ClientVersion().getHeader(), encrypted);
     }
     
     
     /**
      * Factory method.
      */
-    public static HandshakeHandler produceGameHandshake()
+    public static HandshakeHandler produceGameHandshake(EncryptionOptions encrypted)
     {
-        return new HandshakeHandler(new IN1_VerifyClient().getHeader());
+        return new HandshakeHandler(new IN1_VerifyClient().getHeader(), encrypted);
     }
     
     
@@ -89,22 +94,24 @@ public class HandshakeHandler extends ByteToMessageDecoder
     {
         if (in.readableBytes() < 16 + 66) { return; }
         
+        ByteBuf order;
+        
         LOGGER.debug(String.valueOf(in.readableBytes()));
         
         switch (expectedLength)
         {
             case 1024: // client version:
                 {
-                    in.order(ByteOrder.BIG_ENDIAN);
+                    order = in.order(ByteOrder.BIG_ENDIAN);
                 
-                    LOGGER.debug(String.valueOf(in.readShort()));
+                    LOGGER.debug(String.valueOf(order.readShort()));
                     
-                    in.order(ByteOrder.LITTLE_ENDIAN);
+                    order = in.order(ByteOrder.LITTLE_ENDIAN);
                     
                     // deserialize the packet
                     NettySerializationFilter filter = GWMessageSerializationRegistry.getFilter(IN1_ClientVersion.class);
                     IN1_ClientVersion clientVersion = new IN1_ClientVersion();
-                    filter.deserialize(in, clientVersion);
+                    filter.deserialize(order, clientVersion);
                     
                     LOGGER.debug(String.format("Got the client version: %d", clientVersion.getClientVersion()));
                 } 
@@ -112,16 +119,16 @@ public class HandshakeHandler extends ByteToMessageDecoder
                 
             case 1280: // verify client:
                 {
-                    in.order(ByteOrder.BIG_ENDIAN);
+                    order = in.order(ByteOrder.BIG_ENDIAN);
                 
-                    LOGGER.debug(String.valueOf(in.readShort()));
+                    LOGGER.debug(String.valueOf(order.readShort()));
                     
-                    in.order(ByteOrder.LITTLE_ENDIAN);
+                    order = in.order(ByteOrder.LITTLE_ENDIAN);
                     
                     // deserialize the packet
                     NettySerializationFilter filter = GWMessageSerializationRegistry.getFilter(IN1_VerifyClient.class);
                     verifyClient = new IN1_VerifyClient();
-                    filter.deserialize(in, verifyClient);
+                    filter.deserialize(order, verifyClient);
                     
                     LOGGER.debug("Got the verify client packet.");
                 } 
@@ -129,18 +136,18 @@ public class HandshakeHandler extends ByteToMessageDecoder
         }
 
         // server seed:
-        in.order(ByteOrder.BIG_ENDIAN);
+        order = in.order(ByteOrder.BIG_ENDIAN);
                 
-        LOGGER.debug(String.valueOf(in.readShort()));
+        LOGGER.debug(String.valueOf(order.readShort()));
 
-        in.order(ByteOrder.LITTLE_ENDIAN);
+        order = in.order(ByteOrder.LITTLE_ENDIAN);
 
         LOGGER.debug("Got the client seed packet.");
 
         // deserialize the packet
         NettySerializationFilter filter = GWMessageSerializationRegistry.getFilter(IN2_ClientSeed.class);
         IN2_ClientSeed clientSeed = new IN2_ClientSeed();
-        filter.deserialize(in, clientSeed);
+        filter.deserialize(order, clientSeed);
 
         // generate the shared key
         byte[] sharedKeyBytes = EncryptionUtils.generateSharedKey(clientSeed.getClientPublicKey());
@@ -153,9 +160,13 @@ public class HandshakeHandler extends ByteToMessageDecoder
         // encrypt the RC4 key before sending it to the client
         byte[] xoredRandomBytes = EncryptionUtils.XOR(randomBytes, sharedKeyBytes);
 
-        // we can set the RC4 decoder now...
-        RC4Codec.Decoder decoder = new RC4Codec.Decoder(rc4Key);
-        ctx.pipeline().addFirst(decoder);
+        // we can set the RC4 decoder now... if encryption is enabled
+        if (encrypted == EncryptionOptions.Enable)
+        {
+            RC4Codec.Decoder decoder = new RC4Codec.Decoder(rc4Key);
+            ctx.pipeline().addFirst(decoder);
+            LOGGER.debug("RC4Decoder added to pipeline.");
+        }
 
         // now send the server seed packet
         OUT_ServerSeed serverSeed = new OUT_ServerSeed();
@@ -163,7 +174,7 @@ public class HandshakeHandler extends ByteToMessageDecoder
         
         ByteBuf seed = ctx.alloc().buffer(70);
         seed.order(ByteOrder.BIG_ENDIAN);
-        seed.writeShort(22);
+        seed.writeShort(0x01 << 8 | 22);
         seed.order(ByteOrder.LITTLE_ENDIAN);
         
         filter = GWMessageSerializationRegistry.getFilter(OUT_ServerSeed.class);
@@ -180,13 +191,18 @@ public class HandshakeHandler extends ByteToMessageDecoder
             @Override
             public void operationComplete(ChannelFuture future) throws Exception 
             {
-                // add the rc4 codec
-                RC4Codec.Encoder encoder = new RC4Codec.Encoder(rc4Key);
-                ctx.pipeline().addFirst(encoder);
+                if (encrypted == EncryptionOptions.Enable)
+                {
+                    // add the rc4 codec if encryption is enabled
+                    RC4Codec.Encoder encoder = new RC4Codec.Encoder(rc4Key);
+                    ctx.pipeline().addFirst( 
+                            encoder);
+                    LOGGER.debug("RC4Encoder added to pipeline.");
+                }
 
                 // tell the channel's context that handshake has been done
                 ctx.channel().attr(GameAppContextKey.KEY).get().trigger(
-                        new HandShakeDoneEvent(verifyClient));
+                        new HandShakeDoneEvent(ctx.channel(), verifyClient));
             }
         });
     }

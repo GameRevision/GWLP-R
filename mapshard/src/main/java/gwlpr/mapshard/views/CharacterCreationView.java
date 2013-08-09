@@ -33,7 +33,7 @@ public class CharacterCreationView
         P379_CharacterCreateHead startCharacterCreation = new P379_CharacterCreateHead();
         startCharacterCreation.init(channel);
         
-        channel.write(startCharacterCreation);
+        channel.writeAndFlush(startCharacterCreation);
     }
 
     
@@ -45,7 +45,7 @@ public class CharacterCreationView
         P380_CharacterCreateAcknowledge createCharacterAck = new P380_CharacterCreateAcknowledge();
         createCharacterAck.init(channel);
         
-        channel.write(createCharacterAck);
+        channel.writeAndFlush(createCharacterAck);
     }
     
     
@@ -58,7 +58,7 @@ public class CharacterCreationView
         dAction.init(channel);
         dAction.setUnknown1((short) 248);
         
-        channel.write(dAction);
+        channel.writeAndFlush(dAction);
     }
     
     
@@ -71,7 +71,7 @@ public class CharacterCreationView
         mAction.init(channel);
         mAction.setErroCode(errorCode.get());
         
-        channel.write(mAction);
+        channel.writeAndFlush(mAction);
     }
     
     
@@ -110,6 +110,6 @@ public class CharacterCreationView
         
         sAction.setUnknown4(a);
 
-        channel.write(sAction);
+        channel.writeAndFlush(sAction);
     }
 }

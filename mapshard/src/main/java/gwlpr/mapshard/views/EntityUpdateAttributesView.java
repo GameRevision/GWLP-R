@@ -38,6 +38,6 @@ public class EntityUpdateAttributesView
         updateAttributePoints.setFreePts((byte) freePts);
         updateAttributePoints.setMaxPts((byte) maxPts);
 
-        channel.write(updateAttributePoints);
+        channel.writeAndFlush(updateAttributePoints);
     }
 }

@@ -28,7 +28,7 @@ public final class ClientBean
     public static final AttributeKey<Handle<ClientBean>> HANDLE_KEY = new AttributeKey<>(ClientBean.class.getName());
     
     
-    private Channel channel;
+    private Channel channel = null;
     private final Account account;
     private final Character character;
     
@@ -82,7 +82,7 @@ public final class ClientBean
     public void init(Channel channel)
     {
         // simulate 'final'
-        if (channel == null)
+        if (this.channel == null)
         {
             this.channel = channel;
         }

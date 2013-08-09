@@ -54,13 +54,19 @@ public class Login
     {
         LOGGER.debug("A new client wants to log in");
         
-        // get the channel attachment for that channel
+        // update the action counter...
+        // note that the client doesn actually exist yet.
+        // we call this statically because the caunter is an extra attribute
+        // for this channel, and this is a convenience method
         Channel channel = action.getChannel();
+        ClientBean.setLoginCount(channel, action.getLoginCount());
         
         // get the login credentials
         String email = action.getEmail();
         String password = new String(action.getPassword(), CHARSET_UTF16);
         String characterName = action.getCharacterName();
+        
+        if (email == null || characterName == null) { return; }
         
         // now lets verify that data we just got,
         // so call the model that handles that
@@ -79,7 +85,7 @@ public class Login
         LOGGER.info("Client successfully logged in. [email {} ]", email);
         
         // create the client's bean
-        ClientBean client = new ClientBean(channel, action.getLoginCount(), model.getAccount(), model.getChara());
+        ClientBean client = new ClientBean(channel, model.getAccount(), model.getChara());
         
         // register it
         ClientBean.set(channel, clientHandleRegistry.register(client));

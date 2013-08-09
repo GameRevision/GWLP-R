@@ -4,6 +4,7 @@
 
 package gwlpr.protocol.handshake;
 
+import io.netty.channel.Channel;
 import realityshard.container.events.Event;
 
 
@@ -17,13 +18,21 @@ import realityshard.container.events.Event;
  */
 public class HandShakeDoneEvent implements Event
 {
+    private final Channel channel;
     
     private final IN1_VerifyClient verifyClient;
     
     
-    public HandShakeDoneEvent(IN1_VerifyClient verifyClient)
+    public HandShakeDoneEvent(Channel channel, IN1_VerifyClient verifyClient)
     {
+        this.channel = channel;
         this.verifyClient = verifyClient;
+    }
+
+    
+    public Channel getChannel() 
+    {
+        return channel;
     }
 
     

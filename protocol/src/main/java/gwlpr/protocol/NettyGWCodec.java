@@ -29,9 +29,9 @@ public abstract class NettyGWCodec extends ByteToMessageCodec<GWMessage>
     private final static Logger LOGGER = LoggerFactory.getLogger(NettyGWCodec.class);
 
     @Override
-    public void decode(ChannelHandlerContext ctx, ByteBuf buf, List<Object> result) 
+    public void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> result) 
     {
-        buf.order(ByteOrder.LITTLE_ENDIAN);
+        ByteBuf buf = in.order(ByteOrder.LITTLE_ENDIAN);
         
         while (buf.isReadable())
         {
@@ -40,17 +40,20 @@ public abstract class NettyGWCodec extends ByteToMessageCodec<GWMessage>
             // get the header failsafe
             int header = buf.readableBytes() >= 2 ? buf.readShort() : -1;
             
+            // failcheck
+            if (header == -1) { return; }
+            
             // try get the message class
             Class<? extends GWMessage> messageClazz = getByHeader(header);
+            
+            // failcheck
+            if (messageClazz == null) { buf.resetReaderIndex(); return; }
             
             // try retrieve the serialization filter
             NettySerializationFilter filter = GWMessageSerializationRegistry.getFilter(messageClazz);
             
-            if ((header == -1) || messageClazz == null || filter == null)
-            {
-                buf.resetReaderIndex();
-                return;
-            }
+            // failcheck
+            if (filter == null) { buf.resetReaderIndex(); return; }
             
             // try create the message
             Message message;
@@ -66,6 +69,9 @@ public abstract class NettyGWCodec extends ByteToMessageCodec<GWMessage>
                 return;
             }
             
+            // dont forget to initialize the message
+            message.init(ctx.channel());
+            
             // try serialize the message
             if (!filter.deserialize(buf, message))
             {
@@ -75,14 +81,18 @@ public abstract class NettyGWCodec extends ByteToMessageCodec<GWMessage>
             
             // finally add the message
             result.add(message);
+            
+            LOGGER.debug("Got: {}", message.toString());
         }
     }
 
 
     @Override
-    public void encode(ChannelHandlerContext ctx, GWMessage message, ByteBuf result) 
+    public void encode(ChannelHandlerContext ctx, GWMessage message, ByteBuf out) 
     {
-        result.order(ByteOrder.LITTLE_ENDIAN);
+        ByteBuf result = out.order(ByteOrder.LITTLE_ENDIAN);
+        
+        LOGGER.debug("Put: {}", message.toString());
         
         GWMessage gwact = message;
         int header = gwact.getHeader();

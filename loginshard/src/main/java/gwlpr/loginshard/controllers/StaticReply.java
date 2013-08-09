@@ -4,8 +4,11 @@
 
 package gwlpr.loginshard.controllers;
 
+import gwlpr.loginshard.models.ClientBean;
+import gwlpr.loginshard.models.enums.ErrorCode;
 import gwlpr.protocol.loginserver.inbound.P001_ComputerUser;
 import gwlpr.loginshard.views.StaticReplyView;
+import gwlpr.protocol.loginserver.inbound.P053_RequestResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import realityshard.container.events.Event;
@@ -34,5 +37,19 @@ public class StaticReply
         LOGGER.debug("Got a computer user packet");
         
         StaticReplyView.computerInfoReply(action.getChannel());
+    }
+    
+    
+    /**
+     * Event handler.
+     * 
+     * @param action 
+     */
+    @Event.Handler
+    public void onRequestResponse(P053_RequestResponse action)
+    {
+        ClientBean.setLoginCount(action.getChannel(), action.getLoginCount());
+        
+        StaticReplyView.sendResponse(action.getChannel(), ErrorCode.None);
     }
 }

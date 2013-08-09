@@ -34,7 +34,7 @@ public class TimeDeltaView
         heartBeat.init(channel);
         heartBeat.setTimeDelta(timeInterval);
         
-        channel.write(heartBeat);
+        channel.writeAndFlush(heartBeat);
     }
     
     
@@ -48,7 +48,7 @@ public class TimeDeltaView
         P001_PingRequest ping = new P001_PingRequest();
         ping.init(channel);
         
-        channel.write(ping);
+        channel.writeAndFlush(ping);
     }
     
     
@@ -64,6 +64,6 @@ public class TimeDeltaView
         ping.init(channel);
         ping.setLatency(latency);
         
-        channel.write(ping);
+        channel.writeAndFlush(ping);
     }
 }

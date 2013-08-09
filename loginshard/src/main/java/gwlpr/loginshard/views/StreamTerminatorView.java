@@ -27,7 +27,7 @@ public class StreamTerminatorView
     {
         P003_StreamTerminator streamTerminator = new P003_StreamTerminator();
         streamTerminator.init(channel);
-        streamTerminator.setLoginCount(ClientBean.get(channel).getLoginCount());
+        streamTerminator.setLoginCount(ClientBean.getPerformedActionsCount(channel));
         streamTerminator.setErrorCode(errorCode.get());
         
         // log it in case of error
@@ -36,6 +36,6 @@ public class StreamTerminatorView
             LOGGER.debug(String.format("Channel [%s] encountered an error: %s", channel.remoteAddress().toString(), errorCode.message()));
         }
         
-        channel.write(streamTerminator);
+        channel.writeAndFlush(streamTerminator);
     }
 }

@@ -4,6 +4,7 @@
 
 package gwlpr.loginshard.controllers;
 
+import gwlpr.loginshard.models.ClientBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import realityshard.container.events.Event;
@@ -49,5 +50,9 @@ public class NewClient
         // we take all the clients!
         event.getChannel().attr(GameAppContextKey.KEY).set(context);
         event.getChannel().attr(GameAppContextKey.IS_SET).set(true);
+        
+        // dont forget to set the performed actions counter here.
+        // this is a.k.a login count
+        event.getChannel().attr(ClientBean.LOGIN_COUNT).set(0);
     }
 }

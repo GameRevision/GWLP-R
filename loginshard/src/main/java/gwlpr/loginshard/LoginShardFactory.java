@@ -6,6 +6,7 @@ package gwlpr.loginshard;
 
 import gwlpr.loginshard.models.ClientBean;
 import gwlpr.loginshard.controllers.*;
+import gwlpr.protocol.handshake.EncryptionOptions;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class LoginShardFactory implements GameAppFactory
         bootstrap.childAttr(ClientBean.HANDLE_KEY, null);
         
         // create the pipeline-factory
-        bootstrap.childHandler(new LoginShardChannelInitializer());
+        bootstrap.childHandler(new LoginShardChannelInitializer(EncryptionOptions.Enable));
         
         // finally, bind and sync
         return bootstrap.bind(8112).sync().channel();

@@ -16,8 +16,6 @@ import gwlpr.mapshard.models.enums.SpawnType;
 import gwlpr.protocol.gameserver.outbound.P023_FadeIntoMap;
 import gwlpr.protocol.gameserver.outbound.P126_Unknown;
 import gwlpr.protocol.gameserver.outbound.P127_Unknown;
-import gwlpr.protocol.gameserver.outbound.P206_UpdateSkillBar;
-import gwlpr.protocol.gameserver.outbound.P221_UpdateFaction;
 import gwlpr.protocol.gameserver.outbound.P230_InstanceLoadAgentInfo;
 import gwlpr.protocol.gameserver.outbound.P309_CreateInventoryPage;
 import gwlpr.protocol.gameserver.outbound.P310_UpdateGoldOnCharacter;
@@ -48,7 +46,7 @@ public class InstanceLoadView
         instanceLoadHead.setUnknown3((byte) 0);
         instanceLoadHead.setUnknown4((byte) 0);
         
-        channel.write(instanceLoadHead);
+        channel.writeAndFlush(instanceLoadHead);
     }
     
     
@@ -61,7 +59,7 @@ public class InstanceLoadView
         instanceLoadCharName.init(channel);
         instanceLoadCharName.setCharName(name);
         
-        channel.write(instanceLoadCharName);
+        channel.writeAndFlush(instanceLoadCharName);
     }
     
     
@@ -75,13 +73,14 @@ public class InstanceLoadView
         P395_InstanceLoadDistrictInfo instanceLoadDistrictInfo = new P395_InstanceLoadDistrictInfo();
         instanceLoadDistrictInfo.init(channel);
         instanceLoadDistrictInfo.setCharAgent(localID);
-        instanceLoadDistrictInfo.setDistrictAndRegion(((short)world.getInstanceNumber()) << 16 | world.getRegion().get());
+        instanceLoadDistrictInfo.setDistrictNumber(world.getInstanceNumber());
+        instanceLoadDistrictInfo.setRegion(world.getRegion().get());
         instanceLoadDistrictInfo.setLanguage(world.getLanguage().get());
         instanceLoadDistrictInfo.setMapID((short) world.getMap().getGameID());
         instanceLoadDistrictInfo.setIsExplorable((byte)(!world.isOutpost() ? 1 : 0));
         instanceLoadDistrictInfo.setIsObserver((byte) 0);
         
-        channel.write(instanceLoadDistrictInfo);
+        channel.writeAndFlush(instanceLoadDistrictInfo);
     }
     
     
@@ -98,7 +97,7 @@ public class InstanceLoadView
         itemStreamCreate.setStreamID((short) 1);
         itemStreamCreate.setIsHero((byte) 0);
 
-        channel.write(itemStreamCreate);
+        channel.writeAndFlush(itemStreamCreate);
 
 
         P318_UpdateActiveWeaponset updateActiveWeaponset = new P318_UpdateActiveWeaponset();
@@ -106,7 +105,7 @@ public class InstanceLoadView
         updateActiveWeaponset.setStreamID((short) 1);
         updateActiveWeaponset.setSlot((byte) 0);
 
-        channel.write(updateActiveWeaponset);
+        channel.writeAndFlush(updateActiveWeaponset);
 
 
         P309_CreateInventoryPage createInventoryPage = new P309_CreateInventoryPage();
@@ -118,7 +117,7 @@ public class InstanceLoadView
         createInventoryPage.setStorage((byte) 16);
         createInventoryPage.setAssociatedItem(0);
 
-        channel.write(createInventoryPage);
+        channel.writeAndFlush(createInventoryPage);
 
 
         P310_UpdateGoldOnCharacter updateGoldOnCharacter = new P310_UpdateGoldOnCharacter();
@@ -126,7 +125,7 @@ public class InstanceLoadView
         updateGoldOnCharacter.setStreamID((short) 1);
         updateGoldOnCharacter.setGold(0);
 
-        channel.write(updateGoldOnCharacter);
+        channel.writeAndFlush(updateGoldOnCharacter);
 
 
         P393_Unknown itemStreamTerminator = new P393_Unknown();
@@ -135,7 +134,7 @@ public class InstanceLoadView
         itemStreamTerminator.setUnknown2((short) gameMapId);
         itemStreamTerminator.setUnknown3(0);
 
-        channel.write(itemStreamTerminator);
+        channel.writeAndFlush(itemStreamTerminator);
     }
     
     
@@ -156,7 +155,7 @@ public class InstanceLoadView
         instanceLoadSpawnPoint.setIsCinematic((byte) 0);
         instanceLoadSpawnPoint.setUnknown1((byte) 0);
 
-        channel.write(instanceLoadSpawnPoint);
+        channel.writeAndFlush(instanceLoadSpawnPoint);
     }
     
     
@@ -179,7 +178,7 @@ public class InstanceLoadView
         P230_InstanceLoadAgentInfo beginAgentInfo = new P230_InstanceLoadAgentInfo();
         beginAgentInfo.init(channel);
         beginAgentInfo.setSpawnType(spawnType.getIntString());
-        channel.write(beginAgentInfo);
+        channel.writeAndFlush(beginAgentInfo);
 
         
         // set some initial values
@@ -204,13 +203,13 @@ public class InstanceLoadView
         zoneDataPrepMapData.setUnknown2(128);
         zoneDataPrepMapData.setUnknown3(27);
 
-        channel.write(zoneDataPrepMapData);
+        channel.writeAndFlush(zoneDataPrepMapData);
 
         P126_Unknown zoneDataMapData = new P126_Unknown();
         zoneDataMapData.init(channel);
-        zoneDataMapData.setUnknown1(new P126_Unknown.NestedUnknown1[1]);
+        zoneDataMapData.setUnknown1(new P126_Unknown.NestedUnknown1[] { new P126_Unknown.NestedUnknown1() });
 
-        channel.write(zoneDataMapData);
+        channel.writeAndFlush(zoneDataMapData);
 
 
         // send the faction values
@@ -231,6 +230,6 @@ public class InstanceLoadView
         fadeIntoMap.setAgentID(agentID);
         fadeIntoMap.setUnknown1(3);
 
-        channel.write(fadeIntoMap);
+        channel.writeAndFlush(fadeIntoMap);
     }
 }

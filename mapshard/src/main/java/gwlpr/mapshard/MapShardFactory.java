@@ -26,6 +26,7 @@ import gwlpr.mapshard.entitysystem.systems.SchedulingSystem;
 import gwlpr.mapshard.entitysystem.systems.SpawningSystem;
 import gwlpr.mapshard.models.HandleRegistryNotificationDecorator;
 import gwlpr.mapshard.models.WorldBean;
+import gwlpr.protocol.handshake.EncryptionOptions;
 import gwlpr.protocol.intershard.utils.DistrictLanguage;
 import gwlpr.protocol.intershard.utils.DistrictRegion;
 import realityshard.container.events.EventAggregator;
@@ -64,7 +65,7 @@ public class MapShardFactory implements GameAppFactory
         bootstrap.childAttr(ClientBean.HANDLE_KEY, null);
         
         // create the pipeline-factory
-        bootstrap.childHandler(new MapShardChannelInitializer());
+        bootstrap.childHandler(new MapShardChannelInitializer(EncryptionOptions.Enable));
         
         // finally, bind and sync
         return bootstrap.bind(9112).sync().channel();
@@ -99,7 +100,7 @@ public class MapShardFactory implements GameAppFactory
         // register the controllers
         thisContext.get().getEventAggregator()
                 // register for container related events
-                .register(new ClientConnect(thisContext, parentContext, clientRegistry, world, entityManager))
+                .register(new ClientConnect(thisContext, parentContext, clientRegistry, world))
                 .register(new ClientDisconnect(thisContext, parentContext, entityManager))
                 .register(new ShutDown(thisContext, parentContext))
                 

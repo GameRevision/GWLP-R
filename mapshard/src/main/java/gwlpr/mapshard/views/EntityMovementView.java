@@ -42,7 +42,7 @@ public class EntityMovementView
         moveDir.setDirection(dir);
         moveDir.setMovementType(movT.getVal());
 
-        channel.write(moveDir);
+        channel.writeAndFlush(moveDir);
     }
 
 
@@ -66,7 +66,7 @@ public class EntityMovementView
         speedMod.setModifier(movT.getSpeedModifier());
         speedMod.setMovementType(movT.getVal());
 
-        channel.write(speedMod);
+        channel.writeAndFlush(speedMod);
 
         // TODO check me: this is probably the place that the player would reach within
         // the next time step.
@@ -77,7 +77,7 @@ public class EntityMovementView
         moveToPoint.setCurrentPlane(curPos.getZPlane());
         moveToPoint.setNextPlane(moveTo.getZPlane());
 
-        channel.write(moveToPoint);
+        channel.writeAndFlush(moveToPoint);
     }
 
 
@@ -97,6 +97,6 @@ public class EntityMovementView
         rot.setRotation1(Float.floatToRawIntBits(cos));
         rot.setRotation2(Float.floatToRawIntBits(sin));//0x40060A92);
 
-        channel.write(rot);
+        channel.writeAndFlush(rot);
     }
 }

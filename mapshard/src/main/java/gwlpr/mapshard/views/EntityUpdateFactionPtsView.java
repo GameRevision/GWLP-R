@@ -56,6 +56,6 @@ public class EntityUpdateFactionPtsView
             updateFaction.setBalthTotal(factionData.get(Faction.Balthazar)[1]);
         }
 
-        channel.write(updateFaction);
+        channel.writeAndFlush(updateFaction);
     }
 }

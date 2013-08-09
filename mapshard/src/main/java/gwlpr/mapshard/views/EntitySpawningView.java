@@ -82,7 +82,7 @@ public class EntitySpawningView
         spawnAgent.setUnknown12(new Vector2(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY));
         spawnAgent.setUnknown15(new Vector2(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY));
         
-        channel.write(spawnAgent);
+        channel.writeAndFlush(spawnAgent);
     }
 
 
@@ -101,7 +101,7 @@ public class EntitySpawningView
         despawn.init(channel);
         despawn.setAgentID(agentIDs.agentID);
 
-        channel.write(despawn);
+        channel.writeAndFlush(despawn);
     }
     
     
@@ -132,7 +132,7 @@ public class EntitySpawningView
         genStats.setName(npc.hashedName);
         genStats.setUnknown1(0);
 
-        channel.write(genStats);
+        channel.writeAndFlush(genStats);
         
         // prepare NPC model file hash
         P075_NPCModel.NestedModelFile[] modelFile = new P075_NPCModel.NestedModelFile[npc.modelHashes.length];
@@ -146,7 +146,7 @@ public class EntitySpawningView
         npcModel.setLocalID(agentIDs.localID);
         npcModel.setModelFile(modelFile);
 
-        channel.write(npcModel);
+        channel.writeAndFlush(npcModel);
         
         // if the NPC has got a special name, send it now:
         if (!"".equals(name) && !"NoName".equals(name))
@@ -174,7 +174,7 @@ public class EntitySpawningView
         updNPCName.setAgentID(agentIDs.agentID);
         updNPCName.setName(GWString.formatChat(name));
         
-        channel.write(updNPCName);
+        channel.writeAndFlush(updNPCName);
     }
     
     
@@ -202,7 +202,7 @@ public class EntitySpawningView
         updateAppear.setUnknown3(0x3CBFA094);
         updateAppear.setName(name);
 
-        channel.write(updateAppear);
+        channel.writeAndFlush(updateAppear);
     }
 
 

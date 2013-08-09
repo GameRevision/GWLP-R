@@ -52,6 +52,6 @@ public class MapDispatchView
         referToGameServer.setServerConnectionInfo(buf.array());
         referToGameServer.setSecurityKey2(clientUid.hashCode());
         
-        channel.write(referToGameServer);
+        channel.writeAndFlush(referToGameServer);
     }
 }

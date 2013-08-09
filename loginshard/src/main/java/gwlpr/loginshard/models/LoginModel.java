@@ -35,6 +35,8 @@ public class LoginModel
         account = AccountJpaController.get().findAccount(eMail);
         chara = null;
         
+        if (account == null) { return; }
+        
         for (Character character : account.getCharacterCollection()) 
         {
             // this way we can make sure that the character exists and the

@@ -15,7 +15,18 @@ public final class P395_InstanceLoadDistrictInfo
     private long charAgent;
     private int mapID;
     private short isExplorable;
-    private long districtAndRegion;
+    /**
+     * 
+     * Differs from the dumps: short + short, not int.
+     * 
+     */
+    private int districtNumber;
+    /**
+     * 
+     * Differs from the dumps: short + short, not int.
+     * 
+     */
+    private int region;
     private short language;
     private short isObserver;
 
@@ -36,8 +47,12 @@ public final class P395_InstanceLoadDistrictInfo
         this.isExplorable = isExplorable;
     }
 
-    public void setDistrictAndRegion(long districtAndRegion) {
-        this.districtAndRegion = districtAndRegion;
+    public void setDistrictNumber(int districtNumber) {
+        this.districtNumber = districtNumber;
+    }
+
+    public void setRegion(int region) {
+        this.region = region;
     }
 
     public void setLanguage(short language) {
@@ -51,7 +66,7 @@ public final class P395_InstanceLoadDistrictInfo
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("P395_InstanceLoadDistrictInfo[");
-        sb.append("charAgent=").append(this.charAgent).append(",mapID=").append(this.mapID).append(",isExplorable=").append(this.isExplorable).append(",districtAndRegion=").append(this.districtAndRegion).append(",language=").append(this.language).append(",isObserver=").append(this.isObserver).append("]");
+        sb.append("charAgent=").append(this.charAgent).append(",mapID=").append(this.mapID).append(",isExplorable=").append(this.isExplorable).append(",districtNumber=").append(this.districtNumber).append(",region=").append(this.region).append(",language=").append(this.language).append(",isObserver=").append(this.isObserver).append("]");
         return sb.toString();
     }
 

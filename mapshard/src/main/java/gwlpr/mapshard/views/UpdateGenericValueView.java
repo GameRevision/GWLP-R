@@ -31,7 +31,7 @@ public class UpdateGenericValueView
         updateGenericValueInt.setAgentID(agentID);
         updateGenericValueInt.setValue(value);
 
-        channel.write(updateGenericValueInt);
+        channel.writeAndFlush(updateGenericValueInt);
     }
 
     public static void send(Channel channel, int agentID, GenericValue valueID, float value)
@@ -42,7 +42,7 @@ public class UpdateGenericValueView
         updateGenericValueFloat.setAgentID(agentID);
         updateGenericValueFloat.setValue(Float.floatToRawIntBits(value));
 
-        channel.write(updateGenericValueFloat);
+        channel.writeAndFlush(updateGenericValueFloat);
     }
 
     public static void send(Channel channel, int targetAgentID, int casterAgentID, GenericValue valueID, int value)
@@ -54,7 +54,7 @@ public class UpdateGenericValueView
         updateGenericValueTarget.setCaster(casterAgentID);
         updateGenericValueTarget.setValue(value);
 
-        channel.write(updateGenericValueTarget);
+        channel.writeAndFlush(updateGenericValueTarget);
     }
 
     public static void send(Channel channel, int targetAgentID, int casterAgentID, GenericValue valueID, float value)
@@ -66,6 +66,6 @@ public class UpdateGenericValueView
         updateGenericValueModifier.setCaster(casterAgentID);
         updateGenericValueModifier.setValue(Float.floatToRawIntBits(value));
 
-        channel.write(updateGenericValueModifier);
+        channel.writeAndFlush(updateGenericValueModifier);
     }
 }

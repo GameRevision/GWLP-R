@@ -15,6 +15,8 @@ import java.util.List;
 /**
  * Update an agents skillbar
  * 
+ * TODO refactor me!
+ * 
  * @author _rusty
  */
 public class EntityUpdateSkillsView 
@@ -34,7 +36,7 @@ public class EntityUpdateSkillsView
         // static data: new int[] {0x000B0000, 0x0354FFFF, 0x043A043B, 0x00E8043A, 0x00000000, 0x00000000, 0x17000000}
         updateAvailableSkills.setSkillsBitfield(getSkillsBitfield(skills.availableSkills));
 
-        channel.write(updateAvailableSkills);
+        channel.writeAndFlush(updateAvailableSkills);
         
     }
     
@@ -46,13 +48,28 @@ public class EntityUpdateSkillsView
         
         // prepare the skill data
         P206_UpdateSkillBar.NestedSkillBar[] skillBar = new P206_UpdateSkillBar.NestedSkillBar[8];
-        for (int i = 0; i < skills.skillbar.size(); i++) {
-            skillBar[i].setUnknown1(skills.skillbar.get(i));
+        for (int i = 0; i < 8; i++) 
+        {
+            skillBar[i] = new P206_UpdateSkillBar.NestedSkillBar();
+            skillBar[i].setUnknown1(0);
+            
+            if (skills.skillbar != null && (i < skills.skillbar.size()))
+            {
+                skillBar[i].setUnknown1(skills.skillbar.get(i));
+            }
         }
         
+        // TODO: the mask is instance specific... how is it implemented in the database? :P
         P206_UpdateSkillBar.NestedSkillBarPvPMask[] mask = new P206_UpdateSkillBar.NestedSkillBarPvPMask[8];
-        for (int i = 0; i < skills.skillbar.size(); i++) {
-            mask[i].setUnknown1(skills.pvpmask.get(i));
+        for (int i = 0; i < 8; i++) 
+        {
+            mask[i] = new P206_UpdateSkillBar.NestedSkillBarPvPMask();
+            mask[i].setUnknown1(0);
+            
+            if (skills.pvpmask != null && i < skills.pvpmask.size())
+            {
+                mask[i].setUnknown1(skills.pvpmask.get(i));
+            }
         }
         
         
@@ -63,7 +80,7 @@ public class EntityUpdateSkillsView
         updateSkillbar.setSkillBarPvPMask(mask);
         updateSkillbar.setUnknown1((byte) 1);
 
-        channel.write(updateSkillbar);
+        channel.writeAndFlush(updateSkillbar);
     }
     
     
@@ -95,6 +112,7 @@ public class EntityUpdateSkillsView
         // finally create the array we can send to the client
         P207_AvailableSkills.NestedSkillsBitfield[] nested = new P207_AvailableSkills.NestedSkillsBitfield[minLen];
         for (int i = 0; i < nested.length; i++) {
+            nested[i] = new P207_AvailableSkills.NestedSkillsBitfield();
             nested[i].setUnknown1(maxSkillsBits[i]);            
         }
         

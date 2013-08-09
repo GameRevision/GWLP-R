@@ -36,6 +36,6 @@ public class EntityUpdatePrivateProfessionsView
         updatePrivateProfessions.setSecondaryProf((byte) secondary);
         updatePrivateProfessions.setIsPvP((byte) (isPvP ? 1 : 0));
 
-        channel.write(updatePrivateProfessions);
+        channel.writeAndFlush(updatePrivateProfessions);
     }
 }

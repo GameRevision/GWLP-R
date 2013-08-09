@@ -66,7 +66,7 @@ public class HandleRegistryNotificationDecorator<T> extends HandleRegistry<T>
     @Override
     public Handle<T> registerExisting(T object, UUID uid)
     {
-        Handle<T> result = super.register(object);
+        Handle<T> result = super.registerExisting(object, uid);
         
         if (result != null)
         {

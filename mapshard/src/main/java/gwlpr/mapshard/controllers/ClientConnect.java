@@ -4,24 +4,15 @@
 
 package gwlpr.mapshard.controllers;
 
-import gwlpr.database.entities.Spawnpoint;
-import gwlpr.mapshard.entitysystem.Components;
-import gwlpr.mapshard.entitysystem.Entity;
-import gwlpr.mapshard.entitysystem.EntityManager;
-import gwlpr.mapshard.entitysystem.entityfactories.CharacterFactory;
 import gwlpr.mapshard.models.ClientBean;
 import gwlpr.mapshard.models.WorldBean;
-import gwlpr.mapshard.models.WorldPosition;
 import gwlpr.mapshard.models.enums.PlayerState;
-import gwlpr.mapshard.views.CharacterCreationView;
-import gwlpr.mapshard.views.InstanceLoadView;
 import gwlpr.protocol.handshake.HandShakeDoneEvent;
 import gwlpr.protocol.handshake.IN1_VerifyClient;
 import gwlpr.protocol.intershard.GSNotify_ClientConnected;
 import gwlpr.protocol.intershard.GSReply_AcceptClient;
 import gwlpr.protocol.intershard.LSRequest_AcceptClient;
 import io.netty.channel.Channel;
-import java.util.Iterator;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
@@ -52,7 +43,6 @@ public class ClientConnect
     private final HandleRegistry<ClientBean> clientRegistry;
     
     private final WorldBean world;
-    private final EntityManager entityManager;
     
     
     /**
@@ -61,22 +51,19 @@ public class ClientConnect
      * @param       context                 This context
      * @param       loginShard              The parent context, i.e. the login shard.
      * @param       clientRegistry
-     * @param world 
-     * @param       entityManager 
+     * @param       world 
      */
     public ClientConnect(
             Handle<GameAppContext> context, 
             Handle<GameAppContext> loginShard, 
             HandleRegistry<ClientBean> clientRegistry,
-            WorldBean world,
-            EntityManager entityManager)
+            WorldBean world)
     {
         this.context = context;
         this.loginShard = loginShard;
         this.clientRegistry = clientRegistry;
         
         this.world = world;
-        this.entityManager = entityManager;
     }
     
     
@@ -113,18 +100,24 @@ public class ClientConnect
     @Event.Handler
     public void onHandshakeDone(HandShakeDoneEvent event)
     {
+        LOGGER.debug("Got a new client to verify.");
+        
         IN1_VerifyClient action = event.getVerifyClient();
         
         // failcheck
         if (action == null) { return; }
         
+        LOGGER.debug("{} - {}", (int)action.getKey1(), context.getUid().hashCode());
+        
         // check the server key
         if (((int)action.getKey1()) != context.getUid().hashCode()) { return; }
-        
+      
         // check if we got the client key
         UUID clientUid = null;
         for (UUID uuid : uninitializedClients.keySet()) 
         {
+            LOGGER.debug("{} - {}", (int)action.getKey2(), uuid.hashCode());
+            
             if (((int)action.getKey2()) == uuid.hashCode())
             {
                 // found the client!
@@ -135,16 +128,18 @@ public class ClientConnect
         
         // failcheck
         if (clientUid == null) { return; }
+        
+        LOGGER.debug("Client accepted.");
 
         // initialize the client bean first
         ClientBean client = uninitializedClients.remove(clientUid);
-        client.init(action.getChannel());
+        client.init(event.getChannel());
         
         PlayerState state = world.isCharCreate() ? PlayerState.CreatingCharacter : PlayerState.LoadingInstance;
         client.setPlayerState(state);
         
         // sign the client
-        Channel channel = action.getChannel();
+        Channel channel = client.getChannel();
         channel.attr(GameAppContextKey.KEY).set(context.get());
         channel.attr(GameAppContextKey.IS_SET).set(true);
         
@@ -155,9 +150,11 @@ public class ClientConnect
         channel.attr(ClientBean.HANDLE_KEY).set(clientHandle);
         
         // also inform the login shard
-            loginShard.get().trigger(
-                    new GSNotify_ClientConnected(
-                        context.getUid(), 
-                        clientUid));       
+        loginShard.get().trigger(
+                new GSNotify_ClientConnected(
+                    context.getUid(), 
+                    clientUid));       
+            
+        LOGGER.debug("Client connected to the server successfully.");
     }
 }

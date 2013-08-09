@@ -101,8 +101,10 @@ public class CharacterFactory
         // load some char data
         CharData charData = new CharData();
         charData.primary = Profession.values()[dBChar.getPrimaryProfession().getId()];
-        charData.secondary = Profession.values()[dBChar.getSecondaryProfession().getId()];
-        charData.level = dBChar.getLevel().getLevel();
+        int secondary = dBChar.getSecondaryProfession() == null ? 0 : dBChar.getSecondaryProfession().getId();
+        charData.secondary = Profession.values()[secondary];
+        // TODO: fix the level!!!
+        charData.level = 1;//dBChar.getLevel().getLevel();
         // TODO: load the attribute stuff here
         
         SpawnData spawnData = new SpawnData();
@@ -110,8 +112,11 @@ public class CharacterFactory
         FactionData factionData = new FactionData();
         // TODO: load the faction stuff here
         
+        Skills skills = new Skills();
+        // TODO: load the skills stuff here
+        
         // build the entity
-        result.addAll(name, agentIDs, position, direction, move, bBox, chat, appearance, view, visibility, charData, spawnData, factionData);
+        result.addAll(name, agentIDs, position, direction, move, bBox, chat, appearance, view, visibility, charData, spawnData, factionData, skills);
         
         return result;
     }

@@ -23,22 +23,25 @@ public final class ClientBean
      * Used to access the client-handle attribute of a login session
      */
     public static final AttributeKey<Handle<ClientBean>> HANDLE_KEY = new AttributeKey<>(ClientBean.class.getName());
-    
+
+    /**
+     * Needs to be extra so we can keep it attached to the channel even
+     * if the client logs out
+     */
+    public static final AttributeKey<Integer> LOGIN_COUNT = new AttributeKey<>(ClientBean.class.getName()+"_performed_actions");
     
     private final Channel channel;
     private final Account account;
     
-    private long loginCount;
     private Character character;
     
     // the game server id is set if the client is connected to a game server.
     private Handle<GameAppContext> mapShardHandle;
 
     
-    public ClientBean(Channel channel, long loginCount, Account acc, Character chara)
+    public ClientBean(Channel channel, Account acc, Character chara)
     {
         this.channel = channel;
-        this.loginCount = loginCount;
         this.account = acc;
         this.character = chara;
     }
@@ -94,13 +97,25 @@ public final class ClientBean
     
     public long getLoginCount()
     {
-        return loginCount;
+        return channel.attr(ClientBean.LOGIN_COUNT).get();
+    }
+    
+    
+    public static long getPerformedActionsCount(Channel channel)
+    {
+        return channel.attr(ClientBean.LOGIN_COUNT).get();
     }
     
     
     public void setLoginCount(long loginCount) 
     {
-        this.loginCount = loginCount;
+        channel.attr(ClientBean.LOGIN_COUNT).set((int)loginCount);
+    }
+    
+    
+    public static void setLoginCount(Channel channel, long loginCount) 
+    {
+        channel.attr(ClientBean.LOGIN_COUNT).set((int)loginCount);
     }
     
 

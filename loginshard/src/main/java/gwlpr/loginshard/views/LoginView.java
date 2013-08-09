@@ -60,7 +60,8 @@ public class LoginView
 
             buffer.put(new byte[16]);
 
-            byte level = character.getLevel().getLevel().byteValue();
+            // TODO implement the level as not null
+            byte level = 0;//character.getLevel().getLevel().byteValue();
             buffer.put((byte) ((level << 4) | character.getCampaign()));                                                   
 
             buffer.put(new byte[] {-1, -0x23, -0x23, 0, -0x23, -0x23, -0x23, -0x23});
@@ -69,7 +70,7 @@ public class LoginView
             buffer.get(a);
             characterInfo.setCharacterInfo(a);
 
-            channel.write(characterInfo);
+            channel.writeAndFlush(characterInfo);
         }
 
         // next step:
@@ -84,7 +85,8 @@ public class LoginView
         P022_AccountGuiInfo accountGuiSettings = new P022_AccountGuiInfo();
         accountGuiSettings.init(channel);
         accountGuiSettings.setLoginCount(ClientBean.get(channel).getLoginCount());
-        channel.write(accountGuiSettings);
+        accountGuiSettings.setSettings(new byte[] {});
+        channel.writeAndFlush(accountGuiSettings);
         
         // next step:
         sendFriendInfo(channel, ErrorCode.None);
@@ -99,7 +101,7 @@ public class LoginView
         friendListEnd.init(channel);
         friendListEnd.setLoginCount(ClientBean.get(channel).getLoginCount());
         friendListEnd.setUnknown1(1);
-        channel.write(friendListEnd);
+        channel.writeAndFlush(friendListEnd);
 
 
         LOGGER.debug("Sending account permissions");
@@ -117,7 +119,7 @@ public class LoginView
         accountPermissions.setAccountFeatures(new byte[] { 0x01, 0x00, 0x06, 0x00, 0x57, 0x00, 0x01, 0x00 });
         accountPermissions.setEulaAccepted((byte) 23);
         accountPermissions.setUnknown5(0);
-        channel.write(accountPermissions);
+        channel.writeAndFlush(accountPermissions);
 
         
         LOGGER.debug("Sending stream terminator");
