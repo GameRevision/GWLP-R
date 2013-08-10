@@ -4,9 +4,10 @@
 
 package gwlpr.protocol.handshake;
 
-import gwlpr.protocol.serialization.GWMessageSerializationRegistry;
-import static gwlpr.protocol.serialization.GWMessageSerializationRegistry.register;
-import gwlpr.protocol.serialization.NettySerializationFilter;
+import gwlpr.protocol.handshake.messages.P000_VerifyClient;
+import gwlpr.protocol.handshake.messages.P000_ClientVersion;
+import gwlpr.protocol.handshake.messages.P000_ClientSeed;
+import gwlpr.protocol.handshake.messages.P001_ServerSeed;
 import realityshard.container.util.EncryptionUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
@@ -25,132 +26,117 @@ import realityshard.container.network.RC4Codec;
 /**
  * Handshake is basically the same for LS and GS,
  * just the first packets that are sent differ (client version and verify client)
- * 
+ *
  * This is full of magic numbers, but the actual classes cant be stuffed with the
  * shit, as they need to be serializable!
- * 
+ *
  * TODO: refactor me ;)
- * 
+ *
  * @author _rusty
  */
 public class HandshakeHandler extends ByteToMessageDecoder
 {
-    
-    private static final Logger LOGGER = LoggerFactory.getLogger(HandshakeHandler.class);
-    
-    /**
-     * Expected length of the next packet (this is more or less the header)
-     */
-    private int expectedLength;
-    private IN1_VerifyClient verifyClient = null;
-    
-    private final EncryptionOptions encrypted;
 
-    
-    /**
-     * Static Constructor.
-     */
-    static 
-    {
-        register(IN1_ClientVersion.class);
-        register(IN1_VerifyClient.class);
-        register(IN2_ClientSeed.class);
-        register(OUT_ServerSeed.class);
-    }
-    
-    
+    private static final Logger LOGGER = LoggerFactory.getLogger(HandshakeHandler.class);
+
+    private final EncryptionOptions encryption;
+    private final ServerOptions server;
+
+    // this will be given to the game app later on, in the HandShakeDone event
+    private P000_VerifyClient.Payload verifyClient = null;
+
+
     /**
      * Constructor.
-     * 
+     *
      * @param       expectedLength          Length of first expected packet
      */
-    private HandshakeHandler(int expectedLength, EncryptionOptions encrypted)
+    private HandshakeHandler(EncryptionOptions encryption, ServerOptions server)
     {
-        this.expectedLength = expectedLength;
-        this.encrypted = encrypted;
+        this.encryption = encryption;
+        this.server = server;
     }
-    
-    
+
+
     /**
      * Factory method.
      */
     public static HandshakeHandler produceLoginHandshake(EncryptionOptions encrypted)
     {
-        return new HandshakeHandler(new IN1_ClientVersion().getHeader(), encrypted);
+        return new HandshakeHandler(encrypted, ServerOptions.LoginServer);
     }
-    
-    
+
+
     /**
      * Factory method.
      */
     public static HandshakeHandler produceGameHandshake(EncryptionOptions encrypted)
     {
-        return new HandshakeHandler(new IN1_VerifyClient().getHeader(), encrypted);
+        return new HandshakeHandler(encrypted, ServerOptions.GameServer);
     }
-    
-    
+
+
     @Override
-    protected void decode(final ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception 
+    protected void decode(final ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception
     {
-        if (in.readableBytes() < 16 + 66) { return; }
-        
-        ByteBuf order;
-        
-        LOGGER.debug(String.valueOf(in.readableBytes()));
-        
-        switch (expectedLength)
+
+        ByteBuf buf = in.order(ByteOrder.LITTLE_ENDIAN);
+
+        switch (server)
         {
-            case 1024: // client version:
+            case LoginServer: // client version:
                 {
-                    order = in.order(ByteOrder.BIG_ENDIAN);
-                
-                    LOGGER.debug(String.valueOf(order.readShort()));
-                    
-                    order = in.order(ByteOrder.LITTLE_ENDIAN);
-                    
-                    // deserialize the packet
-                    NettySerializationFilter filter = GWMessageSerializationRegistry.getFilter(IN1_ClientVersion.class);
-                    IN1_ClientVersion clientVersion = new IN1_ClientVersion();
-                    filter.deserialize(order, clientVersion);
-                    
-                    LOGGER.debug(String.format("Got the client version: %d", clientVersion.getClientVersion()));
-                } 
+                    // lengthcheck
+                    if (buf.readableBytes() < (P000_ClientVersion.getLength() + P000_ClientSeed.getLength())) { return; }
+
+                    // get the header
+                    P000_ClientVersion.Header header = P000_ClientVersion.serializeHeader(buf);
+
+                    // check the header
+                    if (header == null || !P000_ClientVersion.check(header)) { return; }
+
+                    // get the data
+                    P000_ClientVersion.Payload payload = P000_ClientVersion.serializePayload(buf);
+
+                    LOGGER.debug(String.format("Got the client version: %d", payload.ClientVersion));
+                }
                 break;
-                
-            case 1280: // verify client:
+
+            case GameServer: // verify client:
                 {
-                    order = in.order(ByteOrder.BIG_ENDIAN);
-                
-                    LOGGER.debug(String.valueOf(order.readShort()));
-                    
-                    order = in.order(ByteOrder.LITTLE_ENDIAN);
-                    
-                    // deserialize the packet
-                    NettySerializationFilter filter = GWMessageSerializationRegistry.getFilter(IN1_VerifyClient.class);
-                    verifyClient = new IN1_VerifyClient();
-                    filter.deserialize(order, verifyClient);
-                    
-                    LOGGER.debug("Got the verify client packet.");
-                } 
+                    // lengthcheck
+                    if (buf.readableBytes() < (P000_VerifyClient.getLength() + P000_ClientSeed.getLength())) { return; }
+
+                    // get the header
+                    P000_VerifyClient.Header header = P000_VerifyClient.serializeHeader(buf);
+
+                    // check the header
+                    if (header == null || !P000_VerifyClient.check(header)) { return; }
+
+                    // get the data
+                    verifyClient = P000_VerifyClient.serializePayload(buf);
+
+                    LOGGER.debug(String.format("Got the verify client packet."));
+                }
                 break;
         }
 
-        // server seed:
-        order = in.order(ByteOrder.BIG_ENDIAN);
-                
-        LOGGER.debug(String.valueOf(order.readShort()));
+        // client seed:
+        // get the header
+        P000_ClientSeed.Header header = P000_ClientSeed.serializeHeader(buf);
 
-        order = in.order(ByteOrder.LITTLE_ENDIAN);
+        // check the header
+        if (header == null || !P000_ClientSeed.check(header)) { return; }
+
+        // get the data
+        P000_ClientSeed.Payload payload = P000_ClientSeed.serializePayload(buf);
 
         LOGGER.debug("Got the client seed packet.");
 
-        // deserialize the packet
-        NettySerializationFilter filter = GWMessageSerializationRegistry.getFilter(IN2_ClientSeed.class);
-        IN2_ClientSeed clientSeed = new IN2_ClientSeed();
-        filter.deserialize(order, clientSeed);
+        // INITIALIZE ENCRYPTION WITH THE CLIENT SEED PAYLOAD
 
         // generate the shared key
-        byte[] sharedKeyBytes = EncryptionUtils.generateSharedKey(clientSeed.getClientPublicKey());
+        byte[] sharedKeyBytes = EncryptionUtils.generateSharedKey(payload.ClientPublicKey);
 
         // start RC4 key generation
         byte[] randomBytes = new byte[20];
@@ -160,8 +146,10 @@ public class HandshakeHandler extends ByteToMessageDecoder
         // encrypt the RC4 key before sending it to the client
         byte[] xoredRandomBytes = EncryptionUtils.XOR(randomBytes, sharedKeyBytes);
 
+        // INITIALIZATION OF ENCRYPTION DONE
+
         // we can set the RC4 decoder now... if encryption is enabled
-        if (encrypted == EncryptionOptions.Enable)
+        if (encryption == EncryptionOptions.Enable)
         {
             RC4Codec.Decoder decoder = new RC4Codec.Decoder(rc4Key);
             ctx.pipeline().addFirst(decoder);
@@ -169,33 +157,28 @@ public class HandshakeHandler extends ByteToMessageDecoder
         }
 
         // now send the server seed packet
-        OUT_ServerSeed serverSeed = new OUT_ServerSeed();
+        P001_ServerSeed serverSeed = new P001_ServerSeed();
         serverSeed.setEncryptedRC4Key(xoredRandomBytes);
-        
-        ByteBuf seed = ctx.alloc().buffer(70);
-        seed.order(ByteOrder.BIG_ENDIAN);
-        seed.writeShort(0x01 << 8 | 22);
-        seed.order(ByteOrder.LITTLE_ENDIAN);
-        
-        filter = GWMessageSerializationRegistry.getFilter(OUT_ServerSeed.class);
-        filter.serialize(seed, serverSeed);
-        
-        ChannelFuture cf = ctx.writeAndFlush(seed);
+
+        buf = ctx.alloc().buffer(70).order(ByteOrder.LITTLE_ENDIAN);
+        serverSeed.serializeInto(buf);
+
+        ChannelFuture cf = ctx.writeAndFlush(serverSeed);
 
         // also remove this handler
         ctx.pipeline().remove(this);
 
         // set the RC4 encoder only after the serverseed packet has been send!
-        cf.addListener(new ChannelFutureListener() 
+        cf.addListener(new ChannelFutureListener()
         {
             @Override
-            public void operationComplete(ChannelFuture future) throws Exception 
+            public void operationComplete(ChannelFuture future) throws Exception
             {
-                if (encrypted == EncryptionOptions.Enable)
+                if (encryption == EncryptionOptions.Enable)
                 {
                     // add the rc4 codec if encryption is enabled
                     RC4Codec.Encoder encoder = new RC4Codec.Encoder(rc4Key);
-                    ctx.pipeline().addFirst( 
+                    ctx.pipeline().addFirst(
                             encoder);
                     LOGGER.debug("RC4Encoder added to pipeline.");
                 }

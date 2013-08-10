@@ -29,24 +29,24 @@ import realityshard.container.util.HandleRegistry;
 /**
  * This dispatches our clients to the appropriate mapshards, based on the models
  * decisions.
- * 
+ *
  * @author miracle444, _rusty
  */
 public class MapDispatch
 {
-    
+
     private static Logger LOGGER = LoggerFactory.getLogger(MapDispatch.class);
-    
+
     private final GameAppContext context;
     private final MapDispatchModel model;
     private final HandleRegistry<ClientBean> clientHandleRegistry;
-    
-    
+
+
     /**
      * Constructor.
-     * 
+     *
      * @param       context
-     * @param       clientHandleRegistry  
+     * @param       clientHandleRegistry
      */
     public MapDispatch(Handle<GameAppContext> context, HandleRegistry<ClientBean> clientHandleRegistry)
     {
@@ -54,32 +54,34 @@ public class MapDispatch
         model = new MapDispatchModel(context);
         this.clientHandleRegistry = clientHandleRegistry;
     }
-    
-    
+
+
     /**
      * Event handler.
-     * 
-     * @param action 
+     *
+     * @param action
      */
     @Event.Handler
     public void onCharacterPlayInfo(P041_CharacterPlayInfo action)
     {
         LOGGER.debug("Got the character play info packet");
-        
+
         // get the channel attachment for that channel
         Channel channel = action.getChannel();
         ClientBean client = ClientBean.get(channel);
         Handle<ClientBean> clientHandle = ClientBean.getHandle(channel);
-        
+
         // failcheck
         if (client == null) { channel.close(); return; }
-        
+
         // update the login count
         client.setLoginCount(action.getLoginCount());
-        
+
+        // TODO: check mapId before directly creating a mapshard for it!
+
         // let the model do the work...
         Handle<GameAppContext> mapShardHandle = model.getOrCreate((int)action.getGameMapId());
-        
+
         // lets check if we were successfull with the game app creation
         if (mapShardHandle == null)
         {
@@ -87,36 +89,36 @@ public class MapDispatch
             StreamTerminatorView.send(channel, ErrorCode.InternalServerError);
             return;
         }
-        
+
         // inform the model that we'r waiting for a mapshard to accept a client
         model.clientWaitingFor(clientHandle, mapShardHandle);
-        
+
         // dont forget to update the client bean (it now has a mapshard, yay :)
         client.setMapShardHandle(mapShardHandle);
-        
+
         LOGGER.debug("Asking a map shard to accept a client.");
-        
+
         mapShardHandle.get().trigger(
                 new LSRequest_AcceptClient(
                     clientHandle.getUid(),
-                    client.getAccount(), 
+                    client.getAccount(),
                     client.getCharacter()));
 
         // we will notify the client when the mapshard replies.
     }
-    
-    
+
+
     /**
      * Event handler.
      * Triggered when the map shard accepts a client.
-     * 
-     * @param event 
+     *
+     * @param event
      */
     @Event.Handler
     public void onAcceptClientReply(GSReply_AcceptClient event)
     {
         Handle<ClientBean> clientHandle = clientHandleRegistry.getHandle(event.getClientUid());
-            
+
         // failcheck
         if (clientHandle == null) { return; }
 
@@ -124,18 +126,18 @@ public class MapDispatch
 
         // failcheck
         if (mapShardHandle == null || !mapShardHandle.getUid().equals(event.getServerUid())) { return; }
-        
+
         // this is called when the mapshard didnt accept the client
         model.clientGotAcceptedBy(clientHandle, mapShardHandle, event.isAccepted());
-        
+
         // check if the session has been accepted
         if (!event.isAccepted())
-        {            
+        {
             LOGGER.warn("The map shard did not accept the session!");
-        
+
             StreamTerminatorView.send(clientHandle.get().getChannel(), ErrorCode.InternalServerError);
         }
-            
+
         // retrieve socket address for that game server
         InetSocketAddress address = context.getManager().localAddressFor(mapShardHandle);
         Map map = model.getBean(mapShardHandle).getMap();
@@ -146,25 +148,25 @@ public class MapDispatch
         LOGGER.debug("The map shard accepted the client.");
 
         MapDispatchView.referToGameServer(
-                clientHandle.get().getChannel(), 
+                clientHandle.get().getChannel(),
                 address,
-                event.getServerUid(), 
-                event.getClientUid(), 
+                event.getServerUid(),
+                event.getClientUid(),
                 map.getGameID());
     }
-    
-    
+
+
     /**
      * Event handler.
      * Triggered when a map shard established the actual connection to the client
-     * 
-     * @param event 
+     *
+     * @param event
      */
     @Event.Handler
     public void onNotifyClientConnected(GSNotify_ClientConnected event)
     {
         Handle<ClientBean> clientHandle = clientHandleRegistry.getHandle(event.getClientUid());
-            
+
         // failcheck
         if (clientHandle == null) { return; }
 
@@ -172,32 +174,32 @@ public class MapDispatch
 
         // failcheck
         if (mapShardHandle == null || !mapShardHandle.getUid().equals(event.getServerUid())) { return; }
-        
+
         model.dispatchDone(clientHandle, mapShardHandle);
     }
-    
-    
+
+
     /**
      * Event handler.
      * Triggered when a map shard runs out of clients. We need to decide whether
      * it should terminate in that case.
-     * 
-     * @param       event 
+     *
+     * @param       event
      */
     @Event.Handler
     public void onEmptyMapShard(GSNotify_WorldEmpty event)
     {
         // default behaviour: do nothing
-        
+
 //        RemoteShardletContext mapShard = null;
-//        
+//
 //        // lets see if we got that map shard:
 //        if (mapShards.containsKey(action.getMapId()))
 //        {
 //            mapShard = mapShards.get(action.getMapId());
-//            
+//
 //            mapShard.sendTriggerableAction(new ISC_ShutdownMapshardRequestAction());
-//            
+//
 //            mapShards.remove(action.getMapId());
 //        }
     }
