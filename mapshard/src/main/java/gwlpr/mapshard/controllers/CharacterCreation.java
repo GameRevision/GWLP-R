@@ -4,83 +4,74 @@
 
 package gwlpr.mapshard.controllers;
 
-import gwlpr.actions.gameserver.ctos.P088_CharacterCreateUpdateProfessionAndCampaignAction;
-import gwlpr.actions.gameserver.ctos.P130_CreateNewCharacterAction;
-import gwlpr.actions.gameserver.ctos.P132_UnknownAction;
-import com.gamerevision.gwlpr.database.CharacterEntity;
-import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
-import gwlpr.mapshard.ContextAttachment;
-import gwlpr.mapshard.SessionAttachment;
+import gwlpr.database.entities.Character;
+import gwlpr.database.jpa.CharacterJpaController;
+import gwlpr.database.jpa.ProfessionJpaController;
+import gwlpr.mapshard.models.ClientBean;
+import gwlpr.mapshard.models.HandleRegistryNotificationDecorator;
+import gwlpr.mapshard.models.enums.ErrorCode;
+import gwlpr.mapshard.models.enums.GenericValue;
+import gwlpr.mapshard.models.enums.PlayerState;
 import gwlpr.mapshard.views.CharacterCreationView;
-import gwlpr.mapshard.views.UpdateAttribPtsView;
+import gwlpr.mapshard.views.EntityUpdateAttributesView;
 import gwlpr.mapshard.views.UpdateGenericValueView;
-import gwlpr.mapshard.views.UpdatePrivateProfessionsView;
-import realityshard.shardlet.EventHandler;
-import realityshard.shardlet.Session;
-import realityshard.shardlet.events.GameAppCreatedEvent;
-import realityshard.shardlet.utils.GenericShardlet;
+import gwlpr.mapshard.views.EntityUpdatePrivateProfessionsView;
+import gwlpr.protocol.gameserver.inbound.P088_CharacterCreateUpdateProfessionAndCampaign;
+import gwlpr.protocol.gameserver.inbound.P130_CreateNewCharacter;
+import gwlpr.protocol.gameserver.inbound.P132_ValidateCreatedCharacter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import realityshard.container.events.Event;
 
 
 /**
- * This shardlet handles all about character creation.
+ * This handles all about character creation.
  *
- * TODO: review, clean up, refactor me!
+ * TODO: review, clean up, refactor me! - this just needs to be able to somehow save the data it gets :P
  *
  * @author miracle444, _rusty
  */
-public class CharacterCreation extends GenericShardlet
+public class CharacterCreation
 {
 
     private static Logger LOGGER = LoggerFactory.getLogger(CharacterCreation.class);
-
-    private DatabaseConnectionProvider db;
-
-
+    
+    
     /**
-     * Init this shardlet.
+     * Event handler.
+     * Some other component registered a client with the local client registry
+     * 
+     * This means we can start the character process now, if the
+     * character is actually in the character creation state.
+     * 
+     * @param event 
      */
-    @Override
-    protected void init()
+    @Event.Handler
+    public void onClientRegistered(HandleRegistryNotificationDecorator.Registered<ClientBean> event)
     {
-        LOGGER.info("MapShard: init CharacterCreation controller.");
+        if (event.getHandle().get().getPlayerState() == PlayerState.CreatingCharacter)
+        {
+            LOGGER.debug("Starting character creation");
+            CharacterCreationView.charCreateHead(event.getHandle().get().getChannel());
+        }
     }
-
-
-    /**
-     * Executes startup features, like storing database references etc.
-     *
-     * @param event
-     */
-    @EventHandler
-    public void onStartUp(GameAppCreatedEvent event)
-    {
-        // this event indicates that all shardlets have been loaded (including
-        // the startup shardlet) so we can safely use the context attachment now.
-
-        db = ((ContextAttachment) getShardletContext().getAttachment()).getDatabaseProvider();
-    }
-
+    
 
     /**
      * Event handler.
      *
      * @param action
      */
-    @EventHandler
-    public void onCreateNewCharacter(P130_CreateNewCharacterAction action)
+    @Event.Handler
+    public void onCreateNewCharacter(P130_CreateNewCharacter action)
     {
         LOGGER.debug("Got the create new character packet");
 
-//        // extract the session...
-//        Session session = action.getSession();
-//
-//        // and start the char creation process stuff
-//        UpdateAttribPtsView.send(session);
-//        // TODO: Fix agentID!
-//        UpdateGenericValueView.send(session, 50, UpdateGenericValueView.Type.Unknown14, 0);
-//        CharacterCreationView.charCreateAck(session);
+        // and start the char creation process stuff
+        // TODO: Fix agentID if necessary
+        EntityUpdateAttributesView.sendInitial(action.getChannel(), 1, 0, 0);
+        UpdateGenericValueView.send(action.getChannel(), 50, GenericValue.Unknown3, 0);
+        CharacterCreationView.charCreateAck(action.getChannel());
     }
 
 
@@ -89,15 +80,12 @@ public class CharacterCreation extends GenericShardlet
      *
      * @param action
      */
-    @EventHandler
-    public void onCharacterCreateUpdateProfessionAndCampaign(P088_CharacterCreateUpdateProfessionAndCampaignAction action)
+    @Event.Handler
+    public void onCharacterCreateUpdateProfessionAndCampaign(P088_CharacterCreateUpdateProfessionAndCampaign action)
     {
         LOGGER.debug("Got the character create update profession and campaign packet");
-
-//        // extract the session...
-//        Session session = action.getSession();
-//
-//        UpdatePrivateProfessionsView.send(session);
+        
+        EntityUpdatePrivateProfessionsView.send(action.getChannel(), 1, action.getProfession(), 0, false);
     }
 
 
@@ -106,57 +94,71 @@ public class CharacterCreation extends GenericShardlet
      *
      * @param action
      */
-    @EventHandler
-    public void onValidateCreatedCharacter(P132_UnknownAction action)
+    @Event.Handler
+    public void onValidateCreatedCharacter(P132_ValidateCreatedCharacter action)
     {
         LOGGER.debug("Got the validate created character packet");
 
-//        // extract the session and attachment...
-//        Session session = action.getSession();
-//        SessionAttachment attachment = (SessionAttachment) session.getAttachment();
-//
-//        // extract the data of the new char
-//        String characterName = new String(action.getUnknown1());
-//
-//        // get character properties
-//        byte[] appearance = action.getUnknown2();
-//        byte sex = (byte) (appearance[0] & 1);
-//        byte height = (byte) ((appearance[0] >> 1) & 0xF);
-//        byte skin = (byte) (((appearance[0] >> 5) | (appearance[1] << 3)) & 0x1F);
-//        byte haircolor = (byte) ((appearance[1] >> 2) & 0x1F);
-//        byte face = (byte) (((appearance[1] >> 7) | (appearance[2] << 1)) & 0x1F);
-//        byte hairstyle = (byte) (appearance[3] & 0x1F);
-//        byte campaign = (byte) ((appearance[3] >> 6) & 3);
-//
-//        // extract the professions
-//        byte primary = (byte) ((appearance[2] >> 4) & 0xF);
-//        byte secondary = 0;
-//
-//        // perform some unkown action...
-//        CharacterCreationView.unkownStep1(session);
-//
-//        // TODO WTF?
-//            // if name is in use ....
-//            CharacterCreationView.abort(session);
-//
-//        // if name is not in use create a new char in the db
-//        DBCharacter dbChar = DBCharacter.createNewCharacter(
-//                db,
-//                attachment.getAccountId(),
-//                characterName,
-//                sex, height, skin, haircolor, face, hairstyle, campaign,
-//                primary,
-//                secondary);
-//
-//        if (dbChar != null)
-//        {
-//            CharacterCreationView.charCreateFinish(session, dbChar);
-//            return;
-//        }
-//
-//        LOGGER.error("MapShard: new character could not be created!");
-//
-//        // kick the client if the character could not be created
-//        session.invalidate();
+        // extract the session and attachment...
+        ClientBean client = ClientBean.get(action.getChannel());
+
+        // extract the data of the new char
+        String characterName = action.getCharName();
+
+        // get character properties
+        byte[] appearance = action.getAppearanceAndProfession();
+        
+        byte sex = (byte) (appearance[0] & 1);
+        byte height = (byte) ((appearance[0] >> 1) & 0xF);
+        byte skin = (byte) (((appearance[0] >> 5) | (appearance[1] << 3)) & 0x1F);
+        byte haircolor = (byte) ((appearance[1] >> 2) & 0x1F);
+        byte face = (byte) (((appearance[1] >> 7) | (appearance[2] << 1)) & 0x1F);
+        byte hairstyle = (byte) (appearance[3] & 0x1F);
+        byte campaign = (byte) ((appearance[3] >> 6) & 3);
+
+        // extract the professions
+        byte primary = (byte) ((appearance[2] >> 4) & 0xF);
+        byte secondary = 0;
+
+        // perform some unkown action...
+        CharacterCreationView.unkownStep1(action.getChannel());
+
+        Character chara = CharacterJpaController.get().findByName(characterName);
+        
+        // if name is in use ....
+        if (chara != null)
+        {
+            CharacterCreationView.error(action.getChannel(), ErrorCode.CCNameInUse);
+        }
+
+        // if name is not in use create a new char in the db
+        Character dbChar = new Character();
+        dbChar.setName(characterName);
+        dbChar.setAccountID(client.getAccount());
+        dbChar.setSex((short)sex);
+        dbChar.setHeight((short)height);
+        dbChar.setHeight((short)skin);
+        dbChar.setFace((short)face);
+        dbChar.setHaircolor((short)haircolor);
+        dbChar.setHairstyle((short)hairstyle);
+        dbChar.setCampaign((short)campaign);
+        dbChar.setPrimaryProfession(ProfessionJpaController.get().findProfession((int)primary));
+        
+        // create it in the db
+        CharacterJpaController.get().create(chara);
+        
+        // get the new object with all the up-to-date info
+        dbChar = CharacterJpaController.get().findByName(characterName);
+        
+        if (dbChar != null)
+        {
+            CharacterCreationView.charCreateFinish(action.getChannel(), dbChar);
+            return;
+        }
+
+        LOGGER.error("Char creation failed!");
+
+        // kick the client if the character could not be created
+        action.getChannel().close();
     }
 }

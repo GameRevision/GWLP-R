@@ -32,8 +32,8 @@ public enum GenericValue
     SkillDamage,
     ApplyMarker,
     RemoveMarker,
-    Unknown3,
-    AddArmor,               // TODO: Generic Value missing!
+    Unknown3,               // TODO: Generic Value missing!
+    AddArmor,               
 
     // 15
     ArmorColor,

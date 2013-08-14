@@ -4,13 +4,17 @@
 
 package gwlpr.host;
 
+import gwlpr.loginshard.LoginShardFactory;
+import gwlpr.mapshard.MapShardFactory;
+import java.util.ArrayList;
+import java.util.List;
 import realityshard.container.ContainerFacade;
-import realityshard.network.NetworkLayer;
-import realityshard.shardlet.GlobalExecutor;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import realityshard.container.GlobalExecutor;
+import realityshard.container.gameapp.GameAppFactory;
 
 
 /**
@@ -47,11 +51,27 @@ public final class HostApplication
         
         // we need a new network manager here, net layer must use IPv4, due to GW
         System.setProperty("java.net.preferIPv4Stack", "true");
-        final NetworkLayer netLayer = NetworkLayer.Factory.createUsingMina();
         
-        // we've done anything we wanted to, so lets start the container!
-        // Note: we are using the dev environment here!
-        final ContainerFacade container = new ContainerFacade(netLayer, new DevelopmentEnvironment());
+        
+        // create a list of our game-app factories:
+        List<GameAppFactory> factories = new ArrayList<>();
+        factories.add(new LoginShardFactory());
+        factories.add(new MapShardFactory());
+        
+        
+        // finall create the container and hope it initializes itself without errors...
+        final ContainerFacade container;
+        
+        try 
+        {
+            container = new ContainerFacade(factories);
+        } 
+        catch (Exception ex) 
+        {
+            logger.error("Container failed to start up.", ex);
+            System.exit(0);
+            return;
+        }
         
         // what happens when the server is shut down?
         Runtime.getRuntime().addShutdownHook(new Thread()
@@ -60,7 +80,6 @@ public final class HostApplication
                 public void run()
                 {
                     container.shutdown();
-                    netLayer.shutdown();
                 }
             });
     }

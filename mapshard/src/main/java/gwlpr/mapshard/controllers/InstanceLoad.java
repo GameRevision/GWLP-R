@@ -4,45 +4,24 @@
 
 package gwlpr.mapshard.controllers;
 
-import gwlpr.actions.gameserver.stoc.P391_InstanceLoadSpawnPointAction;
-import gwlpr.actions.gameserver.stoc.P230_UnknownAction;
-import gwlpr.actions.gameserver.stoc.P206_UpdateSkillBarAction;
-import gwlpr.actions.gameserver.stoc.P127_UnknownAction;
-import gwlpr.actions.gameserver.stoc.P318_UpdateActiveWeaponsetAction;
-import gwlpr.actions.gameserver.stoc.P310_UpdateGoldOnCharacterAction;
-import gwlpr.actions.gameserver.stoc.P023_UnknownAction;
-import gwlpr.actions.gameserver.stoc.P314_ItemStreamCreateAction;
-import gwlpr.actions.gameserver.stoc.P126_UnknownAction;
-import gwlpr.actions.gameserver.stoc.P393_UnknownAction;
-import gwlpr.actions.gameserver.stoc.P221_UpdateFactionAction;
-import gwlpr.actions.gameserver.stoc.P207_UnknownAction;
-import gwlpr.actions.gameserver.stoc.P309_CreateInventoryPageAction;
-import gwlpr.actions.gameserver.ctos.P129_UnknownAction;
-import gwlpr.actions.gameserver.ctos.P137_UnknownAction;
-import gwlpr.actions.gameserver.ctos.P138_UnknownAction;
-import com.gamerevision.gwlpr.database.DatabaseConnectionProvider;
-import gwlpr.mapshard.ContextAttachment;
-import gwlpr.mapshard.SessionAttachment;
-import gwlpr.mapshard.entitysystem.Entity;
-import gwlpr.mapshard.models.ClientLookupTable;
-import gwlpr.mapshard.views.UpdateAttribPtsView;
-import gwlpr.mapshard.views.UpdateGenericValueView;
-import gwlpr.mapshard.views.UpdatePrivateProfessionsView;
-import gwlpr.mapshard.entitysystem.EntityManager;
+import gwlpr.database.entities.Spawnpoint;
 import gwlpr.mapshard.entitysystem.Components.*;
-import gwlpr.mapshard.models.GWVector;
-import gwlpr.mapshard.models.MapData;
-import gwlpr.mapshard.models.enums.GenericValue;
+import gwlpr.mapshard.models.ClientBean;
+import gwlpr.mapshard.entitysystem.Entity;
+import gwlpr.mapshard.entitysystem.EntityManager;
+import gwlpr.mapshard.entitysystem.entityfactories.CharacterFactory;
+import gwlpr.mapshard.models.HandleRegistryNotificationDecorator;
+import gwlpr.mapshard.models.WorldPosition;
+import gwlpr.mapshard.models.WorldBean;
 import gwlpr.mapshard.models.enums.PlayerState;
-import gwlpr.mapshard.models.enums.SpawnType;
-import gwlpr.mapshard.views.EntitySpawningView;
-import realityshard.shardlet.EventHandler;
-import realityshard.shardlet.RemoteShardletContext;
-import realityshard.shardlet.Session;
-import realityshard.shardlet.events.GameAppCreatedEvent;
-import realityshard.shardlet.utils.GenericShardlet;
+import gwlpr.mapshard.views.InstanceLoadView;
+import gwlpr.protocol.gameserver.inbound.P129_InstanceLoadRequestSpawnPoint;
+import gwlpr.protocol.gameserver.inbound.P137_InstanceLoadRequestAgentData;
+import gwlpr.protocol.gameserver.inbound.P138_InstanceLoadRequestItems;
+import java.util.Iterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import realityshard.container.events.Event;
 
 
 /**
@@ -52,227 +31,135 @@ import org.slf4j.LoggerFactory;
  *
  * @author miracle444, _rusty
  */
-public class InstanceLoad extends GenericShardlet
+public class InstanceLoad
 {
 
     private static Logger LOGGER = LoggerFactory.getLogger(InstanceLoad.class);
 
-    private RemoteShardletContext loginShard;
-    private DatabaseConnectionProvider db;
+    private WorldBean world;
     private EntityManager entityManager;
-    private ClientLookupTable clientlookup;
-    private MapData mapData;
-    private SpawnType SpawningFaction;
 
 
     /**
-     * Init this shardlet.
+     * Constructor.
+     * 
+     * @param       world
+     * @param       entityManager 
      */
-    @Override
-    protected void init()
+    public InstanceLoad(WorldBean world, EntityManager entityManager)
     {
-        LOGGER.info("MapShard: init InstanceLoad controller");
+        this.world = world;
+        this.entityManager = entityManager;
     }
-
-
+    
+    
     /**
-     * Executes startup features, like storing database references etc.
-     *
-     * @param event
+     * Event handler.
+     * Some other component registered a client with the local client registry
+     * 
+     * This means we can start the instance load process now, sending the first packets.
+     * 
+     * @param event 
      */
-    @EventHandler
-    public void onStartUp(GameAppCreatedEvent event)
+    @Event.Handler
+    public void onClientRegistered(HandleRegistryNotificationDecorator.Registered<ClientBean> event)
     {
-        // this event indicates that all shardlets have been loaded (including
-        // the startup shardlet) so we can safely use the context attachment now.
+        if (event.getHandle().get().getPlayerState() == PlayerState.LoadingInstance)
+        {
+            LOGGER.debug("Starting instance load.");
+            
+            ClientBean client = event.getHandle().get();
+            
+            // create a new entity of the character of this client
+            // NOTE THAT FOR IDENTIFICATION PURPOSES, WE USE THE CLIENTS UID FOR
+            // ITS CHARACTER ENTITY AS WELL!
+            WorldPosition pos = getRandomSpawn();
+            Entity player = CharacterFactory.createCharacter(event.getHandle().getUid(), client.getCharacter(), pos, entityManager);
 
-        // this is quite verbose, but luckily we only have to query for the
-        // necessary references once
-        ContextAttachment attach = ((ContextAttachment) getShardletContext().getAttachment());
+            client.setEntity(player);
+            client.setAgentIDs(player.get(AgentIdentifiers.class));
 
-        loginShard = attach.getLoginShard();
-        db = attach.getDatabaseProvider();
-        entityManager = attach.getEntitySystem();
-        clientlookup = attach.getClientLookup();
-        mapData = attach.getMapData();
+            // using the attachment now looks a bit ugly,
+            // because we use the components here directly
+            // (this should not happen with other components!)
+            InstanceLoadView.instanceHead(client.getChannel());
+            InstanceLoadView.charName(client.getChannel(), client.getCharacter().getName());
+            InstanceLoadView.districtInfo(client.getChannel(), client.getAgentIDs().localID, world);
+        }
     }
 
 
-    @EventHandler
-    public void onInstanceLoadRequestItems(P138_UnknownAction action)
+    @Event.Handler
+    public void onInstanceLoadRequestItems(P138_InstanceLoadRequestItems action)
     {
         // TODO: Create Items, update this to be dynamic!
 
         LOGGER.debug("Got the instance load request items packet");
-        Session session = action.getSession();
-
-
-        P314_ItemStreamCreateAction itemStreamCreate = new P314_ItemStreamCreateAction();
-        itemStreamCreate.init(session);
-        itemStreamCreate.setStreamID((short) 1);
-        itemStreamCreate.setType((byte) 0);
-
-        session.send(itemStreamCreate);
-
-
-        P318_UpdateActiveWeaponsetAction updateActiveWeaponset = new P318_UpdateActiveWeaponsetAction();
-        updateActiveWeaponset.init(session);
-        updateActiveWeaponset.setStreamID((short) 1);
-        updateActiveWeaponset.setSlot((byte) 0);
-
-        session.send(updateActiveWeaponset);
-
-
-        P309_CreateInventoryPageAction createInventoryPage = new P309_CreateInventoryPageAction();
-        createInventoryPage.init(session);
-        createInventoryPage.setItemStreamID((short) 1);
-        createInventoryPage.setType((byte) 2);
-        createInventoryPage.setSlots((byte) 9);
-        createInventoryPage.setPageID((short) 16);
-        createInventoryPage.setStorage((byte) 16);
-        createInventoryPage.setAssociatedItem(0);
-
-        session.send(createInventoryPage);
-
-
-        P310_UpdateGoldOnCharacterAction updateGoldOnCharacter = new P310_UpdateGoldOnCharacterAction();
-        updateGoldOnCharacter.init(session);
-        updateGoldOnCharacter.setStreamID((short) 1);
-        updateGoldOnCharacter.setGold(0);
-
-        session.send(updateGoldOnCharacter);
-
-
-        P393_UnknownAction itemStreamTerminator = new P393_UnknownAction();
-        itemStreamTerminator.init(session);
-        itemStreamTerminator.setUnknown1((byte) 0);
-        itemStreamTerminator.setUnknown2((short) mapData.getMapID());
-        itemStreamTerminator.setUnknown3(0);
-
-        session.send(itemStreamTerminator);
+        
+        InstanceLoadView.sendItems(action.getChannel(), world.getMap().getGameID());
     }
 
 
-    @EventHandler
-    public void onInstanceLoadRequestSpawnPoint(P129_UnknownAction action)
+    @Event.Handler
+    public void onInstanceLoadRequestSpawnPoint(P129_InstanceLoadRequestSpawnPoint action)
     {
         LOGGER.debug("Got the instance load request spawn point packet");
-        Session session = action.getSession();
-        SessionAttachment attachment = (SessionAttachment) session.getAttachment();
+        
+        ClientBean client = ClientBean.get(action.getChannel());
 
         // fetch the players postion (this was already initialized by the handshake controller,
         // when it instructed some other class to create the entity
-        Entity et = attachment.getEntity();
-        GWVector pos = et.get(Position.class).position;
+        Entity et = client.getEntity();
+        WorldPosition pos = et.get(Position.class).position;
 
-
-        P391_InstanceLoadSpawnPointAction instanceLoadSpawnPoint = new P391_InstanceLoadSpawnPointAction();
-        instanceLoadSpawnPoint.init(session);
-        instanceLoadSpawnPoint.setMapFile(mapData.getMapFileHash());
-        instanceLoadSpawnPoint.setPosition(pos.toFloatArray());
-        instanceLoadSpawnPoint.setPlane(pos.getZPlane());
-        instanceLoadSpawnPoint.setisCinematic((byte) 0);
-        instanceLoadSpawnPoint.setData5((byte) 0);
-
-        session.send(instanceLoadSpawnPoint);
+        InstanceLoadView.sendSpawnPoint(client.getChannel(), pos, world.getMap().getHash());
     }
 
 
-    @EventHandler
-    public void onInstanceLoadRequestPlayerData(P137_UnknownAction action)
+    @Event.Handler
+    public void onInstanceLoadRequestAgentData(P137_InstanceLoadRequestAgentData action)
     {
         LOGGER.debug("Got the instance load request player data packet");
-        Session session = action.getSession();
-        SessionAttachment attachment = (SessionAttachment) session.getAttachment();
+        
+        ClientBean client = ClientBean.get(action.getChannel());
 
         // fetch the player entity..
-        Entity et = attachment.getEntity();
+        Entity et = client.getEntity();
 
-        String name = et.get(Name.class).name;
-        int agentID = et.get(AgentIdentifiers.class).agentID;
-        int localID = et.get(AgentIdentifiers.class).localID;
-        byte[] appear = et.get(Appearance.class).appearanceDump;
-        GWVector pos = et.get(Position.class).position;
-        float rotation = et.get(Direction.class).direction.toRotation();
-        float speed = et.get(Movement.class).speed;
-
-
-        P230_UnknownAction zoneBeginCharInfo = new P230_UnknownAction();
-        zoneBeginCharInfo.init(session);
-        zoneBeginCharInfo.setUnknown1(1886151033); // yalp
-        session.send(zoneBeginCharInfo);
-
-
-        UpdateAttribPtsView.send(session, agentID);
-        UpdatePrivateProfessionsView.send(session, agentID);
-
-
-        P206_UpdateSkillBarAction updateSkillbar = new P206_UpdateSkillBarAction();
-        updateSkillbar.init(session);
-        updateSkillbar.setAgentID(agentID);
-        updateSkillbar.setSkillBar(new int[8]);
-        updateSkillbar.setSkillBarPvPMask(new int[8]);
-        updateSkillbar.setData3((byte) 1);
-
-        session.send(updateSkillbar);
-
-
-        UpdateGenericValueView.send(session, agentID, GenericValue.Energy, 20);
-        UpdateGenericValueView.send(session, agentID, GenericValue.Health, 20);
-        UpdateGenericValueView.send(session, agentID, GenericValue.EnergyRegen, 0.033F);
-        UpdateGenericValueView.send(session, agentID, GenericValue.HealthRegen, 0);
-        UpdateGenericValueView.send(session, agentID, GenericValue.PublicLevel, 1);
-
-
-        P127_UnknownAction zoneDataPrepMapData = new P127_UnknownAction();
-        zoneDataPrepMapData.init(session);
-        zoneDataPrepMapData.setUnknown1(64);
-        zoneDataPrepMapData.setUnknown2(128);
-        zoneDataPrepMapData.setUnknown3(27);
-
-        session.send(zoneDataPrepMapData);
-
-
-        P126_UnknownAction zoneDataMapData = new P126_UnknownAction();
-        zoneDataMapData.init(session);
-        zoneDataMapData.setUnknown1(new int[1]);
-
-        session.send(zoneDataMapData);
-
-
-        P221_UpdateFactionAction updateFaction = new P221_UpdateFactionAction();
-        updateFaction.init(session);
-        updateFaction.setLevel(1);
-        updateFaction.setMorale(100);
-
-        session.send(updateFaction);
-
-
-        P207_UnknownAction updateAvailableSkills = new P207_UnknownAction();
-        updateAvailableSkills.init(session);
-        updateAvailableSkills.setUnknown1(new int[] {0x000B0000, 0x0354FFFF, 0x043A043B, 0x00E8043A, 0x00000000, 0x00000000, 0x17000000} );
-
-        session.send(updateAvailableSkills);
-
-
-        // at this point we should spawn the player
-        // all other players and such will be spawned automatically by the
-        // spawning system when the player can see them.
-        EntitySpawningView.spawnAgent(session, et);
-
-
-        P023_UnknownAction fadeIntoMap = new P023_UnknownAction();
-        fadeIntoMap.init(session);
-        fadeIntoMap.setUnknown1(agentID);
-        fadeIntoMap.setUnknown2(3);
-
-        session.send(fadeIntoMap);
-
+        InstanceLoadView.sendAgentData(client.getChannel(), et);
 
         // activate heart beat and ping and such
-        attachment.setPlayerState(PlayerState.Playing);
+        client.setPlayerState(PlayerState.Playing);
 
         // unblind the player
         et.get(View.class).isBlind = false;
+    }
+    
+    
+    /**
+     * Pick a random spawnpoint from the world, then pick a random position near
+     * this spawn in the radius the world's map object defines.
+     * 
+     * @return      The spawnpoint as WorldPosition.
+     */
+    private WorldPosition getRandomSpawn()
+    {        
+        // pick a random spawnpoint
+        Iterator<Spawnpoint> it = world.getMap().getSpawnpointCollection().iterator();
+        for (int i = 0; i < ((int)Math.random() * world.getMap().getSpawnpointCollection().size() -1); i++) {
+            it.next();
+        }
+        Spawnpoint spawn = it.next();
+        int radius = spawn.getRadius();
+        
+        // pick a random position in a certain radius
+        float t = (float)(2 * Math.PI * Math.random());
+        float r = (float)(radius * -1 + (Math.random() * radius));
+        WorldPosition pos = new WorldPosition(
+                (float)(spawn.getX() + (r * Math.cos(t))), 
+                (float)(spawn.getY() + (r * Math.sin(t))), 
+                spawn.getPlane());
+        
+        return pos;
     }
 }

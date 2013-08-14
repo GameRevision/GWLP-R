@@ -4,15 +4,15 @@
 
 package gwlpr.mapshard.controllers;
 
-import gwlpr.actions.gameserver.ctos.P093_UnknownAction;
-import gwlpr.mapshard.SessionAttachment;
-import gwlpr.mapshard.events.ChatCommandEvent;
-import gwlpr.mapshard.events.ChatMessageEvent;
+import gwlpr.protocol.gameserver.inbound.P093_ChatMessage;
+import gwlpr.mapshard.models.ClientBean;
+import gwlpr.mapshard.entitysystem.events.ChatCommandEvent;
+import gwlpr.mapshard.entitysystem.events.ChatMessageEvent;
 import gwlpr.mapshard.models.enums.ChatChannel;
-import realityshard.shardlet.EventHandler;
-import realityshard.shardlet.utils.GenericShardlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import realityshard.container.events.Event;
+import realityshard.container.events.EventAggregator;
 
 
 /**
@@ -21,43 +21,43 @@ import org.slf4j.LoggerFactory;
  *
  * @author _rusty
  */
-public class Chat extends GenericShardlet
+public class Chat
 {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(Chat.class);
-
-
+    private final EventAggregator aggregator;
+    
+    
     /**
-     * Init this shardlet.
+     * Constructor
+     * 
+     * @param       aggregator 
      */
-    @Override
-    protected void init()
+    public Chat(EventAggregator aggregator)
     {
-        LOGGER.info("MapShard: init Chat controller");
+        this.aggregator = aggregator;
     }
-
-
+    
+    
     /**
      * Event handler for incoming chat messages
+     * 
+     * TODO: what is the additional localid attached to this message?
      *
      * @param chatMsg
      */
-    @EventHandler
-    public void onChatMessage(P093_UnknownAction chatMsg)
+    @Event.Handler
+    public void onChatMessage(P093_ChatMessage chatMsg)
     {
-        SessionAttachment attach = (SessionAttachment) chatMsg.getSession().getAttachment();
+        ClientBean client = ClientBean.get(chatMsg.getChannel());
 
-        // extract the whole message
-        String msg = String.copyValueOf(chatMsg.getUnknown1());
-
-        // get the channel (it's the prefix of our message, as the first char)
-        ChatChannel chan = ChatChannel.getFromPrefix(msg.charAt(0));
-
-        // trim that channel now...
-        msg = msg.substring(1);
+        // extract the whole prefix message, get the channel prefix and the actual message
+        String prfMsg = chatMsg.getPrefixedMessage();
+        ChatChannel chan = ChatChannel.getFromPrefix(prfMsg.charAt(0));
+        String msg = prfMsg.substring(1);
 
         // failcheck
-        if (chan == null) { return; }
+        if (chan == null || msg == null || msg.equals("")) { return; }
         
         LOGGER.debug("Got new chat message for channel {}: {}", chan.name(), msg);
 
@@ -67,7 +67,7 @@ public class Chat extends GenericShardlet
 
         if (chan == ChatChannel.Command)
         {
-            publishEvent(new ChatCommandEvent(attach.getEntity(), msg));
+            aggregator.triggerEvent(new ChatCommandEvent(client.getEntity(), msg));
             return;
         }
 
@@ -79,6 +79,6 @@ public class Chat extends GenericShardlet
         }
 
         // we have a standart message. trigger the event
-        publishEvent(new ChatMessageEvent(attach.getEntity(), chan, msg));
+        aggregator.triggerEvent(new ChatMessageEvent(client.getEntity(), chan, msg));
     }
 }

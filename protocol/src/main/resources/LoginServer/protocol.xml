@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Protocol name="GWLoginServerProtocol" port="8112">
-    
-    <ProtocolFilter name="SerialisationFilter" class="com.gamerevision.gwlpr.protocol.SerialisationFilter" in="true" out="true">
-        <InitParam name="ServerType" value="LoginServer" />
-    </ProtocolFilter>
-</Protocol>

@@ -30,14 +30,6 @@ public final class EntityManager
     
     
     /**
-     * Constructor.
-     */
-    public EntityManager()
-    {
-    }
-    
-    
-    /**
      * Add a new entity-component relation. 
      * The component will also be added to the components-by-class dictionary.
      * 

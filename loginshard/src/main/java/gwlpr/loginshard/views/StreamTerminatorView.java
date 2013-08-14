@@ -4,9 +4,12 @@
 
 package gwlpr.loginshard.views;
 
-import gwlpr.actions.loginserver.stoc.P003_StreamTerminatorAction;
-import gwlpr.loginshard.SessionAttachment;
-import realityshard.shardlet.Session;
+import gwlpr.protocol.loginserver.outbound.P003_StreamTerminator;
+import gwlpr.loginshard.models.ClientBean;
+import gwlpr.loginshard.models.enums.ErrorCode;
+import io.netty.channel.Channel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -16,14 +19,23 @@ import realityshard.shardlet.Session;
  */
 public class StreamTerminatorView
 {
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(StreamTerminatorView.class);
 
-    public static void create(Session session, int errorCode)
+    
+    public static void send(Channel channel, ErrorCode errorCode)
     {
-        P003_StreamTerminatorAction streamTerminator = new P003_StreamTerminatorAction();
-        streamTerminator.init(session);
-        streamTerminator.setLoginCount(SessionAttachment.getLoginCount(session));
-        streamTerminator.setErrorCode(errorCode);
+        P003_StreamTerminator streamTerminator = new P003_StreamTerminator();
+        streamTerminator.init(channel);
+        streamTerminator.setLoginCount(ClientBean.getPerformedActionsCount(channel));
+        streamTerminator.setErrorCode(errorCode.get());
         
-        session.send(streamTerminator);
+        // log it in case of error
+        if (errorCode != ErrorCode.None)
+        {
+            LOGGER.debug(String.format("Channel [%s] encountered an error: %s", channel.remoteAddress().toString(), errorCode.message()));
+        }
+        
+        channel.writeAndFlush(streamTerminator);
     }
 }

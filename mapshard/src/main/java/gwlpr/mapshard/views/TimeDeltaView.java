@@ -4,14 +4,15 @@
 
 package gwlpr.mapshard.views;
 
-import gwlpr.actions.gameserver.stoc.P001_UnknownAction;
-import gwlpr.actions.gameserver.stoc.P002_UnknownAction;
-import gwlpr.actions.gameserver.stoc.P019_UnknownAction;
-import realityshard.shardlet.Session;
+import gwlpr.protocol.gameserver.outbound.P001_PingRequest;
+import gwlpr.protocol.gameserver.outbound.P002_PingReply;
+import gwlpr.protocol.gameserver.outbound.P019_HeartBeat;
+import io.netty.channel.Channel;
 
 
 /**
- * This view's purpose is to 
+ * This view's purpose is to provide the client with latency and
+ * synchronization packets
  * 
  * @author _rusty
  */
@@ -24,45 +25,45 @@ public class TimeDeltaView
      * 
      * Should be happening once for each server tick.
      * 
-     * @param session
+     * @param channel
      * @param timeInterval 
      */
-    public static void heartBeat(Session session, int timeInterval)
+    public static void heartBeat(Channel channel, int timeInterval)
     {
-        P019_UnknownAction heartBeat = new P019_UnknownAction();
-        heartBeat.init(session);
-        heartBeat.setUnknown1(timeInterval);
+        P019_HeartBeat heartBeat = new P019_HeartBeat();
+        heartBeat.init(channel);
+        heartBeat.setTimeDelta(timeInterval);
         
-        session.send(heartBeat);
+        channel.writeAndFlush(heartBeat);
     }
     
     
     /**
      * Try to request a ping reply. This is used to determine the latency of a client.
      * 
-     * @param session 
+     * @param channel 
      */
-    public static void pingRequest(Session session)
+    public static void pingRequest(Channel channel)
     {
-        P001_UnknownAction ping = new P001_UnknownAction();
-        ping.init(session);
+        P001_PingRequest ping = new P001_PingRequest();
+        ping.init(channel);
         
-        session.send(ping);
+        channel.writeAndFlush(ping);
     }
     
     
     /**
      * This is the answer to a client's ping reply. (Or request)
      * 
-     * @param   session
+     * @param   channel
      * @param   latency 
      */
-    public static void pingReply(Session session, int latency)
+    public static void pingReply(Channel channel, int latency)
     {
-        P002_UnknownAction ping = new P002_UnknownAction();
-        ping.init(session);
-        ping.setUnknown1(latency);
+        P002_PingReply ping = new P002_PingReply();
+        ping.init(channel);
+        ping.setLatency(latency);
         
-        session.send(ping);
+        channel.writeAndFlush(ping);
     }
 }

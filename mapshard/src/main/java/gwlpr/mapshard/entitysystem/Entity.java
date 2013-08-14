@@ -45,6 +45,22 @@ public final class Entity
     
     
     /**
+     * Constructor.
+     * 
+     * @param       uid                     An existing UUID for this new entity
+     * @param       manager                 The EntityManager that this entity
+     *                                      will register itself with
+     * @param       components              The actual components of this entity
+     */
+    public Entity(UUID uid, EntityManager manager, Component... components)
+    {
+        uuid = uid;
+        this.manager = manager;
+        addAll(components);
+    }
+    
+    
+    /**
      * Convenience method. Use this to register new components.
      * @param       components              The components that should be registered
      *                                      for this entity.

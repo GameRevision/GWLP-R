@@ -4,18 +4,19 @@
 
 package gwlpr.mapshard.views;
 
-import gwlpr.actions.gameserver.stoc.P021_UnknownAction;
-import gwlpr.actions.gameserver.stoc.P022_DespawnAgentAction;
-import gwlpr.actions.gameserver.stoc.P074_NPCGeneralAction;
-import gwlpr.actions.gameserver.stoc.P075_NPCModelAction;
-import gwlpr.actions.gameserver.stoc.P077_UnknownAction;
-import gwlpr.actions.gameserver.stoc.P143_UpdateNpcNameAction;
+import gwlpr.protocol.gameserver.outbound.P021_SpawnAgent;
+import gwlpr.protocol.gameserver.outbound.P022_DespawnAgent;
+import gwlpr.protocol.gameserver.outbound.P074_NPCGeneral;
+import gwlpr.protocol.gameserver.outbound.P075_NPCModel;
+import gwlpr.protocol.gameserver.outbound.P077_UpdateAppearance;
+import gwlpr.protocol.gameserver.outbound.P143_UpdateNpcName;
 import gwlpr.mapshard.entitysystem.Entity;
 import gwlpr.mapshard.entitysystem.Components.*;
 import gwlpr.mapshard.models.GWString;
-import gwlpr.mapshard.models.GWVector;
+import gwlpr.mapshard.models.WorldPosition;
 import gwlpr.mapshard.models.enums.SpawnType;
-import realityshard.shardlet.Session;
+import gwlpr.protocol.util.Vector2;
+import io.netty.channel.Channel;
 
 
 /**
@@ -34,28 +35,27 @@ public class EntitySpawningView
      * 
      * TODO refactor me!
      *
-     * @param       session
+     * @param       channel
      * @param       entity
      */
-    public static void spawnAgent(Session session,  Entity entity)
+    public static void spawnAgent(Channel channel,  Entity entity)
     {
         // retrieve entity-info
-        String name = entity.get(Name.class).name;
         AgentIdentifiers agentIDs = entity.get(AgentIdentifiers.class);
-        GWVector pos = entity.get(Position.class).position;
-        GWVector dir = entity.get(Direction.class).direction;
+        WorldPosition pos = entity.get(Position.class).position;
+        Direction direction = entity.get(Direction.class);
+        Vector2 dir = direction.direction;
+        float rotation = direction.rotation;
         Movement move = entity.get(Movement.class);
-        FactionData faction = entity.get(FactionData.class);
-        
-        byte factionColor = 0x20; // TODO: are these the color of the names of npcs and player etc.?
+        SpawnData faction = entity.get(SpawnData.class);
         
         if (faction.spawnType == SpawnType.Player)
         {
-           sendPlayerAppearance(session, entity);
+           sendPlayerAppearance(channel, entity);
         }
         else if (faction.spawnType == SpawnType.NPC || faction.spawnType == SpawnType.Ally)
         {
-            sendNPCGeneralPackets(session, entity);
+            sendNPCGeneralPackets(channel, entity);
         }
         else
         {
@@ -64,54 +64,54 @@ public class EntitySpawningView
         }
 
         // send spawn agent packet
-        P021_UnknownAction spawnAgent = new P021_UnknownAction();
-        spawnAgent.init(session);
-        spawnAgent.setUnknown1(agentIDs.agentID);
-        spawnAgent.setUnknown2((faction.factionColor << 24) | agentIDs.localID); // is this the localid?
-        spawnAgent.setUnknown3((byte) 1);
-        spawnAgent.setUnknown4((byte) 9);//5);
-        spawnAgent.setUnknown5(pos.toFloatArray());
-        spawnAgent.setUnknown6(pos.getZPlane());
-        spawnAgent.setUnknown7(new float[] {Float.POSITIVE_INFINITY, dir.toRotation()});
-        spawnAgent.setUnknown8((byte) 1);
-        spawnAgent.setUnknown9(move.speed);
-        spawnAgent.setUnknown10(1F);//Float.POSITIVE_INFINITY);
-        spawnAgent.setUnknown11(0x41400000);
-        spawnAgent.setUnknown12(faction.spawnType.getIntString()); // "play" backwards
-        spawnAgent.setUnknown18(new float[] {Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY});
-        spawnAgent.setUnknown19(new float[] {Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY});
-        spawnAgent.setUnknown22(new float[] {Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY});
+        P021_SpawnAgent spawnAgent = new P021_SpawnAgent();
+        spawnAgent.init(channel);
+        spawnAgent.setAgentID(agentIDs.agentID);
+        spawnAgent.setFacColorLocalID((faction.factionColor << 24) | agentIDs.localID); // is this the localid?
+        spawnAgent.setUnknown1((byte) 1);
+        spawnAgent.setUnknown2((byte) 9);//5);
+        spawnAgent.setPositionVector(pos);
+        spawnAgent.setPositionPlane(pos.getZPlane());
+        spawnAgent.setDirectionRotation(new Vector2(Float.POSITIVE_INFINITY, rotation));
+        spawnAgent.setUnknown3((short)1);
+        spawnAgent.setMoveSpeed(move.speed);
+        spawnAgent.setUnknown4(1F);//Float.POSITIVE_INFINITY);
+        spawnAgent.setUnknown5(0x41400000);
+        spawnAgent.setSpawnType(faction.spawnType.getIntString()); // "play" backwards
+        spawnAgent.setUnknown11(new Vector2(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY));
+        spawnAgent.setUnknown12(new Vector2(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY));
+        spawnAgent.setUnknown15(new Vector2(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY));
         
-        session.send(spawnAgent);
+        channel.writeAndFlush(spawnAgent);
     }
 
 
     /**
      * Despawn an agent.
      *
-     * @param   session
+     * @param   channel
      * @param   entity
      */
-    public static void despawnAgent(Session session, Entity entity)
+    public static void despawnAgent(Channel channel, Entity entity)
     {
         // retrieve some NPC data...
         AgentIdentifiers agentIDs = entity.get(AgentIdentifiers.class);
         
-        P022_DespawnAgentAction despawn = new P022_DespawnAgentAction();
-        despawn.init(session);
+        P022_DespawnAgent despawn = new P022_DespawnAgent();
+        despawn.init(channel);
         despawn.setAgentID(agentIDs.agentID);
 
-        session.send(despawn);
+        channel.writeAndFlush(despawn);
     }
     
     
     /**
      * Necessary for NPC spawning
      * 
-     * @param session
+     * @param channel
      * @param entity 
      */
-    public static void sendNPCGeneralPackets(Session session, Entity entity)
+    public static void sendNPCGeneralPackets(Channel channel, Entity entity)
     {
         // retrieve some NPC data...
         String name = entity.get(Name.class).name;
@@ -120,8 +120,8 @@ public class EntitySpawningView
         CharData charData = entity.get(CharData.class);
         
         // send the messages...
-        P074_NPCGeneralAction genStats = new P074_NPCGeneralAction();
-        genStats.init(session);
+        P074_NPCGeneral genStats = new P074_NPCGeneral();
+        genStats.init(channel);
         genStats.setLocalID(agentIDs.localID);
         genStats.setNPCFile(npc.fileID);
         genStats.setScale(npc.scale << 24);
@@ -129,23 +129,29 @@ public class EntitySpawningView
         genStats.setProfession((byte) charData.primary.ordinal());
         genStats.setLevel((byte) charData.level);
         genStats.setTexture(npc.texture);
-        genStats.setName(npc.hashedName.toCharArray());
-        genStats.setData2(0);
+        genStats.setName(npc.hashedName);
+        genStats.setUnknown1(0);
 
-        session.send(genStats);
+        channel.writeAndFlush(genStats);
         
+        // prepare NPC model file hash
+        P075_NPCModel.NestedModelFile[] modelFile = new P075_NPCModel.NestedModelFile[npc.modelHashes.length];
+        for (int i = 0; i < npc.modelHashes.length; i++) 
+        {
+            modelFile[i].setUnknown1(npc.modelHashes[i]);
+        }
         
-        P075_NPCModelAction npcModel = new P075_NPCModelAction();
-        npcModel.init(session);
+        P075_NPCModel npcModel = new P075_NPCModel();
+        npcModel.init(channel);
         npcModel.setLocalID(agentIDs.localID);
-        npcModel.setModelFile(npc.modelHashes);
+        npcModel.setModelFile(modelFile);
 
-        session.send(npcModel);
+        channel.writeAndFlush(npcModel);
         
         // if the NPC has got a special name, send it now:
         if (!"".equals(name) && !"NoName".equals(name))
         {
-            sendNPCName(session, entity);
+            sendNPCName(channel, entity);
         }
     }
     
@@ -153,50 +159,50 @@ public class EntitySpawningView
     /**
      * Necessary for updating an NPCs name
      * 
-     * @param session
+     * @param channel
      * @param entity 
      */
-    public static void sendNPCName(Session session, Entity entity)
+    public static void sendNPCName(Channel channel, Entity entity)
     {
         // retrieve some NPC data...
         String name = entity.get(Name.class).name;
         AgentIdentifiers agentIDs = entity.get(AgentIdentifiers.class);
         
         // send the packet
-        P143_UpdateNpcNameAction updNPCName = new P143_UpdateNpcNameAction();
-        updNPCName.init(session);
+        P143_UpdateNpcName updNPCName = new P143_UpdateNpcName();
+        updNPCName.init(channel);
         updNPCName.setAgentID(agentIDs.agentID);
-        updNPCName.setName(GWString.formatChat(name).toCharArray());
+        updNPCName.setName(GWString.formatChat(name));
         
-        session.send(updNPCName);
+        channel.writeAndFlush(updNPCName);
     }
     
     
     /**
      * Send right before spawning a player.
      * 
-     * @param session
+     * @param channel
      * @param entity 
      */
-    public static void sendPlayerAppearance(Session session, Entity entity)
+    public static void sendPlayerAppearance(Channel channel, Entity entity)
     {
         // retrieve some NPC data...
         String name = entity.get(Name.class).name;
         AgentIdentifiers agentIDs = entity.get(AgentIdentifiers.class);
-        Appearance appearance = entity.get(Appearance.class);
+        PlayerAppearance appearance = entity.get(PlayerAppearance.class);
         
         // send update agent appearance
-        P077_UnknownAction updateAppear= new P077_UnknownAction();
-        updateAppear.init(session);
-        updateAppear.setUnknown1(agentIDs.localID);
-        updateAppear.setUnknown2(agentIDs.agentID);
-        updateAppear.setUnknown3(byteArrayToInt(appearance.appearanceDump));
-        updateAppear.setUnknown4((byte) 0);
-        updateAppear.setUnknown5(0);
-        updateAppear.setUnknown6(0x3CBFA094);
-        updateAppear.setUnknown7(name.toCharArray());
+        P077_UpdateAppearance updateAppear= new P077_UpdateAppearance();
+        updateAppear.init(channel);
+        updateAppear.setAgentID(agentIDs.localID);
+        updateAppear.setLocalID(agentIDs.agentID);
+        updateAppear.setAppearanceDump(byteArrayToInt(appearance.appearanceDump));
+        updateAppear.setUnknown1((byte) 0);
+        updateAppear.setUnknown2(0);
+        updateAppear.setUnknown3(0x3CBFA094);
+        updateAppear.setName(name);
 
-        session.send(updateAppear);
+        channel.writeAndFlush(updateAppear);
     }
 
 

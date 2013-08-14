@@ -4,12 +4,12 @@
 
 package gwlpr.mapshard.views;
 
-import gwlpr.actions.gameserver.stoc.P147_UpdateGenericValueIntAction;
-import gwlpr.actions.gameserver.stoc.P148_UpdateGenericValueTargetAction;
-import gwlpr.actions.gameserver.stoc.P150_UpdateGenericValueFloatAction;
-import gwlpr.actions.gameserver.stoc.P151_UpdateGenericValueModifierAction;
+import gwlpr.protocol.gameserver.outbound.P147_UpdateGenericValue;
+import gwlpr.protocol.gameserver.outbound.P148_UpdateTargetGenericValue;
+import gwlpr.protocol.gameserver.outbound.P150_UpdateGenericModifier;
+import gwlpr.protocol.gameserver.outbound.P151_UpdateTargetGenericModifier;
 import gwlpr.mapshard.models.enums.GenericValue;
-import realityshard.shardlet.Session;
+import io.netty.channel.Channel;
 
 
 /**
@@ -22,49 +22,50 @@ import realityshard.shardlet.Session;
  */
 public class UpdateGenericValueView
 {
-    public static void send(Session session, int agentID, GenericValue valueID, int value)
+    
+    public static void send(Channel channel, int agentID, GenericValue valueID, int value)
     {
-        P147_UpdateGenericValueIntAction updateGenericValueInt = new P147_UpdateGenericValueIntAction();
-        updateGenericValueInt.init(session);
+        P147_UpdateGenericValue updateGenericValueInt = new P147_UpdateGenericValue();
+        updateGenericValueInt.init(channel);
         updateGenericValueInt.setValueID(valueID.ordinal());
         updateGenericValueInt.setAgentID(agentID);
         updateGenericValueInt.setValue(value);
 
-        session.send(updateGenericValueInt);
+        channel.writeAndFlush(updateGenericValueInt);
     }
 
-    public static void send(Session session, int agentID, GenericValue valueID, float value)
+    public static void send(Channel channel, int agentID, GenericValue valueID, float value)
     {
-        P150_UpdateGenericValueFloatAction updateGenericValueFloat = new P150_UpdateGenericValueFloatAction();
-        updateGenericValueFloat.init(session);
+        P150_UpdateGenericModifier updateGenericValueFloat = new P150_UpdateGenericModifier();
+        updateGenericValueFloat.init(channel);
         updateGenericValueFloat.setValueID(valueID.ordinal());
         updateGenericValueFloat.setAgentID(agentID);
-        updateGenericValueFloat.setValue(value);
+        updateGenericValueFloat.setValue(Float.floatToRawIntBits(value));
 
-        session.send(updateGenericValueFloat);
+        channel.writeAndFlush(updateGenericValueFloat);
     }
 
-    public static void send(Session session, int targetAgentID, int casterAgentID, GenericValue valueID, int value)
+    public static void send(Channel channel, int targetAgentID, int casterAgentID, GenericValue valueID, int value)
     {
-        P148_UpdateGenericValueTargetAction updateGenericValueTarget = new P148_UpdateGenericValueTargetAction();
-        updateGenericValueTarget.init(session);
+        P148_UpdateTargetGenericValue updateGenericValueTarget = new P148_UpdateTargetGenericValue();
+        updateGenericValueTarget.init(channel);
         updateGenericValueTarget.setValueID(valueID.ordinal());
         updateGenericValueTarget.setTarget(targetAgentID);
         updateGenericValueTarget.setCaster(casterAgentID);
         updateGenericValueTarget.setValue(value);
 
-        session.send(updateGenericValueTarget);
+        channel.writeAndFlush(updateGenericValueTarget);
     }
 
-    public static void send(Session session, int targetAgentID, int casterAgentID, GenericValue valueID, float value)
+    public static void send(Channel channel, int targetAgentID, int casterAgentID, GenericValue valueID, float value)
     {
-        P151_UpdateGenericValueModifierAction updateGenericValueModifier = new P151_UpdateGenericValueModifierAction();
-        updateGenericValueModifier.init(session);
+        P151_UpdateTargetGenericModifier updateGenericValueModifier = new P151_UpdateTargetGenericModifier();
+        updateGenericValueModifier.init(channel);
         updateGenericValueModifier.setValueID(valueID.ordinal());
         updateGenericValueModifier.setTarget(targetAgentID);
         updateGenericValueModifier.setCaster(casterAgentID);
-        //updateGenericValueModifier.setValue(value); // TODO: fixme
+        updateGenericValueModifier.setValue(Float.floatToRawIntBits(value));
 
-        session.send(updateGenericValueModifier);
+        channel.writeAndFlush(updateGenericValueModifier);
     }
 }

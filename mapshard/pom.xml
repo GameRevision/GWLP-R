@@ -30,6 +30,12 @@
             <artifactId>actions</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.gamerevision.gwlpr</groupId>
+            <artifactId>protocol</artifactId>
+            <version>0.2.1</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
 </project>
