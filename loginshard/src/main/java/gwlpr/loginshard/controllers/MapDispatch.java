@@ -9,13 +9,14 @@ import gwlpr.protocol.intershard.LSRequest_AcceptClient;
 import gwlpr.protocol.loginserver.inbound.P041_CharacterPlayInfo;
 import gwlpr.loginshard.models.ClientBean;
 import gwlpr.loginshard.models.MapDispatchModel;
-import gwlpr.loginshard.models.MapShardBean;
 import gwlpr.loginshard.models.enums.ErrorCode;
 import gwlpr.loginshard.views.MapDispatchView;
 import gwlpr.loginshard.views.StreamTerminatorView;
 import gwlpr.protocol.intershard.GSNotify_ClientConnected;
 import gwlpr.protocol.intershard.GSNotify_WorldEmpty;
 import gwlpr.protocol.intershard.GSReply_AcceptClient;
+import gwlpr.protocol.intershard.utils.DistrictLanguage;
+import gwlpr.protocol.intershard.utils.DistrictRegion;
 import io.netty.channel.Channel;
 import java.net.InetSocketAddress;
 import org.slf4j.Logger;
@@ -78,9 +79,17 @@ public class MapDispatch
         client.setLoginCount(action.getLoginCount());
 
         // TODO: check mapId before directly creating a mapshard for it!
-
-        // let the model do the work...
-        Handle<GameAppContext> mapShardHandle = model.getOrCreate((int)action.getGameMapId());
+        // TODO: check the following values!
+        // we ignore the instance number because the server needs to chose that...
+        int mapId = (int)action.getGameMapId();
+        int instanceNum = (int)action.getInstanceNumber();
+        DistrictRegion region = DistrictRegion.values()[(int)action.getRegion()];
+        DistrictLanguage language = DistrictLanguage.values()[(int)action.getLanguage()];
+        
+        // TODO: enable outposts
+        Handle<GameAppContext> mapShardHandle = model.getOrCreateExplorable(mapId);
+            // let the model do the work...
+            //Handle<GameAppContext> mapShardHandle = model.getOrCreate(mapId, region, language, instanceNum, true);
 
         // lets check if we were successfull with the game app creation
         if (mapShardHandle == null)

@@ -25,6 +25,8 @@ import realityshard.container.util.Handle;
  * 
  * TODO: Enhance this to better manage the mapshards
  * 
+ * TODO: Add fields for pvp and outpost to the mapshards
+ * 
  * @author _rusty
  */
 public final class MapDispatchModel 
@@ -55,9 +57,9 @@ public final class MapDispatchModel
      * @param       gameMapId
      * @return      The context's bean, or null if it couldn't be created.
      */
-    public Handle<GameAppContext> getOrCreate(int gameMapId)
+    public Handle<GameAppContext> getOrCreateExplorable(int gameMapId)
     {
-        return getOrCreate(gameMapId, DistrictRegion.Default, DistrictLanguage.Default);
+        return getOrCreate(gameMapId, DistrictRegion.Default, DistrictLanguage.Default, 0, false);
     }
     
     
@@ -70,7 +72,7 @@ public final class MapDispatchModel
      * @param       language
      * @return      The context, or null if it couldn't be created.
      */
-    public Handle<GameAppContext> getOrCreate(int gameMapId, DistrictRegion region, DistrictLanguage language)
+    public Handle<GameAppContext> getOrCreate(int gameMapId, DistrictRegion region, DistrictLanguage language, int instanceNum, boolean isOutpost)
     {
         DistrictRegion reg = region;
         DistrictLanguage lan = language;
@@ -87,6 +89,7 @@ public final class MapDispatchModel
         for (MapShardBean mapShard : mapShardMetaInfo.values()) 
         {
             if (   mapShard.getMap().getGameID() == gameMapId
+                && mapShard.getInstanceNumber()  == instanceNum
                 && mapShard.getRegion()          == reg
                 && mapShard.getLanguage()        == lan)
             {
@@ -98,7 +101,7 @@ public final class MapDispatchModel
         // none found, creating a new one
         if (result == null)
         {
-            result = tryCreate(gameMapId, reg, lan, 1);
+            result = tryCreate(gameMapId, reg, lan, instanceNum, isOutpost);
             
             // failcheck
             if (result == null) { return null; }
@@ -186,8 +189,9 @@ public final class MapDispatchModel
     
     /**
      * Try to create a new map shard (fails by returning null)
-     */
-    private MapShardBean tryCreate(int gameMapId, DistrictRegion region, DistrictLanguage language, int instanceNumber) 
+     * TODO: allow pvp mapshards here. 
+    */
+    private MapShardBean tryCreate(int gameMapId, DistrictRegion region, DistrictLanguage language, int instanceNumber, boolean isOutpost) 
     {
         
         gwlpr.database.entities.Map mapEntity = MapJpaController.get().findByGameId(gameMapId);
@@ -204,7 +208,8 @@ public final class MapDispatchModel
         // create the gameapp
         HashMap<String,String> params = new HashMap<>();
         params.put("MapId",             String.valueOf(mapEntity.getId()));
-        params.put("IsPvP",             String.valueOf(true));
+        params.put("IsPvP",             String.valueOf(false));
+        params.put("IsOutpost",         String.valueOf(isOutpost));
         params.put("InstanceNumber",    String.valueOf(instanceNumber));
         params.put("DistrictRegion",    region.toString());
         params.put("DistrictLanguage",  language.toString());

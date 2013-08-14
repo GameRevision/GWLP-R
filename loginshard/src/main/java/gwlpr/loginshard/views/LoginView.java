@@ -15,6 +15,7 @@ import gwlpr.protocol.loginserver.outbound.P022_AccountGuiInfo;
 import io.netty.channel.Channel;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,8 +44,8 @@ public class LoginView
             characterInfo.init(channel);
             
             characterInfo.setLoginCount(ClientBean.get(channel).getLoginCount());
-            characterInfo.setUnknown1(new byte[16]);
-            characterInfo.setUnknown2(0);
+            characterInfo.setCharacterUID(UUID.randomUUID());
+            characterInfo.setUnknown1(0);
             characterInfo.setCharacterName(character.getName());                
 
             // prepare the char info
@@ -74,18 +75,18 @@ public class LoginView
         }
 
         // next step:
-        sendAccountGuiInfo(channel);
+        sendAccountGuiInfo(channel, account);
     }
     
             
-    public static void sendAccountGuiInfo(Channel channel)    
+    public static void sendAccountGuiInfo(Channel channel, Account account)    
     {
         LOGGER.debug("Sending account gui settings");
         
         P022_AccountGuiInfo accountGuiSettings = new P022_AccountGuiInfo();
         accountGuiSettings.init(channel);
         accountGuiSettings.setLoginCount(ClientBean.get(channel).getLoginCount());
-        accountGuiSettings.setSettings(new byte[] {});
+        accountGuiSettings.setSettings(account.getGui());
         channel.writeAndFlush(accountGuiSettings);
         
         // next step:
@@ -113,12 +114,13 @@ public class LoginView
         accountPermissions.setTerritoryChanges(4);
         accountPermissions.setUnknown1(new byte[] { 0x3F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 });
         accountPermissions.setUnknown2(new byte[] { -0x80, 0x3F, 0x02, 0x00, 0x03, 0x00, 0x08, 0x00 });
-        accountPermissions.setUnknown3(new byte[] { 0x37, 0x4B, 0x09, -0x45, -0x3E, -0x0A, 0x74, 0x43, -0x56, -0x55, 0x35, 0x4D, -0x12, -0x49, -0x51, 0x08 });
-        accountPermissions.setUnknown4(new byte[] { 0x55, -0x4A, 0x77, 0x59, 0x0C, 0x0C, 0x15, 0x46, -0x53, -0x56, 0x33, 0x43, 0x4A, -0x6F, 0x23, 0x6A });
+        // TODO: the account id is the client ID right?
+        accountPermissions.setAccountUID(ClientBean.getHandle(channel).getUid());
+        accountPermissions.setUnknown3(new byte[] { 0x55, -0x4A, 0x77, 0x59, 0x0C, 0x0C, 0x15, 0x46, -0x53, -0x56, 0x33, 0x43, 0x4A, -0x6F, 0x23, 0x6A });
         accountPermissions.setChangeAccountSettings(8);
         accountPermissions.setAccountFeatures(new byte[] { 0x01, 0x00, 0x06, 0x00, 0x57, 0x00, 0x01, 0x00 });
         accountPermissions.setEulaAccepted((byte) 23);
-        accountPermissions.setUnknown5(0);
+        accountPermissions.setUnknown4(0);
         channel.writeAndFlush(accountPermissions);
 
         
