@@ -10,6 +10,7 @@ import static gwlpr.protocol.serialization.GWMessageSerializationRegistry.regist
 import gwlpr.protocol.serialization.NettySerializationFilter;
 import gwlpr.protocol.util.IsArray;
 import io.netty.buffer.ByteBuf;
+import java.util.UUID;
 
 
 /**
@@ -38,16 +39,14 @@ public class P000_VerifyClient
 
     public static class Payload extends GWMessage
     {
-        public int Unknown1;
-        public long Unknown2;
+        public int LengthOfNext3Fields;
+        public long ClientVersion;
         public long Unknown3;
         public long Key1;
         public long GameMapId;
         public long Key2;
-        @IsArray(constant = true, size = 16, prefixLength = -1)
-        public byte[] AccountHash;
-        @IsArray(constant = true, size = 16, prefixLength = -1)
-        public byte[] CharacterHash;
+        public UUID AccountUID;
+        public UUID CharacterUID;
         public long Unknown4;
         public long Unknown5;
 
@@ -79,7 +78,8 @@ public class P000_VerifyClient
 
     public static boolean check(Header header)
     {
-        return (header.Header == 0 && header.Length == (Header.getLength() + Payload.getLength()));
+        // NOTE: header length doesnt make
+        return (header.Header == 0 && header.Length == 5);
     }
 
 
@@ -89,7 +89,7 @@ public class P000_VerifyClient
         if (buffer.readableBytes() < Header.getLength()) { return null; }
 
         Header result = new Header();
-        headFilter.serialize(buffer, result);
+        headFilter.deserialize(buffer, result);
 
         return result;
     }
@@ -101,7 +101,7 @@ public class P000_VerifyClient
         if (buffer.readableBytes() < Payload.getLength()) { return null; }
 
         Payload result = new Payload();
-        payloadFilter.serialize(buffer, result);
+        payloadFilter.deserialize(buffer, result);
 
         return result;
     }

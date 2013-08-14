@@ -163,7 +163,7 @@ public class HandshakeHandler extends ByteToMessageDecoder
         buf = ctx.alloc().buffer(70).order(ByteOrder.LITTLE_ENDIAN);
         serverSeed.serializeInto(buf);
 
-        ChannelFuture cf = ctx.writeAndFlush(serverSeed);
+        ChannelFuture cf = ctx.writeAndFlush(buf);
 
         // also remove this handler
         ctx.pipeline().remove(this);

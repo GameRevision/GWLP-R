@@ -78,7 +78,7 @@ public class P000_ClientSeed
         if (buffer.readableBytes() < Header.getLength()) { return null; }
 
         Header result = new Header();
-        headFilter.serialize(buffer, result);
+        headFilter.deserialize(buffer, result);
 
         return result;
     }
@@ -90,7 +90,7 @@ public class P000_ClientSeed
         if (buffer.readableBytes() < Payload.getLength()) { return null; }
 
         Payload result = new Payload();
-        payloadFilter.serialize(buffer, result);
+        payloadFilter.deserialize(buffer, result);
 
         return result;
     }

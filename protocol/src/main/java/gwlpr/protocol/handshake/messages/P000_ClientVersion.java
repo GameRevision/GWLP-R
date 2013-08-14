@@ -28,23 +28,23 @@ public class P000_ClientVersion
     {
         public short Header;
         public short Length;
+        public int PayloadLength;
 
         @Override
         public short getHeader() { return 0; }
-        public static int getLength() { return 2; }
+        public static int getLength() { return 4; }
     }
 
 
     public static class Payload extends GWMessage
     {
-        public int Unknown1;
         public long ClientVersion;
         public long Unknown2;
         public long Unknown3;
 
         @Override
         public short getHeader() { return 0; }
-        public static int getLength() { return 14; }
+        public static int getLength() { return 12; }
     }
 
 
@@ -70,7 +70,7 @@ public class P000_ClientVersion
 
     public static boolean check(Header header)
     {
-        return (header.Header == 0 && header.Length == (Header.getLength() + Payload.getLength()));
+        return (header.Header == 0 && header.Length == Header.getLength() && header.PayloadLength == Payload.getLength());
     }
 
 
@@ -80,7 +80,7 @@ public class P000_ClientVersion
         if (buffer.readableBytes() < Header.getLength()) { return null; }
 
         Header result = new Header();
-        headFilter.serialize(buffer, result);
+        headFilter.deserialize(buffer, result);
 
         return result;
     }
@@ -92,7 +92,7 @@ public class P000_ClientVersion
         if (buffer.readableBytes() < Payload.getLength()) { return null; }
 
         Payload result = new Payload();
-        payloadFilter.serialize(buffer, result);
+        payloadFilter.deserialize(buffer, result);
 
         return result;
     }

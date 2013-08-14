@@ -13,11 +13,11 @@ public final class P041_CharacterPlayInfo
 {
 
     private long loginCount;
-    private long unknown1;
+    private long mapType;
     private long gameMapId;
-    private long unknown2;
-    private long unknown3;
-    private long unknown4;
+    private long instanceNumber;
+    private long region;
+    private long language;
 
     @Override
     public short getHeader() {
@@ -28,30 +28,30 @@ public final class P041_CharacterPlayInfo
         return loginCount;
     }
 
-    public long getUnknown1() {
-        return unknown1;
+    public long getMapType() {
+        return mapType;
     }
 
     public long getGameMapId() {
         return gameMapId;
     }
 
-    public long getUnknown2() {
-        return unknown2;
+    public long getInstanceNumber() {
+        return instanceNumber;
     }
 
-    public long getUnknown3() {
-        return unknown3;
+    public long getRegion() {
+        return region;
     }
 
-    public long getUnknown4() {
-        return unknown4;
+    public long getLanguage() {
+        return language;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("P041_CharacterPlayInfo[");
-        sb.append("loginCount=").append(this.loginCount).append(",unknown1=").append(this.unknown1).append(",gameMapId=").append(this.gameMapId).append(",unknown2=").append(this.unknown2).append(",unknown3=").append(this.unknown3).append(",unknown4=").append(this.unknown4).append("]");
+        sb.append("loginCount=").append(this.loginCount).append(",mapType=").append(this.mapType).append(",gameMapId=").append(this.gameMapId).append(",instanceNumber=").append(this.instanceNumber).append(",region=").append(this.region).append(",language=").append(this.language).append("]");
         return sb.toString();
     }
 
