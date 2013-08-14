@@ -8,9 +8,9 @@ import gwlpr.mapshard.entitysystem.Entity;
 import gwlpr.mapshard.entitysystem.EntityManager;
 import gwlpr.mapshard.entitysystem.GenericSystem;
 import gwlpr.mapshard.entitysystem.Components.*;
-import gwlpr.mapshard.events.RotateEvent;
-import gwlpr.mapshard.events.MoveEvent;
-import gwlpr.mapshard.events.StopMovingEvent;
+import gwlpr.mapshard.entitysystem.events.RotateEvent;
+import gwlpr.mapshard.entitysystem.events.MoveEvent;
+import gwlpr.mapshard.entitysystem.events.StopMovingEvent;
 import gwlpr.mapshard.models.ClientBean;
 import gwlpr.mapshard.models.enums.MovementState;
 import gwlpr.mapshard.models.enums.MovementType;
@@ -95,12 +95,6 @@ public class MovementSystem extends GenericSystem
             // we do not actually change the current position of the agent!
             // formula: posVec + ( dirVec * (speedScal * (0.001 * timeDeltaScal)))
             pos.position = pos.position.add(dir.mul(move.speed * (0.001F * timeDelta))); 
-            
-            // inform the clients
-            for (Handle<ClientBean> client : clientRegistry.getAllHandles())
-            {
-                EntityMovementView.sendUpdateMovement(client.get().getChannel(), entity);
-            }
         }
     }
 

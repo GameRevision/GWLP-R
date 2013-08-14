@@ -5,7 +5,7 @@
 package gwlpr.mapshard.entitysystem.systems;
 
 import gwlpr.mapshard.entitysystem.GenericSystem;
-import gwlpr.mapshard.events.SchedulingEvent;
+import gwlpr.mapshard.entitysystem.events.SchedulingEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;

@@ -2,7 +2,7 @@
  * For copyright information see the LICENSE document.
  */
 
-package gwlpr.mapshard.events;
+package gwlpr.mapshard.entitysystem.events;
 
 import gwlpr.mapshard.entitysystem.Entity;
 import gwlpr.mapshard.models.WorldPosition;

@@ -6,7 +6,7 @@ package gwlpr.mapshard.entitysystem.systems;
 
 import gwlpr.mapshard.entitysystem.GenericSystem;
 import gwlpr.mapshard.entitysystem.Components.*;
-import gwlpr.mapshard.events.ChatMessageEvent;
+import gwlpr.mapshard.entitysystem.events.ChatMessageEvent;
 import gwlpr.mapshard.models.ClientBean;
 import gwlpr.mapshard.models.enums.ChatColor;
 import gwlpr.mapshard.views.ChatMessageView;

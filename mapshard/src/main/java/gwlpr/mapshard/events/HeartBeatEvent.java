@@ -4,40 +4,24 @@
 
 package gwlpr.mapshard.events;
 
-import realityshard.container.events.Event;
-
 
 /**
- * Base class for all events that are some kind of heartbeat (periodically
- * reoccuring)
+ * Used for the discrete time interval that we have to compute packets
+ * and finally send them.
+ * There should be a special controller listening for this event and
+ * pumping out all necessary packets between the heartbeats.
  *
  * @author _rusty
  */
-public class HeartBeatEvent implements Event 
+public class HeartBeatEvent extends AbstractTimedeltaEvent
 {
-
-    private final int milliSecondsSinceLastHeartBeat;
-
     
-    /**
-     * Constructor.
-     * 
-     * @param       milliSecondsSinceLastHeartBeat
-     */
-    public HeartBeatEvent(int milliSecondsSinceLastHeartBeat) 
+    @Override
+    public HeartBeatEvent clone()
     {
-        this.milliSecondsSinceLastHeartBeat = milliSecondsSinceLastHeartBeat;
-    }
-    
-    
-    /**
-     * Getter.
-     * 
-     * @return      The amount of milliseconds of the time interval
-     *              that has passed since the last HeartBeat event.
-     */
-    public int getPassedTimeInterval()
-    {
-        return milliSecondsSinceLastHeartBeat;
+        HeartBeatEvent result = new HeartBeatEvent();
+        result.setTimeDelta(getTimeDelta());
+        
+        return result;
     }
 }

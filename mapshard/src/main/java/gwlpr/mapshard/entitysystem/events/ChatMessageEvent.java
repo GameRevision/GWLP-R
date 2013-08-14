@@ -2,23 +2,25 @@
  * For copyright information see the LICENSE document.
  */
 
-package gwlpr.mapshard.events;
+package gwlpr.mapshard.entitysystem.events;
 
 import gwlpr.mapshard.entitysystem.Entity;
+import gwlpr.mapshard.models.enums.ChatChannel;
 import realityshard.container.events.Event;
 
 
 /**
- * This event is triggered when we received a chat-command.
+ * Triggered when we got a chat message (can come from NPCs too ;)
  *
- * Hint: NPCs may issue chat-commands too.
+ * Server commands are handled with a separate event!
  *
  * @author _rusty
  */
-public class ChatCommandEvent implements Event
+public class ChatMessageEvent implements Event
 {
 
     private final Entity sender;
+    private final ChatChannel channel;
     private final String message;
 
 
@@ -28,9 +30,10 @@ public class ChatCommandEvent implements Event
      * @param       sender                  The entity that sent
      * @param       message                 The message
      */
-    public ChatCommandEvent(Entity sender, String message)
+    public ChatMessageEvent(Entity sender, ChatChannel channel, String message)
     {
         this.sender = sender;
+        this.channel = channel;
         this.message = message;
     }
 
@@ -43,6 +46,17 @@ public class ChatCommandEvent implements Event
     public Entity getSender()
     {
         return sender;
+    }
+
+
+    /**
+     * Getter.
+     *
+     * @return
+     */
+    public ChatChannel getChannel()
+    {
+        return channel;
     }
 
 

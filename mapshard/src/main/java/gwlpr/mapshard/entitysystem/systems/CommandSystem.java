@@ -9,7 +9,7 @@ import gwlpr.mapshard.entitysystem.EntityManager;
 import gwlpr.mapshard.entitysystem.GenericSystem;
 import gwlpr.mapshard.entitysystem.Components.*;
 import gwlpr.mapshard.entitysystem.entityfactories.NPCFactory;
-import gwlpr.mapshard.events.ChatCommandEvent;
+import gwlpr.mapshard.entitysystem.events.ChatCommandEvent;
 import gwlpr.mapshard.models.ClientBean;
 import gwlpr.mapshard.models.Strings;
 import gwlpr.mapshard.models.enums.ChatColor;
