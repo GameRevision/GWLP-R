@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gamerevision.gwlpr</groupId>
     <artifactId>gwlpr</artifactId>
-    <version>0.2.1</version>
+    <version>0.3.0</version>
 
 
     <packaging>pom</packaging>
@@ -17,8 +17,8 @@
 
 
     <modules>
+    	<module>database</module>
         <module>protocol</module>
-        <module>database</module>
         <module>loginshard</module>
         <module>mapshard</module>
         <module>host</module>
@@ -32,18 +32,15 @@
         <java.debug>true</java.debug>
         <java.optimize>true</java.optimize>
         <java.verbose>true</java.verbose>
-
-        <!-- RS dependency versions -->
-        <rs>0.2.3</rs>
     </properties>
 
 
     <dependencies>
-        <!-- The Container -->
+        <!-- The RealityShard Container -->
         <dependency>
             <groupId>com.realityshard</groupId>
             <artifactId>container</artifactId>
-            <version>${rs}</version>
+            <version>0.3.0</version>
         </dependency>
 
         <!-- JUnit for testing -->
