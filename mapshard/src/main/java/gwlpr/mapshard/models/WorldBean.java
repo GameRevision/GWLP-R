@@ -27,10 +27,10 @@ public class WorldBean
     private final DistrictLanguage language;
 
     
-    public WorldBean(Map map, int instanceNumber, DistrictRegion region, DistrictLanguage language, boolean isPvP)
+    public WorldBean(Map map, int instanceNumber, DistrictRegion region, DistrictLanguage language, boolean isPvP, boolean isOutpost)
     {
         this.map = map;
-        this.isOutpost = instanceNumber != 0;
+        this.isOutpost = isOutpost;
         this.isPvP = isPvP;
         this.isCharCreate = map.getGameID() == 0;
         

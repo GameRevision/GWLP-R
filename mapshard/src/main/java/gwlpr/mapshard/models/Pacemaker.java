@@ -4,12 +4,14 @@
 
 package gwlpr.mapshard.models;
 
+import gwlpr.mapshard.events.AbstractTimedeltaEvent;
 import realityshard.container.events.EventAggregator;
 import realityshard.container.GlobalExecutor;
-import gwlpr.mapshard.events.HeartBeatEvent;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -17,11 +19,14 @@ import java.util.concurrent.TimeUnit;
  * 
  * @author _rusty
  */
-public class Pacemaker
+public class Pacemaker<T extends AbstractTimedeltaEvent>
 {
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(Pacemaker.class);
     
     private final ScheduledExecutorService excecutor;
     private final EventAggregator outputEventAggregator;
+    private final T eventPrototype;
     private final int milliSecondTimeIntervall;
     
     private ScheduledFuture<?> future;
@@ -31,17 +36,17 @@ public class Pacemaker
     /**
      * Constructor.
      * 
-     * @param       executor                The scheduler that will trigger the pacemaker
-     *                                      after a certain amount of time (2nd param)
+     * @param       eventPrototype 
      * @param       outputEventAggregator   The aggregator that will recieve the HeartBeatEvents
      * @param       milliSecondTimeIntervall
      *                                      The time intervall in miliseconds, that this pacemaker will
      *                                      be executed.
      */
-    public Pacemaker(EventAggregator outputEventAggregator, int milliSecondTimeIntervall)
+    public Pacemaker(EventAggregator outputEventAggregator, T eventPrototype, int milliSecondTimeIntervall)
     {
         this.excecutor = GlobalExecutor.get();
         this.outputEventAggregator = outputEventAggregator;
+        this.eventPrototype = eventPrototype;
         this.milliSecondTimeIntervall = milliSecondTimeIntervall;
     }
     
@@ -83,10 +88,11 @@ public class Pacemaker
             @Override
             public void run() 
             {
-                outputEventAggregator.triggerEvent(
-                    new HeartBeatEvent(
-                        (int)(System.currentTimeMillis()-lastInvocation)));
-                
+                T cloned = (T) eventPrototype.clone();
+                cloned.setTimeDelta((int)(System.currentTimeMillis()-lastInvocation));
+
+                outputEventAggregator.triggerEvent(cloned);
+
                 // dont forget to reset last invocation!!
                 lastInvocation = System.currentTimeMillis();
             }
