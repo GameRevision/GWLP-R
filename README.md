@@ -18,7 +18,7 @@ Yes, this guide was made for the diaspora project, but it covers the basics quit
 **How to talk to us**
 
  - Join the dev chat at irc://irc.rizon.net/gwlpr (if your using an IRC client, try joining #gwlpr on the server irc.rizon.net)
- - Leave message in the forums on [GameRevision](http://www.gamerevision.com/forumdisplay.php?61-GWLP-R)
+ - Leave a message in the forums on [GameRevision](http://www.gamerevision.com/forumdisplay.php?61-GWLP-R)
 
 
 ### Install notes for users (you still have to compile it :P):
@@ -31,13 +31,15 @@ Yes, this guide was made for the diaspora project, but it covers the basics quit
  - Download, compile and config the Launcher from the [utils](https://github.com/GameRevision/GWLP-R-Utils/tree/master/Launcher)
  
 **On Linux/Unix (Or any OS that will run the server later on)**
- - Make sure you have Maven 3+, JDK 7+ and MySQL 5.5+ installed and configured
- - Run `git clone git://github.com/GameRevision/GWLP-R.git` anywhere you like on your system
- - Edit the install script from within the project you just cloned to match your MySQL settings (username, password and database)
- - Run the script with `./install.sh`
- - The script recommends executing a certain command to fill the database - do that
- - Edit DevelopmentEnvironment.java in the "host" project to match your MySQL settings AND to change the IP of your Game Server (search for "MapShard" and you'll find an IP there that you can change).
- - Run `mvn clean package exec:java` from inside the "host" directory
+ - Make sure you have Git, Maven 3+, JDK 7+ and MySQL 5.5+ installed and configured.  
+   _Make sure the MySQL server is up and working._
+ - Run `git clone git://github.com/GameRevision/GWLP-R.git` anywhere you like on your system.  
+   _But make sure not to use queer directory namings. Some tools got problems with whitespaces and symbols!_
+ - Edit the install script from within the project you just cloned to match your MySQL settings (username, password and database).
+ - Run the script with `./install.sh`.
+ - The script recommends executing a certain command to fill the database - do that.
+ - Edit DevelopmentEnvironment.java in the "host" project to match your MySQL settings and the IP of your Game Server (search for "MapShard").
+ - Run `mvn clean package exec:java` from inside the "host" directory.
  
 **Finally, run your GW client by using the Launcher and login with `email: "root@gwlp.ps"` / `password: "root"` / `character: "Test Char"`**
 
