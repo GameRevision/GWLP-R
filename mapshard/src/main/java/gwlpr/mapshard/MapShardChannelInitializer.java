@@ -38,18 +38,13 @@ public class MapShardChannelInitializer  extends ChannelInitializer<Channel>
     @Override
     protected void initChannel(Channel ch)
     {
-        // do not log these outbound packets
-        Collection<Integer> outBlackList = new ArrayList<>();
-        outBlackList.add(0);
-        
         // inbound handlers
         ch.pipeline().addLast(
                 new LoggingHandler(),
                 new ConnectionStateHandler(),
                 HandshakeHandler.produceGameHandshake(encrypted),
                 new GameServerCodec(),
-                new MessageDemuxDecoder(),
-                new NettyGWLoggingHandler(BlackList, new ArrayList<Integer>(), outBlackList));
+                new MessageDemuxDecoder());
     }
     
 }

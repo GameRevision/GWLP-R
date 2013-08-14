@@ -24,7 +24,10 @@ import gwlpr.mapshard.entitysystem.systems.CommandSystem;
 import gwlpr.mapshard.entitysystem.systems.MovementSystem;
 import gwlpr.mapshard.entitysystem.systems.SchedulingSystem;
 import gwlpr.mapshard.entitysystem.systems.SpawningSystem;
+import gwlpr.mapshard.events.HeartBeatEvent;
+import gwlpr.mapshard.events.SystemsUpdateEvent;
 import gwlpr.mapshard.models.HandleRegistryNotificationDecorator;
+import gwlpr.mapshard.models.Pacemaker;
 import gwlpr.mapshard.models.WorldBean;
 import gwlpr.protocol.handshake.EncryptionOptions;
 import gwlpr.protocol.intershard.utils.DistrictLanguage;
@@ -43,6 +46,9 @@ import realityshard.container.util.HandleRegistry;
  */
 public class MapShardFactory implements GameAppFactory
 {
+    
+    private static final int UPDATE_INTERVAL = 30; // ms
+    private static final int HEARTBEAT_INTERVAL = 250; // ms
 
     @Override
     public String getName() 
@@ -83,6 +89,7 @@ public class MapShardFactory implements GameAppFactory
         // parse the parameters for the worldbean
         Map                 mapEntity   = MapJpaController.get().findMap(Integer.parseInt(  additionalParams.get("MapId")));
         boolean             isPvP       = Boolean.parseBoolean(                             additionalParams.get("IsPvP"));
+        boolean             isOutpost   = Boolean.parseBoolean(                             additionalParams.get("IsOutpost"));
         int                 instanceNum = Integer.parseInt(                                 additionalParams.get("InstanceNumber"));
         DistrictRegion      region      = DistrictRegion.valueOf(                           additionalParams.get("DistrictRegion"));
         DistrictLanguage    language    = DistrictLanguage.valueOf(                         additionalParams.get("DistrictLanguage"));
@@ -90,26 +97,34 @@ public class MapShardFactory implements GameAppFactory
         // failcheck
         if (mapEntity == null) { return false; }
         
-        WorldBean world = new WorldBean(mapEntity, instanceNum, region, language, isPvP);
+        WorldBean world = new WorldBean(mapEntity, instanceNum, region, language, isPvP, isOutpost);
         
         // create all the objects needed by controllers and systems
         EventAggregator eventAgg = thisContext.get().getEventAggregator();
         HandleRegistry<ClientBean> clientRegistry = new HandleRegistryNotificationDecorator<>(eventAgg);
         EntityManager entityManager = new EntityManager();
         
+        // now lets do the server ticks:
+        // there is two of them, one that updates the systems of the CES
+        // and one thats used to pump out the state of the server in
+        // discrete time intervalls
+        
+        Pacemaker<SystemsUpdateEvent> sysUpdate = new Pacemaker<>(eventAgg, new SystemsUpdateEvent(), UPDATE_INTERVAL);
+        Pacemaker<HeartBeatEvent> heartbeat = new Pacemaker<>(eventAgg, new HeartBeatEvent(), HEARTBEAT_INTERVAL);
+        
         // register the controllers
         thisContext.get().getEventAggregator()
                 // register for container related events
                 .register(new ClientConnect(thisContext, parentContext, clientRegistry, world))
                 .register(new ClientDisconnect(thisContext, parentContext, entityManager))
-                .register(new ShutDown(thisContext, parentContext))
+                .register(new ShutDown(thisContext, parentContext, sysUpdate, heartbeat))
                 
                 // register for gw-protocol related events
                 .register(new LatencyAndSynchonization(clientRegistry))
                 .register(new CharacterCreation())
                 .register(new Chat(eventAgg))
                 .register(new InstanceLoad(world, entityManager))
-                .register(new MoveRotateClick(eventAgg))
+                .register(new MoveRotateClick(eventAgg, clientRegistry, entityManager))
                 
         
         // register the CE systems
@@ -119,6 +134,11 @@ public class MapShardFactory implements GameAppFactory
                 .register(new MovementSystem(eventAgg, entityManager, clientRegistry))
                 .register(new SchedulingSystem(eventAgg))
                 .register(new SpawningSystem(eventAgg, clientRegistry));
+        
+        
+        // start the pacemakers
+        sysUpdate.start();
+        heartbeat.start();
         
         return true;
     }
