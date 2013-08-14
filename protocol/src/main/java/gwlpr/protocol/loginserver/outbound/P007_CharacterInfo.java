@@ -2,6 +2,7 @@
 package gwlpr.protocol.loginserver.outbound;
 
 import java.util.Arrays;
+import java.util.UUID;
 import gwlpr.protocol.serialization.GWMessage;
 import gwlpr.protocol.util.IsArray;
 
@@ -15,9 +16,8 @@ public final class P007_CharacterInfo
 {
 
     private long loginCount;
-    @IsArray(constant = true, size = 16, prefixLength = -1)
-    private byte[] unknown1;
-    private long unknown2;
+    private UUID characterUID;
+    private long unknown1;
     private String characterName;
     /**
      * 
@@ -37,12 +37,12 @@ public final class P007_CharacterInfo
         this.loginCount = loginCount;
     }
 
-    public void setUnknown1(byte[] unknown1) {
-        this.unknown1 = unknown1;
+    public void setCharacterUID(UUID characterUID) {
+        this.characterUID = characterUID;
     }
 
-    public void setUnknown2(long unknown2) {
-        this.unknown2 = unknown2;
+    public void setUnknown1(long unknown1) {
+        this.unknown1 = unknown1;
     }
 
     public void setCharacterName(String characterName) {
@@ -56,7 +56,7 @@ public final class P007_CharacterInfo
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("P007_CharacterInfo[");
-        sb.append("loginCount=").append(this.loginCount).append(",unknown1=").append(Arrays.toString(this.unknown1)).append(",unknown2=").append(this.unknown2).append(",characterName=").append(this.characterName.toString()).append(",characterInfo=").append(Arrays.toString(this.characterInfo)).append("]");
+        sb.append("loginCount=").append(this.loginCount).append(",characterUID=").append(this.characterUID.toString()).append(",unknown1=").append(this.unknown1).append(",characterName=").append(this.characterName.toString()).append(",characterInfo=").append(Arrays.toString(this.characterInfo)).append("]");
         return sb.toString();
     }
 

@@ -2,6 +2,7 @@
 package gwlpr.protocol.loginserver.outbound;
 
 import java.util.Arrays;
+import java.util.UUID;
 import gwlpr.protocol.serialization.GWMessage;
 import gwlpr.protocol.util.IsArray;
 
@@ -21,15 +22,14 @@ public final class P017_AccountPermissions
     private byte[] unknown1;
     @IsArray(constant = true, size = 8, prefixLength = -1)
     private byte[] unknown2;
+    private UUID accountUID;
     @IsArray(constant = true, size = 16, prefixLength = -1)
     private byte[] unknown3;
-    @IsArray(constant = true, size = 16, prefixLength = -1)
-    private byte[] unknown4;
     private long changeAccountSettings;
     @IsArray(constant = false, size = 200, prefixLength = 2)
     private byte[] accountFeatures;
     private short eulaAccepted;
-    private long unknown5;
+    private long unknown4;
 
     @Override
     public short getHeader() {
@@ -56,12 +56,12 @@ public final class P017_AccountPermissions
         this.unknown2 = unknown2;
     }
 
-    public void setUnknown3(byte[] unknown3) {
-        this.unknown3 = unknown3;
+    public void setAccountUID(UUID accountUID) {
+        this.accountUID = accountUID;
     }
 
-    public void setUnknown4(byte[] unknown4) {
-        this.unknown4 = unknown4;
+    public void setUnknown3(byte[] unknown3) {
+        this.unknown3 = unknown3;
     }
 
     public void setChangeAccountSettings(long changeAccountSettings) {
@@ -76,14 +76,14 @@ public final class P017_AccountPermissions
         this.eulaAccepted = eulaAccepted;
     }
 
-    public void setUnknown5(long unknown5) {
-        this.unknown5 = unknown5;
+    public void setUnknown4(long unknown4) {
+        this.unknown4 = unknown4;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("P017_AccountPermissions[");
-        sb.append("loginCount=").append(this.loginCount).append(",territory=").append(this.territory).append(",territoryChanges=").append(this.territoryChanges).append(",unknown1=").append(Arrays.toString(this.unknown1)).append(",unknown2=").append(Arrays.toString(this.unknown2)).append(",unknown3=").append(Arrays.toString(this.unknown3)).append(",unknown4=").append(Arrays.toString(this.unknown4)).append(",changeAccountSettings=").append(this.changeAccountSettings).append(",accountFeatures=").append(Arrays.toString(this.accountFeatures)).append(",eulaAccepted=").append(this.eulaAccepted).append(",unknown5=").append(this.unknown5).append("]");
+        sb.append("loginCount=").append(this.loginCount).append(",territory=").append(this.territory).append(",territoryChanges=").append(this.territoryChanges).append(",unknown1=").append(Arrays.toString(this.unknown1)).append(",unknown2=").append(Arrays.toString(this.unknown2)).append(",accountUID=").append(this.accountUID.toString()).append(",unknown3=").append(Arrays.toString(this.unknown3)).append(",changeAccountSettings=").append(this.changeAccountSettings).append(",accountFeatures=").append(Arrays.toString(this.accountFeatures)).append(",eulaAccepted=").append(this.eulaAccepted).append(",unknown4=").append(this.unknown4).append("]");
         return sb.toString();
     }
 
