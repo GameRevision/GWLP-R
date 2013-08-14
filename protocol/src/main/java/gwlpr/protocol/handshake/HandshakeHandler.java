@@ -8,7 +8,6 @@ import gwlpr.protocol.handshake.messages.P000_VerifyClient;
 import gwlpr.protocol.handshake.messages.P000_ClientVersion;
 import gwlpr.protocol.handshake.messages.P000_ClientSeed;
 import gwlpr.protocol.handshake.messages.P001_ServerSeed;
-import realityshard.container.util.EncryptionUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;

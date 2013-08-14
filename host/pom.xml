@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.gamerevision.gwlpr</groupId>
         <artifactId>gwlpr</artifactId>
-        <version>0.2.1</version>
+        <version>0.3.0</version>
     </parent>
 
 
@@ -20,17 +20,12 @@
         <!-- The other GWLPR modules -->
         <dependency>
             <groupId>com.gamerevision.gwlpr</groupId>
-            <artifactId>protocol</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.gamerevision.gwlpr</groupId>
-            <artifactId>actions</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.gamerevision.gwlpr</groupId>
             <artifactId>database</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.gamerevision.gwlpr</groupId>
+            <artifactId>protocol</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
