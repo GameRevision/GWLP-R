@@ -4,7 +4,7 @@
 
 package gwlpr.mapshard.entitysystem;
 
-import gwlpr.mapshard.events.HeartBeatEvent;
+import gwlpr.mapshard.events.SystemsUpdateEvent;
 import realityshard.container.events.Event;
 import realityshard.container.events.EventAggregator;
 
@@ -65,20 +65,20 @@ public abstract class GenericSystem
      * @param event 
      */
     @Event.Handler
-    public void onHeartBeat(HeartBeatEvent event)
+    public void onUpdate(SystemsUpdateEvent event)
     {
         // check for special interval values:
         if (invocationInterval == 0) { return; }
         if (invocationInterval < 0) 
         { 
-            update(event.getPassedTimeInterval());
+            update(event.getTimeDelta());
             return;
         }
         
         // now to the more complex cases
         
         // update the time that has passed
-        timePassed += event.getPassedTimeInterval();
+        timePassed += event.getTimeDelta();
         
         if (timePassed >= invocationInterval)
         {
