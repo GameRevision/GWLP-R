@@ -6,8 +6,8 @@ package gwlpr.mapshard.controllers;
 
 import gwlpr.protocol.gameserver.inbound.P093_ChatMessage;
 import gwlpr.mapshard.models.ClientBean;
-import gwlpr.mapshard.events.ChatCommandEvent;
-import gwlpr.mapshard.events.ChatMessageEvent;
+import gwlpr.mapshard.entitysystem.events.ChatCommandEvent;
+import gwlpr.mapshard.entitysystem.events.ChatMessageEvent;
 import gwlpr.mapshard.models.enums.ChatChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

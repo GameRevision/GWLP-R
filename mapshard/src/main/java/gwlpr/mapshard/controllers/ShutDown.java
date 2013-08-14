@@ -5,6 +5,7 @@
 package gwlpr.mapshard.controllers;
 
 import gwlpr.mapshard.models.HandleRegistryNotificationDecorator;
+import gwlpr.mapshard.models.Pacemaker;
 import gwlpr.protocol.intershard.GSNotify_WorldEmpty;
 import realityshard.container.events.Event;
 import realityshard.container.events.GameAppUnloadedEvent;
@@ -27,6 +28,8 @@ public class ShutDown
 
     private final Handle<GameAppContext> context;
     private final Handle<GameAppContext> loginShard;
+    private final Pacemaker update;
+    private final Pacemaker heartbeat;
     
     
     /**
@@ -34,11 +37,15 @@ public class ShutDown
      *  
      * @param       context
      * @param       loginShard
+     * @param       update
+     * @param       heartbeat  
      */
-    public ShutDown(Handle<GameAppContext> context, Handle<GameAppContext> loginShard)
+    public ShutDown(Handle<GameAppContext> context, Handle<GameAppContext> loginShard, Pacemaker update, Pacemaker heartbeat)
     {
         this.context = context;
         this.loginShard = loginShard;
+        this.update = update;
+        this.heartbeat = heartbeat;
     }
     
     
@@ -65,5 +72,7 @@ public class ShutDown
     public void onUnload(GameAppUnloadedEvent event)
     {
         // TODO: do we need to do anything? saving the data or what?
+        update.stop();
+        heartbeat.stop();
     }
 }

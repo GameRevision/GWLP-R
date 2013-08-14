@@ -60,7 +60,7 @@ public class LatencyAndSynchonization
             // check if this session should receive a heartbeat packet
             if (clientHandle.get().getPlayerState() != PlayerState.Playing) { continue; }
             
-            TimeDeltaView.heartBeat(clientHandle.get().getChannel(), event.getPassedTimeInterval());
+            TimeDeltaView.heartBeat(clientHandle.get().getChannel(), event.getTimeDelta());
         }
     }
     
@@ -77,7 +77,7 @@ public class LatencyAndSynchonization
     public void onPingTimeout(HeartBeatEvent event)
     {
         // update the time that has passed
-        timePassed += event.getPassedTimeInterval();
+        timePassed += event.getTimeDelta();
         if (timePassed < TIMEINTERVAL) { return; }
 
         // if enough time has passed...

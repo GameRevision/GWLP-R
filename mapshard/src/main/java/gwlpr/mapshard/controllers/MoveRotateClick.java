@@ -11,17 +11,24 @@ import gwlpr.protocol.gameserver.inbound.P064_MovementStop;
 import gwlpr.mapshard.models.ClientBean;
 import gwlpr.mapshard.entitysystem.Entity;
 import gwlpr.mapshard.entitysystem.Components.*;
-import gwlpr.mapshard.events.RotateEvent;
-import gwlpr.mapshard.events.MoveEvent;
-import gwlpr.mapshard.events.StopMovingEvent;
+import gwlpr.mapshard.entitysystem.EntityManager;
+import gwlpr.mapshard.entitysystem.events.RotateEvent;
+import gwlpr.mapshard.entitysystem.events.MoveEvent;
+import gwlpr.mapshard.entitysystem.events.StopMovingEvent;
+import gwlpr.mapshard.events.HeartBeatEvent;
 import gwlpr.mapshard.models.WorldPosition;
 import gwlpr.mapshard.models.enums.MovementState;
 import gwlpr.mapshard.models.enums.MovementType;
+import gwlpr.mapshard.models.enums.PlayerState;
+import gwlpr.mapshard.views.EntityMovementView;
 import gwlpr.protocol.util.Vector2;
+import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import realityshard.container.events.Event;
 import realityshard.container.events.EventAggregator;
+import realityshard.container.util.Handle;
+import realityshard.container.util.HandleRegistry;
 
 
 /**
@@ -36,16 +43,63 @@ public class MoveRotateClick
     private static Logger LOGGER = LoggerFactory.getLogger(MoveRotateClick.class);
     
     private final EventAggregator aggregator;
+    private final HandleRegistry<ClientBean> clientRegistry;
+    private final EntityManager entityManager;
     
     
     /**
      * Constructor.
      * 
      * @param aggregator
+     * @param clientRegistry 
+     * @param entityManager  
      */
-    public MoveRotateClick(EventAggregator aggregator)
+    public MoveRotateClick(EventAggregator aggregator, HandleRegistry<ClientBean> clientRegistry, EntityManager entityManager)
     {
         this.aggregator = aggregator;
+        this.clientRegistry = clientRegistry;
+        this.entityManager = entityManager;
+    }
+    
+    
+    /**
+     * Event handler.
+     * This needs to pump out the latest movement packets for
+     * all the moving entities.
+     * 
+     * @param event 
+     */
+    @Event.Handler
+    public void onHeartBeat(HeartBeatEvent event)
+    {
+        // get all moving entities
+        Collection<Entity> entities = entityManager.getEntitiesWith(
+                Position.class,
+                Movement.class);
+
+        for (Entity entity : entities)
+        {
+            // check if entity is not moving
+            if (entity.get(Movement.class).moveState != MovementState.MoveKeepDir)
+            {
+                continue;
+            }
+            
+            // inform the clients that can actually see this
+            for (Handle<ClientBean> client : clientRegistry.getAllHandles())
+            {
+                // check if the client is in the right state
+                if (client.get().getPlayerState() != PlayerState.Playing) { continue; }
+                
+                // get the entity of the client and check if it can see this entity
+                View view = client.get().getEntity().get(View.class);
+                
+                if (!view.visibleAgents.contains(entity)) { continue; }
+                
+                // if it can see the moving entity then send the update packets
+                EntityMovementView.sendUpdateMovement(client.get().getChannel(), entity);
+            }
+        }
     }
     
 
