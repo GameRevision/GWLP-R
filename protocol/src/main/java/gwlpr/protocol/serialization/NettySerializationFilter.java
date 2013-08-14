@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -572,6 +573,30 @@ public interface NettySerializationFilter
             buf.readBytes(result);
             
             return result;
+        }
+    }
+    
+    
+    public final static class UID16 extends Generic
+    {
+        public UID16(Field field) { super(field); }
+        
+        @Override
+        protected void put(ByteBuf buf, Object object)
+                throws Exception
+        { 
+            UUID uid = (UUID) field.get(object);
+            
+            buf.writeLong(uid.getMostSignificantBits());
+            buf.writeLong(uid.getLeastSignificantBits()); 
+        }
+        
+        @Override
+        protected Object get(ByteBuf buf)
+        {
+            if (buf.readableBytes() < 16) { return null; }
+            
+            return new UUID(buf.readLong(), buf.readLong());
         }
     }
     

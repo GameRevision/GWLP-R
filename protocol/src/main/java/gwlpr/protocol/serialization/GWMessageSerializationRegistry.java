@@ -14,6 +14,7 @@ import gwlpr.protocol.util.Vector4;
 import gwlpr.protocol.util.WorldPosition;
 import java.lang.reflect.Field;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -85,9 +86,8 @@ public final class GWMessageSerializationRegistry
         if (field.getType().equals(Vector3.class))      { return new NettySerializationFilter.Vec3(field); }
         if (field.getType().equals(Vector4.class))      { return new NettySerializationFilter.Vec4(field); }
         if (field.getType().equals(WorldPosition.class)){ return new NettySerializationFilter.DW3(field); }
-        
         if (field.getType().equals(byte[].class))       { return new NettySerializationFilter.ByteArray(field); }
-        // TODO: uid16
+        if (field.getType().equals(UUID.class))         { return new NettySerializationFilter.UID16(field); }
         // TODO: guid18
         
         // special case: uint and long
