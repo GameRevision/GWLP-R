@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gamerevision.gwlpr</groupId>
     <artifactId>gwlpr</artifactId>
-    <version>0.2.1</version>
+    <version>0.3.0</version>
 
 
     <packaging>pom</packaging>
@@ -14,16 +14,11 @@
     <description>GWLP:R is the most complete GW server sandbox</description>
     <url>http://github.com/GameRevision/GWLP-R</url>
     <inceptionYear>2010</inceptionYear>
-    <organization>
-        <name>Game Revision</name>
-        <url>http://www.gamerevision.com</url>
-    </organization>
 
 
     <modules>
-        <module>actions</module>
+    	<module>database</module>
         <module>protocol</module>
-        <module>database</module>
         <module>loginshard</module>
         <module>mapshard</module>
         <module>host</module>
@@ -37,33 +32,15 @@
         <java.debug>true</java.debug>
         <java.optimize>true</java.optimize>
         <java.verbose>true</java.verbose>
-
-        <!-- RS dependency versions -->
-        <rs.api>0.2.3</rs.api>
-        <rs.imp>0.2.3</rs.imp>
     </properties>
 
 
     <dependencies>
-        <!-- The Shardlet API -->
-        <dependency>
-            <groupId>com.realityshard</groupId>
-            <artifactId>shardlet</artifactId>
-            <version>${rs.api}</version>
-        </dependency>
-
-        <!-- The NetworkLayer -->
-        <dependency>
-            <groupId>com.realityshard</groupId>
-            <artifactId>network</artifactId>
-            <version>${rs.imp}</version>
-        </dependency>
-
-        <!-- The Container -->
+        <!-- The RealityShard Container -->
         <dependency>
             <groupId>com.realityshard</groupId>
             <artifactId>container</artifactId>
-            <version>${rs.imp}</version>
+            <version>0.3.0</version>
         </dependency>
 
         <!-- JUnit for testing -->

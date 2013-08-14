@@ -2,7 +2,6 @@
 
 ##
 # For copyright information see the LICENSE document.
-# Created by rusty-gr.
 ##
 
 # This can be used to install Reality:Shard and the GWLPR server.
@@ -16,7 +15,7 @@
 
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
+RSDIR="$DIR/../RealityShard"
 
 # MySQL host, port, user id, password and database.
 # When using the default settings, the script will access
@@ -28,7 +27,7 @@ MYSQLHOST="127.0.0.1"
 MYSQLPORT="3306"
 MYSQLUID="root"
 MYSQLPWD=""
-MYSQLDB="testgwlpr"
+MYSQLDB="gwlpr"
 
 
 clear
@@ -39,6 +38,9 @@ echo "The script was started with the following settings:"
 echo ""
 echo "Installation-path:"
 echo "  $DIR"
+echo ""
+echo "RealityShard installation-path:"
+echo "  $RSDIR"
 echo ""
 echo "MySQL-settings:"
 echo "  server:   $MYSQLHOST"
@@ -66,8 +68,8 @@ echo ""
 
 
 echo "Creating Reality:Shard install dir..."
-mkdir "$DIR/RealityShard"
-if [ ! -d "$DIR/RealityShard" ]; then
+mkdir "$RSDIR"
+if [ ! -d "$RSDIR" ]; then
     echo "Failed to create the directories. Check if the path is correct and you have sufficient rights."
     exit 1
 fi
@@ -77,14 +79,14 @@ echo ""
 echo "Cloning Reality:Shard..."
 read -p "[Press any key to continue]" -n 1 -s
 echo ""
-git clone https://github.com/RealityShard/RealityShard.git "$DIR/RealityShard"
+git clone https://github.com/RealityShard/RealityShard.git "$RSDIR"
 echo ""
 
 
 echo "Installing Reality:Shard..."
 read -p "[Press any key to continue]" -n 1 -s
 echo ""
-cd "$DIR/RealityShard" && chmod +x install.sh && ./install.sh
+cd "$RSDIR" && chmod +x install.sh && ./install.sh
 echo ""
 
 
@@ -96,7 +98,7 @@ mvn clean install
 echo ""
 
 
-echo "Creating database (if it does not exist)..."
+echo "Creating the database (if it does not exist)..."
 read -p "[Press any key to continue]" -n 1 -s
 echo ""
 echo "CREATE DATABASE IF NOT EXISTS $MYSQLDB" | mysql -h$MYSQLHOST -P$MYSQLPORT -u$MYSQLUID -p$MYSQLPWD
@@ -104,30 +106,29 @@ echo ""
 
 
 echo "Creating the tables..."
-echo "This might overwrite or change existing tables, depending on our structure.sql script,"
-echo "which can be found in: $DIR/database/src/main/resources"
+echo "This might overwrite or change existing tables, depending on our default_data.sql script,"
+echo "which can be found in: $DIR/database/src/main/sql"
+echo "If you cancel the script at this stage, the software will be ready to run, but you will still"
+echo "need to fill the database, according to the scheme given by the default_data.sql script."
 read -p "[Press any key to continue, or STRG-C to cancel the script]" -n 1 -s
-cd "$DIR/database/src/main/resources"
-mysql -h$MYSQLHOST -P$MYSQLPORT -u$MYSQLUID -p$MYSQLPWD $MYSQLDB < structure.sql
+cd "$DIR/database/src/main/sql"
+mysql -h$MYSQLHOST -P$MYSQLPORT -u$MYSQLUID -p$MYSQLPWD $MYSQLDB < default_data.sql
 echo ""
 
 
 echo "-----------------------------------------------------------------------------"
 echo "GWLPR Installation done."
 echo ""
-echo "What remains to be done now, is filling the database with some basic stuff,"
-echo "and starting the server by executing the host application that comes"
-echo "with the GWLPR project."
+echo "What remains to be done now, is starting the server by executing the host"
+echo "application that comes with the GWLPR project."
 echo ""
 echo "To do so, you can"
-echo "a) Execute the SQL script that has some stored default data,"
-echo "   this will probably delete any exisiting data in your gwlpr database."
-echo "   The script can be executed by issuing:"
 echo ""
-echo "mysql -h$MYSQLHOST -P$MYSQLPORT -u$MYSQLUID -p$MYSQLPWD $MYSQLDB < $DIR/database/src/main/resources/default_data.sql"
-echo ""
-echo "b) Open the GWLPR project in your favourite Java-IDE and select the 'host'"
-echo "   submodule. Let the IDE execute the HostApplication class."
+echo "- Open the GWLPR project in your favourite Java-IDE and select the 'host'"
+echo "  submodule. Let the IDE execute the HostApplication class."
+echo "- Run the GW client on your favourite OS. You will need to use a Launcher that"
+echo "  can be found in the https://github.com/GameRevision/GWLP-R-Utils project."
+echo "  The default setting for the port of the login-server should be '8112'."
 echo ""
 echo "If there were any errors during installation, please report them on"
 echo "https://github.com/GameRevision/GWLP-R"
