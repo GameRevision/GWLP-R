@@ -100,18 +100,20 @@ public class EntityUpdateSkillsView
         
         // then determine the minimum length
         int minLen = maxSkillsBits.length; 
-        for (int i = maxSkillsBits.length-1; i > -1; i--) 
+        for (int i = maxSkillsBits.length-1; i >= 0; i--) 
         {
+            minLen = i+1;
+            
             if (maxSkillsBits[i] != 0)
             {
-                minLen = i+1;
                 break;
             }
         }
         
         // finally create the array we can send to the client
         P207_AvailableSkills.NestedSkillsBitfield[] nested = new P207_AvailableSkills.NestedSkillsBitfield[minLen];
-        for (int i = 0; i < nested.length; i++) {
+        for (int i = 0; i < nested.length; i++) 
+        {
             nested[i] = new P207_AvailableSkills.NestedSkillsBitfield();
             nested[i].setUnknown1(maxSkillsBits[i]);            
         }
