@@ -103,8 +103,7 @@ public class CharacterFactory
         charData.primary = Profession.values()[dBChar.getPrimaryProfession().getId()];
         int secondary = dBChar.getSecondaryProfession() == null ? 0 : dBChar.getSecondaryProfession().getId();
         charData.secondary = Profession.values()[secondary];
-        // TODO: fix the level!!!
-        charData.level = 1;//dBChar.getLevel().getLevel();
+        charData.level = dBChar.getLevel().getLevel();
         // TODO: load the attribute stuff here
         
         SpawnData spawnData = new SpawnData();

@@ -15,8 +15,6 @@ import java.util.List;
 /**
  * Update an agents skillbar
  * 
- * TODO refactor me!
- * 
  * @author _rusty
  */
 public class EntityUpdateSkillsView 

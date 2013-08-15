@@ -39,7 +39,7 @@ public class StaticReplyView
         
         computerInfoReply.init(channel);
         computerInfoReply.setUnknown1(1905605949); // TODO: wtf is that? the client's UID (hashed)?
-        computerInfoReply.setLoginCount(ClientBean.getPerformedActionsCount(channel));
+        computerInfoReply.setLoginCount(ClientBean.getLoginCount(channel));
         computerInfoReply.setUnknown2(0);
         computerInfoReply.setUnknown3(1);
         
@@ -61,7 +61,7 @@ public class StaticReplyView
         P038_SendResponse sendResponse = new P038_SendResponse();
         
         sendResponse.init(channel);
-        sendResponse.setLoginCount(ClientBean.getPerformedActionsCount(channel));
+        sendResponse.setLoginCount(ClientBean.getLoginCount(channel));
         
         channel.writeAndFlush(sendResponse);
         

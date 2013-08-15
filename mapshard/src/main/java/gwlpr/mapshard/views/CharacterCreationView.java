@@ -83,13 +83,13 @@ public class CharacterCreationView
     {
         P378_Unknown sAction = new P378_Unknown();
         sAction.init(channel);
-        sAction.setUnknown1(new byte[16]);
+        sAction.setUnknown1(new byte[16]); // TODO probably char UID
         sAction.setUnknown2(chara.getName());
         sAction.setUnknown3((short) 81);
         
         ByteBuffer buffer = ByteBuffer.allocate(100).order(ByteOrder.LITTLE_ENDIAN);
         buffer.putShort((short) 6);
-        buffer.putShort((short) 248);
+        buffer.putShort((short) 248); // TODO current location (game-map-id)
         buffer.put(new byte[] {0x33, 0x36, 0x31, 0x30});
         
         buffer.put((byte) ((chara.getSkin().byteValue() << 5) | (chara.getHeight().byteValue() << 1) | chara.getSex().byteValue()));

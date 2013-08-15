@@ -12,8 +12,6 @@ import io.netty.channel.Channel;
 
 /**
  * This view fills the UpdateAttributePoints action.
- * 
- * TODO: make this non-static
  *
  * @author miracle444
  */
