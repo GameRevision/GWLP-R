@@ -101,7 +101,7 @@ public final class ClientBean
     }
     
     
-    public static long getPerformedActionsCount(Channel channel)
+    public static long getLoginCount(Channel channel)
     {
         return channel.attr(ClientBean.LOGIN_COUNT).get();
     }

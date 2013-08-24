@@ -9,8 +9,6 @@ package gwlpr.protocol.intershard.utils;
  * This enum holds the different languages an outpost might have.
  * (E.g. DistrictRegion: Europe, DistrictLanguage: French)
  * 
- * TODO: Languages missing: russian, trad. chinese etc.? BUG?
- * 
  * @author _rusty
  */
 public enum DistrictLanguage 
@@ -20,7 +18,11 @@ public enum DistrictLanguage
     Korean  (1),
     French  (2),
     German  (3),
-    Spanish (4);
+    Italian (4),
+    Spanish (5),
+    // TODO missing... chinese?
+    Polish  (9),
+    Russian (10);
         
     private final int id;
 

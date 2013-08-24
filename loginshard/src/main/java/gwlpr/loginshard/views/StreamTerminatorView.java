@@ -27,7 +27,7 @@ public class StreamTerminatorView
     {
         P003_StreamTerminator streamTerminator = new P003_StreamTerminator();
         streamTerminator.init(channel);
-        streamTerminator.setLoginCount(ClientBean.getPerformedActionsCount(channel));
+        streamTerminator.setLoginCount(ClientBean.getLoginCount(channel));
         streamTerminator.setErrorCode(errorCode.get());
         
         // log it in case of error

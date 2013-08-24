@@ -61,8 +61,7 @@ public class LoginView
 
             buffer.put(new byte[16]);
 
-            // TODO implement the level as not null
-            byte level = 0;//character.getLevel().getLevel().byteValue();
+            byte level = character.getLevel().getLevel().byteValue();
             buffer.put((byte) ((level << 4) | character.getCampaign()));                                                   
 
             buffer.put(new byte[] {-1, -0x23, -0x23, 0, -0x23, -0x23, -0x23, -0x23});

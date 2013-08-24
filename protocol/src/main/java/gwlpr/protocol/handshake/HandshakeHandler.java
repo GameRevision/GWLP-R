@@ -26,11 +26,6 @@ import realityshard.container.network.RC4Codec;
  * Handshake is basically the same for LS and GS,
  * just the first packets that are sent differ (client version and verify client)
  *
- * This is full of magic numbers, but the actual classes cant be stuffed with the
- * shit, as they need to be serializable!
- *
- * TODO: refactor me ;)
- *
  * @author _rusty
  */
 public class HandshakeHandler extends ByteToMessageDecoder
