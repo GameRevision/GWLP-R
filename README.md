@@ -33,6 +33,7 @@ Yes, this guide was made for the diaspora project, but it covers the basics quit
 **On Linux/Unix (Or any OS that will run the server later on)**
  - Make sure you have Git, Maven 3+, JDK 7+ and MySQL 5.5+ installed and configured.  
    _Make sure the MySQL server is up and working._
+ - Install Java's unlimited-strength-for-security file according to [this guide](http://stackoverflow.com/a/6481658) to enable encryption for the server.
  - Run `git clone git://github.com/GameRevision/GWLP-R.git` anywhere you like on your system.  
    _But make sure not to use queer directory namings. Some tools got problems with whitespaces and symbols!_
  - Edit the install script from within the project you just cloned to match your MySQL settings (username, password and database).
