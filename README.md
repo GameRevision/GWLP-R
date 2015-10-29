@@ -1,3 +1,12 @@
+
+---
+
+# DEPRECATED
+# please find the successor of this at:
+# ['to entice so.'](https://github.com/entice)
+
+---
+
 ![GWLPR Logo](http://img851.imageshack.us/img851/7279/logo4jb.png)
 
 ## Overview
